@@ -183,20 +183,32 @@
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Baralho.h" />
+    <ClInclude Include="Carta.h" />
     <ClInclude Include="framework.h" />
+    <ClInclude Include="Jogador.h" />
+    <ClInclude Include="Partida.h" />
+    <ClInclude Include="PartidaController.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="Placar.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TrucoPaulista.h" />
     <ClInclude Include="TrucoPaulistaDlg.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Baralho.cpp" />
+    <ClCompile Include="Carta.cpp" />
+    <ClCompile Include="Jogador.cpp" />
+    <ClCompile Include="Partida.cpp" />
+    <ClCompile Include="PartidaController.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Placar.cpp" />
     <ClCompile Include="TrucoPaulista.cpp" />
     <ClCompile Include="TrucoPaulistaDlg.cpp" />
   </ItemGroup>
