@@ -12,7 +12,6 @@
 #define new DEBUG_NEW
 #endif
 
-
 // CAboutDlg dialog used for App About
 
 class CAboutDlg : public CDialogEx
@@ -146,6 +145,21 @@ void CTrucoPaulistaDlg::OnPaint()
 	}
 	else
 	{
+		//CPaintDC dc(this);
+
+		//HBITMAP hBitmap = CreateCardBitmap(&dc, 10, 100, 150);
+
+		//if (hBitmap) 
+		//{
+		//	CDC memDC;
+		//	memDC.CreateCompatibleDC(&dc);
+		//	memDC.SelectObject(hBitmap);
+
+		//	dc.BitBlt(50, 50, 100, 150, &memDC, 0, 0, SRCCOPY);
+
+		//	DeleteObject(hBitmap);
+		//}
+
 		CDialogEx::OnPaint();
 	}
 }

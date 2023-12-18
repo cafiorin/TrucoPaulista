@@ -6,7 +6,7 @@ class Jogador
 {
 public:
 	std::string Nome;
-	Cartas mao[3];
+	//Cartas mao[3];
 
 
 };
