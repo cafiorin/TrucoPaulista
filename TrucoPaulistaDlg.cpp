@@ -1,3 +1,6 @@
+#ifdef _DEBUG
+#define new DEBUG_NEW
+#endif
 
 // TrucoPaulistaDlg.cpp : implementation file
 //
@@ -7,10 +10,10 @@
 #include "TrucoPaulista.h"
 #include "TrucoPaulistaDlg.h"
 #include "afxdialogex.h"
+#include "CartasBitmap.h"
+#include "Baralho.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
+#include <atlimage.h>
 
 // CAboutDlg dialog used for App About
 
@@ -58,6 +61,7 @@ CTrucoPaulistaDlg::CTrucoPaulistaDlg(CWnd* pParent /*=nullptr*/)
 void CTrucoPaulistaDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
+	DDX_Control(pDX, IDC_PIC1, m_Pic1);
 }
 
 BEGIN_MESSAGE_MAP(CTrucoPaulistaDlg, CDialogEx)
@@ -103,9 +107,50 @@ BOOL CTrucoPaulistaDlg::OnInitDialog()
 	ShowWindow(SW_MINIMIZE);
 
 	// TODO: Add extra initialization here
+	Baralho baralho;
+
+	CartasBitmap cartaBitmap(baralho.PegarCartaDoTopo());
+	SetBitmapOnStaticControl(m_Pic1, *cartaBitmap.Getbitmap());
+
+
 
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
+
+void CTrucoPaulistaDlg::SetBitmapOnStaticControl(CStatic& staticControl, CBitmap& bitmap)
+{
+	staticControl.ModifyStyle(SS_ENHMETAFILE, SS_BITMAP | SS_CENTERIMAGE);
+
+	CRect rect;
+	staticControl.GetClientRect(&rect);
+
+	CDC dc;
+	dc.CreateCompatibleDC(nullptr);
+
+	dc.SelectObject(&bitmap);
+
+	BITMAP bmpInfo;
+	bitmap.GetBitmap(&bmpInfo);
+	int bmpWidth = bmpInfo.bmWidth;
+	int bmpHeight = bmpInfo.bmHeight;
+
+	CBitmap bmpResized;
+	bmpResized.CreateCompatibleBitmap(&dc, rect.Width(), rect.Height());
+
+	CDC dcResized;
+	dcResized.CreateCompatibleDC(nullptr);
+	dcResized.SelectObject(&bmpResized);
+
+	dcResized.SetStretchBltMode(HALFTONE);
+
+	dcResized.SetBrushOrg(0, 0);
+	dcResized.SetStretchBltMode(COLORONCOLOR);
+	dcResized.SetBrushOrg(0, 0);
+	dcResized.StretchBlt(0, 0, rect.Width(), rect.Height(), &dc, 0, 0, bmpWidth, bmpHeight, SRCCOPY);
+
+	staticControl.SetBitmap((HBITMAP)bmpResized.Detach());
+}
+
 
 void CTrucoPaulistaDlg::OnSysCommand(UINT nID, LPARAM lParam)
 {

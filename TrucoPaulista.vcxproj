@@ -187,6 +187,7 @@
   <ItemGroup>
     <ClInclude Include="Baralho.h" />
     <ClInclude Include="Carta.h" />
+    <ClInclude Include="CartasBitmap.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="Jogador.h" />
     <ClInclude Include="Partida.h" />
@@ -201,6 +202,7 @@
   <ItemGroup>
     <ClCompile Include="Baralho.cpp" />
     <ClCompile Include="Carta.cpp" />
+    <ClCompile Include="CartasBitmap.cpp" />
     <ClCompile Include="Jogador.cpp" />
     <ClCompile Include="Partida.cpp" />
     <ClCompile Include="PartidaController.cpp" />
@@ -221,6 +223,58 @@
     <None Include="res\TrucoPaulista.rc2" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="..\..\..\Users\TestDevice\Downloads\10-30-Playing-Cards-master\10-30-Playing-Cards\res\Pokers\aa.bmp" />
+    <Image Include="..\..\..\Users\TestDevice\Downloads\10-30-Playing-Cards-master\10-30-Playing-Cards\res\Pokers\ab.bmp" />
+    <Image Include="..\..\..\Users\TestDevice\Downloads\10-30-Playing-Cards-master\10-30-Playing-Cards\res\Pokers\ac.bmp" />
+    <Image Include="..\..\..\Users\TestDevice\Downloads\10-30-Playing-Cards-master\10-30-Playing-Cards\res\Pokers\ad.bmp" />
+    <Image Include="..\..\..\Users\TestDevice\Downloads\10-30-Playing-Cards-master\10-30-Playing-Cards\res\Pokers\ae.bmp" />
+    <Image Include="..\..\..\Users\TestDevice\Downloads\10-30-Playing-Cards-master\10-30-Playing-Cards\res\Pokers\af.bmp" />
+    <Image Include="..\..\..\Users\TestDevice\Downloads\10-30-Playing-Cards-master\10-30-Playing-Cards\res\Pokers\ag.bmp" />
+    <Image Include="..\..\..\Users\TestDevice\Downloads\10-30-Playing-Cards-master\10-30-Playing-Cards\res\Pokers\ah.bmp" />
+    <Image Include="..\..\..\Users\TestDevice\Downloads\10-30-Playing-Cards-master\10-30-Playing-Cards\res\Pokers\ai.bmp" />
+    <Image Include="..\..\..\Users\TestDevice\Downloads\10-30-Playing-Cards-master\10-30-Playing-Cards\res\Pokers\aj.bmp" />
+    <Image Include="..\..\..\Users\TestDevice\Downloads\10-30-Playing-Cards-master\10-30-Playing-Cards\res\Pokers\ak.bmp" />
+    <Image Include="..\..\..\Users\TestDevice\Downloads\10-30-Playing-Cards-master\10-30-Playing-Cards\res\Pokers\al.bmp" />
+    <Image Include="..\..\..\Users\TestDevice\Downloads\10-30-Playing-Cards-master\10-30-Playing-Cards\res\Pokers\am.bmp" />
+    <Image Include="..\..\..\Users\TestDevice\Downloads\10-30-Playing-Cards-master\10-30-Playing-Cards\res\Pokers\ba.bmp" />
+    <Image Include="..\..\..\Users\TestDevice\Downloads\10-30-Playing-Cards-master\10-30-Playing-Cards\res\Pokers\bb.bmp" />
+    <Image Include="..\..\..\Users\TestDevice\Downloads\10-30-Playing-Cards-master\10-30-Playing-Cards\res\Pokers\bc.bmp" />
+    <Image Include="..\..\..\Users\TestDevice\Downloads\10-30-Playing-Cards-master\10-30-Playing-Cards\res\Pokers\bd.bmp" />
+    <Image Include="..\..\..\Users\TestDevice\Downloads\10-30-Playing-Cards-master\10-30-Playing-Cards\res\Pokers\be.bmp" />
+    <Image Include="..\..\..\Users\TestDevice\Downloads\10-30-Playing-Cards-master\10-30-Playing-Cards\res\Pokers\bf.bmp" />
+    <Image Include="..\..\..\Users\TestDevice\Downloads\10-30-Playing-Cards-master\10-30-Playing-Cards\res\Pokers\bg.bmp" />
+    <Image Include="..\..\..\Users\TestDevice\Downloads\10-30-Playing-Cards-master\10-30-Playing-Cards\res\Pokers\bh.bmp" />
+    <Image Include="..\..\..\Users\TestDevice\Downloads\10-30-Playing-Cards-master\10-30-Playing-Cards\res\Pokers\bi.bmp" />
+    <Image Include="..\..\..\Users\TestDevice\Downloads\10-30-Playing-Cards-master\10-30-Playing-Cards\res\Pokers\bj.bmp" />
+    <Image Include="..\..\..\Users\TestDevice\Downloads\10-30-Playing-Cards-master\10-30-Playing-Cards\res\Pokers\bk.bmp" />
+    <Image Include="..\..\..\Users\TestDevice\Downloads\10-30-Playing-Cards-master\10-30-Playing-Cards\res\Pokers\bl.bmp" />
+    <Image Include="..\..\..\Users\TestDevice\Downloads\10-30-Playing-Cards-master\10-30-Playing-Cards\res\Pokers\bm.bmp" />
+    <Image Include="..\..\..\Users\TestDevice\Downloads\10-30-Playing-Cards-master\10-30-Playing-Cards\res\Pokers\ca.bmp" />
+    <Image Include="..\..\..\Users\TestDevice\Downloads\10-30-Playing-Cards-master\10-30-Playing-Cards\res\Pokers\cb.bmp" />
+    <Image Include="..\..\..\Users\TestDevice\Downloads\10-30-Playing-Cards-master\10-30-Playing-Cards\res\Pokers\cc.bmp" />
+    <Image Include="..\..\..\Users\TestDevice\Downloads\10-30-Playing-Cards-master\10-30-Playing-Cards\res\Pokers\cd.bmp" />
+    <Image Include="..\..\..\Users\TestDevice\Downloads\10-30-Playing-Cards-master\10-30-Playing-Cards\res\Pokers\ce.bmp" />
+    <Image Include="..\..\..\Users\TestDevice\Downloads\10-30-Playing-Cards-master\10-30-Playing-Cards\res\Pokers\cf.bmp" />
+    <Image Include="..\..\..\Users\TestDevice\Downloads\10-30-Playing-Cards-master\10-30-Playing-Cards\res\Pokers\cg.bmp" />
+    <Image Include="..\..\..\Users\TestDevice\Downloads\10-30-Playing-Cards-master\10-30-Playing-Cards\res\Pokers\ch.bmp" />
+    <Image Include="..\..\..\Users\TestDevice\Downloads\10-30-Playing-Cards-master\10-30-Playing-Cards\res\Pokers\ci.bmp" />
+    <Image Include="..\..\..\Users\TestDevice\Downloads\10-30-Playing-Cards-master\10-30-Playing-Cards\res\Pokers\cj.bmp" />
+    <Image Include="..\..\..\Users\TestDevice\Downloads\10-30-Playing-Cards-master\10-30-Playing-Cards\res\Pokers\ck.bmp" />
+    <Image Include="..\..\..\Users\TestDevice\Downloads\10-30-Playing-Cards-master\10-30-Playing-Cards\res\Pokers\cl.bmp" />
+    <Image Include="..\..\..\Users\TestDevice\Downloads\10-30-Playing-Cards-master\10-30-Playing-Cards\res\Pokers\cm.bmp" />
+    <Image Include="..\..\..\Users\TestDevice\Downloads\10-30-Playing-Cards-master\10-30-Playing-Cards\res\Pokers\da.bmp" />
+    <Image Include="..\..\..\Users\TestDevice\Downloads\10-30-Playing-Cards-master\10-30-Playing-Cards\res\Pokers\db.bmp" />
+    <Image Include="..\..\..\Users\TestDevice\Downloads\10-30-Playing-Cards-master\10-30-Playing-Cards\res\Pokers\dc.bmp" />
+    <Image Include="..\..\..\Users\TestDevice\Downloads\10-30-Playing-Cards-master\10-30-Playing-Cards\res\Pokers\dd.bmp" />
+    <Image Include="..\..\..\Users\TestDevice\Downloads\10-30-Playing-Cards-master\10-30-Playing-Cards\res\Pokers\de.bmp" />
+    <Image Include="..\..\..\Users\TestDevice\Downloads\10-30-Playing-Cards-master\10-30-Playing-Cards\res\Pokers\df.bmp" />
+    <Image Include="..\..\..\Users\TestDevice\Downloads\10-30-Playing-Cards-master\10-30-Playing-Cards\res\Pokers\dg.bmp" />
+    <Image Include="..\..\..\Users\TestDevice\Downloads\10-30-Playing-Cards-master\10-30-Playing-Cards\res\Pokers\dh.bmp" />
+    <Image Include="..\..\..\Users\TestDevice\Downloads\10-30-Playing-Cards-master\10-30-Playing-Cards\res\Pokers\di.bmp" />
+    <Image Include="..\..\..\Users\TestDevice\Downloads\10-30-Playing-Cards-master\10-30-Playing-Cards\res\Pokers\dj.bmp" />
+    <Image Include="..\..\..\Users\TestDevice\Downloads\10-30-Playing-Cards-master\10-30-Playing-Cards\res\Pokers\dk.bmp" />
+    <Image Include="..\..\..\Users\TestDevice\Downloads\10-30-Playing-Cards-master\10-30-Playing-Cards\res\Pokers\dl.bmp" />
+    <Image Include="..\..\..\Users\TestDevice\Downloads\10-30-Playing-Cards-master\10-30-Playing-Cards\res\Pokers\dm.bmp" />
     <Image Include="res\TrucoPaulista.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

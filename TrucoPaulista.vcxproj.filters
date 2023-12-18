@@ -60,6 +60,9 @@
     <ClInclude Include="PartidaController.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="CartasBitmap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TrucoPaulista.cpp">
@@ -89,6 +92,9 @@
     <ClCompile Include="Placar.cpp">
       <Filter>Source Files\Model</Filter>
     </ClCompile>
+    <ClCompile Include="CartasBitmap.cpp">
+      <Filter>Source Files\Model</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="TrucoPaulista.rc">
@@ -102,6 +108,162 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\TrucoPaulista.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\..\..\Users\TestDevice\Downloads\10-30-Playing-Cards-master\10-30-Playing-Cards\res\Pokers\aa.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\..\..\Users\TestDevice\Downloads\10-30-Playing-Cards-master\10-30-Playing-Cards\res\Pokers\ab.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\..\..\Users\TestDevice\Downloads\10-30-Playing-Cards-master\10-30-Playing-Cards\res\Pokers\ac.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\..\..\Users\TestDevice\Downloads\10-30-Playing-Cards-master\10-30-Playing-Cards\res\Pokers\ad.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\..\..\Users\TestDevice\Downloads\10-30-Playing-Cards-master\10-30-Playing-Cards\res\Pokers\ae.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\..\..\Users\TestDevice\Downloads\10-30-Playing-Cards-master\10-30-Playing-Cards\res\Pokers\af.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\..\..\Users\TestDevice\Downloads\10-30-Playing-Cards-master\10-30-Playing-Cards\res\Pokers\ag.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\..\..\Users\TestDevice\Downloads\10-30-Playing-Cards-master\10-30-Playing-Cards\res\Pokers\ah.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\..\..\Users\TestDevice\Downloads\10-30-Playing-Cards-master\10-30-Playing-Cards\res\Pokers\ai.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\..\..\Users\TestDevice\Downloads\10-30-Playing-Cards-master\10-30-Playing-Cards\res\Pokers\aj.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\..\..\Users\TestDevice\Downloads\10-30-Playing-Cards-master\10-30-Playing-Cards\res\Pokers\ak.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\..\..\Users\TestDevice\Downloads\10-30-Playing-Cards-master\10-30-Playing-Cards\res\Pokers\al.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\..\..\Users\TestDevice\Downloads\10-30-Playing-Cards-master\10-30-Playing-Cards\res\Pokers\am.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\..\..\Users\TestDevice\Downloads\10-30-Playing-Cards-master\10-30-Playing-Cards\res\Pokers\ba.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\..\..\Users\TestDevice\Downloads\10-30-Playing-Cards-master\10-30-Playing-Cards\res\Pokers\bb.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\..\..\Users\TestDevice\Downloads\10-30-Playing-Cards-master\10-30-Playing-Cards\res\Pokers\bc.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\..\..\Users\TestDevice\Downloads\10-30-Playing-Cards-master\10-30-Playing-Cards\res\Pokers\bd.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\..\..\Users\TestDevice\Downloads\10-30-Playing-Cards-master\10-30-Playing-Cards\res\Pokers\be.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\..\..\Users\TestDevice\Downloads\10-30-Playing-Cards-master\10-30-Playing-Cards\res\Pokers\bf.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\..\..\Users\TestDevice\Downloads\10-30-Playing-Cards-master\10-30-Playing-Cards\res\Pokers\bg.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\..\..\Users\TestDevice\Downloads\10-30-Playing-Cards-master\10-30-Playing-Cards\res\Pokers\bh.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\..\..\Users\TestDevice\Downloads\10-30-Playing-Cards-master\10-30-Playing-Cards\res\Pokers\bi.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\..\..\Users\TestDevice\Downloads\10-30-Playing-Cards-master\10-30-Playing-Cards\res\Pokers\bj.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\..\..\Users\TestDevice\Downloads\10-30-Playing-Cards-master\10-30-Playing-Cards\res\Pokers\bk.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\..\..\Users\TestDevice\Downloads\10-30-Playing-Cards-master\10-30-Playing-Cards\res\Pokers\bl.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\..\..\Users\TestDevice\Downloads\10-30-Playing-Cards-master\10-30-Playing-Cards\res\Pokers\bm.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\..\..\Users\TestDevice\Downloads\10-30-Playing-Cards-master\10-30-Playing-Cards\res\Pokers\ca.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\..\..\Users\TestDevice\Downloads\10-30-Playing-Cards-master\10-30-Playing-Cards\res\Pokers\cb.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\..\..\Users\TestDevice\Downloads\10-30-Playing-Cards-master\10-30-Playing-Cards\res\Pokers\cc.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\..\..\Users\TestDevice\Downloads\10-30-Playing-Cards-master\10-30-Playing-Cards\res\Pokers\cd.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\..\..\Users\TestDevice\Downloads\10-30-Playing-Cards-master\10-30-Playing-Cards\res\Pokers\ce.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\..\..\Users\TestDevice\Downloads\10-30-Playing-Cards-master\10-30-Playing-Cards\res\Pokers\cf.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\..\..\Users\TestDevice\Downloads\10-30-Playing-Cards-master\10-30-Playing-Cards\res\Pokers\cg.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\..\..\Users\TestDevice\Downloads\10-30-Playing-Cards-master\10-30-Playing-Cards\res\Pokers\ch.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\..\..\Users\TestDevice\Downloads\10-30-Playing-Cards-master\10-30-Playing-Cards\res\Pokers\ci.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\..\..\Users\TestDevice\Downloads\10-30-Playing-Cards-master\10-30-Playing-Cards\res\Pokers\cj.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\..\..\Users\TestDevice\Downloads\10-30-Playing-Cards-master\10-30-Playing-Cards\res\Pokers\ck.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\..\..\Users\TestDevice\Downloads\10-30-Playing-Cards-master\10-30-Playing-Cards\res\Pokers\cl.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\..\..\Users\TestDevice\Downloads\10-30-Playing-Cards-master\10-30-Playing-Cards\res\Pokers\cm.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\..\..\Users\TestDevice\Downloads\10-30-Playing-Cards-master\10-30-Playing-Cards\res\Pokers\da.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\..\..\Users\TestDevice\Downloads\10-30-Playing-Cards-master\10-30-Playing-Cards\res\Pokers\db.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\..\..\Users\TestDevice\Downloads\10-30-Playing-Cards-master\10-30-Playing-Cards\res\Pokers\dc.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\..\..\Users\TestDevice\Downloads\10-30-Playing-Cards-master\10-30-Playing-Cards\res\Pokers\dd.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\..\..\Users\TestDevice\Downloads\10-30-Playing-Cards-master\10-30-Playing-Cards\res\Pokers\de.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\..\..\Users\TestDevice\Downloads\10-30-Playing-Cards-master\10-30-Playing-Cards\res\Pokers\df.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\..\..\Users\TestDevice\Downloads\10-30-Playing-Cards-master\10-30-Playing-Cards\res\Pokers\dg.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\..\..\Users\TestDevice\Downloads\10-30-Playing-Cards-master\10-30-Playing-Cards\res\Pokers\dh.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\..\..\Users\TestDevice\Downloads\10-30-Playing-Cards-master\10-30-Playing-Cards\res\Pokers\di.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\..\..\Users\TestDevice\Downloads\10-30-Playing-Cards-master\10-30-Playing-Cards\res\Pokers\dj.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\..\..\Users\TestDevice\Downloads\10-30-Playing-Cards-master\10-30-Playing-Cards\res\Pokers\dk.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\..\..\Users\TestDevice\Downloads\10-30-Playing-Cards-master\10-30-Playing-Cards\res\Pokers\dl.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\..\..\Users\TestDevice\Downloads\10-30-Playing-Cards-master\10-30-Playing-Cards\res\Pokers\dm.bmp">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

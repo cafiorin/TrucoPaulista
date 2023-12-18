@@ -11,6 +11,7 @@ class CTrucoPaulistaDlg : public CDialogEx
 // Construction
 public:
 	CTrucoPaulistaDlg(CWnd* pParent = nullptr);	// standard constructor
+	void SetBitmapOnStaticControl(CStatic& staticControl, CBitmap& bitmap);
 
 // Dialog Data
 #ifdef AFX_DESIGN_TIME
@@ -31,4 +32,6 @@ protected:
 	afx_msg void OnPaint();
 	afx_msg HCURSOR OnQueryDragIcon();
 	DECLARE_MESSAGE_MAP()
+public:
+	CStatic m_Pic1;
 };

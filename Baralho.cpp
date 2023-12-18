@@ -9,6 +9,7 @@ Baralho::Baralho()
 {
     cartas = std::make_shared<std::vector<Carta>>();
     ConstruirBaralhoTrucoPaulista();
+    Embaralhar();
 }
 
 void Baralho::Embaralhar()
@@ -68,9 +69,9 @@ void Baralho::ConstruirBaralhoTrucoPaulista()
             break;
         }
 
-        for (const std::string& naipe : { "Copas", "Ouros", "Espadas", "Paus" })
+        for (int naipes=1; naipes<=4; naipes++)
         {
-            cartas->push_back(Carta(valor, nome, naipe));
+            cartas->push_back(Carta(valor, nome, (Naipes) naipes));
         }
     }
 }

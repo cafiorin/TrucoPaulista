@@ -1,14 +1,16 @@
 #pragma once
 #include <string>
 
+enum Naipes { Espadas, Paus, Ouro, Copas };
+
 class Carta 
 {
 public:
     int valor;
     std::string nome;
-    std::string naipe;
+    Naipes naipe;
 
-    Carta(int _valor, std::string _nome, std::string _naipe) : valor(_valor), nome(_nome),naipe(_naipe)
+    Carta(int _valor, std::string _nome, Naipes _naipe) : valor(_valor), nome(_nome),naipe(_naipe)
     {
     }
 };
