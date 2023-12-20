@@ -20,8 +20,7 @@ Carta& CartasBitmap::GetCarta()
 
 void CartasBitmap::SetID(Carta &carta)
 {
-	int valor = carta.valor > 10 ? carta.valor - 10 : carta.valor;
-	this->m_ID = (IDB_BITMAP1-1) + valor + ((int)carta.naipe - 1) * 13;
+	this->m_ID = (IDB_BITMAP1-1) + carta.id + ((int)carta.naipe - 1) * 13;
 }
 
 CBitmap* CartasBitmap::Getbitmap()

@@ -33,7 +33,8 @@ Carta Baralho::PegarCartaDoTopo()
 void Baralho::ConstruirBaralhoTrucoPaulista()
 {
     cartas->clear();
-
+    
+    int id = 1;
     for (int valor = 4; valor <= 13; ++valor)
     {
         std::string nome;
@@ -41,37 +42,44 @@ void Baralho::ConstruirBaralhoTrucoPaulista()
         switch (valor)
         {
         case 8:
+            id = 12;
             nome = "Q";
             break;
 
         case 9:
+            id = 11;
             nome = "J";
             break;
 
         case 10:
+            id = 13;
             nome = "K";
             break;
 
         case 11:
+            id = 1;
             nome = "A";
             break;
 
         case 12:
+            id = 2;
             nome = "2";
             break;
 
         case 13:
+            id = 3;
             nome = "3";
             break;
 
         default:
+            id = valor;
             nome = std::to_string(valor);
             break;
         }
 
         for (int naipes=1; naipes<=4; naipes++)
         {
-            cartas->push_back(Carta(valor, nome, (Naipes) naipes));
+            cartas->push_back(Carta(id, valor, nome, (Naipes) naipes));
         }
     }
 }
