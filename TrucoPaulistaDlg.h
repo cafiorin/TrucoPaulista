@@ -12,7 +12,9 @@ class CTrucoPaulistaDlg : public CDialogEx
 public:
 	CTrucoPaulistaDlg(CWnd* pParent = nullptr);	// standard constructor
 	void SetBitmapOnStaticControl(CStatic& staticControl, CBitmap& bitmap);
+	void SetBitmapCartasAvesso();
 	void SetBitmapMesa();
+
 
 // Dialog Data
 #ifdef AFX_DESIGN_TIME
@@ -41,4 +43,15 @@ public:
 	CStatic m_Pic3;
 	afx_msg void OnStnClickedPic3();
 	CStatic m_PicMesa;
+	CStatic m_PicCartaOp1;
+	CStatic m_PicCartaOp2;
+	CStatic m_PicCartaOp3;
+	CStatic m_PicCartaOp21;
+	CStatic m_PicCartaOp22;
+	CStatic m_PicCartaOp23;
+	CStatic m_PicCartaParc1;
+	CStatic m_PicCartaParc2;
+	CStatic m_PicCartaParc3;
+	CStatic m_PicBaralho;
+	CStatic m_PicVira;
 };

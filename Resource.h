@@ -60,18 +60,41 @@
 #define IDB_BITMAP50                    232
 #define IDB_BITMAP51                    233
 #define IDB_BITMAP52                    234
+#define IDB_BITMAP_VAZIA1               235
+#define IDB_BITMAP_VAZIA                235
+#define IDB_BITMAP_AVESSO               236
+#define IDB_BITMAP_VERSO                236
+#define IDB_BITMAP_VAZIA_90             237
+#define IDB_BITMAP_VERSO_90             238
 #define IDC_PIC1                        1000
 #define IDC_PIC2                        1001
 #define IDC_PIC3                        1002
 #define IDC_PIC4                        1003
+#define IDC_PIC5                        1004
+#define IDC_PIC6                        1005
+#define IDC_PIC7                        1006
+#define IDC_RADIO1                      1007
+#define IDC_PIC9                        1008
+#define IDC_PIC10                       1009
+#define IDC_PIC11                       1010
+#define IDC_PIC8                        1013
+#define IDC_PIC12                       1014
+#define IDC_PIC13                       1015
+#define IDC_PIC14                       1016
+#define IDC_PIC15                       1017
+#define IDC_RADIO2                      1018
+#define IDC_RADIO3                      1021
+#define IDC_RADIO4                      1022
+#define IDC_RADIO5                      1023
+#define IDC_RADIO6                      1024
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        235
+#define _APS_NEXT_RESOURCE_VALUE        239
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1001
+#define _APS_NEXT_CONTROL_VALUE         1008
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

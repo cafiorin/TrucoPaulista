@@ -66,6 +66,17 @@ void CTrucoPaulistaDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_PIC2, m_Pic2);
 	DDX_Control(pDX, IDC_PIC3, m_Pic3);
 	DDX_Control(pDX, IDC_PIC4, m_PicMesa);
+	DDX_Control(pDX, IDC_PIC5, m_PicCartaOp1);
+	DDX_Control(pDX, IDC_PIC7, m_PicCartaOp2);
+	DDX_Control(pDX, IDC_PIC6, m_PicCartaOp3);
+	DDX_Control(pDX, IDC_PIC9, m_PicCartaOp21);
+	DDX_Control(pDX, IDC_PIC11, m_PicCartaOp22);
+	DDX_Control(pDX, IDC_PIC10, m_PicCartaOp23);
+	DDX_Control(pDX, IDC_PIC13, m_PicCartaParc1);
+	DDX_Control(pDX, IDC_PIC12, m_PicCartaParc2);
+	DDX_Control(pDX, IDC_PIC8, m_PicCartaParc3);
+	DDX_Control(pDX, IDC_PIC15, m_PicBaralho);
+	DDX_Control(pDX, IDC_PIC14, m_PicVira);
 }
 
 BEGIN_MESSAGE_MAP(CTrucoPaulistaDlg, CDialogEx)
@@ -91,12 +102,17 @@ BOOL CTrucoPaulistaDlg::OnInitDialog()
 	CartasBitmap cartaBitmap1(baralho.PegarCartaDoTopo());
 	CartasBitmap cartaBitmap2(baralho.PegarCartaDoTopo());
 	CartasBitmap cartaBitmap3(baralho.PegarCartaDoTopo());
+	CartasBitmap cartaBitmap4(baralho.PegarCartaDoTopo());
 
 	SetBitmapOnStaticControl(m_Pic1, *cartaBitmap1.Getbitmap());
 	SetBitmapOnStaticControl(m_Pic2, *cartaBitmap2.Getbitmap());
 	SetBitmapOnStaticControl(m_Pic3, *cartaBitmap3.Getbitmap());
 
 	SetBitmapMesa();
+
+	SetBitmapCartasAvesso();
+
+	SetBitmapOnStaticControl(m_PicVira, *cartaBitmap4.Getbitmap());
 
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
@@ -108,6 +124,30 @@ void CTrucoPaulistaDlg::SetBitmapMesa()
 
 	SetBitmapOnStaticControl(m_PicMesa, bitmap);
 }
+
+void CTrucoPaulistaDlg::SetBitmapCartasAvesso()
+{
+	CBitmap bitmap;
+	bitmap.LoadBitmap(IDB_BITMAP_VERSO_90);
+
+	SetBitmapOnStaticControl(m_PicCartaOp1, bitmap);
+	SetBitmapOnStaticControl(m_PicCartaOp2, bitmap);
+	SetBitmapOnStaticControl(m_PicCartaOp3, bitmap);
+
+	SetBitmapOnStaticControl(m_PicCartaOp21, bitmap);
+	SetBitmapOnStaticControl(m_PicCartaOp22, bitmap);
+	SetBitmapOnStaticControl(m_PicCartaOp23, bitmap);
+
+	CBitmap bitmapVerso;
+	bitmapVerso.LoadBitmap(IDB_BITMAP_VERSO);
+
+	SetBitmapOnStaticControl(m_PicCartaParc1, bitmapVerso);
+	SetBitmapOnStaticControl(m_PicCartaParc2, bitmapVerso);
+	SetBitmapOnStaticControl(m_PicCartaParc3, bitmapVerso);
+
+	SetBitmapOnStaticControl(m_PicBaralho, bitmapVerso);
+}
+
 
 void CTrucoPaulistaDlg::SetBitmapOnStaticControl(CStatic& staticControl, CBitmap& bitmap)
 {

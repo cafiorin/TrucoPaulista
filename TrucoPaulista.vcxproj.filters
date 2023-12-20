@@ -428,5 +428,17 @@
     <Image Include="res\Cartas\dm.bmp">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="res\Cartas\vazia.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Cartas\verso.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Cartas\vazia_90.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Cartas\verso_90.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>
