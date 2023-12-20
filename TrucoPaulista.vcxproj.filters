@@ -269,5 +269,164 @@
     <Image Include="..\..\..\Users\TestDevice\OneDrive\Pictures\mesa.bmp">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="..\..\..\users\testdevice\downloads\10-30-playing-cards-master\10-30-playing-cards\res\pokers\bitmap53.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Cartas\aa.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Cartas\ab.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Cartas\ac.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Cartas\ad.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Cartas\ae.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Cartas\af.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Cartas\ag.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Cartas\ah.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Cartas\ai.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Cartas\aj.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Cartas\ak.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Cartas\al.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Cartas\am.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Cartas\ba.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Cartas\bb.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Cartas\bc.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Cartas\bd.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Cartas\be.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Cartas\bf.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Cartas\bg.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Cartas\bh.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Cartas\bi.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Cartas\bj.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Cartas\bk.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Cartas\bl.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Cartas\bm.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Cartas\ca.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Cartas\cb.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Cartas\cc.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Cartas\cd.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Cartas\ce.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Cartas\cf.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Cartas\cg.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Cartas\ch.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Cartas\ci.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Cartas\cj.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Cartas\ck.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Cartas\cl.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Cartas\cm.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Cartas\da.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Cartas\db.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Cartas\dc.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Cartas\dd.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Cartas\de.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Cartas\df.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Cartas\dg.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Cartas\dh.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Cartas\di.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Cartas\dj.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Cartas\dk.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Cartas\dl.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Cartas\dm.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>
