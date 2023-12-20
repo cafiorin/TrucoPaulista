@@ -266,5 +266,8 @@
     <Image Include="..\..\..\Users\TestDevice\Downloads\10-30-Playing-Cards-master\10-30-Playing-Cards\res\Pokers\dm.bmp">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="..\..\..\Users\TestDevice\OneDrive\Pictures\mesa.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

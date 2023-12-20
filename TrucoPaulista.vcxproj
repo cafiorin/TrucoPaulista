@@ -275,6 +275,7 @@
     <Image Include="..\..\..\Users\TestDevice\Downloads\10-30-Playing-Cards-master\10-30-Playing-Cards\res\Pokers\dk.bmp" />
     <Image Include="..\..\..\Users\TestDevice\Downloads\10-30-Playing-Cards-master\10-30-Playing-Cards\res\Pokers\dl.bmp" />
     <Image Include="..\..\..\Users\TestDevice\Downloads\10-30-Playing-Cards-master\10-30-Playing-Cards\res\Pokers\dm.bmp" />
+    <Image Include="..\..\..\Users\TestDevice\OneDrive\Pictures\mesa.bmp" />
     <Image Include="res\TrucoPaulista.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

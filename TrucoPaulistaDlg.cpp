@@ -12,6 +12,7 @@
 #include "afxdialogex.h"
 #include "CartasBitmap.h"
 #include "Baralho.h"
+#include "resource.h"
 
 #include <atlimage.h>
 
@@ -62,12 +63,16 @@ void CTrucoPaulistaDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_PIC1, m_Pic1);
+	DDX_Control(pDX, IDC_PIC2, m_Pic2);
+	DDX_Control(pDX, IDC_PIC3, m_Pic3);
+	DDX_Control(pDX, IDC_PIC4, m_PicMesa);
 }
 
 BEGIN_MESSAGE_MAP(CTrucoPaulistaDlg, CDialogEx)
-	ON_WM_SYSCOMMAND()
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
+	ON_BN_CLICKED(IDM_ABOUTBOX, &CTrucoPaulistaDlg::OnBnClickedAbout)
+	ON_STN_CLICKED(IDC_PIC3, &CTrucoPaulistaDlg::OnStnClickedPic3)
 END_MESSAGE_MAP()
 
 
@@ -77,52 +82,41 @@ BOOL CTrucoPaulistaDlg::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
 
-	// Add "About..." menu item to system menu.
-
-	// IDM_ABOUTBOX must be in the system command range.
-	ASSERT((IDM_ABOUTBOX & 0xFFF0) == IDM_ABOUTBOX);
-	ASSERT(IDM_ABOUTBOX < 0xF000);
-
-	CMenu* pSysMenu = GetSystemMenu(FALSE);
-	if (pSysMenu != nullptr)
-	{
-		BOOL bNameValid;
-		CString strAboutMenu;
-		bNameValid = strAboutMenu.LoadString(IDS_ABOUTBOX);
-		ASSERT(bNameValid);
-		if (!strAboutMenu.IsEmpty())
-		{
-			pSysMenu->AppendMenu(MF_SEPARATOR);
-			pSysMenu->AppendMenu(MF_STRING, IDM_ABOUTBOX, strAboutMenu);
-		}
-	}
-
-	// Set the icon for this dialog.  The framework does this automatically
-	//  when the application's main window is not a dialog
 	SetIcon(m_hIcon, TRUE);			// Set big icon
 	SetIcon(m_hIcon, FALSE);		// Set small icon
-
-	ShowWindow(SW_MAXIMIZE);
-
-	ShowWindow(SW_MINIMIZE);
 
 	// TODO: Add extra initialization here
 	Baralho baralho;
 
-	CartasBitmap cartaBitmap(baralho.PegarCartaDoTopo());
-	SetBitmapOnStaticControl(m_Pic1, *cartaBitmap.Getbitmap());
+	CartasBitmap cartaBitmap1(baralho.PegarCartaDoTopo());
+	CartasBitmap cartaBitmap2(baralho.PegarCartaDoTopo());
+	CartasBitmap cartaBitmap3(baralho.PegarCartaDoTopo());
 
+	SetBitmapOnStaticControl(m_Pic1, *cartaBitmap1.Getbitmap());
+	SetBitmapOnStaticControl(m_Pic2, *cartaBitmap2.Getbitmap());
+	SetBitmapOnStaticControl(m_Pic3, *cartaBitmap3.Getbitmap());
 
+	SetBitmapMesa();
 
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
 
+void CTrucoPaulistaDlg::SetBitmapMesa()
+{
+	CBitmap bitmap;
+	bitmap.LoadBitmap(IDB_BITMAP_MESA);
+
+	SetBitmapOnStaticControl(m_PicMesa, bitmap);
+}
+
 void CTrucoPaulistaDlg::SetBitmapOnStaticControl(CStatic& staticControl, CBitmap& bitmap)
 {
+
 	staticControl.ModifyStyle(SS_ENHMETAFILE, SS_BITMAP | SS_CENTERIMAGE);
 
 	CRect rect;
 	staticControl.GetClientRect(&rect);
+	//rect.InflateRect(3, 3);
 
 	CDC dc;
 	dc.CreateCompatibleDC(nullptr);
@@ -151,24 +145,6 @@ void CTrucoPaulistaDlg::SetBitmapOnStaticControl(CStatic& staticControl, CBitmap
 	staticControl.SetBitmap((HBITMAP)bmpResized.Detach());
 }
 
-
-void CTrucoPaulistaDlg::OnSysCommand(UINT nID, LPARAM lParam)
-{
-	if ((nID & 0xFFF0) == IDM_ABOUTBOX)
-	{
-		CAboutDlg dlgAbout;
-		dlgAbout.DoModal();
-	}
-	else
-	{
-		CDialogEx::OnSysCommand(nID, lParam);
-	}
-}
-
-// If you add a minimize button to your dialog, you will need the code below
-//  to draw the icon.  For MFC applications using the document/view model,
-//  this is automatically done for you by the framework.
-
 void CTrucoPaulistaDlg::OnPaint()
 {
 	if (IsIconic())
@@ -190,29 +166,23 @@ void CTrucoPaulistaDlg::OnPaint()
 	}
 	else
 	{
-		//CPaintDC dc(this);
-
-		//HBITMAP hBitmap = CreateCardBitmap(&dc, 10, 100, 150);
-
-		//if (hBitmap) 
-		//{
-		//	CDC memDC;
-		//	memDC.CreateCompatibleDC(&dc);
-		//	memDC.SelectObject(hBitmap);
-
-		//	dc.BitBlt(50, 50, 100, 150, &memDC, 0, 0, SRCCOPY);
-
-		//	DeleteObject(hBitmap);
-		//}
-
 		CDialogEx::OnPaint();
 	}
 }
 
-// The system calls this function to obtain the cursor to display while the user drags
-//  the minimized window.
 HCURSOR CTrucoPaulistaDlg::OnQueryDragIcon()
 {
 	return static_cast<HCURSOR>(m_hIcon);
 }
 
+void CTrucoPaulistaDlg::OnBnClickedAbout()
+{
+	CAboutDlg dlgAbout;
+	dlgAbout.DoModal();
+}
+
+
+void CTrucoPaulistaDlg::OnStnClickedPic3()
+{
+	// TODO: Add your control notification handler code here
+}
