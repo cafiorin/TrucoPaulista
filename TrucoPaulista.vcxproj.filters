@@ -63,6 +63,15 @@
     <ClInclude Include="CartasBitmap.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="CartaDaRodada.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Rodada.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Enums.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TrucoPaulista.cpp">
@@ -93,6 +102,12 @@
       <Filter>Source Files\Model</Filter>
     </ClCompile>
     <ClCompile Include="CartasBitmap.cpp">
+      <Filter>Source Files\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="CartaDaRodada.cpp">
+      <Filter>Source Files\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="Rodada.cpp">
       <Filter>Source Files\Model</Filter>
     </ClCompile>
   </ItemGroup>

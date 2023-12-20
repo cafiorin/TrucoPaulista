@@ -1,7 +1,6 @@
 #pragma once
 #include <string>
-
-enum Naipes { Espadas, Paus, Ouro, Copas };
+#include "Enums.h"
 
 class Carta 
 {
