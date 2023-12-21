@@ -7,7 +7,6 @@
 #define IDS_ABOUTBOX                    101
 #define IDD_TRUCOPAULISTA_DIALOG        102
 #define IDR_MAINFRAME                   128
-#define IDB_BITMAP_MESA                 182
 #define IDB_BITMAP1                     183
 #define IDB_BITMAP2                     184
 #define IDB_BITMAP3                     185
@@ -66,6 +65,8 @@
 #define IDB_BITMAP_VERSO                236
 #define IDB_BITMAP_VAZIA_90             237
 #define IDB_BITMAP_VERSO_90             238
+#define IDB_BITMAP53                    239
+#define IDB_BITMAP_MESA                 239
 #define IDC_PIC1                        1000
 #define IDC_PIC2                        1001
 #define IDC_PIC3                        1002
@@ -92,7 +93,7 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        239
+#define _APS_NEXT_RESOURCE_VALUE        240
 #define _APS_NEXT_COMMAND_VALUE         32771
 #define _APS_NEXT_CONTROL_VALUE         1008
 #define _APS_NEXT_SYMED_VALUE           101

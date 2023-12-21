@@ -334,6 +334,7 @@
     <Image Include="res\Cartas\dk.bmp" />
     <Image Include="res\Cartas\dl.bmp" />
     <Image Include="res\Cartas\dm.bmp" />
+    <Image Include="res\Cartas\mesa.bmp" />
     <Image Include="res\Cartas\vazia.bmp" />
     <Image Include="res\Cartas\vazia_90.bmp" />
     <Image Include="res\Cartas\verso.bmp" />
