@@ -126,6 +126,19 @@ BOOL CTrucoPaulistaDlg::OnInitDialog()
 	CartasBitmap cartaBitmap3(baralho.PegarCartaDoTopo());
 	CartasBitmap cartaBitmap4(baralho.PegarCartaDoTopo());
 
+	//Partida partida;
+	//partida.InicializarPartida();
+
+	//Jogador* jogadorHumano1 = partida.ObtemJogadorHumano1();
+	//Carta* cartas = jogadorHumano1->CartasNaMao();
+
+	//CartasBitmap cartaBitmap1(cartas[0]);
+	//CartasBitmap cartaBitmap2(cartas[1]);
+	//CartasBitmap cartaBitmap3(cartas[2]);
+	//CartasBitmap cartaBitmap4(*partida.ObtemVira());
+
+
+
 	SetBitmapOnStaticControl(m_Pic1, *cartaBitmap1.Getbitmap());
 	SetBitmapOnStaticControl(m_Pic2, *cartaBitmap2.Getbitmap());
 	SetBitmapOnStaticControl(m_Pic3, *cartaBitmap3.Getbitmap());

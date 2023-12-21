@@ -5,11 +5,14 @@
 
 class Jogador
 {
-public:
+
+private:
 	int NumeroJogador;
 	std::string Nome;
-	Carta* mao[3];
+	Carta *mao[3];
 	StatusJogador status;
+
+public:
 
 	Jogador(int numero, std::string nome) : NumeroJogador(numero), Nome(nome)
 	{
@@ -23,6 +26,11 @@ public:
 		mao[2] = &carta3;
 
 		status = EsperandoJogada;
+	}
+
+	Carta* CartasNaMao()
+	{
+		return *mao;
 	}
 };
 
