@@ -15,9 +15,11 @@
 #include "resource.h"
 
 #include <atlimage.h>
+#include <windows.h>
+
+#define WM_CUSTOM_MESSAGE (WM_USER + 1)
 
 // CAboutDlg dialog used for App About
-
 class CAboutDlg : public CDialogEx
 {
 public:
@@ -59,6 +61,23 @@ CTrucoPaulistaDlg::CTrucoPaulistaDlg(CWnd* pParent /*=nullptr*/)
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
 
+BOOL CTrucoPaulistaDlg::PreTranslateMessage(MSG* pMsg)
+{
+	// Verificar se é a mensagem personalizada
+	if (pMsg->message == WM_CUSTOM_MESSAGE)
+	{
+		// Faça algo em resposta à mensagem personalizada
+		// Por exemplo, exiba uma mensagem
+		AfxMessageBox(_T("Mensagem Personalizada Recebida"));
+
+		// Retorne TRUE para indicar que a mensagem foi processada
+		return TRUE;
+	}
+
+	// Chame a implementação padrão para outras mensagens
+	return CDialogEx::PreTranslateMessage(pMsg);
+}
+
 void CTrucoPaulistaDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
@@ -83,7 +102,7 @@ BEGIN_MESSAGE_MAP(CTrucoPaulistaDlg, CDialogEx)
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
 	ON_BN_CLICKED(IDM_ABOUTBOX, &CTrucoPaulistaDlg::OnBnClickedAbout)
-	ON_STN_CLICKED(IDC_PIC3, &CTrucoPaulistaDlg::OnStnClickedPic3)
+	ON_BN_CLICKED(ID_SYNC, &CTrucoPaulistaDlg::OnBnClickedSync)
 END_MESSAGE_MAP()
 
 
@@ -92,6 +111,9 @@ END_MESSAGE_MAP()
 BOOL CTrucoPaulistaDlg::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
+
+	if (!VerifyInstances())
+		return FALSE;
 
 	SetIcon(m_hIcon, TRUE);			// Set big icon
 	SetIcon(m_hIcon, FALSE);		// Set small icon
@@ -116,6 +138,30 @@ BOOL CTrucoPaulistaDlg::OnInitDialog()
 
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
+
+BOOL CTrucoPaulistaDlg::VerifyInstances()
+{
+	m_Instance = 2;
+	m_hMutex = CreateMutex(NULL, FALSE, _T("TrucoPaulista"));
+	if (GetLastError() == ERROR_ALREADY_EXISTS)
+	{
+		SetWindowText(_T("Truco Paulista - HUMANO 2"));
+		ReleaseMutex(m_hMutex);
+
+		if (WaitForSingleObject(m_hMutex, 0) == WAIT_TIMEOUT)
+		{
+			//AfxMessageBox(_T("Apenas duas instâncias do aplicativo são permitidas."));
+			PostMessage(WM_CLOSE);
+		}
+	}
+	else
+	{
+		m_Instance = 1;
+		SetWindowText(_T("Truco Paulista - HUMANO 1"));
+	}
+	return TRUE;
+}
+
 
 void CTrucoPaulistaDlg::SetBitmapMesa()
 {
@@ -221,8 +267,25 @@ void CTrucoPaulistaDlg::OnBnClickedAbout()
 	dlgAbout.DoModal();
 }
 
-
-void CTrucoPaulistaDlg::OnStnClickedPic3()
+void CTrucoPaulistaDlg::OnBnClickedSync()
 {
-	// TODO: Add your control notification handler code here
+	HWND hwndExistingInstance = ::FindWindow(NULL, _T("Truco Paulista - HUMANO 2"));
+
+	if (hwndExistingInstance != NULL)
+	{
+		::SetForegroundWindow(hwndExistingInstance);
+		::PostMessage(hwndExistingInstance, WM_CUSTOM_MESSAGE, 0, 0);
+	}
+	else
+	{
+		TCHAR szExePath[MAX_PATH];
+		if (GetModuleFileName(NULL, szExePath, MAX_PATH) != 0)
+		{
+			if (ShellExecute(NULL, _T("open"), szExePath, NULL, NULL, SW_SHOWNORMAL) <= (HINSTANCE)32)
+			{
+				AfxMessageBox(_T("Falha ao abrir a segunda instância do aplicativo."));
+			}
+		}
+
+	}
 }

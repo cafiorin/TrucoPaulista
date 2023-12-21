@@ -65,7 +65,6 @@
 #define IDB_BITMAP_VERSO                236
 #define IDB_BITMAP_VAZIA_90             237
 #define IDB_BITMAP_VERSO_90             238
-#define IDB_BITMAP53                    239
 #define IDB_BITMAP_MESA                 239
 #define IDC_PIC1                        1000
 #define IDC_PIC2                        1001
@@ -88,6 +87,7 @@
 #define IDC_RADIO4                      1022
 #define IDC_RADIO5                      1023
 #define IDC_RADIO6                      1024
+#define ID_SYNC                         1025
 
 // Next default values for new objects
 // 

@@ -14,7 +14,12 @@ public:
 	void SetBitmapOnStaticControl(CStatic& staticControl, CBitmap& bitmap);
 	void SetBitmapCartasAvesso();
 	void SetBitmapMesa();
+	BOOL VerifyInstances();
 
+	HANDLE m_hMutex; // Identificador do mutex
+	int m_Instance;
+
+	virtual BOOL PreTranslateMessage(MSG* pMsg);
 
 // Dialog Data
 #ifdef AFX_DESIGN_TIME
@@ -36,12 +41,12 @@ protected:
 	afx_msg HCURSOR OnQueryDragIcon();
 	DECLARE_MESSAGE_MAP()
 public:
-	CStatic m_Pic1;
-	afx_msg void OnBnClickedOk2();
 	afx_msg void OnBnClickedAbout();
+	afx_msg void OnBnClickedSync();
+
+	CStatic m_Pic1;
 	CStatic m_Pic2;
 	CStatic m_Pic3;
-	afx_msg void OnStnClickedPic3();
 	CStatic m_PicMesa;
 	CStatic m_PicCartaOp1;
 	CStatic m_PicCartaOp2;
