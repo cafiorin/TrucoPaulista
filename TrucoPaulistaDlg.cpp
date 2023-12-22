@@ -282,7 +282,7 @@ void CTrucoPaulistaDlg::OnBnClickedAbout()
 
 void CTrucoPaulistaDlg::OnBnClickedSync()
 {
-	HWND hwndExistingInstance = ::FindWindow(NULL, _T("Truco Paulista - HUMANO 2"));
+	HWND hwndExistingInstance = ::FindWindow(NULL, m_Instance == 1 ? _T("Truco Paulista - HUMANO 2") : _T("Truco Paulista - HUMANO 1"));
 
 	if (hwndExistingInstance != NULL)
 	{
