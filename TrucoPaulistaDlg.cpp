@@ -1,7 +1,3 @@
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
-
 // TrucoPaulistaDlg.cpp : implementation file
 //
 
@@ -12,6 +8,8 @@
 #include "afxdialogex.h"
 #include "CartasBitmap.h"
 #include "Baralho.h"
+#include "Jogador.h"
+#include "Partida.h"
 #include "resource.h"
 
 #include <atlimage.h>
@@ -126,18 +124,16 @@ BOOL CTrucoPaulistaDlg::OnInitDialog()
 	CartasBitmap cartaBitmap3(baralho.PegarCartaDoTopo());
 	CartasBitmap cartaBitmap4(baralho.PegarCartaDoTopo());
 
-	//Partida partida;
-	//partida.InicializarPartida();
+	/*Partida partida;
+	partida.InicializarPartida();
 
-	//Jogador* jogadorHumano1 = partida.ObtemJogadorHumano1();
-	//Carta* cartas = jogadorHumano1->CartasNaMao();
+	Jogador* jogadorHumano1 = partida.ObtemJogadorHumano1();
 
-	//CartasBitmap cartaBitmap1(cartas[0]);
-	//CartasBitmap cartaBitmap2(cartas[1]);
-	//CartasBitmap cartaBitmap3(cartas[2]);
-	//CartasBitmap cartaBitmap4(*partida.ObtemVira());
-
-
+	CartasBitmap cartaBitmap1(*jogadorHumano1->PrimeiraCartaNaMao());
+	CartasBitmap cartaBitmap2(*jogadorHumano1->SegundaCartaNaMao());
+	CartasBitmap cartaBitmap3(*jogadorHumano1->TerceiraCartaNaMao());
+	Carta *Vira = new Carta(partida.ObtemVira());
+	CartasBitmap cartaBitmap4(*Vira);*/
 
 	SetBitmapOnStaticControl(m_Pic1, *cartaBitmap1.Getbitmap());
 	SetBitmapOnStaticControl(m_Pic2, *cartaBitmap2.Getbitmap());

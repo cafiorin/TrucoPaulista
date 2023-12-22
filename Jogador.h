@@ -1,36 +1,42 @@
 #pragma once
 #include <stdio.h>
 #include <string>
+#include <iostream>
+#include <memory>
+
 #include "Carta.h"
 
-class Jogador
-{
-
+class Jogador {
 private:
-	int NumeroJogador;
-	std::string Nome;
-	Carta *mao[3];
-	StatusJogador status;
+    int NumeroJogador;
+    std::string Nome;
+    std::unique_ptr<Carta> mao[3];
+    StatusJogador status;
 
 public:
+    Jogador(int numero, std::string nome) : NumeroJogador(numero), Nome(nome), status(EsperandoCartas) {}
 
-	Jogador(int numero, std::string nome) : NumeroJogador(numero), Nome(nome)
-	{
-		status = EsperandoCartas;
-	}
+    void RecebeCartas(const Carta& carta1, const Carta& carta2, const Carta& carta3) {
+        mao[0] = std::make_unique<Carta>(carta1);
+        mao[1] = std::make_unique<Carta>(carta2);
+        mao[2] = std::make_unique<Carta>(carta3);
 
-	void RecebeCartas(Carta& carta1, Carta& carta2, Carta& carta3)
-	{
-		mao[0] = &carta1;
-		mao[1] = &carta2;
-		mao[2] = &carta3;
+        status = EsperandoJogada;
+    }
 
-		status = EsperandoJogada;
-	}
+    const Carta* PrimeiraCartaNaMao() const {
+        return mao[0].get(); // Retorna o ponteiro para o primeiro elemento do array
+    }
 
-	Carta* CartasNaMao()
-	{
-		return *mao;
-	}
+    const Carta* SegundaCartaNaMao() const {
+        return mao[1].get(); // Retorna o ponteiro para o segundo elemento do array
+    }
+
+    const Carta* TerceiraCartaNaMao() const {
+        return mao[2].get(); // Retorna o ponteiro para o segundo elemento do array
+    }
+
+    StatusJogador GetStatus() const {
+        return status;
+    }
 };
-

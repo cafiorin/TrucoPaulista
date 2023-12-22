@@ -55,15 +55,15 @@ class CartasBitmap
 {
 private:
 	int m_ID;
-	Carta m_Carta;
+	const Carta m_Carta;
 	CBitmap m_cbmp;
 
 public:
-	CartasBitmap(Carta& carta);
+	CartasBitmap(const Carta& carta);
 
 	int GetID();
-	Carta& GetCarta();
-	void SetID(Carta& carta);
+	const Carta& GetCarta();
+	void SetID(const Carta& carta);
 	CBitmap* Getbitmap();
 };
 
