@@ -186,6 +186,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Baralho.h" />
+    <ClInclude Include="Bot.h" />
     <ClInclude Include="Carta.h" />
     <ClInclude Include="CartaDaRodada.h" />
     <ClInclude Include="CartasBitmap.h" />
@@ -204,6 +205,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Baralho.cpp" />
+    <ClCompile Include="Bot.cpp" />
     <ClCompile Include="Carta.cpp" />
     <ClCompile Include="CartaDaRodada.cpp" />
     <ClCompile Include="CartasBitmap.cpp" />
