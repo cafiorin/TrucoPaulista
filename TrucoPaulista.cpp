@@ -20,7 +20,6 @@ END_MESSAGE_MAP()
 
 
 // CTrucoPaulistaApp construction
-
 CTrucoPaulistaApp::CTrucoPaulistaApp()
 {
 	// support Restart Manager
@@ -28,6 +27,7 @@ CTrucoPaulistaApp::CTrucoPaulistaApp()
 
 	// TODO: add construction code here,
 	// Place all significant initialization in InitInstance
+	
 }
 
 
@@ -57,7 +57,7 @@ BOOL CTrucoPaulistaApp::InitInstance()
 
 	// Create the shell manager, in case the dialog contains
 	// any shell tree view or shell list view controls.
-	CShellManager *pShellManager = new CShellManager;
+	CShellManager* pShellManager = new CShellManager;
 
 	// Activate "Windows Native" visual manager for enabling themes in MFC controls
 	CMFCVisualManager::SetDefaultManager(RUNTIME_CLASS(CMFCVisualManagerWindows));
@@ -73,11 +73,11 @@ BOOL CTrucoPaulistaApp::InitInstance()
 
 	CTrucoPaulistaDlg dlg;
 	m_pMainWnd = &dlg;
+
 	INT_PTR nResponse = dlg.DoModal();
 	if (nResponse == IDOK)
 	{
-		// TODO: Place code here to handle when the dialog is
-		//  dismissed with OK
+		
 	}
 	else if (nResponse == IDCANCEL)
 	{
@@ -89,8 +89,9 @@ BOOL CTrucoPaulistaApp::InitInstance()
 		TRACE(traceAppMsg, 0, "Warning: dialog creation failed, so application is terminating unexpectedly.\n");
 		TRACE(traceAppMsg, 0, "Warning: if you are using MFC controls on the dialog, you cannot #define _AFX_NO_MFC_CONTROLS_IN_DIALOGS.\n");
 	}
-
+	
 	// Delete the shell manager created above.
+
 	if (pShellManager != nullptr)
 	{
 		delete pShellManager;

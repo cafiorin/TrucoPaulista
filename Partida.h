@@ -37,6 +37,8 @@ public:
 
 	Jogador* ObtemJogadorHumano1();
 
+	Jogador* ObtemJogadorHumano2();
+
 	Carta* ObtemVira() { return Vira; }
 
 };

@@ -23,15 +23,15 @@ class CAboutDlg : public CDialogEx
 public:
 	CAboutDlg();
 
-// Dialog Data
+	// Dialog Data
 #ifdef AFX_DESIGN_TIME
 	enum { IDD = IDD_ABOUTBOX };
 #endif
 
-	protected:
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 
-// Implementation
+	// Implementation
 protected:
 	DECLARE_MESSAGE_MAP()
 };
@@ -105,7 +105,9 @@ END_MESSAGE_MAP()
 
 
 // CTrucoPaulistaDlg message handlers
-
+Baralho baralho;
+Partida partida;
+Jogador* jogador;
 BOOL CTrucoPaulistaDlg::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
@@ -115,25 +117,31 @@ BOOL CTrucoPaulistaDlg::OnInitDialog()
 
 	SetIcon(m_hIcon, TRUE);			// Set big icon
 	SetIcon(m_hIcon, FALSE);		// Set small icon
+	//obs: não consegui debugar o conteudo da segunda instancia, caso você tem algum problema recomendo comentar a linha a baixo.
+	CreateNewInstance();
 
-	// TODO: Add extra initialization here
-	Baralho baralho;
 
-	CartasBitmap cartaBitmap1(baralho.PegarCartaDoTopo());
-	CartasBitmap cartaBitmap2(baralho.PegarCartaDoTopo());
-	CartasBitmap cartaBitmap3(baralho.PegarCartaDoTopo());
-	CartasBitmap cartaBitmap4(baralho.PegarCartaDoTopo());
+	//CartasBitmap cartaBitmap1(baralho.PegarCartaDoTopo());
+	//CartasBitmap cartaBitmap2(baralho.PegarCartaDoTopo());
+	//CartasBitmap cartaBitmap3(baralho.PegarCartaDoTopo());
+	// CartasBitmap cartaBitmap4(baralho.PegarCartaDoTopo());
 
-	/*Partida partida;
-	partida.InicializarPartida();
+	if (m_Instance == 1)
+	{
+		//a partida precisa ser um objeto modificado apenas pela a primeira instancia caso o contrario a cada nova inicialização teremos uma nova partida em instancias diferentes.
+		partida.InicializarPartida();
+		jogador = partida.ObtemJogadorHumano1();
+	}
+	else 
+	{
+		jogador = partida.ObtemJogadorHumano2();
+	}
 
-	Jogador* jogadorHumano1 = partida.ObtemJogadorHumano1();
-
-	CartasBitmap cartaBitmap1(*jogadorHumano1->PrimeiraCartaNaMao());
-	CartasBitmap cartaBitmap2(*jogadorHumano1->SegundaCartaNaMao());
-	CartasBitmap cartaBitmap3(*jogadorHumano1->TerceiraCartaNaMao());
-	Carta *Vira = new Carta(partida.ObtemVira());
-	CartasBitmap cartaBitmap4(*Vira);*/
+	CartasBitmap cartaBitmap1(*jogador->PrimeiraCartaNaMao());
+	CartasBitmap cartaBitmap2(*jogador->SegundaCartaNaMao());
+	CartasBitmap cartaBitmap3(*jogador->TerceiraCartaNaMao());
+	Carta* Vira = new Carta(partida.ObtemVira());
+	CartasBitmap cartaBitmap4(*Vira);
 
 	SetBitmapOnStaticControl(m_Pic1, *cartaBitmap1.Getbitmap());
 	SetBitmapOnStaticControl(m_Pic2, *cartaBitmap2.Getbitmap());
@@ -159,14 +167,16 @@ BOOL CTrucoPaulistaDlg::VerifyInstances()
 
 		if (WaitForSingleObject(m_hMutex, 0) == WAIT_TIMEOUT)
 		{
-			//AfxMessageBox(_T("Apenas duas instâncias do aplicativo são permitidas."));
+			// AfxMessageBox(_T("Apenas duas instâncias do aplicativo são permitidas."));
 			PostMessage(WM_CLOSE);
 		}
 	}
 	else
 	{
+
 		m_Instance = 1;
 		SetWindowText(_T("Truco Paulista - HUMANO 1"));
+	
 	}
 	return TRUE;
 }
@@ -275,7 +285,16 @@ void CTrucoPaulistaDlg::OnBnClickedAbout()
 	CAboutDlg dlgAbout;
 	dlgAbout.DoModal();
 }
-
+void CTrucoPaulistaDlg::CreateNewInstance() {
+	TCHAR szExePath[MAX_PATH];
+	if (GetModuleFileName(NULL, szExePath, MAX_PATH) != 0)
+	{
+		if (ShellExecute(NULL, _T("open"), szExePath, NULL, NULL, SW_SHOWNORMAL) <= (HINSTANCE)32)
+		{
+			AfxMessageBox(_T("Falha ao abrir a segunda instância do aplicativo."));
+		}
+	}
+}
 void CTrucoPaulistaDlg::OnBnClickedSync()
 {
 	HWND hwndExistingInstance = ::FindWindow(NULL, m_Instance == 1 ? _T("Truco Paulista - HUMANO 2") : _T("Truco Paulista - HUMANO 1"));
@@ -287,14 +306,6 @@ void CTrucoPaulistaDlg::OnBnClickedSync()
 	}
 	else
 	{
-		TCHAR szExePath[MAX_PATH];
-		if (GetModuleFileName(NULL, szExePath, MAX_PATH) != 0)
-		{
-			if (ShellExecute(NULL, _T("open"), szExePath, NULL, NULL, SW_SHOWNORMAL) <= (HINSTANCE)32)
-			{
-				AfxMessageBox(_T("Falha ao abrir a segunda instância do aplicativo."));
-			}
-		}
-
+		CreateNewInstance();
 	}
 }

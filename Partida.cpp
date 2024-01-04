@@ -45,7 +45,8 @@ void Partida::DistribuiCartas()
 	DistribuiCartaProJogador(Dupla2[0]);
 	DistribuiCartaProJogador(Dupla2[1]);
 
-	Vira = &BaralhoMesa->PegarCartaDoTopo();
+	Vira = new Carta(&BaralhoMesa->PegarCartaDoTopo());
+	
 }
 
 
@@ -61,4 +62,8 @@ void Partida::DistribuiCartaProJogador(Jogador* jogador)
 Jogador* Partida::ObtemJogadorHumano1()
 {
 	return Dupla1[0];
+}
+Jogador* Partida::ObtemJogadorHumano2()
+{
+	return Dupla2[0];
 }

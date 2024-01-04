@@ -15,7 +15,7 @@ public:
 	void SetBitmapCartasAvesso();
 	void SetBitmapMesa();
 	BOOL VerifyInstances();
-
+	void CreateNewInstance();
 	HANDLE m_hMutex; // Identificador do mutex
 	int m_Instance;
 
