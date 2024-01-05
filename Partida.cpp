@@ -21,11 +21,19 @@ Partida::Partida()
 
 
 
-void Partida::InicializarPartida()
+void Partida::InicializarPartida(int quantosJogadores)
+{
+	QuantosJogadores = quantosJogadores;
+	placar->Inicializar();
+	InicializarRodada();
+}
+
+void Partida::InicializarPartidaCliente()
 {
 	placar->Inicializar();
 	InicializarRodada();
 }
+
 
 void Partida::InicializarRodada()
 {

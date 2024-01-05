@@ -14,6 +14,8 @@ public:
 	void SetBitmapOnStaticControl(CStatic& staticControl, CBitmap& bitmap);
 	void SetBitmapCartasAvesso();
 	void SetBitmapMesa();
+	void InicializaTelaInicial();
+	void InicializaPartida();
 	BOOL VerifyInstances();
 	void CreateNewInstance();
 	HANDLE m_hMutex; // Identificador do mutex
@@ -59,4 +61,5 @@ public:
 	CStatic m_PicCartaParc3;
 	CStatic m_PicBaralho;
 	CStatic m_PicVira;
+	afx_msg void OnBnClickedButton1();
 };

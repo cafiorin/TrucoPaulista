@@ -50,9 +50,6 @@ END_MESSAGE_MAP()
 
 
 // CTrucoPaulistaDlg dialog
-
-
-
 CTrucoPaulistaDlg::CTrucoPaulistaDlg(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_TRUCOPAULISTA_DIALOG, pParent)
 {
@@ -101,13 +98,12 @@ BEGIN_MESSAGE_MAP(CTrucoPaulistaDlg, CDialogEx)
 	ON_WM_QUERYDRAGICON()
 	ON_BN_CLICKED(IDM_ABOUTBOX, &CTrucoPaulistaDlg::OnBnClickedAbout)
 	ON_BN_CLICKED(ID_SYNC, &CTrucoPaulistaDlg::OnBnClickedSync)
+	ON_BN_CLICKED(IDC_BUTTON1, &CTrucoPaulistaDlg::OnBnClickedButton1)
 END_MESSAGE_MAP()
 
 
 // CTrucoPaulistaDlg message handlers
-Baralho baralho;
 Partida partida;
-Jogador* jogador;
 BOOL CTrucoPaulistaDlg::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
@@ -120,22 +116,86 @@ BOOL CTrucoPaulistaDlg::OnInitDialog()
 	//obs: não consegui debugar o conteudo da segunda instancia, caso você tem algum problema recomendo comentar a linha a baixo.
 	//CreateNewInstance();
 
-
-	//CartasBitmap cartaBitmap1(baralho.PegarCartaDoTopo());
-	//CartasBitmap cartaBitmap2(baralho.PegarCartaDoTopo());
-	//CartasBitmap cartaBitmap3(baralho.PegarCartaDoTopo());
-	// CartasBitmap cartaBitmap4(baralho.PegarCartaDoTopo());
+	InicializaTelaInicial();//Espera evento de iniciar a partida
 
 	if (m_Instance == 1)
 	{
-		//a partida precisa ser um objeto modificado apenas pela a primeira instancia caso o contrario a cada nova inicialização teremos uma nova partida em instancias diferentes.
-		partida.InicializarPartida();
-		jogador = partida.ObtemJogadorHumano1();
 	}
 	else 
 	{
-		jogador = partida.ObtemJogadorHumano2();
+		partida.InicializarPartidaCliente(); //So inicializa o placar e a tela, precisa receber as cartas do Servidor (o metodo InicializarPartida deve enviar as cartas)
 	}
+
+
+	return TRUE;  // return TRUE  unless you set the focus to a control
+}
+
+void CTrucoPaulistaDlg::InicializaTelaInicial()
+{
+	SetBitmapMesa();
+
+	CBitmap bitmapVerso;
+	bitmapVerso.LoadBitmap(IDB_BITMAP_VERSO);
+	SetBitmapOnStaticControl(m_PicBaralho, bitmapVerso);
+
+	m_Pic1.ShowWindow(SW_HIDE);
+	m_Pic2.ShowWindow(SW_HIDE);
+	m_Pic3.ShowWindow(SW_HIDE);
+	m_PicCartaOp1.ShowWindow(SW_HIDE);
+	m_PicCartaOp2.ShowWindow(SW_HIDE);
+	m_PicCartaOp3.ShowWindow(SW_HIDE);
+	m_PicCartaOp21.ShowWindow(SW_HIDE);
+	m_PicCartaOp22.ShowWindow(SW_HIDE);
+	m_PicCartaOp23.ShowWindow(SW_HIDE);
+	m_PicCartaParc1.ShowWindow(SW_HIDE);
+	m_PicCartaParc2.ShowWindow(SW_HIDE);
+	m_PicCartaParc3.ShowWindow(SW_HIDE);
+	m_PicVira.ShowWindow(SW_HIDE);
+
+	CButton* pRadioButton = reinterpret_cast<CButton*>(GetDlgItem(IDC_RADIO7));
+	if (pRadioButton)
+	{
+		pRadioButton->SetCheck(BST_CHECKED);
+	}
+}
+
+void CTrucoPaulistaDlg::InicializaPartida()
+{
+	bool doisJogadores = false;
+	CButton* pRadioButton = reinterpret_cast<CButton*>(GetDlgItem(IDC_RADIO7));
+	if (pRadioButton)
+	{
+		doisJogadores = pRadioButton->GetCheck() == 1;
+	}
+
+	GetDlgItem(IDC_RADIO7)->ShowWindow(SW_HIDE);
+	GetDlgItem(IDC_RADIO8)->ShowWindow(SW_HIDE);
+	GetDlgItem(IDC_BUTTON1)->ShowWindow(SW_HIDE);
+	GetDlgItem(IDC_STATIC)->ShowWindow(SW_HIDE);
+	GetDlgItem(IDC_EDIT1)->ShowWindow(SW_SHOW);
+	GetDlgItem(IDC_EDIT1)->SetWindowText(_T("Sua Vez Humano 1..."));
+
+	m_Pic1.ShowWindow(SW_SHOW);
+	m_Pic2.ShowWindow(SW_SHOW);
+	m_Pic3.ShowWindow(SW_SHOW);
+	m_PicCartaParc1.ShowWindow(SW_SHOW);
+	m_PicCartaParc2.ShowWindow(SW_SHOW);
+	m_PicCartaParc3.ShowWindow(SW_SHOW);
+
+	if (!doisJogadores)
+	{
+		m_PicCartaOp1.ShowWindow(SW_SHOW);
+		m_PicCartaOp2.ShowWindow(SW_SHOW);
+		m_PicCartaOp3.ShowWindow(SW_SHOW);
+		m_PicCartaOp21.ShowWindow(SW_SHOW);
+		m_PicCartaOp22.ShowWindow(SW_SHOW);
+		m_PicCartaOp23.ShowWindow(SW_SHOW);
+	}
+
+	m_PicVira.ShowWindow(SW_SHOW);
+
+	partida.InicializarPartida(doisJogadores ? 2 : 4);
+	Jogador* jogador = partida.ObtemJogadorHumano1();
 
 	CartasBitmap cartaBitmap1(*jogador->PrimeiraCartaNaMao());
 	CartasBitmap cartaBitmap2(*jogador->SegundaCartaNaMao());
@@ -147,14 +207,17 @@ BOOL CTrucoPaulistaDlg::OnInitDialog()
 	SetBitmapOnStaticControl(m_Pic2, *cartaBitmap2.Getbitmap());
 	SetBitmapOnStaticControl(m_Pic3, *cartaBitmap3.Getbitmap());
 
-	SetBitmapMesa();
+	//SetBitmapMesa();
 
 	SetBitmapCartasAvesso();
 
 	SetBitmapOnStaticControl(m_PicVira, *cartaBitmap4.Getbitmap());
 
-	return TRUE;  // return TRUE  unless you set the focus to a control
+	Invalidate();
+
 }
+
+
 
 BOOL CTrucoPaulistaDlg::VerifyInstances()
 {
@@ -315,4 +378,11 @@ void CTrucoPaulistaDlg::OnBnClickedSync()
 	{
 		CreateNewInstance();
 	}
+}
+
+
+void CTrucoPaulistaDlg::OnBnClickedButton1()
+{
+	// TODO: Add your control notification handler code here
+	InicializaPartida();
 }

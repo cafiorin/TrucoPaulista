@@ -12,7 +12,7 @@ private:
 	int NumeroDaRodada;
 	Jogador* QuemComecaRodada;
 	int QuantoValeARodada;
-
+	int QuantosJogadores = 2;
 	Placar* placar;
 
 	Jogador* Dupla1[2];
@@ -27,7 +27,9 @@ public:
 
 	Partida();
 
-	void InicializarPartida();
+	void InicializarPartida(int quantosJogadores);
+
+	void InicializarPartidaCliente();
 
 	void InicializarRodada();
 
