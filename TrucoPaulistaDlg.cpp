@@ -118,7 +118,7 @@ BOOL CTrucoPaulistaDlg::OnInitDialog()
 	SetIcon(m_hIcon, TRUE);			// Set big icon
 	SetIcon(m_hIcon, FALSE);		// Set small icon
 	//obs: não consegui debugar o conteudo da segunda instancia, caso você tem algum problema recomendo comentar a linha a baixo.
-	CreateNewInstance();
+	//CreateNewInstance();
 
 
 	//CartasBitmap cartaBitmap1(baralho.PegarCartaDoTopo());
@@ -285,16 +285,23 @@ void CTrucoPaulistaDlg::OnBnClickedAbout()
 	CAboutDlg dlgAbout;
 	dlgAbout.DoModal();
 }
-void CTrucoPaulistaDlg::CreateNewInstance() {
-	TCHAR szExePath[MAX_PATH];
-	if (GetModuleFileName(NULL, szExePath, MAX_PATH) != 0)
+
+void CTrucoPaulistaDlg::CreateNewInstance() 
+{
+	HWND hwndExistingInstance = ::FindWindow(NULL, m_Instance == 1 ? _T("Truco Paulista - HUMANO 2") : _T("Truco Paulista - HUMANO 1"));
+	if (hwndExistingInstance == NULL)
 	{
-		if (ShellExecute(NULL, _T("open"), szExePath, NULL, NULL, SW_SHOWNORMAL) <= (HINSTANCE)32)
+		TCHAR szExePath[MAX_PATH];
+		if (GetModuleFileName(NULL, szExePath, MAX_PATH) != 0)
 		{
-			AfxMessageBox(_T("Falha ao abrir a segunda instância do aplicativo."));
+			if (ShellExecute(NULL, _T("open"), szExePath, NULL, NULL, SW_SHOWNORMAL) <= (HINSTANCE)32)
+			{
+				AfxMessageBox(_T("Falha ao abrir a segunda instância do aplicativo."));
+			}
 		}
 	}
 }
+
 void CTrucoPaulistaDlg::OnBnClickedSync()
 {
 	HWND hwndExistingInstance = ::FindWindow(NULL, m_Instance == 1 ? _T("Truco Paulista - HUMANO 2") : _T("Truco Paulista - HUMANO 1"));

@@ -9,7 +9,8 @@
 #include <algorithm>
 #include <cstdlib>
 
-class Bot : public Jogador {
+class Bot : public Jogador 
+{
 public:
 	Bot(int numero, std::string nome);
 	~Bot();

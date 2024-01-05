@@ -4,38 +4,46 @@
 Bot::Bot(int numero, std::string nome) : Jogador(numero, nome) {}
 Bot::~Bot() {}
 
-void Bot::FazerUmaJogada(NumeroDaRodada tipo_rodada, PosicaoNaDuplaParaJogar posicao, bool adversario_esta_trucando, std::pair<const Carta*, bool> carta_mais_alta_rodada) {
+void Bot::FazerUmaJogada(NumeroDaRodada tipo_rodada, PosicaoNaDuplaParaJogar posicao, bool adversario_esta_trucando, std::pair<const Carta*, bool> carta_mais_alta_rodada) 
+{
 	ValorDasCartasNaMao valor_mao = AnalisarMaoDeCartas();
 
-	switch (tipo_rodada) {
-	case PrimeiraRodada:
-		JogarPrimeiraRodada(posicao, adversario_esta_trucando, carta_mais_alta_rodada, valor_mao);
-		break;
-	case SegundaRodada:
-		// TODO
-		break;
-	case TerceiraRodada:
-		// TODO
-		break;
-	case Melando:
-		// TODO
-		break;
-	default:
-		break;
+	switch (tipo_rodada) 
+	{
+		case PrimeiraRodada:
+			JogarPrimeiraRodada(posicao, adversario_esta_trucando, carta_mais_alta_rodada, valor_mao);
+			break;
+		case SegundaRodada:
+			// TODO
+			break;
+		case TerceiraRodada:
+			// TODO
+			break;
+		case Melando:
+			// TODO
+			break;
+		default:
+			break;
 	}
 }
 
-void Bot::JogarPrimeiraRodada(PosicaoNaDuplaParaJogar posicao, bool adversario_esta_trucando, std::pair<const Carta*, bool> carta_mais_alta_rodada, ValorDasCartasNaMao& valor_mao) {
-	if (posicao == Primeiro) {
-		if (adversario_esta_trucando) {
+void Bot::JogarPrimeiraRodada(PosicaoNaDuplaParaJogar posicao, bool adversario_esta_trucando, std::pair<const Carta*, bool> carta_mais_alta_rodada, ValorDasCartasNaMao& valor_mao) 
+{
+	if (posicao == Primeiro) 
+	{
+		if (adversario_esta_trucando) 
+		{
 			JogarComoPrimeiroEComAdversarioTrucando(carta_mais_alta_rodada, valor_mao);
 		}
-		else {
+		else 
+		{
 			JogarComoPrimeiroEComAdversarioNaoTrucando(carta_mais_alta_rodada, valor_mao);
 		}
 	}
-	else if (posicao == Pe) {
-		if (adversario_esta_trucando) {
+	else if (posicao == Pe) 
+	{
+		if (adversario_esta_trucando) 
+		{
 			JogarComoPeEComAdversarioTrucando(carta_mais_alta_rodada, valor_mao);
 		}
 		else {
@@ -44,7 +52,8 @@ void Bot::JogarPrimeiraRodada(PosicaoNaDuplaParaJogar posicao, bool adversario_e
 	}
 }
 
-void Bot::JogarComoPrimeiroEComAdversarioNaoTrucando(std::pair<const Carta*, bool> carta_mais_alta_rodada, ValorDasCartasNaMao& valor_mao) {
+void Bot::JogarComoPrimeiroEComAdversarioNaoTrucando(std::pair<const Carta*, bool> carta_mais_alta_rodada, ValorDasCartasNaMao& valor_mao) 
+{
 	std::vector<const Carta*> cartas = OrdenarCartasDaMao();
 
 	bool deve_trucar;
@@ -82,64 +91,71 @@ void Bot::JogarComoPrimeiroEComAdversarioNaoTrucando(std::pair<const Carta*, boo
 	}
 }
 
-void Bot::JogarComoPrimeiroEComAdversarioTrucando(std::pair<const Carta*, bool> carta_mais_alta_rodada, ValorDasCartasNaMao& valor_mao) {
+void Bot::JogarComoPrimeiroEComAdversarioTrucando(std::pair<const Carta*, bool> carta_mais_alta_rodada, ValorDasCartasNaMao& valor_mao) 
+{
 	std::vector<const Carta*> cartas = OrdenarCartasDaMao();
 
 	bool deve_aceitar;
 
-	switch (valor_mao) {
-	case Otimo:
-		deve_aceitar = CalcularSeDeveTrucarOuCorrerOuAceitar(Alta);
-		if (deve_aceitar) {
-			// Jogar a carta mais forte
-			// TODO: Enviar mensagem para MFC??
-			// Enviar: (cartas[2], deve_aceitar[TRUE])
-		}
-		else {
+	switch (valor_mao) 
+	{
+		case Otimo:
+			deve_aceitar = CalcularSeDeveTrucarOuCorrerOuAceitar(Alta);
+			if (deve_aceitar) 
+			{
+				// Jogar a carta mais forte
+				// TODO: Enviar mensagem para MFC??
+				// Enviar: (cartas[2], deve_aceitar[TRUE])
+			}
+			else {
+				// TODO: Enviar mensagem para MFC??
+				// Enviar: (deve_aceitar[FALSE])
+			}
+			break;
+		case Bom:
+			deve_aceitar = CalcularSeDeveTrucarOuCorrerOuAceitar(Media);
+			if (deve_aceitar) 
+			{
+				// Jogar a carta mais forte
+				// TODO: Enviar mensagem para MFC??
+				// Enviar: (cartas[2], deve_aceitar[TRUE])
+			}
+			else {
+				// TODO: Enviar mensagem para MFC??
+				// Enviar: (deve_aceitar[FALSE])
+			}
+			break;
+		case Medio:
+			deve_aceitar = CalcularSeDeveTrucarOuCorrerOuAceitar(Baixa);
+			if (deve_aceitar) 
+			{
+				// Jogar a carta mais forte
+				// TODO: Enviar mensagem para MFC??
+				// Enviar: (cartas[2], deve_aceitar[TRUE])
+			}
+			else 
+			{
+				// TODO: Enviar mensagem para MFC??
+				// Enviar: (deve_aceitar[FALSE])
+			}
+			break;
+		case Fraco:
+			// correr
 			// TODO: Enviar mensagem para MFC??
 			// Enviar: (deve_aceitar[FALSE])
-		}
-		break;
-	case Bom:
-		deve_aceitar = CalcularSeDeveTrucarOuCorrerOuAceitar(Media);
-		if (deve_aceitar) {
-			// Jogar a carta mais forte
-			// TODO: Enviar mensagem para MFC??
-			// Enviar: (cartas[2], deve_aceitar[TRUE])
-		}
-		else {
+			break;
+		case Ruim:
+			// correr
 			// TODO: Enviar mensagem para MFC??
 			// Enviar: (deve_aceitar[FALSE])
-		}
-		break;
-	case Medio:
-		deve_aceitar = CalcularSeDeveTrucarOuCorrerOuAceitar(Baixa);
-		if (deve_aceitar) {
-			// Jogar a carta mais forte
-			// TODO: Enviar mensagem para MFC??
-			// Enviar: (cartas[2], deve_aceitar[TRUE])
-		}
-		else {
-			// TODO: Enviar mensagem para MFC??
-			// Enviar: (deve_aceitar[FALSE])
-		}
-		break;
-	case Fraco:
-		// correr
-		// TODO: Enviar mensagem para MFC??
-		// Enviar: (deve_aceitar[FALSE])
-		break;
-	case Ruim:
-		// correr
-		// TODO: Enviar mensagem para MFC??
-		// Enviar: (deve_aceitar[FALSE])
-		break;
-	default:
-		break;
+			break;
+		default:
+			break;
 	}
 }
 
-void Bot::JogarComoPeEComAdversarioTrucando(std::pair<const Carta*, bool> carta_mais_alta_rodada, ValorDasCartasNaMao& valor_mao) {
+void Bot::JogarComoPeEComAdversarioTrucando(std::pair<const Carta*, bool> carta_mais_alta_rodada, ValorDasCartasNaMao& valor_mao) 
+{
 	std::vector<const Carta*> cartas = OrdenarCartasDaMao();
 
 	const Carta* carta_mais_alta = carta_mais_alta_rodada.first;
@@ -147,7 +163,8 @@ void Bot::JogarComoPeEComAdversarioTrucando(std::pair<const Carta*, bool> carta_
 
 	bool deve_aceitar;
 
-	switch (valor_mao) {
+	switch (valor_mao) 
+	{
 	case Otimo:
 		if (cartas[2]->valor > carta_mais_alta->valor) {
 			deve_aceitar = CalcularSeDeveTrucarOuCorrerOuAceitar(Alta);
@@ -162,13 +179,15 @@ void Bot::JogarComoPeEComAdversarioTrucando(std::pair<const Carta*, bool> carta_
 		break;
 
 	case Bom:
-		if (cartas[2]->valor > carta_mais_alta->valor) {
+		if (cartas[2]->valor > carta_mais_alta->valor) 
+		{
 			deve_aceitar = CalcularSeDeveTrucarOuCorrerOuAceitar(Media);
 			// Jogar a carta mais forte e truca (probabilidade media)
 			// TODO: Enviar mensagem para MFC??
 			// Enviar: (cartas[2], deve_aceitar[FALSE/TRUE])
 		}
-		else {
+		else 
+		{
 			// TODO: Enviar mensagem para MFC??
 			// Enviar: (deve_aceitar[FALSE])
 		}
@@ -194,7 +213,8 @@ void Bot::JogarComoPeEComAdversarioTrucando(std::pair<const Carta*, bool> carta_
 	}
 }
 
-void Bot::JogarComoPeEComAdversarioNaoTrucando(std::pair<const Carta*, bool> carta_mais_alta_rodada, ValorDasCartasNaMao& valor_mao) {
+void Bot::JogarComoPeEComAdversarioNaoTrucando(std::pair<const Carta*, bool> carta_mais_alta_rodada, ValorDasCartasNaMao& valor_mao) 
+{
 	std::vector<const Carta*> cartas = OrdenarCartasDaMao();
 
 	const Carta* carta_mais_alta = carta_mais_alta_rodada.first;
@@ -202,21 +222,26 @@ void Bot::JogarComoPeEComAdversarioNaoTrucando(std::pair<const Carta*, bool> car
 
 	bool deve_trucar;
 
-	switch (valor_mao) {
+	switch (valor_mao) 
+	{
 	case Otimo:
-		if (eh_carta_da_dupla) {
+		if (eh_carta_da_dupla) 
+		{
 			// Jogar a carta mais fraca
 			// TODO: Enviar mensagem para MFC??
 			// Enviar: (cartas[0])
 		}
-		else {
-			if (cartas[2]->valor > carta_mais_alta->valor) {
+		else 
+		{
+			if (cartas[2]->valor > carta_mais_alta->valor) 
+			{
 				deve_trucar = CalcularSeDeveTrucarOuCorrerOuAceitar(Alta);
 				// Jogar a carta mais forte e truca (probabilidade alta)
 				// TODO: Enviar mensagem para MFC??
 				// Enviar: (cartas[2], deve_trucar[FALSE/TRUE])
 			}
-			else {
+			else 
+			{
 				// Jogar a carta mais fraca
 				// TODO: Enviar mensagem para MFC??
 				// Enviar: (cartas[0])
@@ -224,13 +249,16 @@ void Bot::JogarComoPeEComAdversarioNaoTrucando(std::pair<const Carta*, bool> car
 		}
 		break;
 	case Bom:
-		if (eh_carta_da_dupla) {
+		if (eh_carta_da_dupla) 
+		{
 			// Jogar a carta mais fraca
 			// TODO: Enviar mensagem para MFC??
 			// Enviar: (cartas[0])
 		}
-		else {
-			if (cartas[2]->valor > carta_mais_alta->valor) {
+		else 
+		{
+			if (cartas[2]->valor > carta_mais_alta->valor) 
+			{
 				deve_trucar = CalcularSeDeveTrucarOuCorrerOuAceitar(Media);
 				// Jogar a carta mais forte e truca (probabilidade media)
 				// TODO: Enviar mensagem para MFC??
@@ -244,19 +272,22 @@ void Bot::JogarComoPeEComAdversarioNaoTrucando(std::pair<const Carta*, bool> car
 		}
 		break;
 	case Medio:
-		if (eh_carta_da_dupla) {
+		if (eh_carta_da_dupla) 
+		{
 			// Jogar a carta mais fraca
 			// TODO: Enviar mensagem para MFC??
 			// Enviar: (cartas[0])
 		}
 		else {
-			if (cartas[2]->valor > carta_mais_alta->valor) {
+			if (cartas[2]->valor > carta_mais_alta->valor) 
+			{
 				deve_trucar = CalcularSeDeveTrucarOuCorrerOuAceitar(Baixa);
 				// Jogar a carta mais forte e truca (probabilidade media)
 				// TODO: Enviar mensagem para MFC??
 				// Enviar: (cartas[2], deve_trucar[FALSE/TRUE])
 			}
-			else {
+			else
+			{
 				// Jogar a carta mais fraca
 				// TODO: Enviar mensagem para MFC??
 				// Enviar: (cartas[0])
@@ -264,18 +295,21 @@ void Bot::JogarComoPeEComAdversarioNaoTrucando(std::pair<const Carta*, bool> car
 		}
 		break;
 	case Fraco:
-		if (eh_carta_da_dupla) {
+		if (eh_carta_da_dupla) 
+		{
 			// Jogar a carta mais fraca
 			// TODO: Enviar mensagem para MFC??
 			// Enviar: (cartas[0])
 		}
 		else {
-			if (cartas[2]->valor > carta_mais_alta->valor) {
+			if (cartas[2]->valor > carta_mais_alta->valor)
+			{
 				// Jogar a carta mais forte
 				// TODO: Enviar mensagem para MFC??
 				// Enviar: (cartas[2])
 			}
-			else {
+			else 
+			{
 				// Jogar a carta mais fraca
 				// TODO: Enviar mensagem para MFC??
 				// Enviar: (cartas[0])
@@ -283,13 +317,16 @@ void Bot::JogarComoPeEComAdversarioNaoTrucando(std::pair<const Carta*, bool> car
 		}
 		break;
 	case Ruim:
-		if (eh_carta_da_dupla) {
+		if (eh_carta_da_dupla) 
+		{
 			// Jogar a carta mais fraca
 			// TODO: Enviar mensagem para MFC??
 			// Enviar: (cartas[0])
 		}
-		else {
-			if (cartas[2]->valor > carta_mais_alta->valor) {
+		else 
+		{
+			if (cartas[2]->valor > carta_mais_alta->valor)
+			{
 				// Jogar a carta mais forte
 				// TODO: Enviar mensagem para MFC??
 				// Enviar: (cartas[2])
@@ -306,7 +343,8 @@ void Bot::JogarComoPeEComAdversarioNaoTrucando(std::pair<const Carta*, bool> car
 	}
 }
 
-bool Bot::CalcularSeDeveTrucarOuCorrerOuAceitar(ProbabilidadeDeTrucarOuCorrerOuAceitar probabilidade) {
+bool Bot::CalcularSeDeveTrucarOuCorrerOuAceitar(ProbabilidadeDeTrucarOuCorrerOuAceitar probabilidade) 
+{
 	// Providing a seed value
 	srand((unsigned)time(NULL));
 
@@ -315,19 +353,23 @@ bool Bot::CalcularSeDeveTrucarOuCorrerOuAceitar(ProbabilidadeDeTrucarOuCorrerOuA
 
 	bool resultado = false;
 
-	switch (probabilidade) {
+	switch (probabilidade) 
+	{
 	case Alta:
-		if (numero <= 90) {
+		if (numero <= 90)
+		{
 			resultado = true;
 		}
 		break;
 	case Media:
-		if (numero <= 50) {
+		if (numero <= 50) 
+		{
 			resultado = true;
 		}
 		break;
 	case Baixa:
-		if (numero <= 10) {
+		if (numero <= 10) 
+		{
 			resultado = true;
 		}
 		break;
@@ -338,7 +380,8 @@ bool Bot::CalcularSeDeveTrucarOuCorrerOuAceitar(ProbabilidadeDeTrucarOuCorrerOuA
 	return resultado;
 }
 
-std::vector<const Carta*> Bot::OrdenarCartasDaMao() {
+std::vector<const Carta*> Bot::OrdenarCartasDaMao()
+{
 	// TODO: Verificar como vai ocorrer deleção das cartas a cada rodada que passar
 	// TODO: Organizar Ordenação com base na deleção das cartas
 	std::vector<const Carta*> cartas;
@@ -347,21 +390,24 @@ std::vector<const Carta*> Bot::OrdenarCartasDaMao() {
 	cartas.emplace_back(this->SegundaCartaNaMao());
 	cartas.emplace_back(this->TerceiraCartaNaMao());
 
-	std::sort(cartas.begin(), cartas.end(), [](const Carta* carta1, const Carta* carta2) {
+	std::sort(cartas.begin(), cartas.end(), [](const Carta* carta1, const Carta* carta2) 
+	{
 		return carta1->valor < carta2->valor;
-		});
+	});
 
 	return cartas;
 }
 
-ValorDasCartasNaMao Bot::AnalisarMaoDeCartas() {
+ValorDasCartasNaMao Bot::AnalisarMaoDeCartas() 
+{
 	// TODO: Verificar como vai ocorrer deleção das cartas a cada rodada que passar
 	// TODO: Organizar Analise de cartas com base na deleção das cartas
 	const Carta* carta1 = this->PrimeiraCartaNaMao();
 	const Carta* carta2 = this->SegundaCartaNaMao();
 	const Carta* carta3 = this->TerceiraCartaNaMao();
 
-	std::map<ValorDasCartasNaMao, int> valor_final = {
+	std::map<ValorDasCartasNaMao, int> valor_final = 
+	{
 		{Otimo, 0},
 		{Medio, 0},
 		{Ruim, 0}
@@ -375,32 +421,42 @@ ValorDasCartasNaMao Bot::AnalisarMaoDeCartas() {
 
 }
 
-void Bot::PreencherValorFinalCartas(const Carta* carta, std::map<ValorDasCartasNaMao, int>& valor_final) {
-	if (carta->valor > 11) {
+void Bot::PreencherValorFinalCartas(const Carta* carta, std::map<ValorDasCartasNaMao, int>& valor_final) 
+{
+	if (carta->valor > 11) 
+	{
 		valor_final[Otimo]++;
 	}
-	else if (carta->valor >= 9 && carta->valor <= 11) {
+	else if (carta->valor >= 9 && carta->valor <= 11) 
+	{
 		valor_final[Medio]++;
 	}
-	else if (carta->valor < 9) {
+	else if (carta->valor < 9)
+	{
 		valor_final[Ruim]++;
 	}
 }
 
-ValorDasCartasNaMao Bot::AnalisarValorFinal(std::map<ValorDasCartasNaMao, int>& valor_final) {
-	if (valor_final[Otimo] == 3) {
+ValorDasCartasNaMao Bot::AnalisarValorFinal(std::map<ValorDasCartasNaMao, int>& valor_final) 
+{
+	if (valor_final[Otimo] == 3) 
+	{
 		return Otimo;
 	}
-	else if (valor_final[Otimo] == 2) {
+	else if (valor_final[Otimo] == 2) 
+	{
 		return Bom;
 	}
-	else if (valor_final[Otimo] == 1) {
+	else if (valor_final[Otimo] == 1) 
+	{
 		return Medio;
 	}
-	else if (valor_final[Medio] >= 1) {
+	else if (valor_final[Medio] >= 1) 
+	{
 		return Fraco;
 	}
-	else {
+	else
+	{
 		return Ruim;
 	}
 }

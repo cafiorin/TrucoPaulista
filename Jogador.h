@@ -6,7 +6,8 @@
 
 #include "Carta.h"
 
-class Jogador {
+class Jogador 
+{
 private:
     int NumeroJogador;
     std::string Nome;
