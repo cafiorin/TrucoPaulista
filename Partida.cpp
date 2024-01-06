@@ -19,7 +19,21 @@ Partida::Partida()
 	Vira = nullptr;
 }
 
+Partida::~Partida()
+{
+	delete Dupla1[0];
+	delete Dupla1[1];
+	delete Dupla2[0];
+	delete Dupla2[1];
 
+	delete Rodadas[0];
+	delete Rodadas[1];
+	delete Rodadas[2];
+
+	delete BaralhoMesa;
+	delete Vira;
+
+}
 
 void Partida::InicializarPartida(int quantosJogadores)
 {

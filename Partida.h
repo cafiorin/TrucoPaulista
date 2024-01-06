@@ -28,6 +28,7 @@ private:
 public:
 
 	Partida();
+	~Partida();
 
 	void InicializarPartida(int quantosJogadores);
 
