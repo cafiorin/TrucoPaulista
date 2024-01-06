@@ -215,8 +215,7 @@ void CTrucoPaulistaDlg::InicializaPartida()
 	CartasBitmap cartaBitmap1(*jogador->PrimeiraCartaNaMao());
 	CartasBitmap cartaBitmap2(*jogador->SegundaCartaNaMao());
 	CartasBitmap cartaBitmap3(*jogador->TerceiraCartaNaMao());
-	Carta* Vira = new Carta(partida.ObtemVira());
-	CartasBitmap cartaBitmap4(*Vira);
+	Carta Vira(partida.ObtemVira());
 
 	SetBitmapOnStaticControl(m_Pic1, *cartaBitmap1.Getbitmap());
 	SetBitmapOnStaticControl(m_Pic2, *cartaBitmap2.Getbitmap());
@@ -229,8 +228,8 @@ void CTrucoPaulistaDlg::InicializaPartida()
 
 	SetBitmapCartasAvesso();
 
+	CartasBitmap cartaBitmap4(Vira);
 	SetBitmapOnStaticControl(m_PicVira, *cartaBitmap4.Getbitmap());
-
 	Invalidate();
 
 }

@@ -32,7 +32,7 @@ Partida::~Partida()
 
 	delete BaralhoMesa;
 	delete Vira;
-
+	delete placar;
 }
 
 void Partida::InicializarPartida(int quantosJogadores)
