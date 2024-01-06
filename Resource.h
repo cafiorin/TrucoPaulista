@@ -86,12 +86,24 @@
 #define IDC_PIC15                       1017
 #define IDC_RADIO2                      1018
 #define IDC_BUTTON1                     1019
+#define IDC_PIC_CARTA_H2_R1             1020
 #define IDC_RADIO3                      1021
 #define IDC_RADIO4                      1022
 #define IDC_RADIO5                      1023
 #define IDC_RADIO6                      1024
 #define ID_SYNC                         1025
 #define IDC_EDIT1                       1026
+#define IDC_PIC_CARTA_H1_R1             1027
+#define IDC_PIC_CARTA_BOT2_R1           1028
+#define IDC_PIC_CARTA_BOT1_R1           1029
+#define IDC_PIC_CARTA_H2_R2             1030
+#define IDC_PIC_CARTA_H1_R2             1031
+#define IDC_PIC_CARTA_BOT2_R2           1032
+#define IDC_PIC_CARTA_BOT1_R2           1033
+#define IDC_PIC_CARTA_H2_R3             1038
+#define IDC_PIC_CARTA_H1_R3             1039
+#define IDC_PIC_CARTA_BOT2_R3           1040
+#define IDC_PIC_CARTA_BOT1_R3           1041
 
 // Next default values for new objects
 // 

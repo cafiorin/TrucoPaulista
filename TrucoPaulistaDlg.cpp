@@ -91,6 +91,18 @@ void CTrucoPaulistaDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_PIC8, m_PicCartaParc3);
 	DDX_Control(pDX, IDC_PIC15, m_PicBaralho);
 	DDX_Control(pDX, IDC_PIC14, m_PicVira);
+	DDX_Control(pDX, IDC_PIC_CARTA_H1_R1, m_CartaH1_R1);
+	DDX_Control(pDX, IDC_PIC_CARTA_H2_R1, m_CartaH2_R1);
+	DDX_Control(pDX, IDC_PIC_CARTA_H1_R2, m_CartaH1_R2);
+	DDX_Control(pDX, IDC_PIC_CARTA_H2_R2, m_CartaH2_R2);
+	DDX_Control(pDX, IDC_PIC_CARTA_H1_R3, m_CartaH1_R3);
+	DDX_Control(pDX, IDC_PIC_CARTA_H2_R3, m_CartaH2_R3);
+	DDX_Control(pDX, IDC_PIC_CARTA_BOT1_R1, m_CartaBOT1_R1);
+	DDX_Control(pDX, IDC_PIC_CARTA_BOT1_R2, m_CartaBOT1_R2);
+	DDX_Control(pDX, IDC_PIC_CARTA_BOT1_R3, m_CartaBOT1_R3);
+	DDX_Control(pDX, IDC_PIC_CARTA_BOT2_R1, m_CartaBOT2_R1);
+	DDX_Control(pDX, IDC_PIC_CARTA_BOT2_R2, m_CartaBOT2_R2);
+	DDX_Control(pDX, IDC_PIC_CARTA_BOT2_R3, m_CartaBOT2_R3);
 }
 
 BEGIN_MESSAGE_MAP(CTrucoPaulistaDlg, CDialogEx)
@@ -99,6 +111,9 @@ BEGIN_MESSAGE_MAP(CTrucoPaulistaDlg, CDialogEx)
 	ON_BN_CLICKED(IDM_ABOUTBOX, &CTrucoPaulistaDlg::OnBnClickedAbout)
 	ON_BN_CLICKED(ID_SYNC, &CTrucoPaulistaDlg::OnBnClickedSync)
 	ON_BN_CLICKED(IDC_BUTTON1, &CTrucoPaulistaDlg::OnBnClickedButton1)
+	ON_STN_CLICKED(IDC_PIC3, &CTrucoPaulistaDlg::OnStnClickedPic3)
+	ON_STN_CLICKED(IDC_PIC2, &CTrucoPaulistaDlg::OnStnClickedPic2)
+	ON_STN_CLICKED(IDC_PIC1, &CTrucoPaulistaDlg::OnStnClickedPic1)
 END_MESSAGE_MAP()
 
 
@@ -173,7 +188,7 @@ void CTrucoPaulistaDlg::InicializaPartida()
 	GetDlgItem(IDC_BUTTON1)->ShowWindow(SW_HIDE);
 	GetDlgItem(IDC_STATIC)->ShowWindow(SW_HIDE);
 	GetDlgItem(IDC_EDIT1)->ShowWindow(SW_SHOW);
-	GetDlgItem(IDC_EDIT1)->SetWindowText(_T("Sua Vez Humano 1..."));
+	GetDlgItem(IDC_EDIT1)->SetWindowText(_T("Sua Vez Humano 1...\n"));
 
 	m_Pic1.ShowWindow(SW_SHOW);
 	m_Pic2.ShowWindow(SW_SHOW);
@@ -206,6 +221,9 @@ void CTrucoPaulistaDlg::InicializaPartida()
 	SetBitmapOnStaticControl(m_Pic1, *cartaBitmap1.Getbitmap());
 	SetBitmapOnStaticControl(m_Pic2, *cartaBitmap2.Getbitmap());
 	SetBitmapOnStaticControl(m_Pic3, *cartaBitmap3.Getbitmap());
+	m_Pic1.ModifyStyle(0, SS_NOTIFY);
+	m_Pic2.ModifyStyle(0, SS_NOTIFY);
+	m_Pic3.ModifyStyle(0, SS_NOTIFY);
 
 	//SetBitmapMesa();
 
@@ -276,10 +294,8 @@ void CTrucoPaulistaDlg::SetBitmapCartasAvesso()
 	SetBitmapOnStaticControl(m_PicBaralho, bitmapVerso);
 }
 
-
 void CTrucoPaulistaDlg::SetBitmapOnStaticControl(CStatic& staticControl, CBitmap& bitmap)
 {
-
 	staticControl.ModifyStyle(SS_ENHMETAFILE, SS_BITMAP | SS_CENTERIMAGE);
 
 	CRect rect;
@@ -385,4 +401,55 @@ void CTrucoPaulistaDlg::OnBnClickedButton1()
 {
 	// TODO: Add your control notification handler code here
 	InicializaPartida();
+}
+
+
+void CTrucoPaulistaDlg::OnStnClickedPic3()
+{
+	// Joga a Carta1
+	if (m_Instance == 1 ||partida.ObtemNumeroDeJogadores() == 2)
+	{
+		Jogador* jogador = partida.ObtemJogadorHumano1();
+		const Carta* carta = jogador->TerceiraCartaNaMao();
+
+		CartasBitmap cartaBitmap1(*carta);
+		SetBitmapOnStaticControl(m_CartaH1_R1, *cartaBitmap1.Getbitmap());
+		m_CartaH1_R1.ShowWindow(SW_SHOW);
+		partida.JogadorJogouACarta(jogador, carta);
+		m_Pic3.ShowWindow(SW_HIDE);
+	}
+}
+
+
+void CTrucoPaulistaDlg::OnStnClickedPic2()
+{
+	// Joga a carta 2
+	if (m_Instance == 1 || partida.ObtemNumeroDeJogadores() == 2)
+	{
+		Jogador* jogador = partida.ObtemJogadorHumano1();
+		const Carta* carta = jogador->SegundaCartaNaMao();
+
+		CartasBitmap cartaBitmap1(*carta);
+		SetBitmapOnStaticControl(m_CartaH1_R2, *cartaBitmap1.Getbitmap());
+		m_CartaH1_R2.ShowWindow(SW_SHOW);
+		partida.JogadorJogouACarta(jogador, carta);
+		m_Pic2.ShowWindow(SW_HIDE);
+	}
+}
+
+
+void CTrucoPaulistaDlg::OnStnClickedPic1()
+{
+	//Joga a carta 3
+	if (m_Instance == 1 || partida.ObtemNumeroDeJogadores() == 2)
+	{
+		Jogador* jogador = partida.ObtemJogadorHumano1();
+		const Carta* carta = jogador->PrimeiraCartaNaMao();
+
+		CartasBitmap cartaBitmap1(*carta);
+		SetBitmapOnStaticControl(m_CartaH1_R3, *cartaBitmap1.Getbitmap());
+		m_CartaH1_R3.ShowWindow(SW_SHOW);
+		partida.JogadorJogouACarta(jogador, carta);
+		m_Pic1.ShowWindow(SW_HIDE);
+	}
 }

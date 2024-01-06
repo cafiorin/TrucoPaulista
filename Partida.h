@@ -11,6 +11,8 @@ class Partida
 private:
 	int NumeroDaRodada;
 	Jogador* QuemComecaRodada;
+	Jogador* UltimoQueJogouACarta;
+
 	int QuantoValeARodada;
 	int QuantosJogadores = 2;
 	Placar* placar;
@@ -42,6 +44,12 @@ public:
 	Jogador* ObtemJogadorHumano2();
 
 	Carta* ObtemVira() { return Vira; }
+
+	int ObtemNumeroDeJogadores() { return QuantosJogadores; }
+
+	void JogadorJogouACarta(Jogador* jogador, const Carta* carta);
+
+	Jogador* QuemJoga();
 
 };
 

@@ -8,7 +8,7 @@ CartaDaRodada::CartaDaRodada(int Rodada):NumeroDaRodada(Rodada)
 	JogadorDaCarta = nullptr;
 }
 
-void CartaDaRodada::CartaJogada(Carta& carta, Jogador& jogador)
+void CartaDaRodada::CartaJogada(const Carta& carta, Jogador& jogador)
 {
 	if (&carta != nullptr)
 	{

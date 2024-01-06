@@ -8,10 +8,10 @@ class CartaDaRodada
 	public:
 		int NumeroDaRodada = 0;
 		bool CartaCoberta;
-		Carta *CartaJogadaNaRodada;
+		const Carta *CartaJogadaNaRodada;
 		Jogador* JogadorDaCarta;
 
 		CartaDaRodada(int Rodada);
-		void CartaJogada(Carta& carta, Jogador& jogador);
+		void CartaJogada(const Carta& carta, Jogador& jogador);
 };
 

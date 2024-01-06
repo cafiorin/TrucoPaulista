@@ -17,6 +17,6 @@ public:
 		CartasAdicionadas = 0;
 	}
 
-	void CartaJogada(Carta& carta, Jogador& Jogador);
+	void CartaJogada(const Carta& carta, Jogador& Jogador);
 };
 

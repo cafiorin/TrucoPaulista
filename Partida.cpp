@@ -75,3 +75,16 @@ Jogador* Partida::ObtemJogadorHumano2()
 {
 	return Dupla2[0];
 }
+
+void Partida::JogadorJogouACarta(Jogador* jogador, const Carta* carta)
+{
+	Rodadas[NumeroDaRodada-1]->CartaJogada(*carta, *jogador);
+	UltimoQueJogouACarta = jogador;
+}
+
+Jogador* Partida::QuemJoga()
+{
+	return QuemComecaRodada;
+}
+
+
