@@ -136,7 +136,7 @@ BOOL CTrucoPaulistaDlg::OnInitDialog()
 	if (m_Instance == 1)
 	{
 	}
-	else 
+	else
 	{
 		partida.InicializarPartidaCliente(); //So inicializa o placar e a tela, precisa receber as cartas do Servidor (o metodo InicializarPartida deve enviar as cartas)
 	}
@@ -256,7 +256,7 @@ BOOL CTrucoPaulistaDlg::VerifyInstances()
 
 		m_Instance = 1;
 		SetWindowText(_T("Truco Paulista - HUMANO 1"));
-	
+
 	}
 	return TRUE;
 }
@@ -364,7 +364,7 @@ void CTrucoPaulistaDlg::OnBnClickedAbout()
 	dlgAbout.DoModal();
 }
 
-void CTrucoPaulistaDlg::CreateNewInstance() 
+void CTrucoPaulistaDlg::CreateNewInstance()
 {
 	HWND hwndExistingInstance = ::FindWindow(NULL, m_Instance == 1 ? _T("Truco Paulista - HUMANO 2") : _T("Truco Paulista - HUMANO 1"));
 	if (hwndExistingInstance == NULL)
@@ -406,7 +406,7 @@ void CTrucoPaulistaDlg::OnBnClickedButton1()
 void CTrucoPaulistaDlg::OnStnClickedPic3()
 {
 	// Joga a Carta1
-	if (m_Instance == 1 ||partida.ObtemNumeroDeJogadores() == 2)
+	if (m_Instance == 1 || partida.ObtemNumeroDeJogadores() == 2)
 	{
 		Jogador* jogador = partida.ObtemJogadorHumano1();
 		const Carta* carta = jogador->TerceiraCartaNaMao();
@@ -416,9 +416,44 @@ void CTrucoPaulistaDlg::OnStnClickedPic3()
 		m_CartaH1_R1.ShowWindow(SW_SHOW);
 		partida.JogadorJogouACarta(jogador, carta);
 		m_Pic3.ShowWindow(SW_HIDE);
+		GetBotAction();
 	}
 }
+int cartasDisponveisParajogarBot = 2;
+void CTrucoPaulistaDlg::GetBotAction()
+{
+	GetDlgItem(IDC_EDIT1)->SetWindowText(_T("Sua Vez BOT 1...\n"));
+	SetCurrectBitmapFromBot();
+	GetDlgItem(IDC_EDIT1)->SetWindowText(_T("Sua Vez Humano 1...\n"));
+}
 
+
+void CTrucoPaulistaDlg::SetCurrectBitmapFromBot()
+{
+	Jogador* bot = partida.ObtemJogadorBot1();
+	// exemplo adicionar a class bot aqui para ele jogar a carta correta.
+	const Carta* carta = bot->getjogadabot(cartasDisponveisParajogarBot);
+	partida.JogadorJogouACarta(bot, carta);
+	CartasBitmap bitmap(*carta);
+	switch (cartasDisponveisParajogarBot) {
+	case 0:
+		SetBitmapOnStaticControl(m_CartaBOT1_R3, *bitmap.Getbitmap());
+		m_CartaBOT1_R3.ShowWindow(SW_SHOW); 
+		m_PicCartaParc3.ShowWindow(SW_HIDE);
+		break;
+	case 1:
+		SetBitmapOnStaticControl(m_CartaBOT1_R2, *bitmap.Getbitmap());
+		m_CartaBOT1_R2.ShowWindow(SW_SHOW);
+		m_PicCartaParc2.ShowWindow(SW_HIDE);
+		break;
+	default:
+		SetBitmapOnStaticControl(m_CartaBOT1_R1, *bitmap.Getbitmap());
+		m_CartaBOT1_R1.ShowWindow(SW_SHOW);
+		m_PicCartaParc1.ShowWindow(SW_HIDE);
+		break;
+	}
+	cartasDisponveisParajogarBot--;
+}
 
 void CTrucoPaulistaDlg::OnStnClickedPic2()
 {
@@ -433,6 +468,7 @@ void CTrucoPaulistaDlg::OnStnClickedPic2()
 		m_CartaH1_R2.ShowWindow(SW_SHOW);
 		partida.JogadorJogouACarta(jogador, carta);
 		m_Pic2.ShowWindow(SW_HIDE);
+		GetBotAction();
 	}
 }
 
@@ -450,5 +486,6 @@ void CTrucoPaulistaDlg::OnStnClickedPic1()
 		m_CartaH1_R3.ShowWindow(SW_SHOW);
 		partida.JogadorJogouACarta(jogador, carta);
 		m_Pic1.ShowWindow(SW_HIDE);
+		GetBotAction();
 	}
 }

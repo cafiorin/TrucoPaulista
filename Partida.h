@@ -29,7 +29,7 @@ public:
 
 	Partida();
 	~Partida();
-
+	
 	void InicializarPartida(int quantosJogadores);
 
 	void InicializarPartidaCliente();
@@ -39,10 +39,10 @@ public:
 	void DistribuiCartas();
 
 	void DistribuiCartaProJogador(Jogador* jogador);
-
+	void GanhouPartida();
 	Jogador* ObtemJogadorHumano1();
 
-	Jogador* ObtemJogadorHumano2();
+	Jogador* ObtemJogadorBot1();
 
 	Carta* ObtemVira() { return Vira; }
 

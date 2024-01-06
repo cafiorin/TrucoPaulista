@@ -37,6 +37,10 @@ public:
         return mao[2].get(); // Retorna o ponteiro para o segundo elemento do array
     }
 
+    const Carta* getjogadabot(int jogadasbot) const {
+       
+        return mao[jogadasbot].get(); // Retorna o ponteiro random carta
+    }
     StatusJogador GetStatus() const {
         return status;
     }

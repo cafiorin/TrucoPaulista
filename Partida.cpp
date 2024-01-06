@@ -48,7 +48,9 @@ void Partida::InicializarPartidaCliente()
 	InicializarRodada();
 }
 
-
+void Partida::GanhouPartida()
+{
+}
 void Partida::InicializarRodada()
 {
 	NumeroDaRodada = 1;
@@ -71,7 +73,6 @@ void Partida::DistribuiCartas()
 	
 }
 
-
 void Partida::DistribuiCartaProJogador(Jogador* jogador)
 {
 	Carta c1 = BaralhoMesa->PegarCartaDoTopo();
@@ -85,7 +86,7 @@ Jogador* Partida::ObtemJogadorHumano1()
 {
 	return Dupla1[0];
 }
-Jogador* Partida::ObtemJogadorHumano2()
+Jogador* Partida::ObtemJogadorBot1()
 {
 	return Dupla2[0];
 }

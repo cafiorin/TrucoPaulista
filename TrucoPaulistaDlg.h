@@ -13,6 +13,7 @@ public:
 	CTrucoPaulistaDlg(CWnd* pParent = nullptr);	// standard constructor
 	void SetBitmapOnStaticControl(CStatic& staticControl, CBitmap& bitmap);
 	void SetBitmapCartasAvesso();
+
 	void SetBitmapMesa();
 	void InicializaTelaInicial();
 	void InicializaPartida();
@@ -20,7 +21,7 @@ public:
 	void CreateNewInstance();
 	HANDLE m_hMutex; // Identificador do mutex
 	int m_Instance;
-
+	void SetCurrectBitmapFromBot();
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
 
 // Dialog Data
@@ -32,6 +33,7 @@ public:
 	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV support
 
 
+	
 // Implementation
 protected:
 	HICON m_hIcon;
@@ -45,7 +47,7 @@ protected:
 public:
 	afx_msg void OnBnClickedAbout();
 	afx_msg void OnBnClickedSync();
-
+	void GetBotAction();
 	CStatic m_Pic1;
 	CStatic m_Pic2;
 	CStatic m_Pic3;
