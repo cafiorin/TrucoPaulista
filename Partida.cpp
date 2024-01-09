@@ -123,7 +123,7 @@ void Partida::JogadorTrucou(Jogador* jogador)
 
 void Partida::JogadorCorreu(Jogador* jogador)
 {
-	ProximoPasso(jogador, AcaoRealizada::Trucou);
+	ProximoPasso(jogador, AcaoRealizada::Correu);
 }
 
 void Partida::JogadorAceitou(Jogador* jogador)
@@ -171,7 +171,8 @@ void Partida::ProximoPasso(Jogador* jogador, AcaoRealizada acao)
 
 		case AcaoRealizada::Correu:
 		{
-
+			Jogador* JogadorGanhador = GetProximoJogador();
+			AcabouRodada(JogadorGanhador);
 		}
 		break;
 	}
@@ -192,11 +193,15 @@ bool Partida::ValidaQuemGanhouARodada()
 	return ValidaQuemGanhouAsRodadas();
 }
 
+Jogador* Partida::GetProximoJogador()
+{
+	return (UltimoJogadorAJogar == Dupla1[0] ? Dupla2[0] : Dupla1[0]);
+}
 void Partida::ProximoJogadorJoga()
 {
 	if (QuantosJogadores == 2)
 	{
-		Jogador* jogadorAjogar = (UltimoJogadorAJogar == Dupla1[0] ? Dupla2[0] : Dupla1[0]);
+		Jogador* jogadorAjogar = GetProximoJogador();
 		
 		if (RodadaEstaComecando())
 			jogadorAjogar = QuemComecaRodada;

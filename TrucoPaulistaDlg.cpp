@@ -624,8 +624,8 @@ void CTrucoPaulistaDlg::OnBnClickedTrucar2()
 void CTrucoPaulistaDlg::OnBnClickedCorrer()
 {
 	// TODO: Add your control notification handler code here
-	//Jogador* jogador = partida->ObtemJogadorHumano1();
-	//partida->JogadorCorreu(jogador);
+	Jogador* jogador = partida->ObtemJogadorHumano1();
+	partida->JogadorCorreu(jogador);
 }
 
 
