@@ -169,7 +169,9 @@ void CTrucoPaulistaDlg::InicializaTelaInicial()
 	m_PicCartaParc2.ShowWindow(SW_HIDE);
 	m_PicCartaParc3.ShowWindow(SW_HIDE);
 	m_PicVira.ShowWindow(SW_HIDE);
-
+	GetDlgItem(IDC_TRUCAR2)->ShowWindow(SW_HIDE);
+	GetDlgItem(IDC_CORRER)->ShowWindow(SW_HIDE);
+	GetDlgItem(IDC_ACEITAR)->ShowWindow(SW_HIDE);
 	CButton* pRadioButton = reinterpret_cast<CButton*>(GetDlgItem(IDC_RADIO7));
 	if (pRadioButton)
 	{
@@ -360,16 +362,8 @@ void CTrucoPaulistaDlg::OnBnClickedButton1()
 	InicializaPartida();
 }
 
-void CTrucoPaulistaDlg::GetBotAction()
-{
-	GetDlgItem(IDC_EDIT1)->SetWindowText(_T("Sua Vez BOT 1...\n"));
-	//SetCurrectBitmapFromBot();
-	GetDlgItem(IDC_EDIT1)->SetWindowText(_T("Sua Vez Humano 1...\n"));
-}
-
 void CTrucoPaulistaDlg::SetCurrectBitmapFromBot(Jogador *bot, const Carta* carta)
 {
-	// exemplo adicionar a class bot aqui para ele jogar a carta correta.
 
 	CartasBitmap bitmap(*carta);
 	switch (partida->ObtemNumeroDaRodada()) 
@@ -564,7 +558,9 @@ void CTrucoPaulistaDlg::InicializaRodada()
 	GetDlgItem(IDC_STATIC)->ShowWindow(SW_HIDE);
 	GetDlgItem(IDC_EDIT1)->ShowWindow(SW_SHOW);
 	GetDlgItem(IDC_EDIT1)->SetWindowText(_T("Sua Vez Humano 1...\n"));
-
+	GetDlgItem(IDC_TRUCAR2)->ShowWindow(SW_SHOW);
+	GetDlgItem(IDC_CORRER)->ShowWindow(SW_SHOW);
+	GetDlgItem(IDC_ACEITAR)->ShowWindow(SW_SHOW);
 	m_Pic1.ShowWindow(SW_SHOW);
 	m_Pic2.ShowWindow(SW_SHOW);
 	m_Pic3.ShowWindow(SW_SHOW);
