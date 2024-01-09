@@ -22,4 +22,23 @@ public:
         naipe = carta->naipe;
     }
 
+    int ObtemValor(const Carta* vira) const
+    {
+        if (valor == vira->valor + 1)
+        {
+            switch (naipe)
+            {
+            case Ouro:
+                return valor + 10;
+            case Espadas:
+                return valor + 11;
+            case Copas:
+                return valor + 12;
+            case Paus:
+                return valor + 13;
+            }
+        }
+        
+        return valor;
+    }
 };

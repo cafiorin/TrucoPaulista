@@ -4,13 +4,17 @@
 
 #pragma once
 
+class Partida;
+class Jogador;
+#include "IEventosDaPartida.h"  
 
 // CTrucoPaulistaDlg dialog
-class CTrucoPaulistaDlg : public CDialogEx
+class CTrucoPaulistaDlg : public CDialogEx, public IEventosDaPartida
 {
 // Construction
 public:
 	CTrucoPaulistaDlg(CWnd* pParent = nullptr);	// standard constructor
+	virtual ~CTrucoPaulistaDlg() {};
 	void SetBitmapOnStaticControl(CStatic& staticControl, CBitmap& bitmap);
 	void SetBitmapCartasAvesso();
 
@@ -21,8 +25,18 @@ public:
 	void CreateNewInstance();
 	HANDLE m_hMutex; // Identificador do mutex
 	int m_Instance;
+	Partida* partida;
 	void SetCurrectBitmapFromBot();
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
+
+	virtual void onInicioDaPartida();
+	virtual void onFimDaPartida();
+
+	virtual void onInicioDaRodada(int numeroRodada);
+	virtual void onFimDaRodada(int numeroRodada, Jogador* JogadorQueGanhou);
+	virtual void solicitaJogadorJogar(Jogador* jogador);
+
+
 
 // Dialog Data
 #ifdef AFX_DESIGN_TIME

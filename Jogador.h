@@ -13,9 +13,10 @@ private:
     std::string Nome;
     std::unique_ptr<Carta> mao[3];
     StatusJogador status;
+    bool Bot;
 
 public:
-    Jogador(int numero, std::string nome) : NumeroJogador(numero), Nome(nome), status(EsperandoCartas) {}
+    Jogador(int numero, std::string nome,bool bot) : NumeroJogador(numero), Nome(nome), status(EsperandoCartas),Bot(bot) {}
 
     void RecebeCartas(const Carta& carta1, const Carta& carta2, const Carta& carta3) {
         mao[0] = std::make_unique<Carta>(carta1);
@@ -24,6 +25,11 @@ public:
 
         status = EsperandoJogada;
     }
+
+    bool EhUmBot() const { return Bot; };
+
+    std::string ObtemNome() const { return Nome; };
+
 
     const Carta* PrimeiraCartaNaMao() const {
         return mao[0].get(); // Retorna o ponteiro para o primeiro elemento do array

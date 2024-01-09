@@ -192,6 +192,7 @@
     <ClInclude Include="CartasBitmap.h" />
     <ClInclude Include="Enums.h" />
     <ClInclude Include="framework.h" />
+    <ClInclude Include="IEventosDaPartida.h" />
     <ClInclude Include="Jogador.h" />
     <ClInclude Include="Partida.h" />
     <ClInclude Include="PartidaController.h" />

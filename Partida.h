@@ -4,6 +4,7 @@
 #include "Jogador.h"
 #include "Rodada.h"
 #include "Baralho.h"
+#include "IEventosDaPartida.h"
 
 
 class Partida
@@ -11,7 +12,7 @@ class Partida
 private:
 	int NumeroDaRodada;
 	Jogador* QuemComecaRodada;
-	Jogador* UltimoQueJogouACarta;
+	Jogador* UltimoJogadorAJogar;
 
 	int QuantoValeARodada;
 	int QuantosJogadores = 2;
@@ -24,10 +25,11 @@ private:
 
 	Baralho* BaralhoMesa;
 	Carta* Vira;
+	IEventosDaPartida* EventosDaPartida;
 
 public:
 
-	Partida();
+	Partida(IEventosDaPartida* eventosPartida);
 	~Partida();
 	
 	void InicializarPartida(int quantosJogadores);
@@ -51,6 +53,26 @@ public:
 	void JogadorJogouACarta(Jogador* jogador, const Carta* carta);
 
 	Jogador* QuemJoga();
+
+	void JogadorTrucou(Jogador* jogador);
+
+	void ProximoPasso(Jogador* jogador, AcaoRealizada acao);
+
+	void JogadorCorreu(Jogador* jogador);
+
+	int RodadaAtual() { return NumeroDaRodada - 1; };
+
+	bool UltimaRodada() { return NumeroDaRodada == 3; };
+
+	bool RodadaEstaCompleta();
+
+	void ValidaQuemGanhouARodada();
+
+	void ProximoJogadorJoga();
+
+	void ValidaQuemGanhouAsRodadas();
+
+
 
 };
 

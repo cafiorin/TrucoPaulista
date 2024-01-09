@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Bot.h"
 
-Bot::Bot(int numero, std::string nome) : Jogador(numero, nome) {}
+Bot::Bot(int numero, std::string nome) : Jogador(numero, nome, true) {}
 Bot::~Bot() {}
 
 void Bot::FazerUmaJogada(NumeroDaRodada tipo_rodada, PosicaoNaDuplaParaJogar posicao, bool adversario_esta_trucando, std::pair<const Carta*, bool> carta_mais_alta_rodada, int valor_da_rodada_atual)

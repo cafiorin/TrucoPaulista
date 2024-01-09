@@ -4,6 +4,8 @@ enum Naipes { Espadas, Paus, Ouro, Copas };
 
 enum StatusJogador { EsperandoCartas, EsperandoJogada, EscolhendoCarta, Jogando }; //Deve ter mais
 
+enum AcaoRealizada { Jogou, Trucou, Correu }; //Deve ter mais
+
 enum NumeroDaRodada { PrimeiraRodada, SegundaRodada, TerceiraRodada, Melando };
 
 enum PosicaoNaDuplaParaJogar { Primeiro, Pe };
