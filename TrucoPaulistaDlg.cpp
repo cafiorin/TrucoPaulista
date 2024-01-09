@@ -362,27 +362,27 @@ void CTrucoPaulistaDlg::OnBnClickedButton1()
 	InicializaPartida();
 }
 
-void CTrucoPaulistaDlg::SetCurrectBitmapFromBot(Jogador *bot, const Carta* carta)
+void CTrucoPaulistaDlg::SetCurrectBitmapFromBot(Jogador* bot, const Carta* carta)
 {
 
 	CartasBitmap bitmap(*carta);
-	switch (partida->ObtemNumeroDaRodada()) 
+	switch (partida->ObtemNumeroDaRodada())
 	{
-		case 1:
-			SetBitmapOnStaticControl(m_CartaBOT1_R1, *bitmap.Getbitmap());
-			m_CartaBOT1_R1.ShowWindow(SW_SHOW);
-			m_PicCartaParc1.ShowWindow(SW_HIDE);
-			break;
-		case 2:
-			SetBitmapOnStaticControl(m_CartaBOT1_R2, *bitmap.Getbitmap());
-			m_CartaBOT1_R2.ShowWindow(SW_SHOW);
-			m_PicCartaParc2.ShowWindow(SW_HIDE);
-			break;
-		case 3:
-			SetBitmapOnStaticControl(m_CartaBOT1_R3, *bitmap.Getbitmap());
-			m_CartaBOT1_R3.ShowWindow(SW_SHOW);
-			m_PicCartaParc3.ShowWindow(SW_HIDE);
-			break;
+	case 1:
+		SetBitmapOnStaticControl(m_CartaBOT1_R1, *bitmap.Getbitmap());
+		m_CartaBOT1_R1.ShowWindow(SW_SHOW);
+		m_PicCartaParc1.ShowWindow(SW_HIDE);
+		break;
+	case 2:
+		SetBitmapOnStaticControl(m_CartaBOT1_R2, *bitmap.Getbitmap());
+		m_CartaBOT1_R2.ShowWindow(SW_SHOW);
+		m_PicCartaParc2.ShowWindow(SW_HIDE);
+		break;
+	case 3:
+		SetBitmapOnStaticControl(m_CartaBOT1_R3, *bitmap.Getbitmap());
+		m_CartaBOT1_R3.ShowWindow(SW_SHOW);
+		m_PicCartaParc3.ShowWindow(SW_HIDE);
+		break;
 	}
 }
 
@@ -470,7 +470,7 @@ void CTrucoPaulistaDlg::onFimDaPartida(Jogador* JogadorQueGanhou)
 
 }
 
-void CTrucoPaulistaDlg::onInicioDaRodada(int numeroRodada) 
+void CTrucoPaulistaDlg::onInicioDaRodada(int numeroRodada)
 {
 	CleanCheckBox();
 }
@@ -480,12 +480,12 @@ void CTrucoPaulistaDlg::CleanCheckBox()
 	for (int i = IDC_CHECK1; i <= IDC_CHECK6; i++)
 	{
 		CButton* pCheckBox = (CButton*)GetDlgItem(i);
-		if(pCheckBox != nullptr)
+		if (pCheckBox != nullptr)
 			pCheckBox->SetCheck(BST_UNCHECKED);
 	}
 }
 
-void CTrucoPaulistaDlg::onFimDaRodada(int numeroRodada, Jogador* JogadorQueGanhou) 
+void CTrucoPaulistaDlg::onFimDaRodada(int numeroRodada, Jogador* JogadorQueGanhou)
 {
 	std::string playerName = JogadorQueGanhou->ObtemNome();
 	CString strPlayerName(playerName.c_str());
@@ -495,17 +495,17 @@ void CTrucoPaulistaDlg::onFimDaRodada(int numeroRodada, Jogador* JogadorQueGanho
 
 	GetDlgItem(IDC_EDIT1)->SetWindowText(str);
 
-	int baseCheckBox = IDC_CHECK1 + ((numeroRodada-1) * 2);
+	int baseCheckBox = IDC_CHECK1 + ((numeroRodada - 1) * 2);
 	baseCheckBox = JogadorQueGanhou->EhUmBot() ? baseCheckBox + 1 : baseCheckBox;
-	
-	CButton *pCheckBox = (CButton*)GetDlgItem(baseCheckBox);
+
+	CButton* pCheckBox = (CButton*)GetDlgItem(baseCheckBox);
 	if (pCheckBox != nullptr)
 		pCheckBox->SetCheck(BST_CHECKED);
 
 
 }
 
-void CTrucoPaulistaDlg::solicitaJogadorJogar(Jogador* jogador) 
+void CTrucoPaulistaDlg::solicitaJogadorJogar(Jogador* jogador)
 {
 	std::string playerName = jogador->ObtemNome();
 	CString strPlayerName(playerName.c_str());
@@ -560,7 +560,7 @@ void CTrucoPaulistaDlg::InicializaRodada()
 	GetDlgItem(IDC_EDIT1)->SetWindowText(_T("Sua Vez Humano 1...\n"));
 	GetDlgItem(IDC_TRUCAR2)->ShowWindow(SW_SHOW);
 	GetDlgItem(IDC_CORRER)->ShowWindow(SW_SHOW);
-	GetDlgItem(IDC_ACEITAR)->ShowWindow(SW_SHOW);
+// aceitar so deve aparecer em tela após a ação truco ser mostrada.	GetDlgItem(IDC_ACEITAR)->ShowWindow(SW_SHOW);
 	m_Pic1.ShowWindow(SW_SHOW);
 	m_Pic2.ShowWindow(SW_SHOW);
 	m_Pic3.ShowWindow(SW_SHOW);
@@ -616,8 +616,8 @@ void CTrucoPaulistaDlg::InicializaRodada()
 void CTrucoPaulistaDlg::OnBnClickedTrucar2()
 {
 	// TODO: Add your control notification handler code here
-	//Jogador* jogador = partida->ObtemJogadorHumano1();
-	//partida->JogadorTrucou(jogador);
+	Jogador* jogador = partida->ObtemJogadorHumano1();
+	partida->JogadorTrucou(jogador);
 }
 
 

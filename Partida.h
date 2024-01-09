@@ -15,6 +15,7 @@ private:
 	Jogador* UltimoJogadorAJogar;
 
 	int QuantoValeARodada;
+	int QuantasVezesTrucou;
 	int QuantosJogadores = 2;
 	Placar* placar;
 

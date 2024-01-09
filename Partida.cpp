@@ -61,7 +61,7 @@ void Partida::InicializarRodada()
 	NumeroDaRodada = 1;
 	QuemComecaRodada = Dupla1[0]; //Pegar quem ganhou a rodada anterior
 	QuantoValeARodada = 1;
-
+	QuantasVezesTrucou = 0;
 	DistribuiCartas();
 
 	delete Rodadas[0];
@@ -164,8 +164,18 @@ void Partida::ProximoPasso(Jogador* jogador, AcaoRealizada acao)
 		break;
 
 		case AcaoRealizada::Trucou:
-		{
+		{// implementar ações do bot, hoje a classe bot não esta sendo chamada, ela precisa ser ajustada para que possa ser chamada neste trecho de codigo
+			Jogador* proximoJogador = GetProximoJogador();
+			if (proximoJogador->EhUmBot())
+			{
+				const Carta* cartaJogada = proximoJogador->getjogadabot(RodadaAtual());
+				EventosDaPartida->onBotJogouACarta(NumeroDaRodada, proximoJogador, cartaJogada);
 			
+			}
+			//if(aceitou)
+			QuantasVezesTrucou++;
+			QuantoValeARodada = 3 * QuantasVezesTrucou;
+
 		}
 		break;
 
