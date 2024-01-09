@@ -12,7 +12,7 @@ Partida::Partida(IEventosDaPartida *eventosPartida)
 	Dupla2[0] = new Jogador(2, "Bot1",true);
 	Dupla2[1] = new Jogador(4, "Bot2",true);
 
-	BaralhoMesa = new Baralho();
+	BaralhoMesa = nullptr;
 
 	Rodadas[0] = nullptr;
 	Rodadas[1] = nullptr;
@@ -73,10 +73,13 @@ void Partida::InicializarRodada()
 	Rodadas[2] = new Rodada(3, Vira, QuantosJogadores);
 
 	EventosDaPartida->onInicioDaRodada(NumeroDaRodada);
+
 }
 
 void Partida::DistribuiCartas()
 {
+	delete BaralhoMesa;
+	BaralhoMesa = new Baralho();
 	BaralhoMesa->Embaralhar();
 	
 	DistribuiCartaProJogador(Dupla1[0]);
@@ -123,10 +126,22 @@ void Partida::JogadorCorreu(Jogador* jogador)
 	ProximoPasso(jogador, AcaoRealizada::Trucou);
 }
 
+void Partida::JogadorAceitou(Jogador* jogador)
+{
+	ProximoPasso(jogador, AcaoRealizada::Aceitou);
+}
+
+
 bool Partida::RodadaEstaCompleta()
 {
 	return (Rodadas[RodadaAtual()]->CartasAdicionadas == QuantosJogadores);
 }
+
+bool Partida::RodadaEstaComecando()
+{
+	return (Rodadas[RodadaAtual()]->CartasAdicionadas == 0);
+}
+
 
 void Partida::ProximoPasso(Jogador* jogador, AcaoRealizada acao)
 {
@@ -138,7 +153,10 @@ void Partida::ProximoPasso(Jogador* jogador, AcaoRealizada acao)
 		{
 			if (RodadaEstaCompleta())
 			{
-				ValidaQuemGanhouARodada();
+				if (ValidaQuemGanhouARodada())
+					return;
+
+				NumeroDaRodada++;
 			}
 			
 			ProximoJogadorJoga();
@@ -165,44 +183,104 @@ Jogador* Partida::QuemJoga()
 	return QuemComecaRodada;
 }
 
-void Partida::ValidaQuemGanhouARodada()
+bool Partida::ValidaQuemGanhouARodada()
 {
 	Jogador *ganhou = Rodadas[RodadaAtual()]->QuemGanhou();
 	QuemComecaRodada = ganhou;
 	EventosDaPartida->onFimDaRodada(NumeroDaRodada, ganhou);
+
+	return ValidaQuemGanhouAsRodadas();
 }
 
 void Partida::ProximoJogadorJoga()
 {
-	if (RodadaEstaCompleta() && UltimaRodada())
+	if (QuantosJogadores == 2)
 	{
-		ValidaQuemGanhouAsRodadas();
+		Jogador* jogadorAjogar = (UltimoJogadorAJogar == Dupla1[0] ? Dupla2[0] : Dupla1[0]);
+		
+		if (RodadaEstaComecando())
+			jogadorAjogar = QuemComecaRodada;
+
+		if (jogadorAjogar->EhUmBot())
+		{
+			const Carta *cartaJogada = jogadorAjogar->getjogadabot(RodadaAtual());
+			EventosDaPartida->onBotJogouACarta(NumeroDaRodada, jogadorAjogar, cartaJogada);
+			JogadorJogouACarta(jogadorAjogar, cartaJogada);
+		}
+		else if (!RodadaEstaCompleta())
+		{
+			//Solicita a jogar
+			EventosDaPartida->solicitaJogadorJogar(Dupla1[0]);
+		}
 	}
 	else
 	{
-		//ProximoJogadorJoga
-		if (QuantosJogadores == 2)
-		{
-			Jogador* jogadorAjogar = (UltimoJogadorAJogar == Dupla1[0] ? Dupla2[0] : Dupla1[0]);
-			if (jogadorAjogar->EhUmBot())
-			{
-				jogadorAjogar->getjogadabot(NumeroDaRodada);
-			}
-			else
-			{
-				//Solicita a jogar
-				EventosDaPartida->solicitaJogadorJogar(jogadorAjogar);
-			}
-			
-		}
-		else
-		{
-			//TODO
-		}
+		//TODO 4 jogadores
 	}
 }
 
-void Partida::ValidaQuemGanhouAsRodadas()
+void Partida::AcabouRodada(Jogador* ganhou)
 {
+	if (ganhou == Dupla1[0])
+	{
+		placar->PontosDaDupla1 += QuantoValeARodada;
+		if (placar->PontosDaDupla1 >= 12)
+		{
+			placar->PontosDaDupla1 = 12;
+			EventosDaPartida->onFimDaPartida(ganhou);
+			return;
+		}
+	}
+	else
+	{
+		placar->PontosDaDupla2 += QuantoValeARodada;
+		if (placar->PontosDaDupla2 >= 12)
+		{
+			placar->PontosDaDupla2 = 12;
+			EventosDaPartida->onFimDaPartida(ganhou);
+			return;
+		}
+	}
+
+	EventosDaPartida->onAcabouARodada(ganhou);
+
+
+}
+
+
+bool Partida::ValidaQuemGanhouAsRodadas()
+{
+	if (NumeroDaRodada > 1 && RodadaEstaCompleta())
+	{
+		if (NumeroDaRodada == 2)
+		{
+			if (Rodadas[0]->QuemGanhou() == Rodadas[1]->QuemGanhou())
+			{
+				Jogador* ganhou = Rodadas[0]->QuemGanhou();
+				AcabouRodada(ganhou);
+				return true;
+			}
+		}
+		else if (NumeroDaRodada == 3)
+		{
+			if (Rodadas[0]->QuemGanhou() == Rodadas[1]->QuemGanhou() ||
+				Rodadas[0]->QuemGanhou() == Rodadas[2]->QuemGanhou())
+			{
+				Jogador* ganhou = Rodadas[0]->QuemGanhou();
+				AcabouRodada(ganhou);
+				return true;
+			}
+			else if (Rodadas[1]->QuemGanhou() == Rodadas[2]->QuemGanhou())
+			{
+				Jogador* ganhou = Rodadas[1]->QuemGanhou();
+				AcabouRodada(ganhou);
+				return true;
+			}
+
+		}
+
+	}
+
+	return false;
 }
 

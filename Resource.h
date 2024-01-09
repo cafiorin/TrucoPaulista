@@ -100,10 +100,22 @@
 #define IDC_PIC_CARTA_H1_R2             1031
 #define IDC_PIC_CARTA_BOT2_R2           1032
 #define IDC_PIC_CARTA_BOT1_R2           1033
+#define IDC_CHECK1                      1034
+#define IDC_CHECK2                      1035
+#define IDC_CHECK3                      1036
+#define IDC_CHECK4                      1037
 #define IDC_PIC_CARTA_H2_R3             1038
 #define IDC_PIC_CARTA_H1_R3             1039
 #define IDC_PIC_CARTA_BOT2_R3           1040
 #define IDC_PIC_CARTA_BOT1_R3           1041
+#define IDC_CHECK5                      1042
+#define IDC_CHECK6                      1043
+#define IDC_PONTOS_DUPLA1               1044
+#define IDC_PONTOS_DUPLA2               1045
+#define IDC_CORRER                      1046
+#define IDC_TRUCAR2                     1047
+#define IDC_TRUCAR3                     1048
+#define IDC_ACEITAR                     1048
 
 // Next default values for new objects
 // 
@@ -111,7 +123,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        240
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1027
+#define _APS_NEXT_CONTROL_VALUE         1049
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

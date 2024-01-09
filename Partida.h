@@ -48,6 +48,8 @@ public:
 
 	Carta* ObtemVira() { return Vira; }
 
+	int ObtemNumeroDaRodada() { return NumeroDaRodada; }
+
 	int ObtemNumeroDeJogadores() { return QuantosJogadores; }
 
 	void JogadorJogouACarta(Jogador* jogador, const Carta* carta);
@@ -59,19 +61,27 @@ public:
 	void ProximoPasso(Jogador* jogador, AcaoRealizada acao);
 
 	void JogadorCorreu(Jogador* jogador);
+	
+	void JogadorAceitou(Jogador* jogador);
 
 	int RodadaAtual() { return NumeroDaRodada - 1; };
+	void AcabouRodada(Jogador* ganhou);
+
+	bool RodadaEstaComecando();
 
 	bool UltimaRodada() { return NumeroDaRodada == 3; };
 
 	bool RodadaEstaCompleta();
 
-	void ValidaQuemGanhouARodada();
+	bool ValidaQuemGanhouARodada();
 
 	void ProximoJogadorJoga();
 
-	void ValidaQuemGanhouAsRodadas();
+	bool ValidaQuemGanhouAsRodadas();
 
+	int PontosDaDupla1() { return placar->PontosDaDupla1; }
+
+	int PontosDaDupla2() { return placar->PontosDaDupla2; }
 
 
 };

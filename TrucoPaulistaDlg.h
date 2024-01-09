@@ -6,6 +6,7 @@
 
 class Partida;
 class Jogador;
+class Carta;
 #include "IEventosDaPartida.h"  
 
 // CTrucoPaulistaDlg dialog
@@ -26,17 +27,24 @@ public:
 	HANDLE m_hMutex; // Identificador do mutex
 	int m_Instance;
 	Partida* partida;
-	void SetCurrectBitmapFromBot();
+	bool DoisJogadores;
+
+	void InicializaRodada();
+	void CleanCheckBox();
+	void AtualizaPlacar();
+
+	void SetCurrectBitmapFromBot(Jogador* bot, const Carta* carta);
+	void SetCurrectBitmapFromHumano(Jogador* bot, const Carta* carta);
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
 
 	virtual void onInicioDaPartida();
-	virtual void onFimDaPartida();
+	virtual void onFimDaPartida(Jogador* ganhou);
 
 	virtual void onInicioDaRodada(int numeroRodada);
 	virtual void onFimDaRodada(int numeroRodada, Jogador* JogadorQueGanhou);
 	virtual void solicitaJogadorJogar(Jogador* jogador);
-
-
+	virtual void onBotJogouACarta(int NumeroDaRodada, Jogador* jogadorAjogar, const Carta* cartaJogada);
+	virtual void onAcabouARodada(Jogador* JogadorQueGanhou);
 
 // Dialog Data
 #ifdef AFX_DESIGN_TIME
@@ -93,4 +101,7 @@ public:
 	CStatic m_CartaBOT2_R1;
 	CStatic m_CartaBOT2_R2;
 	CStatic m_CartaBOT2_R3;
+	afx_msg void OnBnClickedTrucar2();
+	afx_msg void OnBnClickedCorrer();
+	afx_msg void OnBnClickedAceitar();
 };

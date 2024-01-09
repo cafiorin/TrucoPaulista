@@ -28,7 +28,10 @@ public:
 
     bool EhUmBot() const { return Bot; };
 
-    std::string ObtemNome() const { return Nome; };
+    std::string ObtemNome() const 
+    {
+        return Nome; 
+    };
 
 
     const Carta* PrimeiraCartaNaMao() const {
