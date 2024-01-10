@@ -72,6 +72,14 @@ void Partida::InicializarRodada()
 	Rodadas[1] = new Rodada(2, Vira, QuantosJogadores);
 	Rodadas[2] = new Rodada(3, Vira, QuantosJogadores);
 
+	if (QuantoValeARodada <= 10)
+	{
+		Dupla1[0]->NaoPodeMaisPedirTruco(); 
+		Dupla1[1]->NaoPodeMaisPedirTruco();
+		Dupla2[0]->NaoPodeMaisPedirTruco();
+		Dupla2[1]->NaoPodeMaisPedirTruco();
+	}
+
 	EventosDaPartida->onInicioDaRodada(NumeroDaRodada);
 
 }
@@ -119,7 +127,10 @@ void Partida::JogadorJogouACarta(Jogador* jogador, const Carta* carta)
 void Partida::JogadorTrucou(Jogador* jogador)
 {
 	jogador->NaoPodeMaisPedirTruco();
-	GetProximoJogador()->JaPodePedirTruco();
+	if(QuantoValeARodada <= 10)
+		GetOponenteJogador(jogador)->JaPodePedirTruco();
+	else
+		GetOponenteJogador(jogador)->NaoPodeMaisPedirTruco();
 
 	ProximoPasso(jogador, AcaoRealizada::Trucou);
 }
@@ -172,9 +183,6 @@ void Partida::ProximoPasso(Jogador* jogador, AcaoRealizada acao)
 			{
 				if (proximoJogador->AceitarTruco())
 				{
-					QuantasVezesTrucou++;
-					QuantoValeARodada = 3 * QuantasVezesTrucou;
-
 					JogadorAceitou(proximoJogador);
 				}
 				else
@@ -200,6 +208,9 @@ void Partida::ProximoPasso(Jogador* jogador, AcaoRealizada acao)
 
 		case AcaoRealizada::Aceitou:
 		{
+			QuantasVezesTrucou++;
+			QuantoValeARodada = 3 * QuantasVezesTrucou;
+
 			EventosDaPartida->onAceitouTruco(UltimoJogadorAJogar);
 			ProximoJogadorJoga();
 		}
@@ -216,7 +227,8 @@ Jogador* Partida::QuemJoga()
 bool Partida::ValidaQuemGanhouARodada()
 {
 	Jogador *ganhou = Rodadas[RodadaAtual()]->QuemGanhou();
-	QuemComecaRodada = ganhou;
+	if(ganhou != nullptr)
+		QuemComecaRodada = ganhou;
 	EventosDaPartida->onFimDaRodada(NumeroDaRodada, ganhou);
 
 	return ValidaQuemGanhouAsRodadas();
@@ -226,6 +238,12 @@ Jogador* Partida::GetProximoJogador()
 {
 	return (UltimoJogadorAJogar == Dupla1[0] ? Dupla2[0] : Dupla1[0]);
 }
+
+Jogador* Partida::GetOponenteJogador(Jogador* jogador)
+{
+	return (jogador == Dupla1[0] ? Dupla2[0] : Dupla1[0]);
+}
+
 void Partida::ProximoJogadorJoga()
 {
 	if (QuantosJogadores == 2)
@@ -295,6 +313,20 @@ bool Partida::ValidaQuemGanhouAsRodadas()
 	{
 		if (NumeroDaRodada == 2)
 		{
+			if (Rodadas[0]->QuemGanhou() == nullptr)
+			{
+				Jogador* ganhou = Rodadas[1]->QuemGanhou();
+				AcabouRodada(ganhou);
+				return true;
+			}
+
+			if (Rodadas[1]->QuemGanhou() == nullptr)
+			{
+				Jogador* ganhou = Rodadas[0]->QuemGanhou();
+				AcabouRodada(ganhou);
+				return true;
+			}
+
 			if (Rodadas[0]->QuemGanhou() == Rodadas[1]->QuemGanhou())
 			{
 				Jogador* ganhou = Rodadas[0]->QuemGanhou();
@@ -304,6 +336,13 @@ bool Partida::ValidaQuemGanhouAsRodadas()
 		}
 		else if (NumeroDaRodada == 3)
 		{
+			if (Rodadas[2]->QuemGanhou() == nullptr)
+			{
+				Jogador* ganhou = Rodadas[0]->QuemGanhou();
+				AcabouRodada(ganhou);
+				return true;
+			}
+
 			if (Rodadas[0]->QuemGanhou() == Rodadas[1]->QuemGanhou() ||
 				Rodadas[0]->QuemGanhou() == Rodadas[2]->QuemGanhou())
 			{

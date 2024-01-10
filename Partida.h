@@ -77,7 +77,11 @@ public:
 	bool ValidaQuemGanhouARodada();
 
 	void ProximoJogadorJoga();
+	
 	Jogador* GetProximoJogador();
+	
+	Jogador* GetOponenteJogador(Jogador* jogador);
+
 	bool ValidaQuemGanhouAsRodadas();
 
 	int PontosDaDupla1() { return placar->PontosDaDupla1; }

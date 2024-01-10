@@ -42,6 +42,9 @@ public:
 		{
 			if (MaiorCarta(cartas[0]->CartaJogadaNaRodada, cartas[1]->CartaJogadaNaRodada) == 0)
 				return cartas[0]->JogadorDaCarta;
+
+			if (MaiorCarta(cartas[0]->CartaJogadaNaRodada, cartas[1]->CartaJogadaNaRodada) == -1)
+				return nullptr;
 		}
 		else
 		{
@@ -52,8 +55,14 @@ public:
 
 	int MaiorCarta(const Carta* carta1, const Carta* carta2)
 	{
-		if (carta1->ObtemValor(Vira) > carta2->ObtemValor(Vira))
+		int valor1 = carta1->ObtemValor(Vira);
+		int valor2 = carta2->ObtemValor(Vira);
+		
+		if ( valor1 > valor2 )
 			return 0;
+
+		if (valor1 == valor2)
+			return -1;
 
 		return 1;
 	}

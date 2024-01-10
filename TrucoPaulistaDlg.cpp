@@ -499,22 +499,40 @@ void CTrucoPaulistaDlg::onAceitouTruco(Jogador *jogador)
 
 void CTrucoPaulistaDlg::onFimDaRodada(int numeroRodada, Jogador* JogadorQueGanhou)
 {
-	std::string playerName = JogadorQueGanhou->ObtemNome();
-	CString strPlayerName(playerName.c_str());
+	if (JogadorQueGanhou == nullptr)
+	{
+		CString str;
+		str.Format(_T("Empatou a rodada %d..."), numeroRodada);
 
-	CString str;
-	str.Format(_T("Jogador %s ganhou a rodada %d..."), strPlayerName, numeroRodada);
+		GetDlgItem(IDC_EDIT1)->SetWindowText(str);
 
-	GetDlgItem(IDC_EDIT1)->SetWindowText(str);
+		int baseCheckBox = IDC_CHECK1 + ((numeroRodada - 1) * 2);
+		CButton* pCheckBox = (CButton*)GetDlgItem(baseCheckBox);
+		if (pCheckBox != nullptr)
+			pCheckBox->SetCheck(BST_CHECKED);
 
-	int baseCheckBox = IDC_CHECK1 + ((numeroRodada - 1) * 2);
-	baseCheckBox = JogadorQueGanhou->EhUmBot() ? baseCheckBox + 1 : baseCheckBox;
+		pCheckBox = (CButton*)GetDlgItem(baseCheckBox+1);
+		if (pCheckBox != nullptr)
+			pCheckBox->SetCheck(BST_CHECKED);
+	}
+	else
+	{
+		std::string playerName = JogadorQueGanhou->ObtemNome();
+		CString strPlayerName(playerName.c_str());
 
-	CButton* pCheckBox = (CButton*)GetDlgItem(baseCheckBox);
-	if (pCheckBox != nullptr)
-		pCheckBox->SetCheck(BST_CHECKED);
+		CString str;
+		str.Format(_T("Jogador %s ganhou a rodada %d..."), strPlayerName, numeroRodada);
 
+		GetDlgItem(IDC_EDIT1)->SetWindowText(str);
 
+		int baseCheckBox = IDC_CHECK1 + ((numeroRodada - 1) * 2);
+		baseCheckBox = JogadorQueGanhou->EhUmBot() ? baseCheckBox + 1 : baseCheckBox;
+
+		CButton* pCheckBox = (CButton*)GetDlgItem(baseCheckBox);
+		if (pCheckBox != nullptr)
+			pCheckBox->SetCheck(BST_CHECKED);
+
+	}
 }
 
 void CTrucoPaulistaDlg::solicitaJogadorJogar(Jogador* jogador)
