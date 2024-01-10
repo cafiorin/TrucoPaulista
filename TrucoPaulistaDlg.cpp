@@ -114,9 +114,8 @@ BEGIN_MESSAGE_MAP(CTrucoPaulistaDlg, CDialogEx)
 	ON_STN_CLICKED(IDC_PIC3, &CTrucoPaulistaDlg::OnStnClickedPic3)
 	ON_STN_CLICKED(IDC_PIC2, &CTrucoPaulistaDlg::OnStnClickedPic2)
 	ON_STN_CLICKED(IDC_PIC1, &CTrucoPaulistaDlg::OnStnClickedPic1)
-	ON_BN_CLICKED(IDC_TRUCAR2, &CTrucoPaulistaDlg::OnBnClickedTrucar2)
+	ON_BN_CLICKED(IDC_TRUCAR, &CTrucoPaulistaDlg::OnBnClickedTrucar)
 	ON_BN_CLICKED(IDC_CORRER, &CTrucoPaulistaDlg::OnBnClickedCorrer)
-	ON_BN_CLICKED(IDC_ACEITAR, &CTrucoPaulistaDlg::OnBnClickedAceitar)
 END_MESSAGE_MAP()
 
 
@@ -169,9 +168,10 @@ void CTrucoPaulistaDlg::InicializaTelaInicial()
 	m_PicCartaParc2.ShowWindow(SW_HIDE);
 	m_PicCartaParc3.ShowWindow(SW_HIDE);
 	m_PicVira.ShowWindow(SW_HIDE);
-	GetDlgItem(IDC_TRUCAR2)->ShowWindow(SW_HIDE);
+	
+	GetDlgItem(IDC_TRUCAR)->ShowWindow(SW_HIDE);
 	GetDlgItem(IDC_CORRER)->ShowWindow(SW_HIDE);
-	GetDlgItem(IDC_ACEITAR)->ShowWindow(SW_HIDE);
+	
 	CButton* pRadioButton = reinterpret_cast<CButton*>(GetDlgItem(IDC_RADIO7));
 	if (pRadioButton)
 	{
@@ -558,6 +558,7 @@ void CTrucoPaulistaDlg::onPedeTruco()
 
 	GetDlgItem(IDC_EDIT1)->SetWindowText(_T("Truco !!!!"));
 	int resultado = AfxMessageBox(_T("Aceita o Truco?"), MB_YESNO | MB_ICONQUESTION);
+	GetDlgItem(IDC_TRUCAR)->ShowWindow(SW_SHOW);
 
 	if (resultado == IDYES) 
 	{
@@ -605,9 +606,7 @@ void CTrucoPaulistaDlg::InicializaRodada()
 	GetDlgItem(IDC_STATIC)->ShowWindow(SW_HIDE);
 	GetDlgItem(IDC_EDIT1)->ShowWindow(SW_SHOW);
 	GetDlgItem(IDC_EDIT1)->SetWindowText(_T("Sua Vez Humano 1...\n"));
-	GetDlgItem(IDC_TRUCAR2)->ShowWindow(SW_SHOW);
-	GetDlgItem(IDC_CORRER)->ShowWindow(SW_SHOW);
-// aceitar so deve aparecer em tela após a ação truco ser mostrada.	GetDlgItem(IDC_ACEITAR)->ShowWindow(SW_SHOW);
+
 	m_Pic1.ShowWindow(SW_SHOW);
 	m_Pic2.ShowWindow(SW_SHOW);
 	m_Pic3.ShowWindow(SW_SHOW);
@@ -651,6 +650,8 @@ void CTrucoPaulistaDlg::InicializaRodada()
 	m_CartaBOT1_R2.ShowWindow(SW_HIDE);
 	m_CartaBOT1_R3.ShowWindow(SW_HIDE);
 
+	GetDlgItem(IDC_TRUCAR)->ShowWindow(SW_SHOW);
+	GetDlgItem(IDC_CORRER)->ShowWindow(SW_SHOW);
 
 	SetBitmapCartasAvesso();
 
@@ -660,11 +661,14 @@ void CTrucoPaulistaDlg::InicializaRodada()
 }
 
 
-void CTrucoPaulistaDlg::OnBnClickedTrucar2()
+void CTrucoPaulistaDlg::OnBnClickedTrucar()
 {
 	// TODO: Add your control notification handler code here
+	GetDlgItem(IDC_TRUCAR)->ShowWindow(SW_HIDE);
+
 	Jogador* jogador = partida->ObtemJogadorHumano1();
 	partida->JogadorTrucou(jogador);
+
 }
 
 
@@ -676,9 +680,3 @@ void CTrucoPaulistaDlg::OnBnClickedCorrer()
 }
 
 
-void CTrucoPaulistaDlg::OnBnClickedAceitar()
-{
-	// TODO: Add your control notification handler code here
-	//Jogador* jogador = partida->ObtemJogadorHumano1();
-	//partida->JogadorAceitou(jogador);
-}

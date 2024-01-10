@@ -113,9 +113,7 @@
 #define IDC_PONTOS_DUPLA1               1044
 #define IDC_PONTOS_DUPLA2               1045
 #define IDC_CORRER                      1046
-#define IDC_TRUCAR2                     1047
-#define IDC_TRUCAR3                     1048
-#define IDC_ACEITAR                     1048
+#define IDC_TRUCAR                      1047
 
 // Next default values for new objects
 // 

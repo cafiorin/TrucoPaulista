@@ -104,7 +104,6 @@ public:
 	CStatic m_CartaBOT2_R1;
 	CStatic m_CartaBOT2_R2;
 	CStatic m_CartaBOT2_R3;
-	afx_msg void OnBnClickedTrucar2();
+	afx_msg void OnBnClickedTrucar();
 	afx_msg void OnBnClickedCorrer();
-	afx_msg void OnBnClickedAceitar();
 };
