@@ -1,16 +1,16 @@
 #include "pch.h"
 #include "Partida.h"
 
-Partida::Partida(IEventosDaPartida *eventosPartida)
+Partida::Partida(IEventosDaPartida* eventosPartida)
 {
 	EventosDaPartida = eventosPartida;
 	placar = new Placar();
 	NumeroDaRodada = 1;
 
-	Dupla1[0] = new Jogador(1, "Humano1",false);
-	Dupla1[1] = new Jogador(3, "Humano2",false);
-	Dupla2[0] = new Jogador(2, "Bot1",true);
-	Dupla2[1] = new Jogador(4, "Bot2",true);
+	Dupla1[0] = new Jogador(1, "Humano1", false);
+	Dupla1[1] = new Jogador(3, "Humano2", false);
+	Dupla2[0] = new Jogador(2, "Bot1", true);
+	Dupla2[1] = new Jogador(4, "Bot2", true);
 
 	BaralhoMesa = nullptr;
 
@@ -74,7 +74,7 @@ void Partida::InicializarRodada()
 
 	if (QuantoValeARodada <= 10)
 	{
-		Dupla1[0]->NaoPodeMaisPedirTruco(); 
+		Dupla1[0]->NaoPodeMaisPedirTruco();
 		Dupla1[1]->NaoPodeMaisPedirTruco();
 		Dupla2[0]->NaoPodeMaisPedirTruco();
 		Dupla2[1]->NaoPodeMaisPedirTruco();
@@ -89,14 +89,14 @@ void Partida::DistribuiCartas()
 	delete BaralhoMesa;
 	BaralhoMesa = new Baralho();
 	BaralhoMesa->Embaralhar();
-	
+
 	DistribuiCartaProJogador(Dupla1[0]);
 	DistribuiCartaProJogador(Dupla1[1]);
 	DistribuiCartaProJogador(Dupla2[0]);
 	DistribuiCartaProJogador(Dupla2[1]);
 
 	Vira = new Carta(&BaralhoMesa->PegarCartaDoTopo());
-	
+
 }
 
 void Partida::DistribuiCartaProJogador(Jogador* jogador)
@@ -127,7 +127,7 @@ void Partida::JogadorJogouACarta(Jogador* jogador, const Carta* carta)
 void Partida::JogadorTrucou(Jogador* jogador)
 {
 	jogador->NaoPodeMaisPedirTruco();
-	if(QuantoValeARodada <= 10)
+	if (QuantoValeARodada <= 10)
 		GetOponenteJogador(jogador)->JaPodePedirTruco();
 	else
 		GetOponenteJogador(jogador)->NaoPodeMaisPedirTruco();
@@ -170,51 +170,53 @@ void Partida::ProximoPasso(Jogador* jogador, AcaoRealizada acao)
 
 	switch (acao)
 	{
-		case AcaoRealizada::Jogou:
-		{
-			ProximoJogadorJoga();
-		}
-		break;
+	case AcaoRealizada::Jogou:
+	{
+		ProximoJogadorJoga();
+	}
+	break;
 
-		case AcaoRealizada::Trucou:
-		{// implementar ações do bot, hoje a classe bot não esta sendo chamada, ela precisa ser ajustada para que possa ser chamada neste trecho de codigo
-			Jogador* proximoJogador = GetProximoJogador();
-			if (proximoJogador->EhUmBot())
+	case AcaoRealizada::Trucou:
+	{// implementar ações do bot, hoje a classe bot não esta sendo chamada, ela precisa ser ajustada para que possa ser chamada neste trecho de codigo
+		Jogador* proximoJogador = GetProximoJogador();
+		if (proximoJogador->EhUmBot())
+		{
+			if (proximoJogador->AceitarTruco())
 			{
-				if (proximoJogador->AceitarTruco())
-				{
-					JogadorAceitou(proximoJogador);
-				}
-				else
-				{
-					JogadorCorreu(proximoJogador);
-					return;
-				}
+				JogadorAceitou(proximoJogador);
 			}
 			else
 			{
-				//Solicita Truco ao jogador
-				EventosDaPartida->onPedeTruco();
+				JogadorCorreu(proximoJogador);
+				return;
 			}
 		}
-		break;
-
-		case AcaoRealizada::Correu:
+		else
 		{
-			Jogador* proximoJogador = GetProximoJogador();
-			AcabouRodada(proximoJogador);
+			//Solicita Truco ao jogador
+			EventosDaPartida->onPedeTruco();
 		}
-		break;
+	}
+	break;
 
-		case AcaoRealizada::Aceitou:
-		{
+	case AcaoRealizada::Correu:
+	{
+		Jogador* proximoJogador = GetProximoJogador();
+		AcabouRodada(proximoJogador);
+	}
+	break;
+
+	case AcaoRealizada::Aceitou:
+	{
+		if (QuantasVezesTrucou <= 4)
 			QuantasVezesTrucou++;
-			QuantoValeARodada = 3 * QuantasVezesTrucou;
 
-			EventosDaPartida->onAceitouTruco(UltimoJogadorAJogar);
-			ProximoJogadorJoga();
-		}
-		break;
+		QuantoValeARodada = 3 * QuantasVezesTrucou;
+
+		EventosDaPartida->onAceitouTruco(UltimoJogadorAJogar);
+		ProximoJogadorJoga();
+	}
+	break;
 	}
 
 }
@@ -226,8 +228,8 @@ Jogador* Partida::QuemJoga()
 
 bool Partida::ValidaQuemGanhouARodada()
 {
-	Jogador *ganhou = Rodadas[RodadaAtual()]->QuemGanhou();
-	if(ganhou != nullptr)
+	Jogador* ganhou = Rodadas[RodadaAtual()]->QuemGanhou();
+	if (ganhou != nullptr)
 		QuemComecaRodada = ganhou;
 	EventosDaPartida->onFimDaRodada(NumeroDaRodada, ganhou);
 
@@ -249,7 +251,7 @@ void Partida::ProximoJogadorJoga()
 	if (QuantosJogadores == 2)
 	{
 		Jogador* jogadorAjogar = GetProximoJogador();
-		
+
 		if (RodadaEstaComecando())
 			jogadorAjogar = QuemComecaRodada;
 
