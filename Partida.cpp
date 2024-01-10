@@ -118,6 +118,9 @@ void Partida::JogadorJogouACarta(Jogador* jogador, const Carta* carta)
 
 void Partida::JogadorTrucou(Jogador* jogador)
 {
+	jogador->NaoPodeMaisPedirTruco();
+	GetProximoJogador()->JaPodePedirTruco();
+
 	ProximoPasso(jogador, AcaoRealizada::Trucou);
 }
 
@@ -146,19 +149,18 @@ bool Partida::RodadaEstaComecando()
 void Partida::ProximoPasso(Jogador* jogador, AcaoRealizada acao)
 {
 	UltimoJogadorAJogar = jogador;
+	if (RodadaEstaCompleta() && acao != AcaoRealizada::Correu)
+	{
+		if (ValidaQuemGanhouARodada())
+			return;
+
+		NumeroDaRodada++;
+	}
 
 	switch (acao)
 	{
 		case AcaoRealizada::Jogou:
 		{
-			if (RodadaEstaCompleta())
-			{
-				if (ValidaQuemGanhouARodada())
-					return;
-
-				NumeroDaRodada++;
-			}
-			
 			ProximoJogadorJoga();
 		}
 		break;
@@ -168,21 +170,38 @@ void Partida::ProximoPasso(Jogador* jogador, AcaoRealizada acao)
 			Jogador* proximoJogador = GetProximoJogador();
 			if (proximoJogador->EhUmBot())
 			{
-				const Carta* cartaJogada = proximoJogador->getjogadabot(RodadaAtual());
-				EventosDaPartida->onBotJogouACarta(NumeroDaRodada, proximoJogador, cartaJogada);
-			
-			}
-			//if(aceitou)
-			QuantasVezesTrucou++;
-			QuantoValeARodada = 3 * QuantasVezesTrucou;
+				if (proximoJogador->AceitarTruco())
+				{
+					QuantasVezesTrucou++;
+					QuantoValeARodada = 3 * QuantasVezesTrucou;
 
+					JogadorAceitou(proximoJogador);
+				}
+				else
+				{
+					JogadorCorreu(proximoJogador);
+					return;
+				}
+			}
+			else
+			{
+				//Solicita Truco ao jogador
+				EventosDaPartida->onPedeTruco();
+			}
 		}
 		break;
 
 		case AcaoRealizada::Correu:
 		{
-			Jogador* JogadorGanhador = GetProximoJogador();
-			AcabouRodada(JogadorGanhador);
+			Jogador* proximoJogador = GetProximoJogador();
+			AcabouRodada(proximoJogador);
+		}
+		break;
+
+		case AcaoRealizada::Aceitou:
+		{
+			EventosDaPartida->onAceitouTruco(UltimoJogadorAJogar);
+			ProximoJogadorJoga();
 		}
 		break;
 	}
@@ -218,9 +237,16 @@ void Partida::ProximoJogadorJoga()
 
 		if (jogadorAjogar->EhUmBot())
 		{
-			const Carta *cartaJogada = jogadorAjogar->getjogadabot(RodadaAtual());
-			EventosDaPartida->onBotJogouACarta(NumeroDaRodada, jogadorAjogar, cartaJogada);
-			JogadorJogouACarta(jogadorAjogar, cartaJogada);
+			if (jogadorAjogar->PedeTruco())
+			{
+				JogadorTrucou(jogadorAjogar);
+			}
+			else
+			{
+				const Carta* cartaJogada = jogadorAjogar->getjogadabot(RodadaAtual());
+				EventosDaPartida->onBotJogouACarta(NumeroDaRodada, jogadorAjogar, cartaJogada);
+				JogadorJogouACarta(jogadorAjogar, cartaJogada);
+			}
 		}
 		else if (!RodadaEstaCompleta())
 		{

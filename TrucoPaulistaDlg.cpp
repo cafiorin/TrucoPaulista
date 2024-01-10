@@ -485,6 +485,18 @@ void CTrucoPaulistaDlg::CleanCheckBox()
 	}
 }
 
+void CTrucoPaulistaDlg::onAceitouTruco(Jogador *jogador)
+{
+	std::string playerName = jogador->ObtemNome();
+	CString strPlayerName(playerName.c_str());
+
+	CString str;
+	str.Format(_T("Jogador %s aceitou o Truco... Manda !"), strPlayerName);
+
+	AfxMessageBox(str, MB_ICONINFORMATION | MB_OK);
+}
+
+
 void CTrucoPaulistaDlg::onFimDaRodada(int numeroRodada, Jogador* JogadorQueGanhou)
 {
 	std::string playerName = JogadorQueGanhou->ObtemNome();
@@ -520,6 +532,23 @@ void CTrucoPaulistaDlg::onBotJogouACarta(int NumeroDaRodada, Jogador* jogadorAjo
 {
 	SetCurrectBitmapFromBot(jogadorAjogar, cartaJogada);
 	Invalidate();
+}
+
+void CTrucoPaulistaDlg::onPedeTruco()
+{
+	Jogador* jogador = partida->ObtemJogadorHumano1();
+
+	GetDlgItem(IDC_EDIT1)->SetWindowText(_T("Truco !!!!"));
+	int resultado = AfxMessageBox(_T("Aceita o Truco?"), MB_YESNO | MB_ICONQUESTION);
+
+	if (resultado == IDYES) 
+	{
+		partida->JogadorAceitou(jogador);
+	}
+	else 
+	{
+		partida->JogadorCorreu(jogador);
+	}
 }
 
 void CTrucoPaulistaDlg::onAcabouARodada(Jogador* JogadorQueGanhou)
