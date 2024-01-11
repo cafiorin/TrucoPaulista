@@ -195,7 +195,6 @@
     <ClInclude Include="IEventosDaPartida.h" />
     <ClInclude Include="Jogador.h" />
     <ClInclude Include="Partida.h" />
-    <ClInclude Include="PartidaController.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Placar.h" />
     <ClInclude Include="Resource.h" />
@@ -212,7 +211,6 @@
     <ClCompile Include="CartasBitmap.cpp" />
     <ClCompile Include="Jogador.cpp" />
     <ClCompile Include="Partida.cpp" />
-    <ClCompile Include="PartidaController.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

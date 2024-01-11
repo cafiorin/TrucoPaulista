@@ -95,6 +95,7 @@ void Partida::DistribuiCartas()
 	DistribuiCartaProJogador(Dupla2[0]);
 	DistribuiCartaProJogador(Dupla2[1]);
 
+	delete Vira;
 	Vira = new Carta(&BaralhoMesa->PegarCartaDoTopo());
 
 }
