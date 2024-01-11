@@ -78,6 +78,9 @@
     <ClInclude Include="IEventosDaPartida.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="PersistenciaController.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TrucoPaulista.cpp">
@@ -118,6 +121,9 @@
     </ClCompile>
     <ClCompile Include="Bot.cpp">
       <Filter>Source Files\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="PersistenciaController.cpp">
+      <Filter>Source Files\Controller</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
