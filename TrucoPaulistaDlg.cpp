@@ -690,7 +690,9 @@ void CTrucoPaulistaDlg::InicializaRodada()
 	m_CartaBOT1_R2.ShowWindow(SW_HIDE);
 	m_CartaBOT1_R3.ShowWindow(SW_HIDE);
 
-	GetDlgItem(IDC_TRUCAR)->ShowWindow(SW_SHOW);
+	if(jogador->PodeTrucar())
+		GetDlgItem(IDC_TRUCAR)->ShowWindow(SW_SHOW);
+	
 	GetDlgItem(IDC_CORRER)->ShowWindow(SW_SHOW);
 
 	SetBitmapCartasAvesso();

@@ -28,6 +28,7 @@ public:
         status = EsperandoJogada;
     }
 
+    bool PodeTrucar() { return PodePedirTruco; }
     void JaPodePedirTruco() { PodePedirTruco = true; }
     void NaoPodeMaisPedirTruco() { PodePedirTruco = false; }
 
