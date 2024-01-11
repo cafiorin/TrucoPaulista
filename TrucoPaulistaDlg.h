@@ -15,7 +15,7 @@ class CTrucoPaulistaDlg : public CDialogEx, public IEventosDaPartida
 // Construction
 public:
 	CTrucoPaulistaDlg(CWnd* pParent = nullptr);	// standard constructor
-	virtual ~CTrucoPaulistaDlg() {};
+	virtual ~CTrucoPaulistaDlg();
 	void SetBitmapOnStaticControl(CStatic& staticControl, CBitmap& bitmap);
 	void SetBitmapCartasAvesso();
 

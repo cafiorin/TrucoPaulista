@@ -57,9 +57,6 @@
     <ClInclude Include="Baralho.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="PartidaController.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="CartasBitmap.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -86,14 +83,8 @@
     <ClCompile Include="TrucoPaulista.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="TrucoPaulistaDlg.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="pch.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="PartidaController.cpp">
-      <Filter>Source Files\Controller</Filter>
     </ClCompile>
     <ClCompile Include="Baralho.cpp">
       <Filter>Source Files\Model</Filter>
@@ -103,9 +94,6 @@
     </ClCompile>
     <ClCompile Include="Jogador.cpp">
       <Filter>Source Files\Model</Filter>
-    </ClCompile>
-    <ClCompile Include="Partida.cpp">
-      <Filter>Source Files\View</Filter>
     </ClCompile>
     <ClCompile Include="Placar.cpp">
       <Filter>Source Files\Model</Filter>
@@ -121,6 +109,12 @@
     </ClCompile>
     <ClCompile Include="Bot.cpp">
       <Filter>Source Files\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="Partida.cpp">
+      <Filter>Source Files\Controller</Filter>
+    </ClCompile>
+    <ClCompile Include="TrucoPaulistaDlg.cpp">
+      <Filter>Source Files\View</Filter>
     </ClCompile>
     <ClCompile Include="PersistenciaController.cpp">
       <Filter>Source Files\Controller</Filter>

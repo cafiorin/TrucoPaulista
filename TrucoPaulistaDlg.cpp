@@ -15,6 +15,14 @@
 #include <atlimage.h>
 #include <windows.h>
 
+#define CRTDBG_MAP_ALLOC
+#include <stdlib.h>
+#include <crtdbg.h>
+
+#ifdef DEBUG
+#define new new(_NORMAL_BLOCK, __FILE__, __LINE__)
+#endif
+
 #define WM_CUSTOM_MESSAGE (WM_USER + 1)
 
 // CAboutDlg dialog used for App About
@@ -146,6 +154,12 @@ BOOL CTrucoPaulistaDlg::OnInitDialog()
 
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
+
+CTrucoPaulistaDlg::~CTrucoPaulistaDlg()
+{
+	delete partida;
+}
+
 
 void CTrucoPaulistaDlg::InicializaTelaInicial()
 {
@@ -461,7 +475,7 @@ void CTrucoPaulistaDlg::onFimDaPartida(Jogador* JogadorQueGanhou)
 	CString strPlayerName(playerName.c_str());
 
 	CString str;
-	str.Format(_T("O jogador %s ganhou a partida"), strPlayerName);
+	str.Format(_T("PARABENS !!!! O jogador %s ganhou a PARTIDA!!!!"), strPlayerName);
 
 	AfxMessageBox(str, MB_ICONINFORMATION | MB_OK);
 
