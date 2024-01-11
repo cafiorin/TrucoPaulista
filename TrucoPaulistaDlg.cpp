@@ -594,8 +594,10 @@ void CTrucoPaulistaDlg::onAcabouARodada(Jogador* JogadorQueGanhou)
 
 	AfxMessageBox(str, MB_ICONINFORMATION | MB_OK);
 
-	partida->InicializarRodada();
+	bool botComeca = partida->InicializarRodada();
 	InicializaRodada();
+	if (botComeca)
+		partida->ProximoJogadorJoga();
 }
 
 void CTrucoPaulistaDlg::AtualizaPlacar()
@@ -645,7 +647,6 @@ void CTrucoPaulistaDlg::InicializaRodada()
 	CartasBitmap cartaBitmap1(*jogador->PrimeiraCartaNaMao());
 	CartasBitmap cartaBitmap2(*jogador->SegundaCartaNaMao());
 	CartasBitmap cartaBitmap3(*jogador->TerceiraCartaNaMao());
-	Carta Vira(partida->ObtemVira());
 
 	SetBitmapOnStaticControl(m_Pic1, *cartaBitmap1.Getbitmap());
 	SetBitmapOnStaticControl(m_Pic2, *cartaBitmap2.Getbitmap());
@@ -653,8 +654,6 @@ void CTrucoPaulistaDlg::InicializaRodada()
 	m_Pic1.ModifyStyle(0, SS_NOTIFY);
 	m_Pic2.ModifyStyle(0, SS_NOTIFY);
 	m_Pic3.ModifyStyle(0, SS_NOTIFY);
-
-	//SetBitmapMesa();
 
 	m_CartaH2_R1.ShowWindow(SW_HIDE);
 	m_CartaH2_R2.ShowWindow(SW_HIDE);
@@ -669,6 +668,7 @@ void CTrucoPaulistaDlg::InicializaRodada()
 
 	SetBitmapCartasAvesso();
 
+	Carta Vira(partida->ObtemVira());
 	CartasBitmap cartaBitmap4(Vira);
 	SetBitmapOnStaticControl(m_PicVira, *cartaBitmap4.Getbitmap());
 	Invalidate();

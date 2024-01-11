@@ -37,7 +37,7 @@ public:
 
 	void InicializarPartidaCliente();
 
-	void InicializarRodada();
+	bool InicializarRodada();
 
 	void DistribuiCartas();
 

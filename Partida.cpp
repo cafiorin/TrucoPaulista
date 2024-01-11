@@ -42,6 +42,7 @@ void Partida::InicializarPartida(int quantosJogadores)
 	QuantosJogadores = quantosJogadores;
 	placar->Inicializar();
 	EventosDaPartida->onInicioDaPartida();
+	QuemComecaRodada = Dupla1[0]; 
 
 	InicializarRodada();
 }
@@ -56,10 +57,9 @@ void Partida::GanhouPartida()
 {
 }
 
-void Partida::InicializarRodada()
+bool Partida::InicializarRodada()
 {
 	NumeroDaRodada = 1;
-	QuemComecaRodada = Dupla1[0]; //Pegar quem ganhou a rodada anterior
 	QuantoValeARodada = 1;
 	QuantasVezesTrucou = 0;
 	DistribuiCartas();
@@ -82,6 +82,7 @@ void Partida::InicializarRodada()
 
 	EventosDaPartida->onInicioDaRodada(NumeroDaRodada);
 
+	return (QuemComecaRodada->EhUmBot());
 }
 
 void Partida::DistribuiCartas()
@@ -203,6 +204,7 @@ void Partida::ProximoPasso(Jogador* jogador, AcaoRealizada acao)
 	case AcaoRealizada::Correu:
 	{
 		Jogador* proximoJogador = GetProximoJogador();
+		QuemComecaRodada = proximoJogador;
 		AcabouRodada(proximoJogador);
 	}
 	break;
@@ -319,6 +321,7 @@ bool Partida::ValidaQuemGanhouAsRodadas()
 			if (Rodadas[0]->QuemGanhou() == nullptr)
 			{
 				Jogador* ganhou = Rodadas[1]->QuemGanhou();
+				QuemComecaRodada = ganhou;
 				AcabouRodada(ganhou);
 				return true;
 			}
@@ -326,6 +329,7 @@ bool Partida::ValidaQuemGanhouAsRodadas()
 			if (Rodadas[1]->QuemGanhou() == nullptr)
 			{
 				Jogador* ganhou = Rodadas[0]->QuemGanhou();
+				QuemComecaRodada = ganhou;
 				AcabouRodada(ganhou);
 				return true;
 			}
@@ -333,6 +337,7 @@ bool Partida::ValidaQuemGanhouAsRodadas()
 			if (Rodadas[0]->QuemGanhou() == Rodadas[1]->QuemGanhou())
 			{
 				Jogador* ganhou = Rodadas[0]->QuemGanhou();
+				QuemComecaRodada = ganhou;
 				AcabouRodada(ganhou);
 				return true;
 			}
@@ -342,6 +347,7 @@ bool Partida::ValidaQuemGanhouAsRodadas()
 			if (Rodadas[2]->QuemGanhou() == nullptr)
 			{
 				Jogador* ganhou = Rodadas[0]->QuemGanhou();
+				QuemComecaRodada = ganhou;
 				AcabouRodada(ganhou);
 				return true;
 			}
@@ -350,12 +356,14 @@ bool Partida::ValidaQuemGanhouAsRodadas()
 				Rodadas[0]->QuemGanhou() == Rodadas[2]->QuemGanhou())
 			{
 				Jogador* ganhou = Rodadas[0]->QuemGanhou();
+				QuemComecaRodada = ganhou;
 				AcabouRodada(ganhou);
 				return true;
 			}
 			else if (Rodadas[1]->QuemGanhou() == Rodadas[2]->QuemGanhou())
 			{
 				Jogador* ganhou = Rodadas[1]->QuemGanhou();
+				QuemComecaRodada = ganhou;
 				AcabouRodada(ganhou);
 				return true;
 			}
