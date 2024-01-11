@@ -18,6 +18,9 @@ public:
 	virtual ~CTrucoPaulistaDlg();
 	void SetBitmapOnStaticControl(CStatic& staticControl, CBitmap& bitmap);
 	void SetBitmapCartasAvesso();
+	
+	void CleanOutput();
+	void AddOutput(const CString& novaLinha);
 
 	void SetBitmapMesa();
 	void InicializaTelaInicial();

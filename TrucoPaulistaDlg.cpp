@@ -506,10 +506,29 @@ void CTrucoPaulistaDlg::onAceitouTruco(Jogador *jogador)
 
 	CString str;
 	str.Format(_T("Jogador %s aceitou o Truco... Manda !"), strPlayerName);
+	AddOutput(str);
 
 	AfxMessageBox(str, MB_ICONINFORMATION | MB_OK);
 }
 
+void CTrucoPaulistaDlg::CleanOutput()
+{
+	CEdit* pEdit = static_cast<CEdit*>(GetDlgItem(IDC_EDIT1));
+	CString strTextoAtual;
+	strTextoAtual = _T("");
+	pEdit->SetWindowText(strTextoAtual);
+
+}
+
+void CTrucoPaulistaDlg::AddOutput(const CString& novaLinha) 
+{
+	CEdit* pEdit = static_cast<CEdit*>(GetDlgItem(IDC_EDIT1));
+	CString strTextoAtual;
+	pEdit->GetWindowText(strTextoAtual);
+	strTextoAtual += novaLinha + _T("\r\n") ;
+	pEdit->SetWindowText(strTextoAtual);
+	pEdit->LineScroll(pEdit->GetLineCount());
+}
 
 void CTrucoPaulistaDlg::onFimDaRodada(int numeroRodada, Jogador* JogadorQueGanhou)
 {
@@ -517,8 +536,7 @@ void CTrucoPaulistaDlg::onFimDaRodada(int numeroRodada, Jogador* JogadorQueGanho
 	{
 		CString str;
 		str.Format(_T("Empatou a rodada %d..."), numeroRodada);
-
-		GetDlgItem(IDC_EDIT1)->SetWindowText(str);
+		AddOutput(str);
 
 		int baseCheckBox = IDC_CHECK1 + ((numeroRodada - 1) * 2);
 		CButton* pCheckBox = (CButton*)GetDlgItem(baseCheckBox);
@@ -536,8 +554,7 @@ void CTrucoPaulistaDlg::onFimDaRodada(int numeroRodada, Jogador* JogadorQueGanho
 
 		CString str;
 		str.Format(_T("Jogador %s ganhou a rodada %d..."), strPlayerName, numeroRodada);
-
-		GetDlgItem(IDC_EDIT1)->SetWindowText(str);
+		AddOutput(str);
 
 		int baseCheckBox = IDC_CHECK1 + ((numeroRodada - 1) * 2);
 		baseCheckBox = JogadorQueGanhou->EhUmBot() ? baseCheckBox + 1 : baseCheckBox;
@@ -556,8 +573,7 @@ void CTrucoPaulistaDlg::solicitaJogadorJogar(Jogador* jogador)
 
 	CString str;
 	str.Format(_T("Sua Vez %s..."), strPlayerName);
-
-	GetDlgItem(IDC_EDIT1)->SetWindowText(str);
+	AddOutput(str);
 }
 
 void CTrucoPaulistaDlg::onBotJogouACarta(int NumeroDaRodada, Jogador* jogadorAjogar, const Carta* cartaJogada)
@@ -570,7 +586,10 @@ void CTrucoPaulistaDlg::onPedeTruco()
 {
 	Jogador* jogador = partida->ObtemJogadorHumano1();
 
-	GetDlgItem(IDC_EDIT1)->SetWindowText(_T("Truco !!!!"));
+	CString str;
+	str.Format(_T("Truco !!!!"));
+	AddOutput(str);
+
 	int resultado = AfxMessageBox(_T("Aceita o Truco?"), MB_YESNO | MB_ICONQUESTION);
 	GetDlgItem(IDC_TRUCAR)->ShowWindow(SW_SHOW);
 
@@ -591,6 +610,7 @@ void CTrucoPaulistaDlg::onAcabouARodada(Jogador* JogadorQueGanhou)
 
 	CString str;
 	str.Format(_T("O jogador %s ganhou a rodada"), strPlayerName);
+	AddOutput(str);
 
 	AfxMessageBox(str, MB_ICONINFORMATION | MB_OK);
 
@@ -598,6 +618,11 @@ void CTrucoPaulistaDlg::onAcabouARodada(Jogador* JogadorQueGanhou)
 	InicializaRodada();
 	if (botComeca)
 		partida->ProximoJogadorJoga();
+	
+	CleanOutput();
+
+	str.Format(_T("Sua vez Humano1 !"));
+	AddOutput(str);
 }
 
 void CTrucoPaulistaDlg::AtualizaPlacar()
@@ -621,7 +646,9 @@ void CTrucoPaulistaDlg::InicializaRodada()
 	GetDlgItem(IDC_BUTTON1)->ShowWindow(SW_HIDE);
 	GetDlgItem(IDC_STATIC)->ShowWindow(SW_HIDE);
 	GetDlgItem(IDC_EDIT1)->ShowWindow(SW_SHOW);
-	GetDlgItem(IDC_EDIT1)->SetWindowText(_T("Sua Vez Humano 1...\n"));
+	CString str;
+	str.Format(_T("Sua vez Humano1 !"));
+	AddOutput(str);
 
 	m_Pic1.ShowWindow(SW_SHOW);
 	m_Pic2.ShowWindow(SW_SHOW);

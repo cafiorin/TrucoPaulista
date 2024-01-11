@@ -73,7 +73,7 @@ public:
     {
         srand(static_cast<unsigned int>(time(nullptr)));
         if(PodePedirTruco)
-            return (rand() % 10 == 1);
+            return (rand() % 5 == 1);
         return false;
     }
 };

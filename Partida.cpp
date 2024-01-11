@@ -72,12 +72,20 @@ bool Partida::InicializarRodada()
 	Rodadas[1] = new Rodada(2, Vira, QuantosJogadores);
 	Rodadas[2] = new Rodada(3, Vira, QuantosJogadores);
 
-	if (QuantoValeARodada <= 10)
+	if (placar->PontosDaDupla1 == 11 || 
+		placar->PontosDaDupla2 == 11)
 	{
 		Dupla1[0]->NaoPodeMaisPedirTruco();
 		Dupla1[1]->NaoPodeMaisPedirTruco();
 		Dupla2[0]->NaoPodeMaisPedirTruco();
 		Dupla2[1]->NaoPodeMaisPedirTruco();
+	}
+	else
+	{
+		Dupla1[0]->JaPodePedirTruco();
+		Dupla1[1]->JaPodePedirTruco();
+		Dupla2[0]->JaPodePedirTruco();
+		Dupla2[1]->JaPodePedirTruco();
 	}
 
 	EventosDaPartida->onInicioDaRodada(NumeroDaRodada);
