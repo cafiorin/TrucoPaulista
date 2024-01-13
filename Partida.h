@@ -95,5 +95,6 @@ public:
 	PosicaoNaDuplaParaJogar RetornarPosicaoNaDuplaParaJogar();
 	std::pair<const Carta*, bool> RetornarCartaMaisAltaDaRodadaESeEhDaDupla(Jogador* jogador_atual);
 	bool VerificarSeEhMesmaDupla(Jogador* jogador1, Jogador* jogador2);
+	bool RetornarSeDuplaEstaGanhandoOuEmpatado(Jogador* jogador_atual);
 };
 

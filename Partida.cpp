@@ -192,12 +192,13 @@ void Partida::ProximoPasso(Jogador* jogador, AcaoRealizada acao)
 		if (proximoJogador->EhUmBot())
 		{
 			// TODO (BOT): Testar metodos e ver se funciona ok
-			/** 
+			/**
 			NumeroDaRodadaAtual rodada_atual = RetornarNumeroDaRodadaAtual();
 			PosicaoNaDuplaParaJogar posicao = RetornarPosicaoNaDuplaParaJogar();
 			std::pair<const Carta*, bool> carta_mais_alta = RetornarCartaMaisAltaDaRodadaESeEhDaDupla(proximoJogador);
+			bool dupla_esta_ganhando_ou_empatado = RetornarSeDuplaEstaGanhandoOuEmpatado(proximoJogador);
 
-			static_cast<Bot*>(proximoJogador)->VerificarSeDeveAceitarOuCorrer(rodada_atual, posicao, carta_mais_alta);
+			static_cast<Bot*>(proximoJogador)->VerificarSeDeveAceitarOuCorrer(rodada_atual, posicao, carta_mais_alta, dupla_esta_ganhando_ou_empatado);
 			*/
 			if (proximoJogador->AceitarTruco())
 			{
@@ -282,6 +283,7 @@ void Partida::ProximoJogadorJoga()
 			PosicaoNaDuplaParaJogar posicao = RetornarPosicaoNaDuplaParaJogar();
 			std::pair<const Carta*, bool> carta_mais_alta = RetornarCartaMaisAltaDaRodadaESeEhDaDupla(jogadorAjogar);
 
+			// TODO: Refatorar metodo Bot::FazerUmaJogada para ficar compativel com os novos eventos
 			static_cast<Bot*>(jogadorAjogar)->FazerUmaJogada(rodada_atual, posicao, carta_mais_alta);
 			*/
 			if (jogadorAjogar->PedeTruco())
@@ -467,3 +469,16 @@ bool Partida::VerificarSeEhMesmaDupla(Jogador* jogador1, Jogador* jogador2) {
 	return numero_de_matchs == 2 ? true : false;
 }
 
+bool Partida::RetornarSeDuplaEstaGanhandoOuEmpatado(Jogador* jogador_atual) {
+	bool esta_ganhando_ou_empatado = false;
+
+	if (placar->PontosDaDupla1 == placar->PontosDaDupla2) {
+		esta_ganhando_ou_empatado = true;
+	} else if (placar->PontosDaDupla1 > placar->PontosDaDupla2) {
+		if (Dupla1[0]->ObtemNumeroJogador() == jogador_atual->ObtemNumeroJogador() || Dupla1[1]->ObtemNumeroJogador() == jogador_atual->ObtemNumeroJogador()) {
+			esta_ganhando_ou_empatado = true;
+		}
+	}
+
+	return esta_ganhando_ou_empatado;
+}
