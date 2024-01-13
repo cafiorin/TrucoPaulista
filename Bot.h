@@ -25,7 +25,11 @@ public:
 	*	4. carta_mais_alta_rodada: { Carta, eh_da_sua_dupla [true/false] }
 	*	5. valor_da_rodada_atual: { 1, 3, 6, 9, 12 }
 	*/
-	void FazerUmaJogada(NumeroDaRodada tipo_rodada, PosicaoNaDuplaParaJogar posicao, bool adversario_esta_trucando, std::pair<const Carta*, bool> carta_mais_alta_rodada, int valor_da_rodada_atual);
+	void FazerUmaJogada(NumeroDaRodadaAtual tipo_rodada, PosicaoNaDuplaParaJogar posicao, bool adversario_esta_trucando, std::pair<const Carta*, bool> carta_mais_alta_rodada, int valor_da_rodada_atual);
+	void VerificarSeDeveAceitarOuCorrer(NumeroDaRodadaAtual tipo_rodada, PosicaoNaDuplaParaJogar posicao, std::pair<const Carta*, bool> carta_mais_alta_rodada);
+
+	bool AceitarTruco();
+	bool PedeTruco();
 
 private:
 	ValorDasCartasNaMao AnalisarMaoDeCartas();
@@ -39,5 +43,11 @@ private:
 	void JogarComoPeEComAdversarioNaoTrucando(std::pair<const Carta*, bool> carta_mais_alta_rodada, int valor_da_rodada_atual);
 	std::vector<const Carta*> OrdenarCartasDaMao();
 	bool CalcularSeDeveTrucarOuCorrerOuAceitar(ProbabilidadeDeTrucarOuCorrerOuAceitar probabilidade);
+	void LimparDecisoesDoBot();
+	void SetAceitarTruco(bool decisao);
+	void SetPedeTruco(bool decisao);
+
+	bool deve_aceitar_o_truco_;
+	bool deve_pedir_truco_;
 };
 

@@ -1,11 +1,20 @@
 #include "pch.h"
 #include "Bot.h"
 
-Bot::Bot(int numero, std::string nome) : Jogador(numero, nome, true) {}
+Bot::Bot(int numero, std::string nome) : Jogador(numero, nome, true) {
+	LimparDecisoesDoBot();
+}
+
 Bot::~Bot() {}
 
-void Bot::FazerUmaJogada(NumeroDaRodada tipo_rodada, PosicaoNaDuplaParaJogar posicao, bool adversario_esta_trucando, std::pair<const Carta*, bool> carta_mais_alta_rodada, int valor_da_rodada_atual)
+void Bot::VerificarSeDeveAceitarOuCorrer(NumeroDaRodadaAtual tipo_rodada, PosicaoNaDuplaParaJogar posicao, std::pair<const Carta*, bool> carta_mais_alta_rodada) {
+
+}
+
+void Bot::FazerUmaJogada(NumeroDaRodadaAtual tipo_rodada, PosicaoNaDuplaParaJogar posicao, bool adversario_esta_trucando, std::pair<const Carta*, bool> carta_mais_alta_rodada, int valor_da_rodada_atual)
 {
+	LimparDecisoesDoBot();
+
 	switch (tipo_rodada)
 	{
 	case PrimeiraRodada:
@@ -581,4 +590,25 @@ ValorDasCartasNaMao Bot::AnalisarValorFinal(std::map<ValorDasCartasNaMao, int>& 
 	{
 		return Ruim;
 	}
+}
+
+void Bot::LimparDecisoesDoBot() {
+	deve_aceitar_o_truco_ = false;
+	deve_pedir_truco_ = false;
+}
+
+bool Bot::AceitarTruco() {
+	return deve_aceitar_o_truco_;
+}
+
+bool Bot::PedeTruco() {
+	return deve_pedir_truco_;
+}
+
+void Bot::SetAceitarTruco(bool decisao) {
+	deve_aceitar_o_truco_ = decisao;
+}
+
+void Bot::SetPedeTruco(bool decisao) {
+	deve_pedir_truco_ = decisao;
 }
