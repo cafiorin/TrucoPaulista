@@ -198,7 +198,7 @@ void Partida::ProximoPasso(Jogador* jogador, AcaoRealizada acao)
 			std::pair<const Carta*, bool> carta_mais_alta = RetornarCartaMaisAltaDaRodadaESeEhDaDupla(proximoJogador);
 			bool dupla_esta_ganhando_ou_empatado = RetornarSeDuplaEstaGanhandoOuEmpatado(proximoJogador);
 
-			static_cast<Bot*>(proximoJogador)->VerificarSeDeveAceitarOuCorrer(rodada_atual, posicao, carta_mais_alta, dupla_esta_ganhando_ou_empatado);
+			static_cast<Bot*>(proximoJogador)->VerificarSeDeveAceitarOuCorrer(rodada_atual, posicao, carta_mais_alta, dupla_esta_ganhando_ou_empatado, Vira);
 			*/
 			if (proximoJogador->AceitarTruco())
 			{
@@ -284,7 +284,7 @@ void Partida::ProximoJogadorJoga()
 			std::pair<const Carta*, bool> carta_mais_alta = RetornarCartaMaisAltaDaRodadaESeEhDaDupla(jogadorAjogar);
 
 			// TODO: Refatorar metodo Bot::FazerUmaJogada para ficar compativel com os novos eventos
-			static_cast<Bot*>(jogadorAjogar)->FazerUmaJogada(rodada_atual, posicao, carta_mais_alta);
+			static_cast<Bot*>(jogadorAjogar)->FazerUmaJogada(rodada_atual, posicao, carta_mais_alta, Vira);
 			*/
 			if (jogadorAjogar->PedeTruco())
 			{
