@@ -1,11 +1,16 @@
 #pragma once
 
-#include "Rodada.h"
+class Rodada;
+class Jogador;
+class Carta;
+class CartaDaRodada;
 
 class RodadasController
 {
+
 private:
 	Rodada* Rodadas[3];
+	Carta* Vira;
 
 	int NumeroDaRodada;
 	int QuantoValeARodada;
@@ -18,12 +23,13 @@ public:
 
 	int QualRodadaEsta() { return NumeroDaRodada; }
 	void ProximaRodada() { if (NumeroDaRodada < 3) NumeroDaRodada++; }
-	bool EhAUltimaRodada() { return NumeroDaRodada == 3; };
+	bool EhAUltimaRodada() { return NumeroDaRodada == 3; }
+	int NumeroDeJogadores() { return (JogoDeDupla ? 4 : 2); }
 
-	int IndiceDaRodadaAtual() { return NumeroDaRodada - 1; };
-	bool RodadaEstaCompleta() { return (Rodadas[IndiceDaRodadaAtual()]->CartasAdicionadas == (JogoDeDupla ? 4 : 2)); }
-	bool RodadaEstaComecando() {return (Rodadas[IndiceDaRodadaAtual()]->CartasAdicionadas == 0);}
-	Jogador* QuemGanhouARodadaAtual() { return Rodadas[IndiceDaRodadaAtual()]->QuemGanhou(); }
+	int IndiceDaRodadaAtual() { return NumeroDaRodada - 1; }
+	bool RodadaEstaCompleta();
+	bool RodadaEstaComecando();
+	Jogador* QuemGanhouARodadaAtual();
 	Jogador* JaTemosUmVencedor();
 
 	int QuantoEstaValendoARodada() { return QuantoValeARodada; }
@@ -40,21 +46,13 @@ public:
 	}
 
 	void InicializarRodada(Carta* vira);
-	
-	void CartaJogada(const Carta* carta, Jogador* jogador )
-	{
-		Rodadas[IndiceDaRodadaAtual()]->CartaJogada(*carta, *jogador);
-	}
 
-	bool RetornarSeEhPrimeiroParaJogarNaRodadaAtual()
-	{
-		return Rodadas[IndiceDaRodadaAtual()]->RetornarSeEhPrimeiroParaJogar();
-	}
+	Carta* QualOVira() { return Vira; }
+	void CartaJogada(const Carta* carta, Jogador* jogador);
+	bool RetornarSeEhPrimeiroParaJogarNaRodadaAtual();
+	CartaDaRodada* RetornaMaiorCartaDaRodadaAtual();
 
-	CartaDaRodada* RetornaMaiorCartaDaRodadaAtual()
-	{
-		return Rodadas[NumeroDaRodada]->RetornaMaiorCartaDaRodada();
-	}
+	int MaiorCarta(const Carta* carta1, const Carta* carta2);
 };
 
 

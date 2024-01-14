@@ -15,22 +15,13 @@ public:
 	BotJogaSozinho(int numero, std::string nome);
 	~BotJogaSozinho();
 
-	void FazerUmaJogadaRebatendo(int NumeroDaRodada, bool adversario_esta_trucando, Carta* cartaJogada);
-	void FazerUmaJogadaComecando(int NumeroDaRodada);
+	void FazerUmaJogadaRebatendo();
+	void FazerUmaJogadaComecando();
 
-	virtual bool AceitarTruco()
-	{
-		srand(static_cast<unsigned int>(time(nullptr)));
-		return (rand() % 2 == 1);
-	}
-
-	virtual bool PedeTruco()
-	{
-		srand(static_cast<unsigned int>(time(nullptr)));
-		if (PodePedirTruco)
-			return (rand() % 5 == 1);
-		return false;
-	}
+	virtual void InicializaRodada(RodadasController* mesaDaRodada);
+	virtual bool AceitarTruco();
+	virtual bool PedeTruco();
+	
 //
 //private:
 //	ValorDasCartasNaMao AnalisarMaoDeCartas();

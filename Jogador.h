@@ -6,6 +6,7 @@
 #include <ctime>
 
 #include "Carta.h"
+class RodadasController;
 
 class Jogador 
 {
@@ -16,9 +17,15 @@ protected:
     StatusJogador status;
     bool Bot;
     bool PodePedirTruco;
+    RodadasController* MesaDaRodada;
 
 public:
     Jogador(int numero, std::string nome,bool bot) : NumeroJogador(numero), Nome(nome), status(EsperandoCartas),Bot(bot), PodePedirTruco(true){}
+
+    virtual void InicializaRodada(RodadasController* mesaDaRodada)
+    {
+        MesaDaRodada = mesaDaRodada;
+    }
 
     void RecebeCartas(const Carta& carta1, const Carta& carta2, const Carta& carta3) {
         mao[0] = std::make_unique<Carta>(carta1);

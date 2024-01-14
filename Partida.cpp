@@ -71,6 +71,11 @@ bool Partida::InicializarRodada()
 		Dupla2[1]->JaPodePedirTruco();
 	}
 
+	Dupla1[0]->InicializaRodada(Rodadas);
+	Dupla1[1]->InicializaRodada(Rodadas);
+	Dupla2[0]->InicializaRodada(Rodadas);
+	Dupla2[1]->InicializaRodada(Rodadas);
+
 	EventosDaPartida->onInicioDaRodada(Rodadas->QualRodadaEsta());
 
 	return (QuemComecaRodada->EhUmBot());

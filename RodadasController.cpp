@@ -1,6 +1,9 @@
 #include "pch.h"
-#include "RodadasController.h"
 
+#include "Rodada.h"
+#include "Carta.h"
+#include "Jogador.h"
+#include "RodadasController.h"
 
 RodadasController::RodadasController(bool jogoDeDupla)
 {
@@ -12,6 +15,7 @@ RodadasController::RodadasController(bool jogoDeDupla)
 	Rodadas[0] = nullptr;
 	Rodadas[1] = nullptr;
 	Rodadas[2] = nullptr;
+	Vira = nullptr;
 }
 
 
@@ -24,6 +28,8 @@ RodadasController::~RodadasController()
 
 void RodadasController::InicializarRodada(Carta *vira)
 {
+	Vira = vira;
+
 	NumeroDaRodada = 1;
 	QuantoValeARodada = 1;
 	QuantasVezesTrucou = 0;
@@ -32,9 +38,9 @@ void RodadasController::InicializarRodada(Carta *vira)
 	delete Rodadas[1];
 	delete Rodadas[2];
 
-	Rodadas[0] = new Rodada(1, vira, JogoDeDupla ? 4 : 2);
-	Rodadas[1] = new Rodada(2, vira, JogoDeDupla ? 4 : 2);
-	Rodadas[2] = new Rodada(3, vira, JogoDeDupla ? 4 : 2);
+	Rodadas[0] = new Rodada(1, this);
+	Rodadas[1] = new Rodada(2, this);
+	Rodadas[2] = new Rodada(3, this);
 }
 
 Jogador* RodadasController::JaTemosUmVencedor()
@@ -78,4 +84,48 @@ Jogador* RodadasController::JaTemosUmVencedor()
 	}
 
 	return nullptr;
+}
+
+bool RodadasController::RodadaEstaCompleta()
+{ 
+	return (Rodadas[IndiceDaRodadaAtual()]->CartasAdicionadas == (JogoDeDupla ? 4 : 2)); 
+}
+
+bool RodadasController::RodadaEstaComecando()
+{ 
+	return (Rodadas[IndiceDaRodadaAtual()]->CartasAdicionadas == 0); 
+}
+
+Jogador* RodadasController::QuemGanhouARodadaAtual()
+{ 
+	return Rodadas[IndiceDaRodadaAtual()]->QuemGanhou(); 
+}
+
+void RodadasController::CartaJogada(const Carta* carta, Jogador* jogador)
+{
+	Rodadas[IndiceDaRodadaAtual()]->CartaJogada(*carta, *jogador);
+}
+
+bool RodadasController::RetornarSeEhPrimeiroParaJogarNaRodadaAtual()
+{
+	return Rodadas[IndiceDaRodadaAtual()]->RetornarSeEhPrimeiroParaJogar();
+}
+
+CartaDaRodada* RodadasController::RetornaMaiorCartaDaRodadaAtual()
+{
+	return Rodadas[NumeroDaRodada]->RetornaMaiorCartaDaRodada();
+}
+
+int RodadasController::MaiorCarta(const Carta* carta1, const Carta* carta2)
+{
+	int valor1 = carta1->ObtemValor(Vira);
+	int valor2 = carta2->ObtemValor(Vira);
+
+	if (valor1 > valor2)
+		return 0;
+
+	if (valor1 == valor2)
+		return -1;
+
+	return 1;
 }
