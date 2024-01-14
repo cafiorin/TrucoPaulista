@@ -324,6 +324,9 @@ bool Partida::ValidaQuemGanhouAsRodadas()
 
 NumeroDaRodadaAtual Partida::RetornarNumeroDaRodadaAtual() 
 {
+	//informação : O Jogador agora tem um objeto de contexto da Rodada : o MesaDaRodada , onde tem todas as informações necessarias para jogar uma carta
+
+
 	if (placar->PontosDaDupla1 == placar->PontosDaDupla2) 
 	{
 		return Melando;
@@ -351,6 +354,8 @@ NumeroDaRodadaAtual Partida::RetornarNumeroDaRodadaAtual()
 
 PosicaoNaDuplaParaJogar Partida::RetornarPosicaoNaDuplaParaJogar() 
 {
+	//informação : O Jogador agora tem um objeto de contexto da Rodada : o MesaDaRodada , onde tem todas as informações necessarias para jogar uma carta
+
 	if (Rodadas->RetornarSeEhPrimeiroParaJogarNaRodadaAtual())
 	{
 		return Primeiro;
@@ -361,6 +366,8 @@ PosicaoNaDuplaParaJogar Partida::RetornarPosicaoNaDuplaParaJogar()
 
 std::pair<const Carta*, bool> Partida::RetornarCartaMaisAltaDaRodadaESeEhDaDupla(Jogador* jogador_atual) 
 {
+	//informação : O Jogador agora tem um objeto de contexto da Rodada : o MesaDaRodada , onde tem todas as informações necessarias para jogar uma carta
+
 	std::pair<const Carta*, bool> res;
 
 	CartaDaRodada* maior_carta_da_rodada = Rodadas->RetornaMaiorCartaDaRodadaAtual();
@@ -380,6 +387,8 @@ std::pair<const Carta*, bool> Partida::RetornarCartaMaisAltaDaRodadaESeEhDaDupla
 
 bool Partida::VerificarSeEhMesmaDupla(Jogador* jogador1, Jogador* jogador2) 
 {
+	//informação : O Jogador agora tem um objeto de contexto da Rodada : o MesaDaRodada , onde tem todas as informações necessarias para jogar uma carta
+
 	int numero_de_matchs = 0;
 
 	for (Jogador* jogador : Dupla1) 
@@ -396,6 +405,8 @@ bool Partida::VerificarSeEhMesmaDupla(Jogador* jogador1, Jogador* jogador2)
 
 bool Partida::RetornarSeDuplaEstaGanhandoOuEmpatado(Jogador* jogador_atual) 
 {
+	//informação : O Jogador agora tem um objeto de contexto da Rodada : o MesaDaRodada , onde tem todas as informações necessarias para jogar uma carta
+
 	bool esta_ganhando_ou_empatado = false;
 
 	if (placar->PontosDaDupla1 == placar->PontosDaDupla2) 
