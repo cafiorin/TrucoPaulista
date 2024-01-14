@@ -155,13 +155,13 @@ void Bot::VerificarSeDeveAceitarSegundaRodada(PosicaoNaDuplaParaJogar posicao, s
 			SetAceitarTruco(deve_aceitar);
 			break;
 		case Medio:
-			eh_da_sua_dupla&& dupla_esta_ganhando_ou_empatado ? SetAceitarTruco(true) : SetAceitarTruco(false);
+			eh_da_sua_dupla && dupla_esta_ganhando_ou_empatado ? SetAceitarTruco(true) : SetAceitarTruco(false);
 			break;
 		case Fraco:
-			eh_da_sua_dupla&& dupla_esta_ganhando_ou_empatado ? SetAceitarTruco(true) : SetAceitarTruco(false);
+			eh_da_sua_dupla && dupla_esta_ganhando_ou_empatado ? SetAceitarTruco(true) : SetAceitarTruco(false);
 			break;
 		case Ruim:
-			eh_da_sua_dupla&& dupla_esta_ganhando_ou_empatado ? SetAceitarTruco(true) : SetAceitarTruco(false);
+			eh_da_sua_dupla && dupla_esta_ganhando_ou_empatado ? SetAceitarTruco(true) : SetAceitarTruco(false);
 			break;
 		default:
 			break;

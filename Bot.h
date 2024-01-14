@@ -41,7 +41,7 @@ public:
 	void VerificarSeDeveAceitarOuCorrer(NumeroDaRodadaAtual tipo_rodada, PosicaoNaDuplaParaJogar posicao, std::pair<const Carta*, bool> carta_mais_alta_rodada, bool dupla_esta_ganhando_ou_empatado, const Carta* vira);
 
 	/**
-	* Esses metodos sao usados para ler o valor da decisao tomada pelo bot, se deve pedir truco ou se deve aceitar/correr de um truco e também a carta escolhida
+	* Esses metodos sao usados para ler o valor da decisao tomada pelo bot, se deve pedir truco ou se deve aceitar/correr de um truco e tambem a carta escolhida
 	*/
 	bool AceitarTruco();
 	bool PedeTruco();
