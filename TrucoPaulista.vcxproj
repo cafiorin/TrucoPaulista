@@ -187,6 +187,7 @@
   <ItemGroup>
     <ClInclude Include="Baralho.h" />
     <ClInclude Include="Bot.h" />
+    <ClInclude Include="BotJogaSozinho.h" />
     <ClInclude Include="Carta.h" />
     <ClInclude Include="CartaDaRodada.h" />
     <ClInclude Include="CartasBitmap.h" />
@@ -200,6 +201,7 @@
     <ClInclude Include="Placar.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="Rodada.h" />
+    <ClInclude Include="RodadasController.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TrucoPaulista.h" />
     <ClInclude Include="TrucoPaulistaDlg.h" />
@@ -207,6 +209,7 @@
   <ItemGroup>
     <ClCompile Include="Baralho.cpp" />
     <ClCompile Include="Bot.cpp" />
+    <ClCompile Include="BotJogaSozinho.cpp" />
     <ClCompile Include="Carta.cpp" />
     <ClCompile Include="CartaDaRodada.cpp" />
     <ClCompile Include="CartasBitmap.cpp" />
@@ -221,6 +224,7 @@
     <ClCompile Include="PersistenciaController.cpp" />
     <ClCompile Include="Placar.cpp" />
     <ClCompile Include="Rodada.cpp" />
+    <ClCompile Include="RodadasController.cpp" />
     <ClCompile Include="TrucoPaulista.cpp" />
     <ClCompile Include="TrucoPaulistaDlg.cpp" />
   </ItemGroup>

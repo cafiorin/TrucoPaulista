@@ -9,7 +9,7 @@
 
 class Jogador 
 {
-private:
+protected:
     int NumeroJogador;
     std::string Nome;
     std::unique_ptr<Carta> mao[3];
@@ -64,13 +64,13 @@ public:
         return status;
     }
 
-    bool AceitarTruco() 
+    virtual bool AceitarTruco() 
     {
         srand(static_cast<unsigned int>(time(nullptr)));
         return (rand() % 2 == 1);
     }
 
-    bool PedeTruco()
+   virtual bool PedeTruco()
     {
         srand(static_cast<unsigned int>(time(nullptr)));
         if(PodePedirTruco)

@@ -78,6 +78,12 @@
     <ClInclude Include="PersistenciaController.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="BotJogaSozinho.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RodadasController.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TrucoPaulista.cpp">
@@ -118,6 +124,12 @@
     </ClCompile>
     <ClCompile Include="PersistenciaController.cpp">
       <Filter>Source Files\Controller</Filter>
+    </ClCompile>
+    <ClCompile Include="RodadasController.cpp">
+      <Filter>Source Files\Controller</Filter>
+    </ClCompile>
+    <ClCompile Include="BotJogaSozinho.cpp">
+      <Filter>Source Files\Model</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
