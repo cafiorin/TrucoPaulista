@@ -22,6 +22,12 @@ public:
 	virtual bool AceitarTruco();
 	virtual bool PedeTruco();
 	
+	ValorDasCartasNaMao AnalisarMaoDeCartas();
+	void CalcularQualidadeDasCartas(int valor, int& otimas, int& medias, int& ruims);
+	ValorDasCartasNaMao AnalisarValorFinal(int otimas, int medias, int ruims);
+	ValorDasCartasNaMao QualidadeDasCartasNaRodada;
+	bool CalcularSeDeveTrucarOuCorrerOuAceitar(ProbabilidadeDeTrucarOuCorrerOuAceitar probabilidade);
+
 //
 //private:
 //	ValorDasCartasNaMao AnalisarMaoDeCartas();
@@ -34,7 +40,6 @@ public:
 //	void JogarComoPeEComAdversarioTrucando(std::pair<const Carta*, bool> carta_mais_alta_rodada, int valor_da_rodada_atual);
 //	void JogarComoPeEComAdversarioNaoTrucando(std::pair<const Carta*, bool> carta_mais_alta_rodada, int valor_da_rodada_atual);
 //	std::vector<const Carta*> OrdenarCartasDaMao();
-//	bool CalcularSeDeveTrucarOuCorrerOuAceitar(ProbabilidadeDeTrucarOuCorrerOuAceitar probabilidade);
 //
 
 
