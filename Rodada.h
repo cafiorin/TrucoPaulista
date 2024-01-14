@@ -53,6 +53,20 @@ public:
 		return cartas[1]->JogadorDaCarta; //quando tiver duplas move pra dentro do if
 	}
 
+	bool FoiEmpate()
+	{
+		if (cartas[2] == nullptr) //1 contra 1
+		{
+			return (MaiorCarta(cartas[0]->CartaJogadaNaRodada, cartas[1]->CartaJogadaNaRodada) == -1);
+		}
+		else
+		{
+			//TODO: Duplas
+		}
+		return false; //quando tiver duplas move pra dentro do if
+	}
+
+
 	int MaiorCarta(const Carta* carta1, const Carta* carta2)
 	{
 		int valor1 = carta1->ObtemValor(Vira);
@@ -68,5 +82,19 @@ public:
 	}
 
 	CartaDaRodada* RetornaMaiorCartaDaRodada();
+
+	bool RetornarSeEhPrimeiroParaJogar()
+	{
+		if (QuantosJogadores == 2)
+		{
+			return (CartasAdicionadas == 0);
+		}
+		else
+		{
+			return (CartasAdicionadas == 0 || CartasAdicionadas == 1);
+		}
+	}
+
+
 };
 

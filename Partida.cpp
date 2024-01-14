@@ -5,7 +5,6 @@ Partida::Partida(IEventosDaPartida* eventosPartida)
 {
 	EventosDaPartida = eventosPartida;
 	placar = new Placar();
-	NumeroDaRodada = 1;
 
 	Dupla1[0] = new Jogador(1, "Humano1", false);
 	Dupla1[1] = new Jogador(3, "Humano2", false);
@@ -13,12 +12,9 @@ Partida::Partida(IEventosDaPartida* eventosPartida)
 	Dupla2[1] = new Jogador(4, "Bot2", true);
 
 	BaralhoMesa = nullptr;
-
-	Rodadas[0] = nullptr;
-	Rodadas[1] = nullptr;
-	Rodadas[2] = nullptr;
 	Vira = nullptr;
 	UltimoJogadorAJogar = nullptr;
+	Rodadas = new RodadasController(false);
 }
 
 Partida::~Partida()
@@ -28,9 +24,7 @@ Partida::~Partida()
 	delete Dupla2[0];
 	delete Dupla2[1];
 
-	delete Rodadas[0];
-	delete Rodadas[1];
-	delete Rodadas[2];
+	delete Rodadas;
 
 	delete BaralhoMesa;
 	delete Vira;
@@ -59,21 +53,10 @@ void Partida::GanhouPartida()
 
 bool Partida::InicializarRodada()
 {
-	NumeroDaRodada = 1;
-	QuantoValeARodada = 1;
-	QuantasVezesTrucou = 0;
 	DistribuiCartas();
+	Rodadas->InicializarRodada(Vira);
 
-	delete Rodadas[0];
-	delete Rodadas[1];
-	delete Rodadas[2];
-
-	Rodadas[0] = new Rodada(1, Vira, QuantosJogadores);
-	Rodadas[1] = new Rodada(2, Vira, QuantosJogadores);
-	Rodadas[2] = new Rodada(3, Vira, QuantosJogadores);
-
-	if (placar->PontosDaDupla1 == 11 ||
-		placar->PontosDaDupla2 == 11)
+	if (placar->EhMaoDe11())
 	{
 		Dupla1[0]->NaoPodeMaisPedirTruco();
 		Dupla1[1]->NaoPodeMaisPedirTruco();
@@ -88,7 +71,7 @@ bool Partida::InicializarRodada()
 		Dupla2[1]->JaPodePedirTruco();
 	}
 
-	EventosDaPartida->onInicioDaRodada(NumeroDaRodada);
+	EventosDaPartida->onInicioDaRodada(Rodadas->QualRodadaEsta());
 
 	return (QuemComecaRodada->EhUmBot());
 }
@@ -130,14 +113,14 @@ Jogador* Partida::ObtemJogadorBot1()
 
 void Partida::JogadorJogouACarta(Jogador* jogador, const Carta* carta)
 {
-	Rodadas[RodadaAtual()]->CartaJogada(*carta, *jogador);
+	Rodadas->CartaJogada(carta, jogador);
 	ProximoPasso(jogador, AcaoRealizada::Jogou);
 }
 
 void Partida::JogadorTrucou(Jogador* jogador)
 {
 	jogador->NaoPodeMaisPedirTruco();
-	if (QuantoValeARodada <= 10)
+	if (Rodadas->PodeTrucarAinda())
 		GetOponenteJogador(jogador)->JaPodePedirTruco();
 	else
 		GetOponenteJogador(jogador)->NaoPodeMaisPedirTruco();
@@ -155,27 +138,15 @@ void Partida::JogadorAceitou(Jogador* jogador)
 	ProximoPasso(jogador, AcaoRealizada::Aceitou);
 }
 
-
-bool Partida::RodadaEstaCompleta()
-{
-	return (Rodadas[RodadaAtual()]->CartasAdicionadas == QuantosJogadores);
-}
-
-bool Partida::RodadaEstaComecando()
-{
-	return (Rodadas[RodadaAtual()]->CartasAdicionadas == 0);
-}
-
-
 void Partida::ProximoPasso(Jogador* jogador, AcaoRealizada acao)
 {
 	UltimoJogadorAJogar = jogador;
-	if (RodadaEstaCompleta() && acao != AcaoRealizada::Correu)
+	if (Rodadas->RodadaEstaCompleta() && acao != AcaoRealizada::Correu)
 	{
 		if (ValidaQuemGanhouARodada())
 			return;
 
-		NumeroDaRodada++;
+		Rodadas->ProximaRodada();
 	}
 
 	switch (acao)
@@ -228,11 +199,7 @@ void Partida::ProximoPasso(Jogador* jogador, AcaoRealizada acao)
 
 	case AcaoRealizada::Aceitou:
 	{
-		if (QuantasVezesTrucou <= 4)
-			QuantasVezesTrucou++;
-
-		QuantoValeARodada = 3 * QuantasVezesTrucou;
-
+		Rodadas->TrucoAceitoParaRodada();
 		EventosDaPartida->onAceitouTruco(UltimoJogadorAJogar);
 		ProximoJogadorJoga();
 	}
@@ -248,10 +215,10 @@ Jogador* Partida::QuemJoga()
 
 bool Partida::ValidaQuemGanhouARodada()
 {
-	Jogador* ganhou = Rodadas[RodadaAtual()]->QuemGanhou();
+	Jogador* ganhou = Rodadas->QuemGanhouARodadaAtual();
 	if (ganhou != nullptr)
 		QuemComecaRodada = ganhou;
-	EventosDaPartida->onFimDaRodada(NumeroDaRodada, ganhou);
+	EventosDaPartida->onFimDaRodada(Rodadas->QualRodadaEsta(), ganhou);
 
 	return ValidaQuemGanhouAsRodadas();
 }
@@ -272,7 +239,7 @@ void Partida::ProximoJogadorJoga()
 	{
 		Jogador* jogadorAjogar = GetProximoJogador();
 
-		if (RodadaEstaComecando())
+		if (Rodadas->RodadaEstaComecando())
 			jogadorAjogar = QuemComecaRodada;
 
 		if (jogadorAjogar->EhUmBot())
@@ -292,12 +259,12 @@ void Partida::ProximoJogadorJoga()
 			}
 			else
 			{
-				const Carta* cartaJogada = jogadorAjogar->getjogadabot(RodadaAtual());
-				EventosDaPartida->onBotJogouACarta(NumeroDaRodada, jogadorAjogar, cartaJogada);
+				const Carta* cartaJogada = jogadorAjogar->getjogadabot(Rodadas->IndiceDaRodadaAtual());
+				EventosDaPartida->onBotJogouACarta(Rodadas->QualRodadaEsta(), jogadorAjogar, cartaJogada);
 				JogadorJogouACarta(jogadorAjogar, cartaJogada);
 			}
 		}
-		else if (!RodadaEstaCompleta())
+		else if (!Rodadas->RodadaEstaCompleta())
 		{
 			//Solicita a jogar
 			EventosDaPartida->solicitaJogadorJogar(Dupla1[0]);
@@ -313,7 +280,7 @@ void Partida::AcabouRodada(Jogador* ganhou)
 {
 	if (ganhou == Dupla1[0])
 	{
-		placar->PontosDaDupla1 += QuantoValeARodada;
+		placar->PontosDaDupla1 += Rodadas->QuantoEstaValendoARodada();
 		if (placar->PontosDaDupla1 >= 12)
 		{
 			placar->PontosDaDupla1 = 12;
@@ -323,7 +290,7 @@ void Partida::AcabouRodada(Jogador* ganhou)
 	}
 	else
 	{
-		placar->PontosDaDupla2 += QuantoValeARodada;
+		placar->PontosDaDupla2 += Rodadas->QuantoEstaValendoARodada();
 		if (placar->PontosDaDupla2 >= 12)
 		{
 			placar->PontosDaDupla2 = 12;
@@ -340,116 +307,65 @@ void Partida::AcabouRodada(Jogador* ganhou)
 
 bool Partida::ValidaQuemGanhouAsRodadas()
 {
-	if (NumeroDaRodada > 1 && RodadaEstaCompleta())
+	Jogador* ganhou = Rodadas->JaTemosUmVencedor();
+	if (ganhou != nullptr)
 	{
-		if (NumeroDaRodada == 2)
-		{
-			if (Rodadas[0]->QuemGanhou() == nullptr)
-			{
-				Jogador* ganhou = Rodadas[1]->QuemGanhou();
-				QuemComecaRodada = ganhou;
-				AcabouRodada(ganhou);
-				return true;
-			}
-
-			if (Rodadas[1]->QuemGanhou() == nullptr)
-			{
-				Jogador* ganhou = Rodadas[0]->QuemGanhou();
-				QuemComecaRodada = ganhou;
-				AcabouRodada(ganhou);
-				return true;
-			}
-
-			if (Rodadas[0]->QuemGanhou() == Rodadas[1]->QuemGanhou())
-			{
-				Jogador* ganhou = Rodadas[0]->QuemGanhou();
-				QuemComecaRodada = ganhou;
-				AcabouRodada(ganhou);
-				return true;
-			}
-		}
-		else if (NumeroDaRodada == 3)
-		{
-			if (Rodadas[2]->QuemGanhou() == nullptr)
-			{
-				Jogador* ganhou = Rodadas[0]->QuemGanhou();
-				QuemComecaRodada = ganhou;
-				AcabouRodada(ganhou);
-				return true;
-			}
-
-			if (Rodadas[0]->QuemGanhou() == Rodadas[1]->QuemGanhou() ||
-				Rodadas[0]->QuemGanhou() == Rodadas[2]->QuemGanhou())
-			{
-				Jogador* ganhou = Rodadas[0]->QuemGanhou();
-				QuemComecaRodada = ganhou;
-				AcabouRodada(ganhou);
-				return true;
-			}
-			else if (Rodadas[1]->QuemGanhou() == Rodadas[2]->QuemGanhou())
-			{
-				Jogador* ganhou = Rodadas[1]->QuemGanhou();
-				QuemComecaRodada = ganhou;
-				AcabouRodada(ganhou);
-				return true;
-			}
-
-		}
-
+		QuemComecaRodada = ganhou;
+		AcabouRodada(ganhou);
+		return true;
 	}
-
 	return false;
 }
 
-NumeroDaRodadaAtual Partida::RetornarNumeroDaRodadaAtual() {
-	if (placar->PontosDaDupla1 == placar->PontosDaDupla2) {
+NumeroDaRodadaAtual Partida::RetornarNumeroDaRodadaAtual() 
+{
+	if (placar->PontosDaDupla1 == placar->PontosDaDupla2) 
+	{
 		return Melando;
 	}
-	else if (placar->PontosDaDupla1 == 11 && placar->PontosDaDupla2 == 11) {
+	else if (placar->EhMaoDe11())
+	{
 		return MaoDeOnze;
 	}
 
-	switch (NumeroDaRodada) {
-	case 1:
-		return PrimeiraRodada;
-	case 2:
-		return SegundaRodada;
-	case 3:
-		return TerceiraRodada;
-	default:
-		return PrimeiraRodada;
+	switch (Rodadas->QualRodadaEsta()) 
+	{
+		case 1:
+			return PrimeiraRodada;
+
+		case 2:
+			return SegundaRodada;
+
+		case 3:
+			return TerceiraRodada;
+
+		default:
+			return PrimeiraRodada;
 	}
 }
 
-PosicaoNaDuplaParaJogar Partida::RetornarPosicaoNaDuplaParaJogar() {
-	if (QuantosJogadores == 2) {
-		if (Rodadas[NumeroDaRodada]->CartasAdicionadas == 0) {
-			return Primeiro;
-		}
-		else {
-			return Pe;
-		}
+PosicaoNaDuplaParaJogar Partida::RetornarPosicaoNaDuplaParaJogar() 
+{
+	if (Rodadas->RetornarSeEhPrimeiroParaJogarNaRodadaAtual())
+	{
+		return Primeiro;
 	}
-	else {
-		// 4 jogadores
-		if (Rodadas[NumeroDaRodada]->CartasAdicionadas == 0 || Rodadas[NumeroDaRodada]->CartasAdicionadas == 1) {
-			return Primeiro;
-		}
-		else {
-			return Pe;
-		}
-	}
+	
+	return Pe;
 }
 
-std::pair<const Carta*, bool> Partida::RetornarCartaMaisAltaDaRodadaESeEhDaDupla(Jogador* jogador_atual) {
+std::pair<const Carta*, bool> Partida::RetornarCartaMaisAltaDaRodadaESeEhDaDupla(Jogador* jogador_atual) 
+{
 	std::pair<const Carta*, bool> res;
 
-	CartaDaRodada* maior_carta_da_rodada = Rodadas[NumeroDaRodada]->RetornaMaiorCartaDaRodada();
-	if (maior_carta_da_rodada) {
+	CartaDaRodada* maior_carta_da_rodada = Rodadas->RetornaMaiorCartaDaRodadaAtual();
+	if (maior_carta_da_rodada) 
+	{
 		res.first = maior_carta_da_rodada->CartaJogadaNaRodada;
 		res.second = VerificarSeEhMesmaDupla(jogador_atual, maior_carta_da_rodada->JogadorDaCarta);
 	}
-	else {
+	else 
+	{
 		res.first = nullptr;
 		res.second = false;
 	}
@@ -457,11 +373,15 @@ std::pair<const Carta*, bool> Partida::RetornarCartaMaisAltaDaRodadaESeEhDaDupla
 	return res;
 }
 
-bool Partida::VerificarSeEhMesmaDupla(Jogador* jogador1, Jogador* jogador2) {
+bool Partida::VerificarSeEhMesmaDupla(Jogador* jogador1, Jogador* jogador2) 
+{
 	int numero_de_matchs = 0;
 
-	for (Jogador* jogador : Dupla1) {
-		if (jogador->ObtemNumeroJogador() == jogador1->ObtemNumeroJogador() || jogador->ObtemNumeroJogador() == jogador2->ObtemNumeroJogador()) {
+	for (Jogador* jogador : Dupla1) 
+	{
+		if (jogador->ObtemNumeroJogador() == jogador1->ObtemNumeroJogador() || 
+			jogador->ObtemNumeroJogador() == jogador2->ObtemNumeroJogador()) 
+		{
 			numero_de_matchs++;
 		}
 	}
@@ -469,13 +389,19 @@ bool Partida::VerificarSeEhMesmaDupla(Jogador* jogador1, Jogador* jogador2) {
 	return numero_de_matchs == 2 ? true : false;
 }
 
-bool Partida::RetornarSeDuplaEstaGanhandoOuEmpatado(Jogador* jogador_atual) {
+bool Partida::RetornarSeDuplaEstaGanhandoOuEmpatado(Jogador* jogador_atual) 
+{
 	bool esta_ganhando_ou_empatado = false;
 
-	if (placar->PontosDaDupla1 == placar->PontosDaDupla2) {
+	if (placar->PontosDaDupla1 == placar->PontosDaDupla2) 
+	{
 		esta_ganhando_ou_empatado = true;
-	} else if (placar->PontosDaDupla1 > placar->PontosDaDupla2) {
-		if (Dupla1[0]->ObtemNumeroJogador() == jogador_atual->ObtemNumeroJogador() || Dupla1[1]->ObtemNumeroJogador() == jogador_atual->ObtemNumeroJogador()) {
+	} 
+	else if (placar->PontosDaDupla1 > placar->PontosDaDupla2) 
+	{
+		if (Dupla1[0]->ObtemNumeroJogador() == jogador_atual->ObtemNumeroJogador() || 
+			Dupla1[1]->ObtemNumeroJogador() == jogador_atual->ObtemNumeroJogador()) 
+		{
 			esta_ganhando_ou_empatado = true;
 		}
 	}

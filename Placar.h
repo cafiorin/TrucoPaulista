@@ -16,5 +16,11 @@ public:
 		PontosDaDupla1 = 0;
 		PontosDaDupla2 = 0;
 	}
+
+	bool EhMaoDe11()
+	{
+		return (PontosDaDupla1 == 11 || PontosDaDupla2 == 11);
+	}
+
 };
 

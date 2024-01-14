@@ -7,25 +7,22 @@
 #include "IEventosDaPartida.h"
 #include "Enums.h"
 #include "Bot.h"
+#include "RodadasController.h"
 
 
 class Partida
 {
 private:
-	int NumeroDaRodada;
 	Jogador* QuemComecaRodada;
 	Jogador* UltimoJogadorAJogar;
 
-	int QuantoValeARodada;
-	int QuantasVezesTrucou;
 	int QuantosJogadores = 2;
 	Placar* placar;
 
 	Jogador* Dupla1[2];
 	Jogador* Dupla2[2];
 
-	Rodada* Rodadas[3];
-
+	RodadasController* Rodadas;
 	Baralho* BaralhoMesa;
 	Carta* Vira;
 	IEventosDaPartida* EventosDaPartida;
@@ -51,7 +48,7 @@ public:
 
 	Carta* ObtemVira() { return Vira; }
 
-	int ObtemNumeroDaRodada() { return NumeroDaRodada; }
+	int ObtemNumeroDaRodada() { return Rodadas->QualRodadaEsta(); }
 
 	int ObtemNumeroDeJogadores() { return QuantosJogadores; }
 
@@ -67,14 +64,7 @@ public:
 	
 	void JogadorAceitou(Jogador* jogador);
 
-	int RodadaAtual() { return NumeroDaRodada - 1; };
 	void AcabouRodada(Jogador* ganhou);
-
-	bool RodadaEstaComecando();
-
-	bool UltimaRodada() { return NumeroDaRodada == 3; };
-
-	bool RodadaEstaCompleta();
 
 	bool ValidaQuemGanhouARodada();
 
