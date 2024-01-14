@@ -5,6 +5,8 @@
 #include "Rodada.h"
 #include "Baralho.h"
 #include "IEventosDaPartida.h"
+#include "Enums.h"
+#include "Bot.h"
 
 
 class Partida
@@ -87,7 +89,12 @@ public:
 	int PontosDaDupla1() { return placar->PontosDaDupla1; }
 
 	int PontosDaDupla2() { return placar->PontosDaDupla2; }
-
-
+	
+	// Metodos usados para o Bot tomar alguma decisao
+	NumeroDaRodadaAtual RetornarNumeroDaRodadaAtual();
+	PosicaoNaDuplaParaJogar RetornarPosicaoNaDuplaParaJogar();
+	std::pair<const Carta*, bool> RetornarCartaMaisAltaDaRodadaESeEhDaDupla(Jogador* jogador_atual);
+	bool VerificarSeEhMesmaDupla(Jogador* jogador1, Jogador* jogador2);
+	bool RetornarSeDuplaEstaGanhandoOuEmpatado(Jogador* jogador_atual);
 };
 

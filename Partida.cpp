@@ -42,7 +42,7 @@ void Partida::InicializarPartida(int quantosJogadores)
 	QuantosJogadores = quantosJogadores;
 	placar->Inicializar();
 	EventosDaPartida->onInicioDaPartida();
-	QuemComecaRodada = Dupla1[0]; 
+	QuemComecaRodada = Dupla1[0];
 
 	InicializarRodada();
 }
@@ -72,7 +72,7 @@ bool Partida::InicializarRodada()
 	Rodadas[1] = new Rodada(2, Vira, QuantosJogadores);
 	Rodadas[2] = new Rodada(3, Vira, QuantosJogadores);
 
-	if (placar->PontosDaDupla1 == 11 || 
+	if (placar->PontosDaDupla1 == 11 ||
 		placar->PontosDaDupla2 == 11)
 	{
 		Dupla1[0]->NaoPodeMaisPedirTruco();
@@ -191,6 +191,15 @@ void Partida::ProximoPasso(Jogador* jogador, AcaoRealizada acao)
 		Jogador* proximoJogador = GetProximoJogador();
 		if (proximoJogador->EhUmBot())
 		{
+			// TODO (BOT): Testar metodos e ver se funciona ok
+			/**
+			NumeroDaRodadaAtual rodada_atual = RetornarNumeroDaRodadaAtual();
+			PosicaoNaDuplaParaJogar posicao = RetornarPosicaoNaDuplaParaJogar();
+			std::pair<const Carta*, bool> carta_mais_alta = RetornarCartaMaisAltaDaRodadaESeEhDaDupla(proximoJogador);
+			bool dupla_esta_ganhando_ou_empatado = RetornarSeDuplaEstaGanhandoOuEmpatado(proximoJogador);
+
+			static_cast<Bot*>(proximoJogador)->VerificarSeDeveAceitarOuCorrer(rodada_atual, posicao, carta_mais_alta, dupla_esta_ganhando_ou_empatado, Vira);
+			*/
 			if (proximoJogador->AceitarTruco())
 			{
 				JogadorAceitou(proximoJogador);
@@ -268,6 +277,15 @@ void Partida::ProximoJogadorJoga()
 
 		if (jogadorAjogar->EhUmBot())
 		{
+			// TODO (BOT): Testar metodos e ver se funciona ok
+			/**
+			NumeroDaRodadaAtual rodada_atual = RetornarNumeroDaRodadaAtual();
+			PosicaoNaDuplaParaJogar posicao = RetornarPosicaoNaDuplaParaJogar();
+			std::pair<const Carta*, bool> carta_mais_alta = RetornarCartaMaisAltaDaRodadaESeEhDaDupla(jogadorAjogar);
+
+			// TODO: Refatorar metodo Bot::FazerUmaJogada para ficar compativel com os novos eventos
+			static_cast<Bot*>(jogadorAjogar)->FazerUmaJogada(rodada_atual, posicao, carta_mais_alta, Vira);
+			*/
 			if (jogadorAjogar->PedeTruco())
 			{
 				JogadorTrucou(jogadorAjogar);
@@ -383,3 +401,84 @@ bool Partida::ValidaQuemGanhouAsRodadas()
 	return false;
 }
 
+NumeroDaRodadaAtual Partida::RetornarNumeroDaRodadaAtual() {
+	if (placar->PontosDaDupla1 == placar->PontosDaDupla2) {
+		return Melando;
+	}
+	else if (placar->PontosDaDupla1 == 11 && placar->PontosDaDupla2 == 11) {
+		return MaoDeOnze;
+	}
+
+	switch (NumeroDaRodada) {
+	case 1:
+		return PrimeiraRodada;
+	case 2:
+		return SegundaRodada;
+	case 3:
+		return TerceiraRodada;
+	default:
+		return PrimeiraRodada;
+	}
+}
+
+PosicaoNaDuplaParaJogar Partida::RetornarPosicaoNaDuplaParaJogar() {
+	if (QuantosJogadores == 2) {
+		if (Rodadas[NumeroDaRodada]->CartasAdicionadas == 0) {
+			return Primeiro;
+		}
+		else {
+			return Pe;
+		}
+	}
+	else {
+		// 4 jogadores
+		if (Rodadas[NumeroDaRodada]->CartasAdicionadas == 0 || Rodadas[NumeroDaRodada]->CartasAdicionadas == 1) {
+			return Primeiro;
+		}
+		else {
+			return Pe;
+		}
+	}
+}
+
+std::pair<const Carta*, bool> Partida::RetornarCartaMaisAltaDaRodadaESeEhDaDupla(Jogador* jogador_atual) {
+	std::pair<const Carta*, bool> res;
+
+	CartaDaRodada* maior_carta_da_rodada = Rodadas[NumeroDaRodada]->RetornaMaiorCartaDaRodada();
+	if (maior_carta_da_rodada) {
+		res.first = maior_carta_da_rodada->CartaJogadaNaRodada;
+		res.second = VerificarSeEhMesmaDupla(jogador_atual, maior_carta_da_rodada->JogadorDaCarta);
+	}
+	else {
+		res.first = nullptr;
+		res.second = false;
+	}
+
+	return res;
+}
+
+bool Partida::VerificarSeEhMesmaDupla(Jogador* jogador1, Jogador* jogador2) {
+	int numero_de_matchs = 0;
+
+	for (Jogador* jogador : Dupla1) {
+		if (jogador->ObtemNumeroJogador() == jogador1->ObtemNumeroJogador() || jogador->ObtemNumeroJogador() == jogador2->ObtemNumeroJogador()) {
+			numero_de_matchs++;
+		}
+	}
+
+	return numero_de_matchs == 2 ? true : false;
+}
+
+bool Partida::RetornarSeDuplaEstaGanhandoOuEmpatado(Jogador* jogador_atual) {
+	bool esta_ganhando_ou_empatado = false;
+
+	if (placar->PontosDaDupla1 == placar->PontosDaDupla2) {
+		esta_ganhando_ou_empatado = true;
+	} else if (placar->PontosDaDupla1 > placar->PontosDaDupla2) {
+		if (Dupla1[0]->ObtemNumeroJogador() == jogador_atual->ObtemNumeroJogador() || Dupla1[1]->ObtemNumeroJogador() == jogador_atual->ObtemNumeroJogador()) {
+			esta_ganhando_ou_empatado = true;
+		}
+	}
+
+	return esta_ganhando_ou_empatado;
+}

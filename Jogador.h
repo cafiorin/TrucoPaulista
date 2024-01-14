@@ -39,6 +39,11 @@ public:
         return Nome; 
     };
 
+    int ObtemNumeroJogador()
+    {
+        return NumeroJogador;
+    };
+
 
     const Carta* PrimeiraCartaNaMao() const 
     {

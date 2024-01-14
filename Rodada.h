@@ -67,5 +67,6 @@ public:
 		return 1;
 	}
 
+	CartaDaRodada* RetornaMaiorCartaDaRodada();
 };
 

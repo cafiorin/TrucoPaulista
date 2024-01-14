@@ -6,7 +6,7 @@ enum StatusJogador { EsperandoCartas, EsperandoJogada, EscolhendoCarta, Jogando 
 
 enum AcaoRealizada { Jogou, Trucou, Correu, Aceitou }; //Deve ter mais
 
-enum NumeroDaRodada { PrimeiraRodada, SegundaRodada, TerceiraRodada, Melando };
+enum NumeroDaRodadaAtual { PrimeiraRodada, SegundaRodada, TerceiraRodada, Melando, MaoDeOnze };
 
 enum PosicaoNaDuplaParaJogar { Primeiro, Pe };
 
