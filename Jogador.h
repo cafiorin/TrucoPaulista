@@ -14,6 +14,7 @@ protected:
     int NumeroJogador;
     std::string Nome;
     std::unique_ptr<Carta> mao[3];
+    bool CartaUsada[3];
     StatusJogador status;
     bool Bot;
     bool PodePedirTruco;
@@ -31,7 +32,9 @@ public:
         mao[0] = std::make_unique<Carta>(carta1);
         mao[1] = std::make_unique<Carta>(carta2);
         mao[2] = std::make_unique<Carta>(carta3);
-
+        CartaUsada[0] = false;
+        CartaUsada[1] = false;
+        CartaUsada[2] = false;
         status = EsperandoJogada;
     }
 

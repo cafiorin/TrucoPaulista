@@ -12,82 +12,236 @@ BotJogaSozinho::~BotJogaSozinho()
 
 const Carta* BotJogaSozinho::FazerUmaJogada()
 {
-	return  getjogadabot(MesaDaRodada->IndiceDaRodadaAtual());
-
-	//if (MesaDaRodada->RodadaEstaComecando())
-	//{
-	//	return FazerUmaJogadaComecando();
-	//}
-	//else
-	//{
-	//	return FazerUmaJogadaRebatendo();
-	//}
+	if (MesaDaRodada->RodadaEstaComecando())
+	{
+		return FazerUmaJogadaComecando();
+	}
+	else
+	{
+		return FazerUmaJogadaRebatendo();
+	}
 }
+
+bool BotJogaSozinho::TemCartaMaiorNaMao(const Carta* cartaDoAdversario)
+{
+	const Carta* maior = nullptr;
+
+	if (!CartaUsada[0] && MesaDaRodada->MaiorCarta(PrimeiraCartaNaMao(), cartaDoAdversario) <= 0)
+	{
+		maior = PrimeiraCartaNaMao();
+	}
+
+	if (!CartaUsada[1] && MesaDaRodada->MaiorCarta(SegundaCartaNaMao(), cartaDoAdversario) <= 0)
+	{
+		if (maior != nullptr)
+		{
+			if (MesaDaRodada->MaiorCarta(maior, SegundaCartaNaMao()) > 0)
+			{
+				maior = SegundaCartaNaMao();
+			}
+		}
+		else
+		{
+			maior = SegundaCartaNaMao();
+		}
+	}
+
+	if (!CartaUsada[2] && MesaDaRodada->MaiorCarta(TerceiraCartaNaMao(), cartaDoAdversario))
+	{
+		if (maior != nullptr)
+		{
+			if (MesaDaRodada->MaiorCarta(maior, TerceiraCartaNaMao()) > 0)
+			{
+				maior = TerceiraCartaNaMao();
+			}
+		}
+		else
+		{
+			maior = TerceiraCartaNaMao();
+		}
+	}
+
+	return maior != nullptr;
+}
+
+
+const Carta* BotJogaSozinho::PrimeiraCartaMaiorNaMao(const Carta* cartaDoAdversario)
+{
+	const Carta* maior = nullptr;
+	int cartaUsada = 0;
+
+	if (!CartaUsada[0] && MesaDaRodada->MaiorCarta(PrimeiraCartaNaMao(), cartaDoAdversario)<=0)
+	{
+		maior = PrimeiraCartaNaMao();
+		cartaUsada = 1;
+	}
+
+	if (!CartaUsada[1] && MesaDaRodada->MaiorCarta(SegundaCartaNaMao(), cartaDoAdversario)<=0)
+	{
+		if (maior != nullptr)
+		{
+			if (MesaDaRodada->MaiorCarta(maior, SegundaCartaNaMao()) > 0)
+			{
+				maior = SegundaCartaNaMao();
+				cartaUsada = 2;
+			}
+		}
+		else
+		{
+			maior = SegundaCartaNaMao();
+			cartaUsada = 2;
+		}
+		cartaUsada = 2;
+	}
+
+	if (!CartaUsada[2] && MesaDaRodada->MaiorCarta(TerceiraCartaNaMao(), cartaDoAdversario))
+	{
+		if (maior != nullptr)
+		{
+			if (MesaDaRodada->MaiorCarta(maior, TerceiraCartaNaMao()) > 0)
+			{
+				maior = TerceiraCartaNaMao();
+				cartaUsada = 3;
+			}
+		}
+		else
+		{
+			maior = TerceiraCartaNaMao();
+			cartaUsada = 3;
+		}
+	}
+
+	if(cartaUsada > 0)
+		CartaUsada[cartaUsada-1] = true;
+	
+	return maior;
+}
+
+const Carta* BotJogaSozinho::MelhorCartaNaMao()
+{
+	const Carta* maior = nullptr;
+	int cartaUsada = 0;
+
+	if (!CartaUsada[0] && !CartaUsada[1])
+	{
+		if (MesaDaRodada->MaiorCarta(PrimeiraCartaNaMao(), SegundaCartaNaMao()) <= 0)
+		{
+			maior = PrimeiraCartaNaMao();
+			cartaUsada = 1;
+		}
+		else
+		{
+			maior = SegundaCartaNaMao();
+			cartaUsada = 2;
+		}
+	}
+	if (maior != nullptr)
+	{
+		if (MesaDaRodada->MaiorCarta(maior, TerceiraCartaNaMao()) > 0)
+		{
+			maior = TerceiraCartaNaMao();
+			cartaUsada = 3;
+		}
+	}
+	else if (!CartaUsada[1] && !CartaUsada[2])
+	{
+		if (MesaDaRodada->MaiorCarta(SegundaCartaNaMao(), TerceiraCartaNaMao()) <= 0)
+		{
+			maior = SegundaCartaNaMao();
+			cartaUsada = 2;
+		}
+		else
+		{
+			maior = TerceiraCartaNaMao();
+			cartaUsada = 3;
+		}
+	}
+	else if (!CartaUsada[2])
+	{
+		maior = TerceiraCartaNaMao();
+		cartaUsada = 3;
+	}
+
+	ASSERT(maior != nullptr && cartaUsada > 0);
+	CartaUsada[cartaUsada - 1] = true;
+	return maior;
+}
+
+const Carta* BotJogaSozinho::PiorCartaNaMao()
+{
+	const Carta* menor = nullptr;
+	int cartaUsada = 0;
+
+	if (!CartaUsada[0] && !CartaUsada[1])
+	{
+		if (MesaDaRodada->MaiorCarta(PrimeiraCartaNaMao(), SegundaCartaNaMao()) >= 0)
+		{
+			menor = PrimeiraCartaNaMao();
+			cartaUsada = 1;
+		}
+		else
+		{
+			menor = SegundaCartaNaMao();
+			cartaUsada = 2;
+		}
+	}
+	if (menor != nullptr)
+	{
+		if (MesaDaRodada->MaiorCarta(menor, TerceiraCartaNaMao()) < 0)
+		{
+			menor = TerceiraCartaNaMao();
+			cartaUsada = 3;
+		}
+	}
+	else if (!CartaUsada[1] && !CartaUsada[2])
+	{
+		if (MesaDaRodada->MaiorCarta(SegundaCartaNaMao(), TerceiraCartaNaMao()) >= 0)
+		{
+			menor = SegundaCartaNaMao();
+			cartaUsada = 2;
+		}
+		else
+		{
+			menor = TerceiraCartaNaMao();
+			cartaUsada = 3;
+		}
+	}
+	else if(!CartaUsada[2])
+	{
+		menor = TerceiraCartaNaMao();
+		cartaUsada = 3;
+	}
+
+	ASSERT(menor != nullptr && cartaUsada > 0);
+	CartaUsada[cartaUsada - 1] = true;
+	return menor;
+}
+
+
 
 const Carta* BotJogaSozinho::FazerUmaJogadaRebatendo()
 {
 	const Carta* cartaDoAdversario = MesaDaRodada->QualCartaJogadaNaRodada();
-	const Carta* cartaMaisAlta = nullptr;// PrimeiraCartaMaiorNaoMao(cartaDoAdversario);
 
 	switch (QualidadeDasCartasNaRodada)
 	{
 		case Otimo:
+		case Bom:
+		case Medio:
+		case Fraco:
+		case Ruim:
+			const Carta* cartaMaisAlta = PrimeiraCartaMaiorNaMao(cartaDoAdversario);
 			if (cartaMaisAlta != nullptr)
 			{
 				//Jogar a carta mais forte
+				return cartaMaisAlta;
 			}
 			else
 			{
 				// Jogar a carta mais fraca
+				return PiorCartaNaMao();
 			}
 		break;
-
-		case Bom:
-			if (cartaMaisAlta != nullptr)
-			{
-				//Jogar a carta mais forte
-			}
-			else 
-			{
-				// Jogar a carta mais fraca
-			}
-			break;
-
-		case Medio:
-			if (cartaMaisAlta != nullptr)
-			{
-				// Jogar a carta mais forte 
-			}
-			else
-			{
-				// Jogar a carta mais fraca
-			}
-			break;
-
-		case Fraco:
-			if (cartaMaisAlta != nullptr)
-			{
-				// Jogar a carta mais forte
-			}
-			else
-			{
-				// Jogar a carta mais fraca
-			}
-			break;
-
-		case Ruim:
-			if (cartaMaisAlta != nullptr)
-			{
-				// Jogar a carta mais forte
-			}
-			else 
-			{
-				// Jogar a carta mais fraca
-			}
-			break;
-
-		default:
-			break;
 	}
 
 	return nullptr;
@@ -99,22 +253,27 @@ const Carta* BotJogaSozinho::FazerUmaJogadaComecando()
 	{
 		case Otimo:
 			// Jogar a carta mais fraca
+			return PiorCartaNaMao();
 			break;
 
 		case Bom:
 			// Jogar a carta mais forte 
+			return MelhorCartaNaMao();
 			break;
 
 		case Medio:
 			// Jogar a carta mais forte
+			return MelhorCartaNaMao();
 			break;
 
 		case Fraco:
 			//Jogar a carta mais fraca
+			return PiorCartaNaMao();
 			break;
 
 		case Ruim:
 			// Jogar a carta mais fraca
+			return PiorCartaNaMao();
 			break;
 
 		default:
@@ -219,26 +378,26 @@ bool BotJogaSozinho::PedeTruco()
 		else //Rebatendo
 		{
 			const Carta* cartaDoAdversario = MesaDaRodada->QualCartaJogadaNaRodada();
-			const Carta* cartaMaisAlta = nullptr;// PrimeiraCartaMaiorNaoMao(cartaDoAdversario);
+			bool cartaMaisAlta = TemCartaMaiorNaMao(cartaDoAdversario);
 
 			switch (QualidadeDasCartasNaRodada)
 			{
 				case Otimo:
-					if (cartaMaisAlta != nullptr)
+					if (cartaMaisAlta)
 					{
 						deveTrucar = CalcularSeDeveTrucarOuCorrerOuAceitar(Alta);
 					}
 					break;
 
 				case Bom:
-					if (cartaMaisAlta != nullptr)
+					if (cartaMaisAlta)
 					{
 						deveTrucar = CalcularSeDeveTrucarOuCorrerOuAceitar(Media);
 					}
 					break;
 
 				case Medio:
-					if (cartaMaisAlta != nullptr)
+					if (cartaMaisAlta)
 					{
 						deveTrucar = CalcularSeDeveTrucarOuCorrerOuAceitar(Baixa);
 					}
