@@ -108,6 +108,10 @@
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
+    <PostBuildEvent>
+      <Command>copy "$(SolutionDir)json\bin\jsoncpp.dll" "$(TargetDir)"
+</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -195,6 +199,16 @@
     <ClInclude Include="framework.h" />
     <ClInclude Include="IEventosDaPartida.h" />
     <ClInclude Include="Jogador.h" />
+    <ClInclude Include="json\include\allocator.h" />
+    <ClInclude Include="json\include\assertions.h" />
+    <ClInclude Include="json\include\config.h" />
+    <ClInclude Include="json\include\forwards.h" />
+    <ClInclude Include="json\include\json.h" />
+    <ClInclude Include="json\include\json_features.h" />
+    <ClInclude Include="json\include\reader.h" />
+    <ClInclude Include="json\include\value.h" />
+    <ClInclude Include="json\include\version.h" />
+    <ClInclude Include="json\include\writer.h" />
     <ClInclude Include="Partida.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="PersistenciaController.h" />
@@ -232,6 +246,7 @@
     <ResourceCompile Include="TrucoPaulista.rc" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="json\bin\jsoncpp.dll" />
     <None Include="res\TrucoPaulista.rc2" />
   </ItemGroup>
   <ItemGroup>
@@ -347,6 +362,9 @@
     <Image Include="res\Cartas\verso.bmp" />
     <Image Include="res\Cartas\verso_90.bmp" />
     <Image Include="res\TrucoPaulista.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="json\lib\jsoncpp.lib" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
