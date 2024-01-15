@@ -12,14 +12,17 @@ BotJogaSozinho::~BotJogaSozinho()
 
 const Carta* BotJogaSozinho::FazerUmaJogada()
 {
-	if (MesaDaRodada->RodadaEstaComecando())
-	{
-		return FazerUmaJogadaComecando();
-	}
-	else
-	{
-		return FazerUmaJogadaRebatendo();
-	}
+	return getjogadabot(MesaDaRodada->IndiceDaRodadaAtual());
+
+	//TODO
+	//if (MesaDaRodada->RodadaEstaComecando())
+	//{
+	//	return FazerUmaJogadaComecando();
+	//}
+	//else
+	//{
+	//	return FazerUmaJogadaRebatendo();
+	//}
 }
 
 bool BotJogaSozinho::TemCartaMaiorNaMao(const Carta* cartaDoAdversario)
