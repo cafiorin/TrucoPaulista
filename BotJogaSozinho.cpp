@@ -2,69 +2,126 @@
 #include "BotJogaSozinho.h"
 #include "RodadasController.h"
 
-BotJogaSozinho::BotJogaSozinho(int numero, std::string nome) : Jogador(numero, nome, true) {}
-BotJogaSozinho::~BotJogaSozinho() {}
-
-void BotJogaSozinho::FazerUmaJogadaRebatendo()
+BotJogaSozinho::BotJogaSozinho(int numero, std::string nome) : Jogador(numero, nome, true) 
 {
-	//Não precisa de parametros pelo objeto MesaDaRodada ele tem todas as informações das Rodadas
-	
-	//Escolher a primeira carta maior para rebater (se tiver)
 }
 
-void BotJogaSozinho::FazerUmaJogadaComecando()
+BotJogaSozinho::~BotJogaSozinho() 
 {
-	//Não precisa de parametros pelo objeto MesaDaRodada ele tem todas as informações das Rodadas
+}
 
-	//
+const Carta* BotJogaSozinho::FazerUmaJogada()
+{
+	return  getjogadabot(MesaDaRodada->IndiceDaRodadaAtual());
 
-	bool deve_trucar;
+	//if (MesaDaRodada->RodadaEstaComecando())
+	//{
+	//	return FazerUmaJogadaComecando();
+	//}
+	//else
+	//{
+	//	return FazerUmaJogadaRebatendo();
+	//}
+}
 
-	switch (QualidadeDasCartasNaRodada) 
+const Carta* BotJogaSozinho::FazerUmaJogadaRebatendo()
+{
+	const Carta* cartaDoAdversario = MesaDaRodada->QualCartaJogadaNaRodada();
+	const Carta* cartaMaisAlta = nullptr;// PrimeiraCartaMaiorNaoMao(cartaDoAdversario);
+
+	switch (QualidadeDasCartasNaRodada)
 	{
-	case Otimo:
-		// Jogar a carta mais fraca
+		case Otimo:
+			if (cartaMaisAlta != nullptr)
+			{
+				//Jogar a carta mais forte
+			}
+			else
+			{
+				// Jogar a carta mais fraca
+			}
 		break;
 
-	case Bom:
-		deve_trucar = CalcularSeDeveTrucarOuCorrerOuAceitar(Media);
-		if (PodeTrucar() && deve_trucar) 
-		{
-			//SetPedeTruco(true);
-		}
-		else 
-		{
-			// Jogar a carta mais forte 
-		}
-		break;
+		case Bom:
+			if (cartaMaisAlta != nullptr)
+			{
+				//Jogar a carta mais forte
+			}
+			else 
+			{
+				// Jogar a carta mais fraca
+			}
+			break;
 
-	case Medio:
-		// Jogar a carta mais forte
-		break;
+		case Medio:
+			if (cartaMaisAlta != nullptr)
+			{
+				// Jogar a carta mais forte 
+			}
+			else
+			{
+				// Jogar a carta mais fraca
+			}
+			break;
 
-	case Fraco:
-		// Jogar a carta mais fraca ou truca (probabilidade baixa)
-		deve_trucar = CalcularSeDeveTrucarOuCorrerOuAceitar(Baixa);
-		if (PodeTrucar() && deve_trucar) 
-		{
-			//SetPedeTruco(true);
-		}
-		else 
-		{
-			//Jogar a carta mais fraca
-		}
-		break;
+		case Fraco:
+			if (cartaMaisAlta != nullptr)
+			{
+				// Jogar a carta mais forte
+			}
+			else
+			{
+				// Jogar a carta mais fraca
+			}
+			break;
 
-	case Ruim:
-		// Jogar a carta mais fraca
-		break;
+		case Ruim:
+			if (cartaMaisAlta != nullptr)
+			{
+				// Jogar a carta mais forte
+			}
+			else 
+			{
+				// Jogar a carta mais fraca
+			}
+			break;
 
-	default:
-		break;
+		default:
+			break;
 	}
 
+	return nullptr;
+}
 
+const Carta* BotJogaSozinho::FazerUmaJogadaComecando()
+{
+	switch (QualidadeDasCartasNaRodada) 
+	{
+		case Otimo:
+			// Jogar a carta mais fraca
+			break;
 
+		case Bom:
+			// Jogar a carta mais forte 
+			break;
+
+		case Medio:
+			// Jogar a carta mais forte
+			break;
+
+		case Fraco:
+			//Jogar a carta mais fraca
+			break;
+
+		case Ruim:
+			// Jogar a carta mais fraca
+			break;
+
+		default:
+			break;
+	}
+
+	return nullptr;
 }
 
 void BotJogaSozinho::InicializaRodada(RodadasController* mesaDaRodada)
@@ -78,8 +135,7 @@ ValorDasCartasNaMao BotJogaSozinho::AnalisarMaoDeCartas()
 	int Otimas = 0;
 	int Medias = 0;
 	int Ruims = 0;
-	// TODO: Verificar como vai ocorrer deleção das cartas a cada rodada que passar
-	// TODO: Organizar Analise de cartas com base na deleção das cartas
+
 	const Carta* carta1 = this->PrimeiraCartaNaMao();
 	const Carta* carta2 = this->SegundaCartaNaMao();
 	const Carta* carta3 = this->TerceiraCartaNaMao();
@@ -145,7 +201,52 @@ bool BotJogaSozinho::AceitarTruco()
 
 bool BotJogaSozinho::PedeTruco()
 {
-	return Jogador::PedeTruco();
+	bool deveTrucar=false;
+
+	if (PodeTrucar())
+	{
+		if (MesaDaRodada->RodadaEstaComecando())
+		{
+			if (QualidadeDasCartasNaRodada == Bom)
+			{
+				deveTrucar = CalcularSeDeveTrucarOuCorrerOuAceitar(Media);
+			}
+			else if(QualidadeDasCartasNaRodada == Fraco)
+			{
+				deveTrucar = CalcularSeDeveTrucarOuCorrerOuAceitar(Baixa);
+			}
+		}
+		else //Rebatendo
+		{
+			const Carta* cartaDoAdversario = MesaDaRodada->QualCartaJogadaNaRodada();
+			const Carta* cartaMaisAlta = nullptr;// PrimeiraCartaMaiorNaoMao(cartaDoAdversario);
+
+			switch (QualidadeDasCartasNaRodada)
+			{
+				case Otimo:
+					if (cartaMaisAlta != nullptr)
+					{
+						deveTrucar = CalcularSeDeveTrucarOuCorrerOuAceitar(Alta);
+					}
+					break;
+
+				case Bom:
+					if (cartaMaisAlta != nullptr)
+					{
+						deveTrucar = CalcularSeDeveTrucarOuCorrerOuAceitar(Media);
+					}
+					break;
+
+				case Medio:
+					if (cartaMaisAlta != nullptr)
+					{
+						deveTrucar = CalcularSeDeveTrucarOuCorrerOuAceitar(Baixa);
+					}
+					break;
+			}
+		}
+	}
+	return deveTrucar;
 }
 
 bool BotJogaSozinho::CalcularSeDeveTrucarOuCorrerOuAceitar(ProbabilidadeDeTrucarOuCorrerOuAceitar probabilidade)

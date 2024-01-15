@@ -15,13 +15,14 @@ public:
 	BotJogaSozinho(int numero, std::string nome);
 	~BotJogaSozinho();
 
-	void FazerUmaJogadaRebatendo();
-	void FazerUmaJogadaComecando();
+	const Carta* FazerUmaJogadaRebatendo();
+	const Carta* FazerUmaJogadaComecando();
 
 	virtual void InicializaRodada(RodadasController* mesaDaRodada);
 	virtual bool AceitarTruco();
 	virtual bool PedeTruco();
-	
+	virtual const Carta* FazerUmaJogada();
+
 	ValorDasCartasNaMao AnalisarMaoDeCartas();
 	void CalcularQualidadeDasCartas(int valor, int& otimas, int& medias, int& ruims);
 	ValorDasCartasNaMao AnalisarValorFinal(int otimas, int medias, int ruims);

@@ -106,6 +106,12 @@ void RodadasController::CartaJogada(const Carta* carta, Jogador* jogador)
 	Rodadas[IndiceDaRodadaAtual()]->CartaJogada(*carta, *jogador);
 }
 
+const Carta* RodadasController::QualCartaJogadaNaRodada()
+{
+	return Rodadas[IndiceDaRodadaAtual()]->cartas[0]->CartaJogadaNaRodada;
+}
+
+
 bool RodadasController::RetornarSeEhPrimeiroParaJogarNaRodadaAtual()
 {
 	return Rodadas[IndiceDaRodadaAtual()]->RetornarSeEhPrimeiroParaJogar();

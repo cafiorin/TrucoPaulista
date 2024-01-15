@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Partida.h"
+#include "BotJogaSozinho.h"
 
 Partida::Partida(IEventosDaPartida* eventosPartida)
 {
@@ -8,8 +9,8 @@ Partida::Partida(IEventosDaPartida* eventosPartida)
 
 	Dupla1[0] = new Jogador(1, "Humano1", false);
 	Dupla1[1] = new Jogador(3, "Humano2", false);
-	Dupla2[0] = new Jogador(2, "Bot1", true);
-	Dupla2[1] = new Jogador(4, "Bot2", true);
+	Dupla2[0] = new BotJogaSozinho(2, "Bot1");
+	Dupla2[1] = new BotJogaSozinho(4, "Bot2");
 
 	BaralhoMesa = nullptr;
 	Vira = nullptr;
@@ -264,7 +265,7 @@ void Partida::ProximoJogadorJoga()
 			}
 			else
 			{
-				const Carta* cartaJogada = jogadorAjogar->getjogadabot(Rodadas->IndiceDaRodadaAtual());
+				const Carta* cartaJogada = jogadorAjogar->FazerUmaJogada(); // getjogadabot(Rodadas->IndiceDaRodadaAtual());
 				EventosDaPartida->onBotJogouACarta(Rodadas->QualRodadaEsta(), jogadorAjogar, cartaJogada);
 				JogadorJogouACarta(jogadorAjogar, cartaJogada);
 			}

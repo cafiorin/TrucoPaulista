@@ -49,6 +49,7 @@ public:
 
 	Carta* QualOVira() { return Vira; }
 	void CartaJogada(const Carta* carta, Jogador* jogador);
+	const Carta* QualCartaJogadaNaRodada();
 	bool RetornarSeEhPrimeiroParaJogarNaRodadaAtual();
 	CartaDaRodada* RetornaMaiorCartaDaRodadaAtual();
 

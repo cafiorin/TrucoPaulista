@@ -71,6 +71,7 @@ public:
     {
         return mao[jogadasbot].get(); 
     }
+
     StatusJogador GetStatus() const 
     {
         return status;
@@ -89,4 +90,10 @@ public:
             return (rand() % 5 == 1);
         return false;
     }
+
+   virtual const Carta* FazerUmaJogada()
+   {
+       return nullptr;
+   }
+
 };
