@@ -1,16 +1,21 @@
 #include "pch.h"
 #include "Bot.h"
 
-Bot::Bot(int numero, std::string nome) : Jogador(numero, nome, true) {
+Bot::Bot(int numero, std::string nome) : Jogador(numero, nome, true) 
+{
 	LimparDecisoesDoBot();
 }
 
-Bot::~Bot() {}
+Bot::~Bot() 
+{
+}
 
-void Bot::VerificarSeDeveAceitarOuCorrer(NumeroDaRodadaAtual tipo_rodada, PosicaoNaDuplaParaJogar posicao, std::pair<const Carta*, bool> carta_mais_alta_rodada, bool dupla_esta_ganhando_ou_empatado, const Carta* vira) {
+void Bot::VerificarSeDeveAceitarOuCorrer(NumeroDaRodadaAtual tipo_rodada, PosicaoNaDuplaParaJogar posicao, std::pair<const Carta*, bool> carta_mais_alta_rodada, bool dupla_esta_ganhando_ou_empatado, const Carta* vira) 
+{
 	LimparDecisoesDoBot();
 
-	switch (tipo_rodada) {
+	switch (tipo_rodada) 
+	{
 	case PrimeiraRodada:
 		VerificarSeDeveAceitarPrimeiraRodada(posicao, carta_mais_alta_rodada, vira);
 		break;
@@ -24,7 +29,8 @@ void Bot::VerificarSeDeveAceitarOuCorrer(NumeroDaRodadaAtual tipo_rodada, Posica
 	}
 }
 
-void Bot::VerificarSeDeveAceitarPrimeiraRodada(PosicaoNaDuplaParaJogar posicao, std::pair<const Carta*, bool> carta_mais_alta_rodada, const Carta* vira) {
+void Bot::VerificarSeDeveAceitarPrimeiraRodada(PosicaoNaDuplaParaJogar posicao, std::pair<const Carta*, bool> carta_mais_alta_rodada, const Carta* vira) 
+{
 	ValorDasCartasNaMao valor_mao = AnalisarMaoDeCartas();
 	std::vector<const Carta*> cartas = OrdenarCartasDaMao(vira);
 	bool deve_aceitar;

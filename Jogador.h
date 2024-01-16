@@ -66,29 +66,21 @@ public:
         return status;
     }
 
-    virtual void InicializaRodada(RodadasController* mesaDaRodada)
-    {
-        MesaDaRodada = mesaDaRodada;
-        OrdenaCartas();
-    }
-
-    virtual bool AceitarTruco() 
-    {
-        srand(static_cast<unsigned int>(time(nullptr)));
-        return (rand() % 2 == 1);
-    }
-
-   virtual bool PedeTruco()
-    {
-        srand(static_cast<unsigned int>(time(nullptr)));
-        if(PodePedirTruco)
-            return (rand() % 5 == 1);
-        return false;
-    }
-
+   virtual void InicializaRodada(RodadasController* mesaDaRodada);
+   virtual bool AceitarTruco();
+   virtual bool PedeTruco();
    virtual const Carta* FazerUmaJogada()
    {
        return nullptr;
    }
 
+
+   ValorDasCartasNaMao AnalisarMaoDeCartas();
+   void CalcularQualidadeDasCartas(int valor, int& otimas, int& medias, int& ruims);
+   ValorDasCartasNaMao AnalisarValorFinal(int otimas, int medias, int ruims);
+   ValorDasCartasNaMao QualidadeDasCartasNaRodada;
+   bool CalcularSeDeveTrucarOuCorrerOuAceitar(ProbabilidadeDeTrucarOuCorrerOuAceitar probabilidade);
+   const Carta* PrimeiraCartaMaiorNaMao(const Carta* cartaDoAdversario);
+   bool TemCartaMaiorNaMao(const Carta* cartaDoAdversario);
+   const Carta* PegaAMelhorOuPiorCartaNaMao(bool melhor);
 };

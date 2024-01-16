@@ -15,22 +15,12 @@ public:
 	BotJogaSozinho(int numero, std::string nome);
 	~BotJogaSozinho();
 
+	virtual const Carta* FazerUmaJogada();
+
+private:
 	const Carta* FazerUmaJogadaRebatendo();
 	const Carta* FazerUmaJogadaComecando();
 
-	virtual void InicializaRodada(RodadasController* mesaDaRodada);
-	virtual bool AceitarTruco();
-	virtual bool PedeTruco();
-	virtual const Carta* FazerUmaJogada();
-
-	ValorDasCartasNaMao AnalisarMaoDeCartas();
-	void CalcularQualidadeDasCartas(int valor, int& otimas, int& medias, int& ruims);
-	ValorDasCartasNaMao AnalisarValorFinal(int otimas, int medias, int ruims);
-	ValorDasCartasNaMao QualidadeDasCartasNaRodada;
-	bool CalcularSeDeveTrucarOuCorrerOuAceitar(ProbabilidadeDeTrucarOuCorrerOuAceitar probabilidade);
-	const Carta* PrimeiraCartaMaiorNaMao(const Carta* cartaDoAdversario);
-	bool TemCartaMaiorNaMao(const Carta* cartaDoAdversario);
-	const Carta* PegaAMelhorOuPiorCartaNaMao(bool melhor);
 
 //
 //private:
