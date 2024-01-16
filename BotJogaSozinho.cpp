@@ -172,15 +172,15 @@ ValorDasCartasNaMao BotJogaSozinho::AnalisarValorFinal(int otimas, int medias, i
 	{
 		case 1:
 		{
-			if (otimas == 3)
+			if (otimas >= 2)
 			{
 				return Otimo;
 			}
-			else if (otimas == 2)
+			else if (otimas == 1)
 			{
 				return Bom;
 			}
-			else if (otimas == 1)
+			else if (medias >= 2)
 			{
 				return Medio;
 			}
@@ -247,7 +247,7 @@ bool BotJogaSozinho::AceitarTruco()
 	{
 		return CalcularSeDeveTrucarOuCorrerOuAceitar(Alta);
 	}
-	else if (QualidadeDasCartasNaRodada == Bom || QualidadeDasCartasNaRodada == Media)
+	else if (QualidadeDasCartasNaRodada == Bom || QualidadeDasCartasNaRodada == Medio)
 	{
 		return CalcularSeDeveTrucarOuCorrerOuAceitar(Media);
 	}
