@@ -135,3 +135,8 @@ int RodadasController::MaiorCarta(const Carta* carta1, const Carta* carta2)
 
 	return 1;
 }
+
+bool RodadasController::BotFezAPrimeira()
+{
+	return (Rodadas[0]->QuemGanhou() != nullptr && Rodadas[0]->QuemGanhou()->EhUmBot());
+}

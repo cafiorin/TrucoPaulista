@@ -54,9 +54,6 @@ void Partida::GanhouPartida()
 
 bool Partida::InicializarRodada()
 {
-	DistribuiCartas();
-	Rodadas->InicializarRodada(Vira);
-
 	if (placar->EhMaoDe11())
 	{
 		Dupla1[0]->NaoPodeMaisPedirTruco();
@@ -72,6 +69,9 @@ bool Partida::InicializarRodada()
 		Dupla2[1]->JaPodePedirTruco();
 	}
 
+	DistribuiCartas();
+
+	Rodadas->InicializarRodada(Vira);
 	Dupla1[0]->InicializaRodada(Rodadas);
 	Dupla1[1]->InicializaRodada(Rodadas);
 	Dupla2[0]->InicializaRodada(Rodadas);

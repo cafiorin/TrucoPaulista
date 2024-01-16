@@ -32,6 +32,8 @@ public:
 	Jogador* QuemGanhouARodadaAtual();
 	Jogador* JaTemosUmVencedor();
 
+	bool BotFezAPrimeira();
+
 	int QuantoEstaValendoARodada() { return QuantoValeARodada; }
 
 	bool PodeTrucarAinda() { return (QuantasVezesTrucou <= 4); }

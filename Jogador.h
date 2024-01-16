@@ -23,30 +23,9 @@ protected:
 public:
     Jogador(int numero, std::string nome,bool bot) : NumeroJogador(numero), Nome(nome), status(EsperandoCartas),Bot(bot), PodePedirTruco(true){}
 
-    virtual void InicializaRodada(RodadasController* mesaDaRodada)
+    std::string ObtemNome() const
     {
-        MesaDaRodada = mesaDaRodada;
-    }
-
-    void RecebeCartas(const Carta& carta1, const Carta& carta2, const Carta& carta3) {
-        mao[0] = std::make_unique<Carta>(carta1);
-        mao[1] = std::make_unique<Carta>(carta2);
-        mao[2] = std::make_unique<Carta>(carta3);
-        CartaUsada[0] = false;
-        CartaUsada[1] = false;
-        CartaUsada[2] = false;
-        status = EsperandoJogada;
-    }
-
-    bool PodeTrucar() { return PodePedirTruco; }
-    void JaPodePedirTruco() { PodePedirTruco = true; }
-    void NaoPodeMaisPedirTruco() { PodePedirTruco = false; }
-
-    bool EhUmBot() const { return Bot; };
-
-    std::string ObtemNome() const 
-    {
-        return Nome; 
+        return Nome;
     };
 
     int ObtemNumeroJogador()
@@ -54,6 +33,13 @@ public:
         return NumeroJogador;
     };
 
+    bool PodeTrucar() { return PodePedirTruco; }
+    void JaPodePedirTruco() { PodePedirTruco = true; }
+    void NaoPodeMaisPedirTruco() { PodePedirTruco = false; }
+    bool EhUmBot() const { return Bot; };
+
+    void RecebeCartas(const Carta& carta1, const Carta& carta2, const Carta& carta3);
+    void OrdenaCartas();
 
     const Carta* PrimeiraCartaNaMao() const 
     {
@@ -78,6 +64,12 @@ public:
     StatusJogador GetStatus() const 
     {
         return status;
+    }
+
+    virtual void InicializaRodada(RodadasController* mesaDaRodada)
+    {
+        MesaDaRodada = mesaDaRodada;
+        OrdenaCartas();
     }
 
     virtual bool AceitarTruco() 

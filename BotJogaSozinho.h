@@ -30,8 +30,7 @@ public:
 	bool CalcularSeDeveTrucarOuCorrerOuAceitar(ProbabilidadeDeTrucarOuCorrerOuAceitar probabilidade);
 	const Carta* PrimeiraCartaMaiorNaMao(const Carta* cartaDoAdversario);
 	bool TemCartaMaiorNaMao(const Carta* cartaDoAdversario);
-	const Carta* PiorCartaNaMao();
-	const Carta* MelhorCartaNaMao();
+	const Carta* PegaAMelhorOuPiorCartaNaMao(bool melhor);
 
 //
 //private:
