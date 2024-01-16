@@ -35,6 +35,7 @@ public:
 	void InicializaRodada();
 	void CleanCheckBox();
 	void AtualizaPlacar();
+	void AtualizaPlacarDePartidas();
 
 	void SetCurrectBitmapFromBot(Jogador* bot, const Carta* carta);
 	void SetCurrectBitmapFromHumano(Jogador* bot, const Carta* carta);

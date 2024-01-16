@@ -77,9 +77,11 @@ public:
 	bool ValidaQuemGanhouAsRodadas();
 
 	int PontosDaDupla1() { return placar->PontosDaDupla1; }
-
 	int PontosDaDupla2() { return placar->PontosDaDupla2; }
-	
+
+	int PartidasVencidasDaDupla1() { return placar->PartidasVencidasDaDupla1; }
+	int PartidasVencidasDaDupla2() { return placar->PartidasVencidasDaDupla2; }
+
 	// Metodos usados para o Bot tomar alguma decisao
 	NumeroDaRodadaAtual RetornarNumeroDaRodadaAtual();
 	PosicaoNaDuplaParaJogar RetornarPosicaoNaDuplaParaJogar();

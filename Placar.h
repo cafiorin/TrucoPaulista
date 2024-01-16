@@ -8,8 +8,11 @@ class Placar
 public:
 	int PontosDaDupla1;
 	int PontosDaDupla2;
+	
+	int PartidasVencidasDaDupla1;
+	int PartidasVencidasDaDupla2;
 
-	Rodada* RodadaAtual;
+	Placar();
 
 	void Inicializar()
 	{

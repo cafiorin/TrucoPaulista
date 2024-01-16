@@ -247,7 +247,7 @@ bool BotJogaSozinho::AceitarTruco()
 	{
 		return CalcularSeDeveTrucarOuCorrerOuAceitar(Alta);
 	}
-	else if (QualidadeDasCartasNaRodada == Bom)
+	else if (QualidadeDasCartasNaRodada == Bom || QualidadeDasCartasNaRodada == Media)
 	{
 		return CalcularSeDeveTrucarOuCorrerOuAceitar(Media);
 	}

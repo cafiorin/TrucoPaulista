@@ -467,8 +467,10 @@ void CTrucoPaulistaDlg::OnStnClickedPic1()
 }
 
 
-//TODO: 
-void CTrucoPaulistaDlg::onInicioDaPartida() {}
+void CTrucoPaulistaDlg::onInicioDaPartida() 
+{
+}
+
 void CTrucoPaulistaDlg::onFimDaPartida(Jogador* JogadorQueGanhou)
 {
 	std::string playerName = JogadorQueGanhou->ObtemNome();
@@ -476,6 +478,8 @@ void CTrucoPaulistaDlg::onFimDaPartida(Jogador* JogadorQueGanhou)
 
 	CString str;
 	str.Format(_T("PARABENS !!!! O jogador %s ganhou a PARTIDA!!!!"), strPlayerName);
+
+	AtualizaPlacarDePartidas();
 
 	AfxMessageBox(str, MB_ICONINFORMATION | MB_OK);
 
@@ -501,14 +505,17 @@ void CTrucoPaulistaDlg::CleanCheckBox()
 
 void CTrucoPaulistaDlg::onAceitouTruco(Jogador *jogador)
 {
-	std::string playerName = jogador->ObtemNome();
-	CString strPlayerName(playerName.c_str());
+	if (jogador->EhUmBot())
+	{
+		std::string playerName = jogador->ObtemNome();
+		CString strPlayerName(playerName.c_str());
 
-	CString str;
-	str.Format(_T("Jogador %s aceitou o Truco... Manda !"), strPlayerName);
-	AddOutput(str);
+		CString str;
+		str.Format(_T("Jogador %s aceitou o Truco... Manda !"), strPlayerName);
+		AddOutput(str);
 
-	AfxMessageBox(str, MB_ICONINFORMATION | MB_OK);
+		AfxMessageBox(str, MB_ICONINFORMATION | MB_OK);
+	}
 }
 
 void CTrucoPaulistaDlg::CleanOutput()
@@ -634,8 +641,19 @@ void CTrucoPaulistaDlg::AtualizaPlacar()
 
 	str.Format(_T("%d"), partida->PontosDaDupla2());
 	GetDlgItem(IDC_PONTOS_DUPLA2)->SetWindowText(str);
-
 }
+
+void CTrucoPaulistaDlg::AtualizaPlacarDePartidas()
+{
+	CString str;
+
+	str.Format(_T("%d"), partida->PartidasVencidasDaDupla1());
+	GetDlgItem(IDC_PONTOS_PARTIDA_DUPLA1)->SetWindowText(str);
+
+	str.Format(_T("%d"), partida->PartidasVencidasDaDupla2());
+	GetDlgItem(IDC_PONTOS_PARTIDA_DUPLA2)->SetWindowText(str);
+}
+
 
 void CTrucoPaulistaDlg::InicializaRodada()
 {

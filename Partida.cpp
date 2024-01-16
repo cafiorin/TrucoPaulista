@@ -290,6 +290,7 @@ void Partida::AcabouRodada(Jogador* ganhou)
 		if (placar->PontosDaDupla1 >= 12)
 		{
 			placar->PontosDaDupla1 = 12;
+			placar->PartidasVencidasDaDupla1++;
 			EventosDaPartida->onFimDaPartida(ganhou);
 			return;
 		}
@@ -300,6 +301,7 @@ void Partida::AcabouRodada(Jogador* ganhou)
 		if (placar->PontosDaDupla2 >= 12)
 		{
 			placar->PontosDaDupla2 = 12;
+			placar->PartidasVencidasDaDupla2++;
 			EventosDaPartida->onFimDaPartida(ganhou);
 			return;
 		}
