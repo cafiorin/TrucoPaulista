@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Jogador.h"
 #include "RodadasController.h"
+#include "Enums.h"
 #include <random>
 #include <algorithm> 
 

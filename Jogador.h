@@ -4,6 +4,7 @@
 #include <iostream>
 #include <memory>
 #include <ctime>
+#include "Enums.h"
 
 #include "Carta.h"
 class RodadasController;

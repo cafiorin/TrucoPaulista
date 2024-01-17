@@ -46,12 +46,9 @@ public:
 	bool AceitarTruco();
 	bool PedeTruco();
 	const Carta* GetJogadaBot();
+	const Carta* FazerUmaJogada();
 
 private:
-	ValorDasCartasNaMao AnalisarMaoDeCartas();
-	void PreencherValorFinalCartas(const Carta* carta, std::map<ValorDasCartasNaMao, int>& valor_final);
-	ValorDasCartasNaMao AnalisarValorFinal(std::map<ValorDasCartasNaMao, int>& valor_final);
-
 	void JogarRodadaNormal(PosicaoNaDuplaParaJogar posicao, std::pair<const Carta*, bool> carta_mais_alta_rodada, const Carta* vira);
 	void JogarRodadaMelando(PosicaoNaDuplaParaJogar posicao, std::pair<const Carta*, bool> carta_mais_alta_rodada, const Carta* vira);
 	void JogarComoPrimeiro(std::pair<const Carta*, bool> carta_mais_alta_rodada, const Carta* vira);

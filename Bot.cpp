@@ -1,5 +1,8 @@
 #include "pch.h"
 #include "Bot.h"
+#include "Jogador.h"
+#include "RodadasController.h"
+
 
 Bot::Bot(int numero, std::string nome) : Jogador(numero, nome, true) 
 {
@@ -10,22 +13,36 @@ Bot::~Bot()
 {
 }
 
+const Carta* Bot::FazerUmaJogada()
+{
+	return getjogadabot(MesaDaRodada->IndiceDaRodadaAtual());
+
+	//if (MesaDaRodada->RodadaEstaComecando())
+	//{
+	//	return FazerUmaJogadaComecando();
+	//}
+	//else
+	//{
+	//	return FazerUmaJogadaRebatendo();
+	//}
+}
+
+
 void Bot::VerificarSeDeveAceitarOuCorrer(NumeroDaRodadaAtual tipo_rodada, PosicaoNaDuplaParaJogar posicao, std::pair<const Carta*, bool> carta_mais_alta_rodada, bool dupla_esta_ganhando_ou_empatado, const Carta* vira) 
 {
 	LimparDecisoesDoBot();
 
 	switch (tipo_rodada) 
 	{
-	case PrimeiraRodada:
-		VerificarSeDeveAceitarPrimeiraRodada(posicao, carta_mais_alta_rodada, vira);
-		break;
-	case SegundaRodada:
-	case TerceiraRodada:
-	case Melando:
-		VerificarSeDeveAceitarSegundaRodada(posicao, carta_mais_alta_rodada, dupla_esta_ganhando_ou_empatado, vira);
-		break;
-	default:
-		break;
+		case PrimeiraRodada:
+			VerificarSeDeveAceitarPrimeiraRodada(posicao, carta_mais_alta_rodada, vira);
+			break;
+
+		case SegundaRodada:
+		case TerceiraRodada:
+		case Melando:
+			VerificarSeDeveAceitarSegundaRodada(posicao, carta_mais_alta_rodada, dupla_esta_ganhando_ou_empatado, vira);
+			break;
 	}
 }
 
@@ -35,7 +52,8 @@ void Bot::VerificarSeDeveAceitarPrimeiraRodada(PosicaoNaDuplaParaJogar posicao, 
 	std::vector<const Carta*> cartas = OrdenarCartasDaMao(vira);
 	bool deve_aceitar;
 
-	if (posicao == Primeiro) {
+	if (posicao == Primeiro) 
+	{
 		switch (valor_mao)
 		{
 		case Otimo:
@@ -60,7 +78,8 @@ void Bot::VerificarSeDeveAceitarPrimeiraRodada(PosicaoNaDuplaParaJogar posicao, 
 			break;
 		}
 	}
-	else {
+	else 
+	{
 		// Jogador eh o ultimo a jogar da dupla
 		const Carta* carta_mais_alta = carta_mais_alta_rodada.first;
 		bool eh_da_sua_dupla = carta_mais_alta_rodada.second;
@@ -90,7 +109,8 @@ void Bot::VerificarSeDeveAceitarPrimeiraRodada(PosicaoNaDuplaParaJogar posicao, 
 	}
 }
 
-void Bot::VerificarSeDeveAceitarSegundaRodada(PosicaoNaDuplaParaJogar posicao, std::pair<const Carta*, bool> carta_mais_alta_rodada, bool dupla_esta_ganhando_ou_empatado, const Carta* vira) {
+void Bot::VerificarSeDeveAceitarSegundaRodada(PosicaoNaDuplaParaJogar posicao, std::pair<const Carta*, bool> carta_mais_alta_rodada, bool dupla_esta_ganhando_ou_empatado, const Carta* vira) 
+{
 	ValorDasCartasNaMao valor_mao = AnalisarMaoDeCartas();
 	std::vector<const Carta*> cartas = OrdenarCartasDaMao(vira);
 	bool deve_aceitar;
@@ -493,68 +513,6 @@ std::vector<const Carta*> Bot::OrdenarCartasDaMao(const Carta* vira)
 	return cartas;
 }
 
-ValorDasCartasNaMao Bot::AnalisarMaoDeCartas()
-{
-	// TODO: Verificar como vai ocorrer deleção das cartas a cada rodada que passar
-	// TODO: Organizar Analise de cartas com base na deleção das cartas
-	const Carta* carta1 = this->PrimeiraCartaNaMao();
-	const Carta* carta2 = this->SegundaCartaNaMao();
-	const Carta* carta3 = this->TerceiraCartaNaMao();
-
-	std::map<ValorDasCartasNaMao, int> valor_final =
-	{
-		{Otimo, 0},
-		{Medio, 0},
-		{Ruim, 0}
-	};
-
-	PreencherValorFinalCartas(carta1, valor_final);
-	PreencherValorFinalCartas(carta2, valor_final);
-	PreencherValorFinalCartas(carta3, valor_final);
-
-	return AnalisarValorFinal(valor_final);
-
-}
-
-void Bot::PreencherValorFinalCartas(const Carta* carta, std::map<ValorDasCartasNaMao, int>& valor_final)
-{
-	if (carta->valor > 11)
-	{
-		valor_final[Otimo]++;
-	}
-	else if (carta->valor >= 9 && carta->valor <= 11)
-	{
-		valor_final[Medio]++;
-	}
-	else if (carta->valor < 9)
-	{
-		valor_final[Ruim]++;
-	}
-}
-
-ValorDasCartasNaMao Bot::AnalisarValorFinal(std::map<ValorDasCartasNaMao, int>& valor_final)
-{
-	if (valor_final[Otimo] == 3)
-	{
-		return Otimo;
-	}
-	else if (valor_final[Otimo] == 2)
-	{
-		return Bom;
-	}
-	else if (valor_final[Otimo] == 1)
-	{
-		return Medio;
-	}
-	else if (valor_final[Medio] >= 1)
-	{
-		return Fraco;
-	}
-	else
-	{
-		return Ruim;
-	}
-}
 
 void Bot::LimparDecisoesDoBot() {
 	deve_aceitar_o_truco_ = false;
@@ -562,26 +520,32 @@ void Bot::LimparDecisoesDoBot() {
 	jogada_bot_ = nullptr;
 }
 
-bool Bot::AceitarTruco() {
+bool Bot::AceitarTruco() 
+{
 	return deve_aceitar_o_truco_;
 }
 
-bool Bot::PedeTruco() {
+bool Bot::PedeTruco() 
+{
 	return deve_pedir_truco_;
 }
 
-void Bot::SetAceitarTruco(bool decisao) {
+void Bot::SetAceitarTruco(bool decisao) 
+{
 	deve_aceitar_o_truco_ = decisao;
 }
 
-void Bot::SetPedeTruco(bool decisao) {
+void Bot::SetPedeTruco(bool decisao) 
+{
 	deve_pedir_truco_ = decisao;
 }
 
-void Bot::SetJogadaBot(const Carta* carta_escolhida) {
+void Bot::SetJogadaBot(const Carta* carta_escolhida) 
+{
 	jogada_bot_ = carta_escolhida;
 }
 
-const Carta* Bot::GetJogadaBot() {
+const Carta* Bot::GetJogadaBot() 
+{
 	return jogada_bot_;
 }
