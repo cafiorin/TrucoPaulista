@@ -15,7 +15,7 @@ Partida::Partida(IEventosDaPartida* eventosPartida)
 	BaralhoMesa = nullptr;
 	Vira = nullptr;
 	UltimoJogadorAJogar = nullptr;
-	Rodadas = new RodadasController(false);
+	Rodadas = nullptr;
 }
 
 Partida::~Partida()
@@ -35,6 +35,9 @@ Partida::~Partida()
 void Partida::InicializarPartida(int quantosJogadores)
 {
 	QuantosJogadores = quantosJogadores;
+
+	delete Rodadas;
+	Rodadas = new RodadasController(quantosJogadores == 4);
 
 	delete Dupla1[0];
 	delete Dupla1[1];
@@ -134,10 +137,22 @@ Jogador* Partida::ObtemJogadorHumano1()
 	return Dupla1[0];
 }
 
+Jogador* Partida::ObtemJogadorHumano2()
+{
+	return Dupla1[1];
+}
+
+
 Jogador* Partida::ObtemJogadorBot1()
 {
 	return Dupla2[0];
 }
+
+Jogador* Partida::ObtemJogadorBot2()
+{
+	return Dupla2[1];
+}
+
 
 void Partida::JogadorJogouACarta(Jogador* jogador, const Carta* carta)
 {
@@ -253,7 +268,21 @@ bool Partida::ValidaQuemGanhouARodada()
 
 Jogador* Partida::GetProximoJogador()
 {
-	return (UltimoJogadorAJogar == Dupla1[0] ? Dupla2[0] : Dupla1[0]);
+	if (QuantosJogadores == 2)
+	{
+		return (UltimoJogadorAJogar == Dupla1[0] ? Dupla2[0] : Dupla1[0]);
+	}
+
+	if(UltimoJogadorAJogar == Dupla1[0])
+		return Dupla2[0];
+
+	if (UltimoJogadorAJogar == Dupla2[0])
+		return Dupla1[1];
+
+	if (UltimoJogadorAJogar == Dupla1[1])
+		return Dupla2[1];
+
+	return Dupla1[0];
 }
 
 Jogador* Partida::GetOponenteJogador(Jogador* jogador)
@@ -263,44 +292,27 @@ Jogador* Partida::GetOponenteJogador(Jogador* jogador)
 
 void Partida::ProximoJogadorJoga()
 {
-	if (QuantosJogadores == 2)
+	Jogador* jogadorAjogar = GetProximoJogador();
+
+	if (Rodadas->RodadaEstaComecando())
+		jogadorAjogar = QuemComecaRodada;
+
+	if (jogadorAjogar->EhUmBot())
 	{
-		Jogador* jogadorAjogar = GetProximoJogador();
-
-		if (Rodadas->RodadaEstaComecando())
-			jogadorAjogar = QuemComecaRodada;
-
-		if (jogadorAjogar->EhUmBot())
+		if (jogadorAjogar->PedeTruco())
 		{
-			// TODO (BOT): Testar metodos e ver se funciona ok
-			/**
-			NumeroDaRodadaAtual rodada_atual = RetornarNumeroDaRodadaAtual();
-			PosicaoNaDuplaParaJogar posicao = RetornarPosicaoNaDuplaParaJogar();
-			std::pair<const Carta*, bool> carta_mais_alta = RetornarCartaMaisAltaDaRodadaESeEhDaDupla(jogadorAjogar);
-
-			// TODO: Refatorar metodo Bot::FazerUmaJogada para ficar compativel com os novos eventos
-			static_cast<Bot*>(jogadorAjogar)->FazerUmaJogada(rodada_atual, posicao, carta_mais_alta, Vira);
-			*/
-			if (jogadorAjogar->PedeTruco())
-			{
-				JogadorTrucou(jogadorAjogar);
-			}
-			else
-			{
-				const Carta* cartaJogada = jogadorAjogar->FazerUmaJogada(); // getjogadabot(Rodadas->IndiceDaRodadaAtual());
-				EventosDaPartida->onBotJogouACarta(Rodadas->QualRodadaEsta(), jogadorAjogar, cartaJogada);
-				JogadorJogouACarta(jogadorAjogar, cartaJogada);
-			}
+			JogadorTrucou(jogadorAjogar);
 		}
-		else if (!Rodadas->RodadaEstaCompleta())
+		else
 		{
-			//Solicita a jogar
-			EventosDaPartida->solicitaJogadorJogar(Dupla1[0]);
+			const Carta* cartaJogada = jogadorAjogar->FazerUmaJogada();
+			EventosDaPartida->onBotJogouACarta(Rodadas->QualRodadaEsta(), jogadorAjogar, cartaJogada);
+			JogadorJogouACarta(jogadorAjogar, cartaJogada);
 		}
 	}
-	else
+	else if (!Rodadas->RodadaEstaCompleta())
 	{
-		//TODO 4 jogadores
+		EventosDaPartida->solicitaJogadorJogar(jogadorAjogar);
 	}
 }
 

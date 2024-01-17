@@ -42,9 +42,11 @@ public:
 
 	void DistribuiCartaProJogador(Jogador* jogador);
 	void GanhouPartida();
+	
 	Jogador* ObtemJogadorHumano1();
-
 	Jogador* ObtemJogadorBot1();
+	Jogador* ObtemJogadorHumano2();
+	Jogador* ObtemJogadorBot2();
 
 	Carta* ObtemVira() { return Vira; }
 

@@ -2,6 +2,7 @@
 
 #include "CartaDaRodada.h"
 #include "RodadasController.h"
+#include <algorithm>
 
 class Rodada
 {
@@ -45,7 +46,28 @@ public:
 		}
 		else
 		{
-			//TODO: Duplas
+			Jogador* ganhou = nullptr;
+			Carta tempCartas[] = { *cartas[0]->CartaJogadaNaRodada, *cartas[1]->CartaJogadaNaRodada, *cartas[2]->CartaJogadaNaRodada, *cartas[3]->CartaJogadaNaRodada };
+
+			std::sort(std::begin(tempCartas), std::end(tempCartas),
+				[this](const Carta& a, const Carta& b)
+				{
+					return (Rodadas->MaiorCarta(&a, &b) == 1);
+				});
+
+			if(tempCartas[3].ObtemValor(Rodadas->QualOVira()) == tempCartas[2].ObtemValor(Rodadas->QualOVira()))
+				return nullptr;
+
+			if (tempCartas[3].id == cartas[0]->CartaJogadaNaRodada->id)
+				return cartas[0]->JogadorDaCarta;
+
+			if (tempCartas[3].id == cartas[1]->CartaJogadaNaRodada->id)
+				return cartas[0]->JogadorDaCarta;
+
+			if (tempCartas[3].id == cartas[2]->CartaJogadaNaRodada->id)
+				return cartas[0]->JogadorDaCarta;
+
+			return cartas[3]->JogadorDaCarta;
 		}
 		return cartas[1]->JogadorDaCarta; //quando tiver duplas move pra dentro do if
 	}
@@ -58,7 +80,16 @@ public:
 		}
 		else
 		{
-			//TODO: Duplas
+			Jogador* ganhou = nullptr;
+			Carta tempCartas[] = { *cartas[0]->CartaJogadaNaRodada, *cartas[1]->CartaJogadaNaRodada, *cartas[2]->CartaJogadaNaRodada, *cartas[3]->CartaJogadaNaRodada };
+
+			std::sort(std::begin(tempCartas), std::end(tempCartas),
+				[this](const Carta& a, const Carta& b)
+				{
+					return (Rodadas->MaiorCarta(&a, &b) == 1);
+				});
+
+			return (tempCartas[3].ObtemValor(Rodadas->QualOVira()) == tempCartas[2].ObtemValor(Rodadas->QualOVira()));
 		}
 		return false; //quando tiver duplas move pra dentro do if
 	}

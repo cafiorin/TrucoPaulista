@@ -31,6 +31,7 @@ public:
 	int m_Instance;
 	Partida* partida;
 	bool DoisJogadores;
+	Jogador* JogadorSolicitado;
 
 	void InicializaRodada();
 	void CleanCheckBox();
@@ -110,4 +111,7 @@ public:
 	CStatic m_CartaBOT2_R3;
 	afx_msg void OnBnClickedTrucar();
 	afx_msg void OnBnClickedCorrer();
+	afx_msg void OnStnClickedPicParc3();
+	afx_msg void OnStnClickedPicParc2();
+	afx_msg void OnStnClickedPicParc1();
 };

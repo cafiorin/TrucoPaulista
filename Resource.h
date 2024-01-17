@@ -80,8 +80,12 @@
 #define IDC_RADIO7                      1011
 #define IDC_RADIO8                      1012
 #define IDC_PIC8                        1013
+#define IDC_PIC_PARC1                   1013
 #define IDC_PIC12                       1014
+#define IDC_PIC_PARC2                   1014
 #define IDC_PIC13                       1015
+#define IDC_PIC32                       1015
+#define IDC_PIC_PARC3                   1015
 #define IDC_PIC14                       1016
 #define IDC_PIC15                       1017
 #define IDC_RADIO2                      1018

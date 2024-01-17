@@ -15,6 +15,8 @@
 #include <atlimage.h>
 #include <windows.h>
 
+#define UMA_INSTANCIA
+
 #define CRTDBG_MAP_ALLOC
 #include <stdlib.h>
 #include <crtdbg.h>
@@ -124,6 +126,9 @@ BEGIN_MESSAGE_MAP(CTrucoPaulistaDlg, CDialogEx)
 	ON_STN_CLICKED(IDC_PIC1, &CTrucoPaulistaDlg::OnStnClickedPic1)
 	ON_BN_CLICKED(IDC_TRUCAR, &CTrucoPaulistaDlg::OnBnClickedTrucar)
 	ON_BN_CLICKED(IDC_CORRER, &CTrucoPaulistaDlg::OnBnClickedCorrer)
+	ON_STN_CLICKED(IDC_PIC_PARC3, &CTrucoPaulistaDlg::OnStnClickedPicParc3)
+	ON_STN_CLICKED(IDC_PIC_PARC2, &CTrucoPaulistaDlg::OnStnClickedPicParc2)
+	ON_STN_CLICKED(IDC_PIC_PARC1, &CTrucoPaulistaDlg::OnStnClickedPicParc1)
 END_MESSAGE_MAP()
 
 
@@ -380,51 +385,144 @@ void CTrucoPaulistaDlg::SetCurrectBitmapFromBot(Jogador* bot, const Carta* carta
 {
 
 	CartasBitmap bitmap(*carta);
-	switch (partida->ObtemNumeroDaRodada())
+
+	if (partida->ObtemNumeroDeJogadores() == 2)
 	{
-	case 1:
-		SetBitmapOnStaticControl(m_CartaBOT1_R1, *bitmap.Getbitmap());
-		m_CartaBOT1_R1.ShowWindow(SW_SHOW);
-		m_PicCartaParc1.ShowWindow(SW_HIDE);
-		break;
-	case 2:
-		SetBitmapOnStaticControl(m_CartaBOT1_R2, *bitmap.Getbitmap());
-		m_CartaBOT1_R2.ShowWindow(SW_SHOW);
-		m_PicCartaParc2.ShowWindow(SW_HIDE);
-		break;
-	case 3:
-		SetBitmapOnStaticControl(m_CartaBOT1_R3, *bitmap.Getbitmap());
-		m_CartaBOT1_R3.ShowWindow(SW_SHOW);
-		m_PicCartaParc3.ShowWindow(SW_HIDE);
-		break;
+		switch (partida->ObtemNumeroDaRodada())
+		{
+		case 1:
+			SetBitmapOnStaticControl(m_CartaBOT1_R1, *bitmap.Getbitmap());
+			m_CartaBOT1_R1.ShowWindow(SW_SHOW);
+			m_PicCartaParc1.ShowWindow(SW_HIDE);
+			break;
+		case 2:
+			SetBitmapOnStaticControl(m_CartaBOT1_R2, *bitmap.Getbitmap());
+			m_CartaBOT1_R2.ShowWindow(SW_SHOW);
+			m_PicCartaParc2.ShowWindow(SW_HIDE);
+			break;
+		case 3:
+			SetBitmapOnStaticControl(m_CartaBOT1_R3, *bitmap.Getbitmap());
+			m_CartaBOT1_R3.ShowWindow(SW_SHOW);
+			m_PicCartaParc3.ShowWindow(SW_HIDE);
+			break;
+		}
+	}
+	else // duplas
+	{
+			switch (partida->ObtemNumeroDaRodada())
+			{
+				case 1:
+				{
+					switch (bot->ObtemNumeroJogador())
+					{
+					case 2:
+						SetBitmapOnStaticControl(m_CartaBOT1_R1, *bitmap.Getbitmap());
+						m_CartaBOT1_R1.ShowWindow(SW_SHOW);
+						m_PicCartaOp1.ShowWindow(SW_HIDE);
+						break;
+
+					case 4:
+						SetBitmapOnStaticControl(m_CartaBOT2_R1, *bitmap.Getbitmap());
+						m_CartaBOT2_R1.ShowWindow(SW_SHOW);
+						m_PicCartaOp21.ShowWindow(SW_HIDE);
+						break;
+
+					}
+				}
+				break;
+	
+				case 2:
+				{
+					switch (bot->ObtemNumeroJogador())
+					{
+					case 2:
+						SetBitmapOnStaticControl(m_CartaBOT1_R2, *bitmap.Getbitmap());
+						m_CartaBOT1_R2.ShowWindow(SW_SHOW);
+						m_PicCartaOp2.ShowWindow(SW_HIDE);
+						break;
+
+					case 4:
+						SetBitmapOnStaticControl(m_CartaBOT2_R2, *bitmap.Getbitmap());
+						m_CartaBOT2_R2.ShowWindow(SW_SHOW);
+						m_PicCartaOp22.ShowWindow(SW_HIDE);
+						break;
+
+					}
+				}
+				break;
+
+				case 3:
+				{
+					switch (bot->ObtemNumeroJogador())
+					{
+					case 2:
+						SetBitmapOnStaticControl(m_CartaBOT1_R3, *bitmap.Getbitmap());
+						m_CartaBOT1_R3.ShowWindow(SW_SHOW);
+						m_PicCartaOp3.ShowWindow(SW_HIDE);
+						break;
+
+					case 4:
+						SetBitmapOnStaticControl(m_CartaBOT2_R3, *bitmap.Getbitmap());
+						m_CartaBOT2_R3.ShowWindow(SW_SHOW);
+						m_PicCartaOp23.ShowWindow(SW_HIDE);
+						break;
+
+					}
+				}
+				break;
+
+			}
 	}
 }
 
-void CTrucoPaulistaDlg::SetCurrectBitmapFromHumano(Jogador* bot, const Carta* carta)
+void CTrucoPaulistaDlg::SetCurrectBitmapFromHumano(Jogador* jogadorHumano, const Carta* carta)
 {
-	// exemplo adicionar a class bot aqui para ele jogar a carta correta.
-
 	CartasBitmap bitmap(*carta);
-	switch (partida->ObtemNumeroDaRodada())
+
+	if (jogadorHumano->ObtemNumeroJogador() == 1)
 	{
-	case 1:
-		SetBitmapOnStaticControl(m_CartaH2_R1, *bitmap.Getbitmap());
-		m_CartaH2_R1.ShowWindow(SW_SHOW);
-		break;
-	case 2:
-		SetBitmapOnStaticControl(m_CartaH2_R2, *bitmap.Getbitmap());
-		m_CartaH2_R2.ShowWindow(SW_SHOW);
-		break;
-	case 3:
-		SetBitmapOnStaticControl(m_CartaH2_R3, *bitmap.Getbitmap());
-		m_CartaH2_R3.ShowWindow(SW_SHOW);
-		break;
+		switch (partida->ObtemNumeroDaRodada())
+		{
+		case 1:
+			SetBitmapOnStaticControl(m_CartaH2_R1, *bitmap.Getbitmap());
+			m_CartaH2_R1.ShowWindow(SW_SHOW);
+			break;
+		case 2:
+			SetBitmapOnStaticControl(m_CartaH2_R2, *bitmap.Getbitmap());
+			m_CartaH2_R2.ShowWindow(SW_SHOW);
+			break;
+		case 3:
+			SetBitmapOnStaticControl(m_CartaH2_R3, *bitmap.Getbitmap());
+			m_CartaH2_R3.ShowWindow(SW_SHOW);
+			break;
+		}
+	}
+	else
+	{
+		switch (partida->ObtemNumeroDaRodada())
+		{
+		case 1:
+			SetBitmapOnStaticControl(m_CartaH1_R1, *bitmap.Getbitmap());
+			m_CartaH1_R1.ShowWindow(SW_SHOW);
+			break;
+		case 2:
+			SetBitmapOnStaticControl(m_CartaH1_R2, *bitmap.Getbitmap());
+			m_CartaH1_R2.ShowWindow(SW_SHOW);
+			break;
+		case 3:
+			SetBitmapOnStaticControl(m_CartaH1_R3, *bitmap.Getbitmap());
+			m_CartaH1_R3.ShowWindow(SW_SHOW);
+			break;
+		}
 	}
 }
 
 void CTrucoPaulistaDlg::OnStnClickedPic3()
 {
-	// Joga a Carta1
+	if (JogadorSolicitado != partida->ObtemJogadorHumano1())
+		return;
+
+		// Joga a Carta1
 	if (m_Instance == 1 || partida->ObtemNumeroDeJogadores() == 2)
 	{
 		Jogador* jogador = partida->ObtemJogadorHumano1();
@@ -439,6 +537,9 @@ void CTrucoPaulistaDlg::OnStnClickedPic3()
 
 void CTrucoPaulistaDlg::OnStnClickedPic2()
 {
+	if (JogadorSolicitado != partida->ObtemJogadorHumano1())
+		return;
+
 	// Joga a carta 2
 	if (m_Instance == 1 || partida->ObtemNumeroDeJogadores() == 2)
 	{
@@ -454,6 +555,9 @@ void CTrucoPaulistaDlg::OnStnClickedPic2()
 
 void CTrucoPaulistaDlg::OnStnClickedPic1()
 {
+	if (JogadorSolicitado != partida->ObtemJogadorHumano1())
+		return;
+
 	//Joga a carta 3
 	if (m_Instance == 1 || partida->ObtemNumeroDeJogadores() == 2)
 	{
@@ -465,6 +569,57 @@ void CTrucoPaulistaDlg::OnStnClickedPic1()
 		partida->JogadorJogouACarta(jogador, carta);
 	}
 }
+
+void CTrucoPaulistaDlg::OnStnClickedPicParc3()
+{
+	if (JogadorSolicitado != partida->ObtemJogadorHumano2())
+		return;
+
+	if (m_Instance == 1 || partida->ObtemNumeroDeJogadores() == 4)
+	{
+		Jogador* jogador = partida->ObtemJogadorHumano2();
+		const Carta* carta = jogador->PrimeiraCartaNaMao();
+
+		SetCurrectBitmapFromHumano(jogador, carta);
+		m_PicCartaParc1.ShowWindow(SW_HIDE);
+		partida->JogadorJogouACarta(jogador, carta);
+	}
+}
+
+
+void CTrucoPaulistaDlg::OnStnClickedPicParc2()
+{
+	if (JogadorSolicitado != partida->ObtemJogadorHumano2())
+		return;
+
+	if (m_Instance == 1 || partida->ObtemNumeroDeJogadores() == 4)
+	{
+		Jogador* jogador = partida->ObtemJogadorHumano2();
+		const Carta* carta = jogador->SegundaCartaNaMao();
+
+		SetCurrectBitmapFromHumano(jogador, carta);
+		m_PicCartaParc2.ShowWindow(SW_HIDE);
+		partida->JogadorJogouACarta(jogador, carta);
+	}
+}
+
+
+void CTrucoPaulistaDlg::OnStnClickedPicParc1()
+{
+	if (JogadorSolicitado != partida->ObtemJogadorHumano2())
+		return;
+
+	if (m_Instance == 1 || partida->ObtemNumeroDeJogadores() == 4)
+	{
+		Jogador* jogador = partida->ObtemJogadorHumano2();
+		const Carta* carta = jogador->TerceiraCartaNaMao();
+
+		SetCurrectBitmapFromHumano(jogador, carta);
+		m_PicCartaParc3.ShowWindow(SW_HIDE);
+		partida->JogadorJogouACarta(jogador, carta);
+	}
+}
+
 
 
 void CTrucoPaulistaDlg::onInicioDaPartida() 
@@ -491,6 +646,8 @@ void CTrucoPaulistaDlg::onFimDaPartida(Jogador* JogadorQueGanhou)
 void CTrucoPaulistaDlg::onInicioDaRodada(int numeroRodada)
 {
 	CleanCheckBox();
+	CleanOutput();
+	solicitaJogadorJogar(partida->QuemJoga());
 }
 
 void CTrucoPaulistaDlg::CleanCheckBox()
@@ -581,6 +738,8 @@ void CTrucoPaulistaDlg::solicitaJogadorJogar(Jogador* jogador)
 	CString str;
 	str.Format(_T("Sua Vez %s..."), strPlayerName);
 	AddOutput(str);
+
+	JogadorSolicitado = jogador;
 }
 
 void CTrucoPaulistaDlg::onBotJogouACarta(int NumeroDaRodada, Jogador* jogadorAjogar, const Carta* cartaJogada)
@@ -625,11 +784,6 @@ void CTrucoPaulistaDlg::onAcabouARodada(Jogador* JogadorQueGanhou)
 	InicializaRodada();
 	if (botComeca)
 		partida->ProximoJogadorJoga();
-	
-	CleanOutput();
-
-	str.Format(_T("Sua vez Humano1 !"));
-	AddOutput(str);
 }
 
 void CTrucoPaulistaDlg::AtualizaPlacar()
@@ -665,8 +819,6 @@ void CTrucoPaulistaDlg::InicializaRodada()
 	GetDlgItem(IDC_STATIC)->ShowWindow(SW_HIDE);
 	GetDlgItem(IDC_EDIT1)->ShowWindow(SW_SHOW);
 	CString str;
-	str.Format(_T("Sua vez Humano1 !"));
-	AddOutput(str);
 
 	m_Pic1.ShowWindow(SW_SHOW);
 	m_Pic2.ShowWindow(SW_SHOW);
@@ -700,6 +852,10 @@ void CTrucoPaulistaDlg::InicializaRodada()
 	m_Pic2.ModifyStyle(0, SS_NOTIFY);
 	m_Pic3.ModifyStyle(0, SS_NOTIFY);
 
+	m_CartaH1_R1.ShowWindow(SW_HIDE);
+	m_CartaH1_R2.ShowWindow(SW_HIDE);
+	m_CartaH1_R3.ShowWindow(SW_HIDE);
+
 	m_CartaH2_R1.ShowWindow(SW_HIDE);
 	m_CartaH2_R2.ShowWindow(SW_HIDE);
 	m_CartaH2_R3.ShowWindow(SW_HIDE);
@@ -708,12 +864,35 @@ void CTrucoPaulistaDlg::InicializaRodada()
 	m_CartaBOT1_R2.ShowWindow(SW_HIDE);
 	m_CartaBOT1_R3.ShowWindow(SW_HIDE);
 
+	m_CartaBOT2_R1.ShowWindow(SW_HIDE);
+	m_CartaBOT2_R2.ShowWindow(SW_HIDE);
+	m_CartaBOT2_R3.ShowWindow(SW_HIDE);
+
 	if(jogador->PodeTrucar())
 		GetDlgItem(IDC_TRUCAR)->ShowWindow(SW_SHOW);
 	
 	GetDlgItem(IDC_CORRER)->ShowWindow(SW_SHOW);
 
 	SetBitmapCartasAvesso();
+
+	#ifdef UMA_INSTANCIA
+	if (partida->ObtemNumeroDeJogadores() == 4)
+	{
+		Jogador* jogador2 = partida->ObtemJogadorHumano2();
+
+		CartasBitmap cartaBitmap1(*jogador2->PrimeiraCartaNaMao());
+		CartasBitmap cartaBitmap2(*jogador2->SegundaCartaNaMao());
+		CartasBitmap cartaBitmap3(*jogador2->TerceiraCartaNaMao());
+
+		SetBitmapOnStaticControl(m_PicCartaParc1, *cartaBitmap1.Getbitmap());
+		SetBitmapOnStaticControl(m_PicCartaParc2, *cartaBitmap2.Getbitmap());
+		SetBitmapOnStaticControl(m_PicCartaParc3, *cartaBitmap3.Getbitmap());
+		m_PicCartaParc1.ModifyStyle(0, SS_NOTIFY);
+		m_PicCartaParc2.ModifyStyle(0, SS_NOTIFY);
+		m_PicCartaParc3.ModifyStyle(0, SS_NOTIFY);
+	}
+	#endif
+
 
 	Carta Vira(partida->ObtemVira());
 	CartasBitmap cartaBitmap4(Vira);
