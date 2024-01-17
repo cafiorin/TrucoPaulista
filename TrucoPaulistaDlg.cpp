@@ -153,7 +153,7 @@ BOOL CTrucoPaulistaDlg::OnInitDialog()
 	}
 	else
 	{
-		partida->InicializarPartidaCliente(); //So inicializa o placar e a tela, precisa receber as cartas do Servidor (o metodo InicializarPartida deve enviar as cartas)
+		//partida->InicializarPartidaCliente(); //So inicializa o placar e a tela, precisa receber as cartas do Servidor (o metodo InicializarPartida deve enviar as cartas)
 	}
 
 
