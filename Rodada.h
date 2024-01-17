@@ -47,27 +47,22 @@ public:
 		else
 		{
 			Jogador* ganhou = nullptr;
-			Carta tempCartas[] = { *cartas[0]->CartaJogadaNaRodada, *cartas[1]->CartaJogadaNaRodada, *cartas[2]->CartaJogadaNaRodada, *cartas[3]->CartaJogadaNaRodada };
+			CartaDaRodada tempCartas[] = { *cartas[0], *cartas[1], *cartas[2], *cartas[3] };
 
 			std::sort(std::begin(tempCartas), std::end(tempCartas),
-				[this](const Carta& a, const Carta& b)
+				[this](const CartaDaRodada& a, const CartaDaRodada& b)
 				{
-					return (Rodadas->MaiorCarta(&a, &b) == 1);
+					return (Rodadas->MaiorCartaDaRodada(&a, &b) == 1);
 				});
 
-			if(tempCartas[3].ObtemValor(Rodadas->QualOVira()) == tempCartas[2].ObtemValor(Rodadas->QualOVira()))
+			if(tempCartas[3].CartaJogadaNaRodada->ObtemValor(Rodadas->QualOVira()) == tempCartas[2].CartaJogadaNaRodada->ObtemValor(Rodadas->QualOVira())
+				&& ((tempCartas[3].JogadorDaCarta->ObtemNumeroJogador() == 1 && tempCartas[2].JogadorDaCarta->ObtemNumeroJogador() == 3) == false) 
+				&& ((tempCartas[3].JogadorDaCarta->ObtemNumeroJogador() == 3 && tempCartas[2].JogadorDaCarta->ObtemNumeroJogador() == 1) == false)
+				&& ((tempCartas[3].JogadorDaCarta->ObtemNumeroJogador() == 2 && tempCartas[2].JogadorDaCarta->ObtemNumeroJogador() == 4) == false)
+				&& ((tempCartas[3].JogadorDaCarta->ObtemNumeroJogador() == 4 && tempCartas[2].JogadorDaCarta->ObtemNumeroJogador() == 2) == false))
 				return nullptr;
 
-			if (tempCartas[3].id == cartas[0]->CartaJogadaNaRodada->id)
-				return cartas[0]->JogadorDaCarta;
-
-			if (tempCartas[3].id == cartas[1]->CartaJogadaNaRodada->id)
-				return cartas[0]->JogadorDaCarta;
-
-			if (tempCartas[3].id == cartas[2]->CartaJogadaNaRodada->id)
-				return cartas[0]->JogadorDaCarta;
-
-			return cartas[3]->JogadorDaCarta;
+			return (tempCartas[3].JogadorDaCarta);
 		}
 		return cartas[1]->JogadorDaCarta; //quando tiver duplas move pra dentro do if
 	}

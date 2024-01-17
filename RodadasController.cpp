@@ -136,6 +136,21 @@ int RodadasController::MaiorCarta(const Carta* carta1, const Carta* carta2)
 	return 1;
 }
 
+int RodadasController::MaiorCartaDaRodada(const CartaDaRodada* carta1, const CartaDaRodada* carta2)
+{
+	int valor1 = carta1->CartaJogadaNaRodada->ObtemValor(Vira);
+	int valor2 = carta2->CartaJogadaNaRodada->ObtemValor(Vira);
+
+	if (valor1 > valor2)
+		return 0;
+
+	if (valor1 == valor2)
+		return -1;
+
+	return 1;
+}
+
+
 bool RodadasController::BotFezAPrimeira()
 {
 	return (Rodadas[0]->QuemGanhou() != nullptr && Rodadas[0]->QuemGanhou()->EhUmBot());

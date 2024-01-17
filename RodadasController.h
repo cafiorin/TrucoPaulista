@@ -54,6 +54,7 @@ public:
 	const Carta* QualCartaJogadaNaRodada();
 	bool RetornarSeEhPrimeiroParaJogarNaRodadaAtual();
 	CartaDaRodada* RetornaMaiorCartaDaRodadaAtual();
+	int MaiorCartaDaRodada(const CartaDaRodada* carta1, const CartaDaRodada* carta2);
 
 	int MaiorCarta(const Carta* carta1, const Carta* carta2);
 };
