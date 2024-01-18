@@ -3,6 +3,43 @@
 #include "PersistenciaController.h"
 #include <fstream>
 
+PersistenciaController::PersistenciaController(Jogador* quemComecaRodada,
+											   Jogador* ultimoJogadorAJogar,
+											   Placar* placar,
+											   Jogador* dupla1[2],
+											   Jogador* dupla2[2],
+											   RodadasController* rodadas,
+											   Carta* vira, 
+											   Partida* jogo) {
+	QuemComecaRodada = quemComecaRodada;
+	UltimoJogadorAJogar = ultimoJogadorAJogar;
+	PlacarDaPartida = placar;
+	
+	Dupla1[0] = dupla1[0];
+	Dupla1[1] = dupla1[1];
+
+	Dupla2[0] = dupla2[0];
+	Dupla2[1] = dupla1[1];
+
+	Rodadas = rodadas;
+	Vira = vira;
+
+	Jogo = jogo;
+}
+
+PersistenciaController::~PersistenciaController() {
+	delete QuemComecaRodada;
+	delete UltimoJogadorAJogar;
+	delete PlacarDaPartida;
+	delete Dupla1[0];
+	delete Dupla1[1];
+	delete Dupla2[0];
+	delete Dupla2[1];
+	delete Rodadas;
+	delete Vira;
+	delete Jogo;
+}
+
 bool PersistenciaController::ContinuarJogoPausado() {
 	std::ofstream arquivoTruco(nomeArquivo, std::ios::out);
 
@@ -41,48 +78,99 @@ void PersistenciaController::PersistirJSON(std::string& json) {
 	}
 }
 
-std::string PersistenciaController::MontarJSON(/*colocar params e remover mock*/) {
-	Json::Value json;
+Json::Value const PersistenciaController::GetCartaVirada() {
 
-	// ---
 	Json::Value cartaViradaObject;
-	cartaViradaObject["id"] = 1;
-	cartaViradaObject["valor"] = 4;
-	cartaViradaObject["nome"] = "Q";
-	cartaViradaObject["naipe"] = "ouro";
+	cartaViradaObject["id"] = Vira->id;
+	cartaViradaObject["valor"] = Vira->valor;
+	cartaViradaObject["nome"] = Vira->nome;
+	cartaViradaObject["naipe"] = Vira->naipe;
 
-	json["cartaVirada"] = cartaViradaObject;
-	// ---
+	return cartaViradaObject;
+}
 
-	// ---
+Json::Value const PersistenciaController::GetRodada() {
+	Rodada* rodadaAtual = Rodadas->PegarRodadaAtual();
+
 	Json::Value rodada;
-	rodada["numeroDaRodade"] = 0;
+
+	rodada["numeroDaRodada"] = Rodadas->QualRodadaEsta();
 
 	Json::Value cartasDaMesa;
 
-	Json::Value carta1;
-	carta1["cartaCoberta"] = false;
-	carta1["idJogador"] = 1;
-	Json::Value cartaJogada;
-	cartaJogada["id"] = 1;
-	cartaJogada["valor"] = 4;
-	cartaJogada["nome"] = "Q";
-	cartaJogada["naipe"] = "ouro";
-	carta1["cartaJogada"] = cartaJogada;
-	cartasDaMesa.append(carta1);
+	for (int i = 0; i < 4; i++)
+	{
+		CartaDaRodada* cartaDaRodada = rodadaAtual->cartas[i];
 
-	//Json::Value carta2;
-	//cartasDaMesa.append(carta2);
-	//Json::Value carta3;
-	//cartasDaMesa.append(carta3);
-	//Json::Value carta4;
-	//cartasDaMesa.append(carta4);
+		if (cartaDaRodada == nullptr)
+			break;
+
+		Json::Value carta;
+		carta["cartaCoberta"] = cartaDaRodada->CartaCoberta;
+		carta["idJogador"] = cartaDaRodada->JogadorDaCarta->ObtemNumeroJogador();
+
+		Json::Value cartaJogada;
+		cartaJogada["id"] = cartaDaRodada->CartaJogadaNaRodada->id;
+		cartaJogada["valor"] = cartaDaRodada->CartaJogadaNaRodada->valor;
+		cartaJogada["nome"] = cartaDaRodada->CartaJogadaNaRodada->nome;
+		cartaJogada["naipe"] = cartaDaRodada->CartaJogadaNaRodada->naipe;
+		carta["cartaJogada"] = cartaJogada;
+		cartasDaMesa.append(carta);
+	}
 
 	rodada["cartasDaMesa"] = cartasDaMesa;
-	rodada["valorDaRodada"] = 1;
-	rodada["idJogadorPediuTruco"] = 1;
+	int valorDaPartida = Rodadas->QuantoEstaValendoARodada();
+	rodada["valorDaRodada"] = valorDaPartida;
 
-	json["rodada"] = rodada;
+	if (valorDaPartida > 1) // Se valor da partida for maior que 1 alguém pediu truco
+		rodada["idJogadorPediuTruco"] = Jogo->GetJogadorAtual()->ObtemNumeroJogador();
+	
+	return rodada;
+}
+
+std::string PersistenciaController::MontarJSON() {
+	Json::Value json;
+
+	json["cartaVirada"] = GetCartaVirada();
+	json["rodadaAtual"] = GetRodada();
+
+	// ---
+	Json::Value time1;
+
+
+	Json::Value jogador1;
+	jogador1["id"] = 1;
+	jogador1["bot"] = true;
+	jogador1["vezDeJogar"] = true;
+
+	Json::Value mao;
+
+	Json::Value primeiraCarta;
+	primeiraCarta["id"] = 1;
+	primeiraCarta["valor"] = 4;
+	primeiraCarta["nome"] = "Q";
+	primeiraCarta["naipe"] = "ouro";
+
+	Json::Value segundaCarta;
+	Json::Value terceitaCarta;
+
+	mao.append(primeiraCarta);
+	mao.append(segundaCarta);
+	mao.append(terceitaCarta);
+
+	jogador1["mao"] = mao;
+
+	//Json::Value jogador2;
+
+	Json::Value jogadores;
+	jogadores.append(jogador1);
+	//jogadores.append(jogador2);
+
+	time1["jogadores"] = jogadores;
+
+	time1["pontos"] = 1;
+
+	json["time1"] = time1;
 	// ---
 
 	Json::StreamWriterBuilder writer;

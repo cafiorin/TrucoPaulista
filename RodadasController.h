@@ -27,6 +27,7 @@ public:
 	int NumeroDeJogadores() { return (JogoDeDupla ? 4 : 2); }
 
 	int IndiceDaRodadaAtual() { return NumeroDaRodada - 1; }
+	Rodada* PegarRodadaAtual() { return Rodadas[IndiceDaRodadaAtual()]; }
 	bool RodadaEstaCompleta();
 	bool RodadaEstaComecando();
 	Jogador* QuemGanhouARodadaAtual();
