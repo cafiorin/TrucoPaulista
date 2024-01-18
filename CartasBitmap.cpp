@@ -3,9 +3,8 @@
 #include "resource.h"
 #include "Carta.h"
 
-CartasBitmap::CartasBitmap(const Carta &carta) : m_Carta(carta)
+CartasBitmap::CartasBitmap(int idResource) : m_ID(idResource)
 {
-	SetID(carta);
 }
 
 int CartasBitmap::GetID()
@@ -13,14 +12,9 @@ int CartasBitmap::GetID()
 	return m_ID;
 }
 
-const Carta& CartasBitmap::GetCarta()
-{
-	return m_Carta;
-}
-
 void CartasBitmap::SetID(const Carta &carta)
 {
-	this->m_ID = (IDB_BITMAP1-1) + carta.id + ((int)carta.naipe - 1) * 13;
+	this->m_ID = carta.idResource;
 }
 
 CBitmap* CartasBitmap::Getbitmap()

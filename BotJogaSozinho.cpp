@@ -12,8 +12,6 @@ BotJogaSozinho::~BotJogaSozinho()
 
 const Carta* BotJogaSozinho::FazerUmaJogada()
 {
-	//return getjogadabot(MesaDaRodada->IndiceDaRodadaAtual());
-
 	if (MesaDaRodada->RodadaEstaComecando())
 	{
 		return FazerUmaJogadaComecando();
@@ -35,12 +33,19 @@ const Carta* BotJogaSozinho::FazerUmaJogadaRebatendo()
 		case Medio:
 		case Fraco:
 		case Ruim:
-			if (TemCartaMaiorNaMao(cartaDoAdversario))
+			if (MesaDaRodada->QualRodadaEsta() == 1 && CalcularSeDeveFazerAcao(Media))
 			{
-				const Carta* cartaMaisAlta = PrimeiraCartaMaiorNaMao(cartaDoAdversario);
-				if (cartaMaisAlta != nullptr)
+				return PegaAMelhorOuPiorCartaNaMao(false);
+			}
+			else
+			{
+				if (TemCartaMaiorNaMao(cartaDoAdversario))
 				{
-					return cartaMaisAlta;
+					const Carta* cartaMaisAlta = PrimeiraCartaMaiorNaMao(cartaDoAdversario);
+					if (cartaMaisAlta != nullptr)
+					{
+						return cartaMaisAlta;
+					}
 				}
 			}
 		break;

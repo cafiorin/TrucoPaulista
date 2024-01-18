@@ -84,11 +84,11 @@
 #define IDC_PIC12                       1014
 #define IDC_PIC_PARC2                   1014
 #define IDC_PIC13                       1015
-#define IDC_PIC32                       1015
 #define IDC_PIC_PARC3                   1015
 #define IDC_PIC14                       1016
 #define IDC_PIC15                       1017
 #define IDC_RADIO2                      1018
+#define IDC_RADIO9                      1018
 #define IDC_BUTTON1                     1019
 #define IDC_PIC_CARTA_H2_R1             1020
 #define IDC_RADIO3                      1021
@@ -118,6 +118,7 @@
 #define IDC_PONTOS_DUPLA2               1045
 #define IDC_CORRER                      1046
 #define IDC_TRUCAR                      1047
+#define IDC_EDIT2                       1048
 #define IDC_PONTOS_PARTIDA_DUPLA1       1049
 #define IDC_PONTOS_PARTIDA_DUPLA2       1050
 

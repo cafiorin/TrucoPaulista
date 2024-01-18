@@ -81,6 +81,7 @@ public:
    ValorDasCartasNaMao AnalisarValorFinal(int otimas, int medias, int ruims);
    ValorDasCartasNaMao QualidadeDasCartasNaRodada;
    bool CalcularSeDeveTrucarOuCorrerOuAceitar(ProbabilidadeDeTrucarOuCorrerOuAceitar probabilidade);
+   bool CalcularSeDeveFazerAcao(ProbabilidadeDeTrucarOuCorrerOuAceitar probabilidade);
    const Carta* PrimeiraCartaMaiorNaMao(const Carta* cartaDoAdversario);
    bool TemCartaMaiorNaMao(const Carta* cartaDoAdversario);
    const Carta* PegaAMelhorOuPiorCartaNaMao(bool melhor);

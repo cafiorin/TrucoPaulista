@@ -283,6 +283,11 @@ bool Jogador::PedeTruco()
 	return deveTrucar;
 }
 
+bool Jogador::CalcularSeDeveFazerAcao(ProbabilidadeDeTrucarOuCorrerOuAceitar probabilidade)
+{
+	return CalcularSeDeveTrucarOuCorrerOuAceitar(probabilidade);
+}
+
 bool Jogador::CalcularSeDeveTrucarOuCorrerOuAceitar(ProbabilidadeDeTrucarOuCorrerOuAceitar probabilidade)
 {
 	// Providing a seed value

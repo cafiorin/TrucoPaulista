@@ -67,12 +67,6 @@ void Partida::InicializarPartida(int quantosJogadores)
 	InicializarRodada();
 }
 
-void Partida::InicializarPartidaCliente()
-{
-	placar->Inicializar();
-	InicializarRodada();
-}
-
 void Partida::GanhouPartida()
 {
 }

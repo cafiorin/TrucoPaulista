@@ -7,6 +7,8 @@
 class Partida;
 class Jogador;
 class Carta;
+class PartidaMessagesController;
+
 #include "IEventosDaPartida.h"  
 
 // CTrucoPaulistaDlg dialog
@@ -25,13 +27,16 @@ public:
 	void SetBitmapMesa();
 	void InicializaTelaInicial();
 	void InicializaPartida();
+	void InicializarPartidaCliente();
 	BOOL VerifyInstances();
 	void CreateNewInstance();
 	HANDLE m_hMutex; // Identificador do mutex
 	int m_Instance;
 	Partida* partida;
+	PartidaMessagesController* partidaMessagesController;
 	bool DoisJogadores;
 	Jogador* JogadorSolicitado;
+	bool TwoInstances;
 
 	void InicializaRodada();
 	void CleanCheckBox();
@@ -52,6 +57,11 @@ public:
 	virtual void onAcabouARodada(Jogador* JogadorQueGanhou);
 	virtual void onPedeTruco();
 	virtual void onAceitouTruco(Jogador* jogador);
+
+	//Cliente
+	void AtualizaPlacar(int PontosDaDupla1, int PontosDaDupla2);
+	void AtualizaCartasCliente(int c1,int c2, int c3, int c4);
+	void AtualizaClientePodeTrucar(bool trucar);
 
 
 // Dialog Data

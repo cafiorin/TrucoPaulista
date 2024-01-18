@@ -11,11 +11,11 @@
 #include "Partida.h"
 #include "resource.h"
 #include "TrucoPaulistaDlg.h"
+#include "AboutDlg.h"
+#include "PartidaMessagesController.h"
 
 #include <atlimage.h>
 #include <windows.h>
-
-#define UMA_INSTANCIA
 
 #define CRTDBG_MAP_ALLOC
 #include <stdlib.h>
@@ -25,57 +25,23 @@
 #define new new(_NORMAL_BLOCK, __FILE__, __LINE__)
 #endif
 
-#define WM_CUSTOM_MESSAGE (WM_USER + 1)
-
-// CAboutDlg dialog used for App About
-class CAboutDlg : public CDialogEx
-{
-public:
-	CAboutDlg();
-
-	// Dialog Data
-#ifdef AFX_DESIGN_TIME
-	enum { IDD = IDD_ABOUTBOX };
-#endif
-
-protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-
-	// Implementation
-protected:
-	DECLARE_MESSAGE_MAP()
-};
-
-CAboutDlg::CAboutDlg() : CDialogEx(IDD_ABOUTBOX)
-{
-}
-
-void CAboutDlg::DoDataExchange(CDataExchange* pDX)
-{
-	CDialogEx::DoDataExchange(pDX);
-}
-
-BEGIN_MESSAGE_MAP(CAboutDlg, CDialogEx)
-END_MESSAGE_MAP()
-
-
-// CTrucoPaulistaDlg dialog
-CTrucoPaulistaDlg::CTrucoPaulistaDlg(CWnd* pParent /*=nullptr*/)
-	: CDialogEx(IDD_TRUCOPAULISTA_DIALOG, pParent)
+CTrucoPaulistaDlg::CTrucoPaulistaDlg(CWnd* pParent) : CDialogEx(IDD_TRUCOPAULISTA_DIALOG, pParent)
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
+}
+
+CTrucoPaulistaDlg::~CTrucoPaulistaDlg()
+{
+	delete partida;
+	delete partidaMessagesController;
 }
 
 BOOL CTrucoPaulistaDlg::PreTranslateMessage(MSG* pMsg)
 {
 	// Verificar se é a mensagem personalizada
-	if (pMsg->message == WM_CUSTOM_MESSAGE)
+	if (pMsg->message >= WM_CUSTOM_MESSAGE_INICIO && pMsg->message <= WM_CUSTOM_MESSAGE_FIM)
 	{
-		// Faça algo em resposta à mensagem personalizada
-		// Por exemplo, exiba uma mensagem
-		AfxMessageBox(_T("Mensagem Personalizada Recebida"));
-
-		// Retorne TRUE para indicar que a mensagem foi processada
+		partidaMessagesController->OnReceiveMessage(pMsg);
 		return TRUE;
 	}
 
@@ -132,7 +98,6 @@ BEGIN_MESSAGE_MAP(CTrucoPaulistaDlg, CDialogEx)
 END_MESSAGE_MAP()
 
 
-// CTrucoPaulistaDlg message handlers
 BOOL CTrucoPaulistaDlg::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
@@ -142,27 +107,21 @@ BOOL CTrucoPaulistaDlg::OnInitDialog()
 
 	SetIcon(m_hIcon, TRUE);			// Set big icon
 	SetIcon(m_hIcon, FALSE);		// Set small icon
-	//obs: não consegui debugar o conteudo da segunda instancia, caso você tem algum problema recomendo comentar a linha a baixo.
-	//CreateNewInstance();
 
 	InicializaTelaInicial();//Espera evento de iniciar a partida
 	partida = new Partida(this);
+	partidaMessagesController = new PartidaMessagesController(this, m_Instance == 1);
 
-	if (m_Instance == 1)
+	if (m_Instance == 2)
 	{
+		InicializarPartidaCliente();
 	}
-	else
-	{
-		//partida->InicializarPartidaCliente(); //So inicializa o placar e a tela, precisa receber as cartas do Servidor (o metodo InicializarPartida deve enviar as cartas)
-	}
-
-
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
 
-CTrucoPaulistaDlg::~CTrucoPaulistaDlg()
+void CTrucoPaulistaDlg::InicializarPartidaCliente()
 {
-	delete partida;
+	InicializaRodada();
 }
 
 
@@ -200,15 +159,24 @@ void CTrucoPaulistaDlg::InicializaTelaInicial()
 
 void CTrucoPaulistaDlg::InicializaPartida()
 {
+	TwoInstances = false;
 	bool doisJogadores = false;
 	CButton* pRadioButton = reinterpret_cast<CButton*>(GetDlgItem(IDC_RADIO7));
-	if (pRadioButton)
+	if (pRadioButton && pRadioButton->GetCheck() == 1)
 	{
-		doisJogadores = pRadioButton->GetCheck() == 1;
+		doisJogadores = true;
+	}
+	else
+	{
+		CButton* pRBNovaInstancia = reinterpret_cast<CButton*>(GetDlgItem(IDC_RADIO9));
+		if (pRBNovaInstancia && pRBNovaInstancia->GetCheck() == 1)
+		{
+			CreateNewInstance();
+			TwoInstances = true;
+		}
 	}
 
 	DoisJogadores = doisJogadores;
-
 	partida->InicializarPartida(doisJogadores ? 2 : 4);
 	InicializaRodada();
 }
@@ -384,7 +352,7 @@ void CTrucoPaulistaDlg::OnBnClickedButton1()
 void CTrucoPaulistaDlg::SetCurrectBitmapFromBot(Jogador* bot, const Carta* carta)
 {
 
-	CartasBitmap bitmap(*carta);
+	CartasBitmap bitmap(carta->idResource);
 
 	if (partida->ObtemNumeroDeJogadores() == 2)
 	{
@@ -477,7 +445,7 @@ void CTrucoPaulistaDlg::SetCurrectBitmapFromBot(Jogador* bot, const Carta* carta
 
 void CTrucoPaulistaDlg::SetCurrectBitmapFromHumano(Jogador* jogadorHumano, const Carta* carta)
 {
-	CartasBitmap bitmap(*carta);
+	CartasBitmap bitmap(carta->idResource);
 
 	if (jogadorHumano->ObtemNumeroJogador() == 1)
 	{
@@ -788,13 +756,9 @@ void CTrucoPaulistaDlg::onAcabouARodada(Jogador* JogadorQueGanhou)
 
 void CTrucoPaulistaDlg::AtualizaPlacar()
 {
-	CString str;
-
-	str.Format(_T("%d"), partida->PontosDaDupla1());
-	GetDlgItem(IDC_PONTOS_DUPLA1)->SetWindowText(str);
-
-	str.Format(_T("%d"), partida->PontosDaDupla2());
-	GetDlgItem(IDC_PONTOS_DUPLA2)->SetWindowText(str);
+	AtualizaPlacar(partida->PontosDaDupla1(), partida->PontosDaDupla2());
+	if (m_Instance == 1 && TwoInstances)
+		partidaMessagesController->EnviaMsgDeAtualizaPlacar(partida->PontosDaDupla1(), partida->PontosDaDupla2());
 }
 
 void CTrucoPaulistaDlg::AtualizaPlacarDePartidas()
@@ -815,6 +779,7 @@ void CTrucoPaulistaDlg::InicializaRodada()
 
 	GetDlgItem(IDC_RADIO7)->ShowWindow(SW_HIDE);
 	GetDlgItem(IDC_RADIO8)->ShowWindow(SW_HIDE);
+	GetDlgItem(IDC_RADIO9)->ShowWindow(SW_HIDE);
 	GetDlgItem(IDC_BUTTON1)->ShowWindow(SW_HIDE);
 	GetDlgItem(IDC_STATIC)->ShowWindow(SW_HIDE);
 	GetDlgItem(IDC_EDIT1)->ShowWindow(SW_SHOW);
@@ -839,15 +804,26 @@ void CTrucoPaulistaDlg::InicializaRodada()
 
 	m_PicVira.ShowWindow(SW_SHOW);
 
-	Jogador* jogador = partida->ObtemJogadorHumano1();
+	if (m_Instance == 1)
+	{
+		Jogador* jogador = partida->ObtemJogadorHumano1();
 
-	CartasBitmap cartaBitmap1(*jogador->PrimeiraCartaNaMao());
-	CartasBitmap cartaBitmap2(*jogador->SegundaCartaNaMao());
-	CartasBitmap cartaBitmap3(*jogador->TerceiraCartaNaMao());
+		CartasBitmap cartaBitmap1(jogador->PrimeiraCartaNaMao()->idResource);
+		CartasBitmap cartaBitmap2(jogador->SegundaCartaNaMao()->idResource);
+		CartasBitmap cartaBitmap3(jogador->TerceiraCartaNaMao()->idResource);
 
-	SetBitmapOnStaticControl(m_Pic1, *cartaBitmap1.Getbitmap());
-	SetBitmapOnStaticControl(m_Pic2, *cartaBitmap2.Getbitmap());
-	SetBitmapOnStaticControl(m_Pic3, *cartaBitmap3.Getbitmap());
+		SetBitmapOnStaticControl(m_Pic1, *cartaBitmap1.Getbitmap());
+		SetBitmapOnStaticControl(m_Pic2, *cartaBitmap2.Getbitmap());
+		SetBitmapOnStaticControl(m_Pic3, *cartaBitmap3.Getbitmap());
+
+		if (jogador->PodeTrucar())
+			GetDlgItem(IDC_TRUCAR)->ShowWindow(SW_SHOW);
+
+		Carta Vira(partida->ObtemVira());
+		CartasBitmap cartaBitmap4(Vira.idResource);
+		SetBitmapOnStaticControl(m_PicVira, *cartaBitmap4.Getbitmap());
+	}
+
 	m_Pic1.ModifyStyle(0, SS_NOTIFY);
 	m_Pic2.ModifyStyle(0, SS_NOTIFY);
 	m_Pic3.ModifyStyle(0, SS_NOTIFY);
@@ -868,21 +844,17 @@ void CTrucoPaulistaDlg::InicializaRodada()
 	m_CartaBOT2_R2.ShowWindow(SW_HIDE);
 	m_CartaBOT2_R3.ShowWindow(SW_HIDE);
 
-	if(jogador->PodeTrucar())
-		GetDlgItem(IDC_TRUCAR)->ShowWindow(SW_SHOW);
-	
 	GetDlgItem(IDC_CORRER)->ShowWindow(SW_SHOW);
 
 	SetBitmapCartasAvesso();
 
-	#ifdef UMA_INSTANCIA
-	if (partida->ObtemNumeroDeJogadores() == 4)
+	if (!TwoInstances && partida->ObtemNumeroDeJogadores() == 4)
 	{
 		Jogador* jogador2 = partida->ObtemJogadorHumano2();
 
-		CartasBitmap cartaBitmap1(*jogador2->PrimeiraCartaNaMao());
-		CartasBitmap cartaBitmap2(*jogador2->SegundaCartaNaMao());
-		CartasBitmap cartaBitmap3(*jogador2->TerceiraCartaNaMao());
+		CartasBitmap cartaBitmap1(jogador2->PrimeiraCartaNaMao()->idResource);
+		CartasBitmap cartaBitmap2(jogador2->SegundaCartaNaMao()->idResource);
+		CartasBitmap cartaBitmap3(jogador2->TerceiraCartaNaMao()->idResource);
 
 		SetBitmapOnStaticControl(m_PicCartaParc1, *cartaBitmap1.Getbitmap());
 		SetBitmapOnStaticControl(m_PicCartaParc2, *cartaBitmap2.Getbitmap());
@@ -891,12 +863,18 @@ void CTrucoPaulistaDlg::InicializaRodada()
 		m_PicCartaParc2.ModifyStyle(0, SS_NOTIFY);
 		m_PicCartaParc3.ModifyStyle(0, SS_NOTIFY);
 	}
-	#endif
+	else if (TwoInstances)
+	{
+		Sleep(1000);//Espera instancia aparecer
 
+		Jogador* jogador2 = partida->ObtemJogadorHumano2();
+		int c1 = jogador2->PrimeiraCartaNaMao()->idResource;
+		int c2 = jogador2->SegundaCartaNaMao()->idResource;
+		int c3 = jogador2->TerceiraCartaNaMao()->idResource;
+		int c4 = partida->ObtemVira()->idResource;
+		partidaMessagesController->EnviaCartasParaJogador(c1,c2,c3,c4);
+	}
 
-	Carta Vira(partida->ObtemVira());
-	CartasBitmap cartaBitmap4(Vira);
-	SetBitmapOnStaticControl(m_PicVira, *cartaBitmap4.Getbitmap());
 	Invalidate();
 }
 
@@ -919,4 +897,38 @@ void CTrucoPaulistaDlg::OnBnClickedCorrer()
 	partida->JogadorCorreu(jogador);
 }
 
+//Cliente
+void CTrucoPaulistaDlg::AtualizaPlacar(int PontosDaDupla1, int PontosDaDupla2)
+{
+	CString str;
+
+	str.Format(_T("%d"), PontosDaDupla1);
+	GetDlgItem(IDC_PONTOS_DUPLA1)->SetWindowText(str);
+
+	str.Format(_T("%d"), PontosDaDupla2);
+	GetDlgItem(IDC_PONTOS_DUPLA2)->SetWindowText(str);
+}
+
+
+void CTrucoPaulistaDlg::AtualizaCartasCliente(int c1,int c2,int c3, int c4)
+{
+		AtualizaClientePodeTrucar(true);
+
+		CartasBitmap cartaBitmap1(c1);
+		CartasBitmap cartaBitmap2(c2);
+		CartasBitmap cartaBitmap3(c3);
+
+		SetBitmapOnStaticControl(m_Pic1, *cartaBitmap1.Getbitmap());
+		SetBitmapOnStaticControl(m_Pic2, *cartaBitmap2.Getbitmap());
+		SetBitmapOnStaticControl(m_Pic3, *cartaBitmap3.Getbitmap());
+
+		CartasBitmap cartaBitmap4(c4);
+		SetBitmapOnStaticControl(m_PicVira, *cartaBitmap4.Getbitmap());
+		Invalidate();
+}
+
+void CTrucoPaulistaDlg::AtualizaClientePodeTrucar(bool trucar)
+{
+	GetDlgItem(IDC_TRUCAR)->ShowWindow(trucar ? SW_SHOW : SW_HIDE);
+}
 

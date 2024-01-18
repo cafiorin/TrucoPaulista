@@ -34,8 +34,6 @@ public:
 	
 	void InicializarPartida(int quantosJogadores);
 
-	void InicializarPartidaCliente();
-
 	bool InicializarRodada();
 
 	void DistribuiCartas();
