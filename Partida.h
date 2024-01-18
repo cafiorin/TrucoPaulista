@@ -73,6 +73,8 @@ public:
 	void ProximoJogadorJoga();
 	
 	Jogador* GetProximoJogador();
+
+	Jogador* GetJogadorAtual() { return UltimoJogadorAJogar; }
 	
 	Jogador* GetOponenteJogador(Jogador* jogador);
 
