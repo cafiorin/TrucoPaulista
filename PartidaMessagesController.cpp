@@ -34,6 +34,30 @@ void PartidaMessagesController::OnReceiveMessage(MSG* pMsg)
 		}
 		break;
 
+		case WM_MESSAGE_SOLICITA_JOGADOR_JOGAR:
+		{
+			TrucoPaulistaView->SolicitaAcaoJogadorCliente();
+		}
+		break;
+
+		case WM_MESSAGE_JOGADOR_JOGOU_CARTA:
+		{
+			unsigned int numeroCarta = LOWORD(pMsg->lParam);
+			TrucoPaulistaView->JogouACartaCliente(numeroCarta);
+		}
+		break;
+
+		case WM_MESSAGE_ATUALIZA_CARTA_JOGADA:
+		{
+			unsigned int chave1 = LOWORD(pMsg->lParam);
+			int numeroJogador = LOBYTE(chave1);
+			int numeroDaRodada = HIBYTE(chave1);
+
+			unsigned int carta = HIWORD(pMsg->lParam);
+			TrucoPaulistaView->AtualizaCartasJogadasCliente(numeroDaRodada, numeroJogador, carta);
+		}
+		break;
+
 		default:
 			break;
 	}
@@ -52,10 +76,32 @@ void PartidaMessagesController::EnviaCartasParaJogador(int c1, int c2, int c3, i
 	EnviaMsgParaJogador(WM_MESSAGE_ATUALIZA_CARTAS, 0, MAKELPARAM(c1c2, c3c4));
 }
 
+void PartidaMessagesController::SolicitaJogadorAJogar()
+{
+	EnviaMsgParaJogador(WM_MESSAGE_SOLICITA_JOGADOR_JOGAR, 0, 0);
+}
+
+void PartidaMessagesController::JogadorJogouCarta(int numeroCarta)
+{
+	EnviaMsgParaServer(WM_MESSAGE_JOGADOR_JOGOU_CARTA, 0, numeroCarta);
+}
+
+void PartidaMessagesController::AtualizaCartaJogada(int NumeroDaRodada, int NumeroJogador, int idResource)
+{
+	unsigned int chave1 = NumeroDaRodada << 8 | NumeroJogador;
+	EnviaMsgParaJogador(WM_MESSAGE_ATUALIZA_CARTA_JOGADA, 0, MAKELPARAM(chave1, idResource));
+}
+
 void PartidaMessagesController::EnviaMsgParaJogador(UINT message, WPARAM wParam, LPARAM lParam)
 {
 	HWND hwnd = GetHandle();
 	if (hwnd != NULL)
-		::PostMessage(GetHandle(), WM_MESSAGE_ATUALIZA_CARTAS, wParam, lParam);
+		::PostMessage(hwnd, message, wParam, lParam);
 }
 
+void PartidaMessagesController::EnviaMsgParaServer(UINT message, WPARAM wParam, LPARAM lParam)
+{
+	HWND hwnd = GetHandleServer();
+	if (hwnd != NULL)
+		::PostMessage(hwnd, message, wParam, lParam);
+}

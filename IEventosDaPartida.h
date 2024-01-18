@@ -18,6 +18,7 @@ public:
     virtual void onBotJogouACarta(int NumeroDaRodada, Jogador* jogadorAjogar, const Carta* cartaJogada) = 0;
     virtual void onPedeTruco() = 0;
     virtual void onAceitouTruco(Jogador* jogador)=0;
+    virtual void onCartaJogada(int NumeroDaRodada, Jogador* jogador, const Carta* carta) = 0;
 
     // TODO:
     // Outros eventos, como jogadas, truco, etc...

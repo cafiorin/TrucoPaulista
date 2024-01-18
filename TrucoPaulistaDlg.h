@@ -57,11 +57,16 @@ public:
 	virtual void onAcabouARodada(Jogador* JogadorQueGanhou);
 	virtual void onPedeTruco();
 	virtual void onAceitouTruco(Jogador* jogador);
+	virtual void onCartaJogada(int NumeroDaRodada, Jogador* jogadorAjogar, const Carta* cartaJogada);
 
 	//Cliente
 	void AtualizaPlacar(int PontosDaDupla1, int PontosDaDupla2);
 	void AtualizaCartasCliente(int c1,int c2, int c3, int c4);
 	void AtualizaClientePodeTrucar(bool trucar);
+	void SolicitaAcaoJogadorCliente();
+	void JogouACartaCliente(int numeroCarta);
+	void AtualizaCartasJogadasCliente(int numeroDaRodada, int numeroJogador, int carta);
+	void SetCurrectBitmapCliente(int rodada, int numeroJogador, int carta);
 
 
 // Dialog Data
@@ -124,4 +129,6 @@ public:
 	afx_msg void OnStnClickedPicParc3();
 	afx_msg void OnStnClickedPicParc2();
 	afx_msg void OnStnClickedPicParc1();
+	afx_msg void OnBnClickedTrucar2();
+	afx_msg void OnBnClickedCorrer2();
 };

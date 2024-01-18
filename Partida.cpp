@@ -151,6 +151,7 @@ Jogador* Partida::ObtemJogadorBot2()
 void Partida::JogadorJogouACarta(Jogador* jogador, const Carta* carta)
 {
 	Rodadas->CartaJogada(carta, jogador);
+	EventosDaPartida->onCartaJogada(Rodadas->QualRodadaEsta(),jogador, carta);
 	ProximoPasso(jogador, AcaoRealizada::Jogou);
 }
 
