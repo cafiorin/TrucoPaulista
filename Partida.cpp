@@ -268,6 +268,7 @@ Jogador* Partida::GetJogadorByID(int idJogador)
 		return Dupla2[1];
 		break;
 	default:
+		return nullptr;
 		break;
 	}
 }

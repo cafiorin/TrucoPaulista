@@ -15,9 +15,11 @@ void PartidaMessagesController::OnReceiveMessage(MSG* pMsg)
 		case WM_MESSAGE_ATUALIZA_PLACAR:
 		{
 			unsigned int c1c2 = LOWORD(pMsg->lParam);
-			int PontosDaDupla1 = LOBYTE(c1c2);
-			int PontosDaDupla2 = HIBYTE(c1c2);
-			TrucoPaulistaView->AtualizaPlacar(PontosDaDupla1, PontosDaDupla2);
+			int firstIntValue = static_cast<int>(LOWORD(c1c2));
+
+			// Retrieving the second int value from the LPARAM
+			int secondIntValue = static_cast<int>(HIWORD(c1c2));
+			TrucoPaulistaView->AtualizaPlacar(firstIntValue, secondIntValue);
 		}
 		break;
 
@@ -58,14 +60,23 @@ void PartidaMessagesController::OnReceiveMessage(MSG* pMsg)
 			TrucoPaulistaView->AtualizaCartasJogadasCliente(numeroDaRodada, numeroJogador, carta);
 		}
 		break;
-		case WM_MESSAGE_TERMINOU_RODADA:
-		{
-			
+		case WM_MESSAGE_FIM_RODADA:
+		{	unsigned int c1c2 = LOWORD(pMsg->lParam);
+			int firstIntValue = static_cast<int>(LOWORD(c1c2));
+
+			// Retrieving the second int value from the LPARAM
+			int secondIntValue = static_cast<int>(HIWORD(c1c2));
+			TrucoPaulistaView->ShowMessageQuemGanhouaRodada(firstIntValue, secondIntValue);
 		}
 		break;	
 		case WM_MESSAGE_FIM_PARTIDA:
 		{
-			
+		
+		}
+		break;
+		case WM_MESSAGE_ATUALIZAR_MESA:
+		{
+			TrucoPaulistaView->InicializarPartidaCliente();
 		}
 		break;
 		case WM_MESSAGE_JOGADOR_TRUCOU:
@@ -93,6 +104,10 @@ void PartidaMessagesController::EnviaCartasParaJogador(int c1, int c2, int c3, i
 	EnviaMsgParaJogador(WM_MESSAGE_ATUALIZA_CARTAS, 0, MAKELPARAM(c1c2, c3c4));
 }
 
+void PartidaMessagesController::EnviaInicializaRodada()
+{
+	EnviaMsgParaJogador(WM_MESSAGE_ATUALIZAR_MESA, 0, 0);
+}
 void PartidaMessagesController::SolicitaJogadorAJogar()
 {
 	EnviaMsgParaJogador(WM_MESSAGE_SOLICITA_JOGADOR_JOGAR, 0, 0);
@@ -118,6 +133,9 @@ void PartidaMessagesController::EnviaMsgParaJogador(UINT message, WPARAM wParam,
 void PartidaMessagesController::EnviaFimDaPartida(int jogadorVencedor)
 {
 	EnviaMsgParaJogador(WM_MESSAGE_FIM_PARTIDA, 0,jogadorVencedor);
+}void PartidaMessagesController::EnviaFimDaRodada(int rodada, int jogadorVencedor)
+{
+	EnviaMsgParaJogador(WM_MESSAGE_FIM_RODADA, 0, MAKELPARAM(rodada, jogadorVencedor));
 }
 void PartidaMessagesController::EnviaAceitouTruco(int jogadorquetrucou)
 {
