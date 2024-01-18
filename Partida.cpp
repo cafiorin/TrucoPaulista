@@ -151,7 +151,7 @@ Jogador* Partida::ObtemJogadorBot2()
 void Partida::JogadorJogouACarta(Jogador* jogador, const Carta* carta)
 {
 	Rodadas->CartaJogada(carta, jogador);
-	EventosDaPartida->onCartaJogada(Rodadas->QualRodadaEsta(),jogador, carta);
+	EventosDaPartida->onCartaJogada(Rodadas->QualRodadaEsta(), jogador, carta);
 	ProximoPasso(jogador, AcaoRealizada::Jogou);
 }
 
@@ -251,6 +251,27 @@ Jogador* Partida::QuemJoga()
 	return QuemComecaRodada;
 }
 
+Jogador* Partida::GetJogadorByID(int idJogador)
+{
+	switch (idJogador)
+	{
+	case 1:
+		return Dupla1[0];
+		break;
+	case 2:
+		return Dupla2[0];
+		break;
+	case 3:
+		return Dupla1[1];
+		break;
+	case 4:
+		return Dupla2[1];
+		break;
+	default:
+		break;
+	}
+}
+
 bool Partida::ValidaQuemGanhouARodada()
 {
 	Jogador* ganhou = Rodadas->QuemGanhouARodadaAtual();
@@ -268,7 +289,7 @@ Jogador* Partida::GetProximoJogador()
 		return (UltimoJogadorAJogar == Dupla1[0] ? Dupla2[0] : Dupla1[0]);
 	}
 
-	if(UltimoJogadorAJogar == Dupla1[0])
+	if (UltimoJogadorAJogar == Dupla1[0])
 		return Dupla2[0];
 
 	if (UltimoJogadorAJogar == Dupla2[0])
@@ -354,12 +375,12 @@ bool Partida::ValidaQuemGanhouAsRodadas()
 	return false;
 }
 
-NumeroDaRodadaAtual Partida::RetornarNumeroDaRodadaAtual() 
+NumeroDaRodadaAtual Partida::RetornarNumeroDaRodadaAtual()
 {
 	//informação : O Jogador agora tem um objeto de contexto da Rodada : o MesaDaRodada , onde tem todas as informações necessarias para jogar uma carta
 
 
-	if (placar->PontosDaDupla1 == placar->PontosDaDupla2) 
+	if (placar->PontosDaDupla1 == placar->PontosDaDupla2)
 	{
 		return Melando;
 	}
@@ -368,23 +389,23 @@ NumeroDaRodadaAtual Partida::RetornarNumeroDaRodadaAtual()
 		return MaoDeOnze;
 	}
 
-	switch (Rodadas->QualRodadaEsta()) 
+	switch (Rodadas->QualRodadaEsta())
 	{
-		case 1:
-			return PrimeiraRodada;
+	case 1:
+		return PrimeiraRodada;
 
-		case 2:
-			return SegundaRodada;
+	case 2:
+		return SegundaRodada;
 
-		case 3:
-			return TerceiraRodada;
+	case 3:
+		return TerceiraRodada;
 
-		default:
-			return PrimeiraRodada;
+	default:
+		return PrimeiraRodada;
 	}
 }
 
-PosicaoNaDuplaParaJogar Partida::RetornarPosicaoNaDuplaParaJogar() 
+PosicaoNaDuplaParaJogar Partida::RetornarPosicaoNaDuplaParaJogar()
 {
 	//informação : O Jogador agora tem um objeto de contexto da Rodada : o MesaDaRodada , onde tem todas as informações necessarias para jogar uma carta
 
@@ -392,23 +413,23 @@ PosicaoNaDuplaParaJogar Partida::RetornarPosicaoNaDuplaParaJogar()
 	{
 		return Primeiro;
 	}
-	
+
 	return Pe;
 }
 
-std::pair<const Carta*, bool> Partida::RetornarCartaMaisAltaDaRodadaESeEhDaDupla(Jogador* jogador_atual) 
+std::pair<const Carta*, bool> Partida::RetornarCartaMaisAltaDaRodadaESeEhDaDupla(Jogador* jogador_atual)
 {
 	//informação : O Jogador agora tem um objeto de contexto da Rodada : o MesaDaRodada , onde tem todas as informações necessarias para jogar uma carta
 
 	std::pair<const Carta*, bool> res;
 
 	CartaDaRodada* maior_carta_da_rodada = Rodadas->RetornaMaiorCartaDaRodadaAtual();
-	if (maior_carta_da_rodada) 
+	if (maior_carta_da_rodada)
 	{
 		res.first = maior_carta_da_rodada->CartaJogadaNaRodada;
 		res.second = VerificarSeEhMesmaDupla(jogador_atual, maior_carta_da_rodada->JogadorDaCarta);
 	}
-	else 
+	else
 	{
 		res.first = nullptr;
 		res.second = false;
@@ -417,16 +438,16 @@ std::pair<const Carta*, bool> Partida::RetornarCartaMaisAltaDaRodadaESeEhDaDupla
 	return res;
 }
 
-bool Partida::VerificarSeEhMesmaDupla(Jogador* jogador1, Jogador* jogador2) 
+bool Partida::VerificarSeEhMesmaDupla(Jogador* jogador1, Jogador* jogador2)
 {
 	//informação : O Jogador agora tem um objeto de contexto da Rodada : o MesaDaRodada , onde tem todas as informações necessarias para jogar uma carta
 
 	int numero_de_matchs = 0;
 
-	for (Jogador* jogador : Dupla1) 
+	for (Jogador* jogador : Dupla1)
 	{
-		if (jogador->ObtemNumeroJogador() == jogador1->ObtemNumeroJogador() || 
-			jogador->ObtemNumeroJogador() == jogador2->ObtemNumeroJogador()) 
+		if (jogador->ObtemNumeroJogador() == jogador1->ObtemNumeroJogador() ||
+			jogador->ObtemNumeroJogador() == jogador2->ObtemNumeroJogador())
 		{
 			numero_de_matchs++;
 		}
@@ -435,20 +456,20 @@ bool Partida::VerificarSeEhMesmaDupla(Jogador* jogador1, Jogador* jogador2)
 	return numero_de_matchs == 2 ? true : false;
 }
 
-bool Partida::RetornarSeDuplaEstaGanhandoOuEmpatado(Jogador* jogador_atual) 
+bool Partida::RetornarSeDuplaEstaGanhandoOuEmpatado(Jogador* jogador_atual)
 {
 	//informação : O Jogador agora tem um objeto de contexto da Rodada : o MesaDaRodada , onde tem todas as informações necessarias para jogar uma carta
 
 	bool esta_ganhando_ou_empatado = false;
 
-	if (placar->PontosDaDupla1 == placar->PontosDaDupla2) 
+	if (placar->PontosDaDupla1 == placar->PontosDaDupla2)
 	{
 		esta_ganhando_ou_empatado = true;
-	} 
-	else if (placar->PontosDaDupla1 > placar->PontosDaDupla2) 
+	}
+	else if (placar->PontosDaDupla1 > placar->PontosDaDupla2)
 	{
-		if (Dupla1[0]->ObtemNumeroJogador() == jogador_atual->ObtemNumeroJogador() || 
-			Dupla1[1]->ObtemNumeroJogador() == jogador_atual->ObtemNumeroJogador()) 
+		if (Dupla1[0]->ObtemNumeroJogador() == jogador_atual->ObtemNumeroJogador() ||
+			Dupla1[1]->ObtemNumeroJogador() == jogador_atual->ObtemNumeroJogador())
 		{
 			esta_ganhando_ou_empatado = true;
 		}

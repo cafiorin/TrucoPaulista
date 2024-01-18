@@ -629,7 +629,7 @@ void CTrucoPaulistaDlg::onFimDaPartida(Jogador* JogadorQueGanhou)
 
 	AtualizaPlacarDePartidas();
 
-	//TODO: partidaMessagesController->EnviaFimDaPartida(JogadorQueGanhou->ObtemNumeroJogador());
+	partidaMessagesController->EnviaFimDaPartida(JogadorQueGanhou->ObtemNumeroJogador());
 
 	AfxMessageBox(str, MB_ICONINFORMATION | MB_OK);
 
@@ -666,7 +666,7 @@ void CTrucoPaulistaDlg::onAceitouTruco(Jogador *jogador)
 		str.Format(_T("Jogador %s aceitou o Truco... Manda !"), strPlayerName);
 		AddOutput(str);
 
-		//TODO: partidaMessagesController->EnviaAceitouTruco(jogador->ObtemNumeroJogador());
+		partidaMessagesController->EnviaAceitouTruco(jogador->ObtemNumeroJogador());
 
 		AfxMessageBox(str, MB_ICONINFORMATION | MB_OK);
 	}
@@ -795,9 +795,10 @@ void CTrucoPaulistaDlg::onAcabouARodada(Jogador* JogadorQueGanhou)
 
 void CTrucoPaulistaDlg::AtualizaPlacar()
 {
-	AtualizaPlacar(partida->PontosDaDupla1(), partida->PontosDaDupla2());
-	if (m_Instance == 1 && TwoInstances)
+	if (TwoInstances)
 		partidaMessagesController->EnviaMsgDeAtualizaPlacar(partida->PontosDaDupla1(), partida->PontosDaDupla2());
+	else
+		AtualizaPlacar(partida->PontosDaDupla1(), partida->PontosDaDupla2());
 }
 
 void CTrucoPaulistaDlg::AtualizaPlacarDePartidas()
@@ -956,6 +957,23 @@ void CTrucoPaulistaDlg::AtualizaCartasJogadasCliente(int numeroDaRodada, int num
 	if (m_Instance == 2)
 	{
 		SetCurrectBitmapCliente(numeroDaRodada, numeroJogador, carta);
+	}
+}
+void CTrucoPaulistaDlg::ShowMessageJogadorAceitouTruco(int jogadorqueTrucou)
+{
+	if (m_Instance == 2)
+	{
+		Jogador* jogador = partida->GetJogadorByID(jogadorqueTrucou);
+		std::string playerName = jogador->ObtemNome();
+		CString strPlayerName(playerName.c_str());
+
+		CString str;
+		str.Format(_T("Jogador %s aceitou o Truco... Manda !"), strPlayerName);
+		AddOutput(str);
+
+		partidaMessagesController->EnviaAceitouTruco(jogador->ObtemNumeroJogador());
+
+		AfxMessageBox(str, MB_ICONINFORMATION | MB_OK);
 	}
 }
 

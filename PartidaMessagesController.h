@@ -9,6 +9,9 @@
 #define WM_MESSAGE_SOLICITA_JOGADOR_JOGAR (WM_USER + 5)
 #define WM_MESSAGE_JOGADOR_JOGOU_CARTA (WM_USER + 6)
 #define WM_MESSAGE_ATUALIZA_CARTA_JOGADA (WM_USER + 7)
+#define WM_MESSAGE_TERMINOU_RODADA (WM_USER + 8)
+#define WM_MESSAGE_FIM_PARTIDA (WM_USER + 9)
+#define WM_MESSAGE_JOGADOR_TRUCOU (WM_USER + 10)
 
 #define WM_CUSTOM_MESSAGE_FIM (WM_USER + 100)
 
@@ -27,9 +30,9 @@ public:
 	void SolicitaJogadorAJogar();
 	void JogadorJogouCarta(int numeroCarta);
 	void AtualizaCartaJogada(int NumeroDaRodada, int NumeroJogador, int idResource);
-
+	void EnviaAceitouTruco(int jogadorquetrucou);
 	void EnviaMsgParaJogador(UINT message, WPARAM wParam, LPARAM lParam);
 	void EnviaMsgParaServer(UINT message, WPARAM wParam, LPARAM lParam);
-
+	void EnviaFimDaPartida(int jogadorVencedor);
 };
 

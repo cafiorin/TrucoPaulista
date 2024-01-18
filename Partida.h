@@ -55,7 +55,7 @@ public:
 	void JogadorJogouACarta(Jogador* jogador, const Carta* carta);
 
 	Jogador* QuemJoga();
-
+	Jogador* GetJogadorByID(int idJogador);
 	void JogadorTrucou(Jogador* jogador);
 
 	void ProximoPasso(Jogador* jogador, AcaoRealizada acao);
