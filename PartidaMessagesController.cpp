@@ -58,20 +58,30 @@ void PartidaMessagesController::OnReceiveMessage(MSG* pMsg)
 			TrucoPaulistaView->AtualizaCartasJogadasCliente(numeroDaRodada, numeroJogador, carta);
 		}
 		break;
+
 		case WM_MESSAGE_TERMINOU_RODADA:
 		{
 			
 		}
 		break;	
+
 		case WM_MESSAGE_FIM_PARTIDA:
 		{
 			
 		}
 		break;
+
 		case WM_MESSAGE_JOGADOR_TRUCOU:
 		{
 			unsigned int jogador = LOWORD(pMsg->lParam);
 			TrucoPaulistaView->ShowMessageJogadorAceitouTruco(jogador);
+		}
+		break;
+
+		case WM_MESSAGE_INICIALIZA_RODADA:
+		{
+			unsigned int jogador = LOWORD(pMsg->lParam);
+			TrucoPaulistaView->InicializaRodadaCliente(jogador);
 		}
 		break;
 
@@ -109,12 +119,6 @@ void PartidaMessagesController::AtualizaCartaJogada(int NumeroDaRodada, int Nume
 	EnviaMsgParaJogador(WM_MESSAGE_ATUALIZA_CARTA_JOGADA, 0, MAKELPARAM(chave1, idResource));
 }
 
-void PartidaMessagesController::EnviaMsgParaJogador(UINT message, WPARAM wParam, LPARAM lParam)
-{
-	HWND hwnd = GetHandle();
-	if (hwnd != NULL)
-		::PostMessage(hwnd, message, wParam, lParam);
-}
 void PartidaMessagesController::EnviaFimDaPartida(int jogadorVencedor)
 {
 	EnviaMsgParaJogador(WM_MESSAGE_FIM_PARTIDA, 0,jogadorVencedor);
@@ -124,6 +128,21 @@ void PartidaMessagesController::EnviaAceitouTruco(int jogadorquetrucou)
 	EnviaMsgParaJogador(WM_MESSAGE_JOGADOR_TRUCOU, 0, jogadorquetrucou);
 }
 
+void PartidaMessagesController::EnviaInicializaRodada(int JogadorQueComeca)
+{
+	EnviaMsgParaJogador(WM_MESSAGE_INICIALIZA_RODADA, 0, JogadorQueComeca);
+}
+
+
+
+
+// metodos para enviar as mensagens
+void PartidaMessagesController::EnviaMsgParaJogador(UINT message, WPARAM wParam, LPARAM lParam)
+{
+	HWND hwnd = GetHandle();
+	if (hwnd != NULL)
+		::PostMessage(hwnd, message, wParam, lParam);
+}
 
 void PartidaMessagesController::EnviaMsgParaServer(UINT message, WPARAM wParam, LPARAM lParam)
 {

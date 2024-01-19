@@ -795,10 +795,11 @@ void CTrucoPaulistaDlg::onAcabouARodada(Jogador* JogadorQueGanhou)
 
 void CTrucoPaulistaDlg::AtualizaPlacar()
 {
-	if (TwoInstances)
-		partidaMessagesController->EnviaMsgDeAtualizaPlacar(partida->PontosDaDupla1(), partida->PontosDaDupla2());
-	else
+	if (m_Instance == 1 && TwoInstances)
+	{
 		AtualizaPlacar(partida->PontosDaDupla1(), partida->PontosDaDupla2());
+		partidaMessagesController->EnviaMsgDeAtualizaPlacar(partida->PontosDaDupla1(), partida->PontosDaDupla2());
+	}
 }
 
 void CTrucoPaulistaDlg::AtualizaPlacarDePartidas()
@@ -911,7 +912,7 @@ void CTrucoPaulistaDlg::InicializaRodada()
 	}
 	else if (TwoInstances)
 	{
-		//TODO:	partidaMessagesController->EnviaInicializaRodada();
+		partidaMessagesController->EnviaInicializaRodada(1);
 
 		Sleep(1000);//Espera instancia aparecer
 
@@ -928,16 +929,21 @@ void CTrucoPaulistaDlg::InicializaRodada()
 
 void CTrucoPaulistaDlg::OnBnClickedTrucar()
 {
-	GetDlgItem(IDC_TRUCAR)->ShowWindow(SW_HIDE);
-
 	Jogador* jogador = partida->ObtemJogadorHumano1();
-	partida->JogadorTrucou(jogador);
+	if (JogadorSolicitado == jogador)
+	{
+		GetDlgItem(IDC_TRUCAR)->ShowWindow(SW_HIDE);
+		partida->JogadorTrucou(jogador);
+	}
 }
 
 void CTrucoPaulistaDlg::OnBnClickedCorrer()
 {
 	Jogador* jogador = partida->ObtemJogadorHumano1();
-	partida->JogadorCorreu(jogador);
+	if (JogadorSolicitado == jogador)
+	{
+		partida->JogadorCorreu(jogador);
+	}
 }
 
 //Cliente
@@ -959,6 +965,15 @@ void CTrucoPaulistaDlg::AtualizaCartasJogadasCliente(int numeroDaRodada, int num
 		SetCurrectBitmapCliente(numeroDaRodada, numeroJogador, carta);
 	}
 }
+
+void CTrucoPaulistaDlg::InicializaRodadaCliente(int jogadorQueComeca)
+{
+	if (m_Instance == 2)
+	{
+		InicializaRodada();
+	}
+}
+
 void CTrucoPaulistaDlg::ShowMessageJogadorAceitouTruco(int jogadorqueTrucou)
 {
 	if (m_Instance == 2)
@@ -970,10 +985,6 @@ void CTrucoPaulistaDlg::ShowMessageJogadorAceitouTruco(int jogadorqueTrucou)
 		CString str;
 		str.Format(_T("Jogador %s aceitou o Truco... Manda !"), strPlayerName);
 		AddOutput(str);
-
-		partidaMessagesController->EnviaAceitouTruco(jogador->ObtemNumeroJogador());
-
-		AfxMessageBox(str, MB_ICONINFORMATION | MB_OK);
 	}
 }
 
@@ -988,18 +999,42 @@ void CTrucoPaulistaDlg::SetCurrectBitmapCliente(int rodada, int numeroJogador, i
 		case 1:
 			SetBitmapOnStaticControl(m_CartaH2_R1, *bitmap.Getbitmap());
 			m_CartaH2_R1.ShowWindow(SW_SHOW);
+			m_Pic1.ShowWindow(SW_HIDE);
 			break;
 		case 2:
 			SetBitmapOnStaticControl(m_CartaH2_R2, *bitmap.Getbitmap());
 			m_CartaH2_R2.ShowWindow(SW_SHOW);
+			m_Pic2.ShowWindow(SW_HIDE);
 			break;
 		case 3:
 			SetBitmapOnStaticControl(m_CartaH2_R3, *bitmap.Getbitmap());
 			m_CartaH2_R3.ShowWindow(SW_SHOW);
+			m_Pic3.ShowWindow(SW_HIDE);
 			break;
 		}
 	}
-	else if(numeroJogador == 3)
+	else if (numeroJogador == 2)
+	{
+		switch (rodada)
+		{
+		case 1:
+			SetBitmapOnStaticControl(m_CartaBOT1_R1, *bitmap.Getbitmap());
+			m_CartaBOT1_R1.ShowWindow(SW_SHOW);
+			m_PicCartaOp1.ShowWindow(SW_HIDE);
+			break;
+		case 2:
+			SetBitmapOnStaticControl(m_CartaBOT1_R2, *bitmap.Getbitmap());
+			m_CartaBOT1_R2.ShowWindow(SW_SHOW);
+			m_PicCartaOp2.ShowWindow(SW_HIDE);
+			break;
+		case 3:
+			SetBitmapOnStaticControl(m_CartaBOT1_R3, *bitmap.Getbitmap());
+			m_CartaBOT1_R3.ShowWindow(SW_SHOW);
+			m_PicCartaOp3.ShowWindow(SW_HIDE);
+			break;
+		}
+	}
+	else if (numeroJogador == 3)
 	{
 		switch (rodada)
 		{
@@ -1017,24 +1052,6 @@ void CTrucoPaulistaDlg::SetCurrectBitmapCliente(int rodada, int numeroJogador, i
 			break;
 		}
 	}
-	else if (numeroJogador == 2)
-	{
-		switch (rodada)
-		{
-		case 1:
-			SetBitmapOnStaticControl(m_CartaBOT1_R1, *bitmap.Getbitmap());
-			m_CartaBOT1_R1.ShowWindow(SW_SHOW);
-			break;
-		case 2:
-			SetBitmapOnStaticControl(m_CartaBOT1_R2, *bitmap.Getbitmap());
-			m_CartaBOT1_R2.ShowWindow(SW_SHOW);
-			break;
-		case 3:
-			SetBitmapOnStaticControl(m_CartaBOT1_R3, *bitmap.Getbitmap());
-			m_CartaBOT1_R3.ShowWindow(SW_SHOW);
-			break;
-		}
-	}
 	else if (numeroJogador == 4)
 	{
 		switch (rodada)
@@ -1042,14 +1059,17 @@ void CTrucoPaulistaDlg::SetCurrectBitmapCliente(int rodada, int numeroJogador, i
 		case 1:
 			SetBitmapOnStaticControl(m_CartaBOT2_R1, *bitmap.Getbitmap());
 			m_CartaBOT2_R1.ShowWindow(SW_SHOW);
+			m_PicCartaOp21.ShowWindow(SW_HIDE);
 			break;
 		case 2:
 			SetBitmapOnStaticControl(m_CartaBOT2_R2, *bitmap.Getbitmap());
 			m_CartaBOT2_R2.ShowWindow(SW_SHOW);
+			m_PicCartaOp22.ShowWindow(SW_HIDE);
 			break;
 		case 3:
 			SetBitmapOnStaticControl(m_CartaBOT2_R3, *bitmap.Getbitmap());
 			m_CartaBOT2_R3.ShowWindow(SW_SHOW);
+			m_PicCartaOp23.ShowWindow(SW_HIDE);
 			break;
 		}
 	}
@@ -1134,11 +1154,19 @@ void CTrucoPaulistaDlg::onCartaJogada(int NumeroDaRodada, Jogador* jogador, cons
 
 void CTrucoPaulistaDlg::OnBnClickedTrucar2()
 {
-	// TODO: Add your control notification handler code here
+	Jogador* jogador = partida->ObtemJogadorHumano2();
+	if (JogadorSolicitado == jogador)
+	{
+		//TODO: partidaMessagesController->EnviaTruco(jogador->ObtemNumeroJogador());
+	}
 }
 
 
 void CTrucoPaulistaDlg::OnBnClickedCorrer2()
 {
-	// TODO: Add your control notification handler code here
+	Jogador* jogador = partida->ObtemJogadorHumano2();
+	if (JogadorSolicitado == jogador)
+	{
+		//TODO: partidaMessagesController->EnviaCorrer(jogador->ObtemNumeroJogador());
+	}
 }

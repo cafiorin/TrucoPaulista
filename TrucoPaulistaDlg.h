@@ -67,7 +67,8 @@ public:
 	void JogouACartaCliente(int numeroCarta);
 	void AtualizaCartasJogadasCliente(int numeroDaRodada, int numeroJogador, int carta);
 	void SetCurrectBitmapCliente(int rodada, int numeroJogador, int carta);
-	void CTrucoPaulistaDlg::ShowMessageJogadorAceitouTruco(int jogadorqueTrucou);
+	void ShowMessageJogadorAceitouTruco(int jogadorqueTrucou);
+	void InicializaRodadaCliente(int jogadorQueComeca);
 
 // Dialog Data
 #ifdef AFX_DESIGN_TIME
