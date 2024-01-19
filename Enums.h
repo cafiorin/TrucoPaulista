@@ -1,6 +1,6 @@
 #pragma once
 
-enum Naipes { Espadas, Paus, Ouro, Copas };
+enum Naipes { Espadas, Copas, Ouro, Paus };
 
 enum StatusJogador { EsperandoCartas, EsperandoJogada, EscolhendoCarta, Jogando }; //Deve ter mais
 

@@ -6,7 +6,7 @@
 
 Carta::Carta(int _id, int _valor, std::string _nome, Naipes _naipe) : id(_id), valor(_valor), nome(_nome), naipe(_naipe)
 {
-    idResource = (IDB_BITMAP_BASE - 1) + id + ((int)naipe - 1) * 13;
+    idResource = (IDB_BITMAP_BASE - 1) + id + ((int)naipe) * 13;
 }
 
 Carta::Carta(Carta* carta)
@@ -16,7 +16,7 @@ Carta::Carta(Carta* carta)
     nome = carta->nome;
     naipe = carta->naipe;
 
-    idResource = (IDB_BITMAP_BASE - 1) + id + ((int)naipe - 1) * 13;
+    idResource = (IDB_BITMAP_BASE - 1) + id + ((int)naipe) * 13;
 }
 
 int Carta::ObtemValor(const Carta* vira) const

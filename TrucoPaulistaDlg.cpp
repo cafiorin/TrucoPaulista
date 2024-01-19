@@ -795,10 +795,11 @@ void CTrucoPaulistaDlg::onAcabouARodada(Jogador* JogadorQueGanhou)
 
 void CTrucoPaulistaDlg::AtualizaPlacar()
 {
-	if (m_Instance == 1 && TwoInstances)
+	if (m_Instance == 1)
 	{
 		AtualizaPlacar(partida->PontosDaDupla1(), partida->PontosDaDupla2());
-		partidaMessagesController->EnviaMsgDeAtualizaPlacar(partida->PontosDaDupla1(), partida->PontosDaDupla2());
+		if(TwoInstances)
+			partidaMessagesController->EnviaMsgDeAtualizaPlacar(partida->PontosDaDupla1(), partida->PontosDaDupla2());
 	}
 }
 

@@ -77,7 +77,7 @@ void Baralho::ConstruirBaralhoTrucoPaulista()
             break;
         }
 
-        for (int naipes=1; naipes<=4; naipes++)
+        for (int naipes= Naipes::Espadas; naipes<= Naipes::Paus; naipes++)
         {
             cartas->push_back(Carta(id, valor, nome, (Naipes) naipes));
         }
