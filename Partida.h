@@ -83,12 +83,5 @@ public:
 
 	int PartidasVencidasDaDupla1() { return placar->PartidasVencidasDaDupla1; }
 	int PartidasVencidasDaDupla2() { return placar->PartidasVencidasDaDupla2; }
-
-	// Metodos usados para o Bot tomar alguma decisao
-	NumeroDaRodadaAtual RetornarNumeroDaRodadaAtual();
-	PosicaoNaDuplaParaJogar RetornarPosicaoNaDuplaParaJogar();
-	std::pair<const Carta*, bool> RetornarCartaMaisAltaDaRodadaESeEhDaDupla(Jogador* jogador_atual);
-	bool VerificarSeEhMesmaDupla(Jogador* jogador1, Jogador* jogador2);
-	bool RetornarSeDuplaEstaGanhandoOuEmpatado(Jogador* jogador_atual);
 };
 

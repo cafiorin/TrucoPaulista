@@ -4,156 +4,116 @@
 #include "RodadasController.h"
 
 
-Bot::Bot(int numero, std::string nome) : Jogador(numero, nome, true) 
-{
-	LimparDecisoesDoBot();
-}
-
-Bot::~Bot() 
+Bot::Bot(int numero, std::string nome) : Jogador(numero, nome, true)
 {
 }
 
-const Carta* Bot::FazerUmaJogada()
+Bot::~Bot()
 {
-	return getjogadabot(MesaDaRodada->IndiceDaRodadaAtual());
-
-	//if (MesaDaRodada->RodadaEstaComecando())
-	//{
-	//	return FazerUmaJogadaComecando();
-	//}
-	//else
-	//{
-	//	return FazerUmaJogadaRebatendo();
-	//}
 }
 
-
-void Bot::VerificarSeDeveAceitarOuCorrer(NumeroDaRodadaAtual tipo_rodada, PosicaoNaDuplaParaJogar posicao, std::pair<const Carta*, bool> carta_mais_alta_rodada, bool dupla_esta_ganhando_ou_empatado, const Carta* vira) 
+bool Bot::AceitarTruco()
 {
-	LimparDecisoesDoBot();
+	const Carta* vira = MesaDaRodada->QualOVira();
+	std::pair<const Carta*, bool> carta_mais_alta_rodada = MesaDaRodada->RetornarCartaMaisAltaDaRodadaESeEhDaDupla(this);
+	bool dupla_esta_ganhando_ou_empatado = MesaDaRodada->RetornarSeDuplaEstaGanhandoOuEmpatado(this);
 
-	switch (tipo_rodada) 
+	if (MesaDaRodada->QualRodadaEsta() == 1)
 	{
-		case PrimeiraRodada:
-			VerificarSeDeveAceitarPrimeiraRodada(posicao, carta_mais_alta_rodada, vira);
-			break;
-
-		case SegundaRodada:
-		case TerceiraRodada:
-		case Melando:
-			VerificarSeDeveAceitarSegundaRodada(posicao, carta_mais_alta_rodada, dupla_esta_ganhando_ou_empatado, vira);
-			break;
+		return VerificarSeDeveAceitarPrimeiraRodada(carta_mais_alta_rodada, vira);
+	}
+	else {
+		return VerificarSeDeveAceitarSegundaRodada(carta_mais_alta_rodada, dupla_esta_ganhando_ou_empatado, vira);
 	}
 }
 
-void Bot::VerificarSeDeveAceitarPrimeiraRodada(PosicaoNaDuplaParaJogar posicao, std::pair<const Carta*, bool> carta_mais_alta_rodada, const Carta* vira) 
+bool Bot::VerificarSeDeveAceitarPrimeiraRodada(std::pair<const Carta*, bool> carta_mais_alta_rodada, const Carta* vira)
 {
 	ValorDasCartasNaMao valor_mao = AnalisarMaoDeCartas();
-	std::vector<const Carta*> cartas = OrdenarCartasDaMao(vira);
-	bool deve_aceitar;
 
-	if (posicao == Primeiro) 
+	if (MesaDaRodada->RetornarSeEhPrimeiroParaJogarNaRodadaAtual())
 	{
 		switch (valor_mao)
 		{
 		case Otimo:
-			deve_aceitar = CalcularSeDeveTrucarOuCorrerOuAceitar(Alta);
-			SetAceitarTruco(deve_aceitar);
-			break;
+			return CalcularSeDeveTrucarOuCorrerOuAceitar(Alta);
 		case Bom:
-			deve_aceitar = CalcularSeDeveTrucarOuCorrerOuAceitar(Media);
-			SetAceitarTruco(deve_aceitar);
-			break;
+			return CalcularSeDeveTrucarOuCorrerOuAceitar(Media);
 		case Medio:
-			deve_aceitar = CalcularSeDeveTrucarOuCorrerOuAceitar(Baixa);
-			SetAceitarTruco(deve_aceitar);
-			break;
+			return CalcularSeDeveTrucarOuCorrerOuAceitar(Baixa);
 		case Fraco:
-			SetAceitarTruco(false);
-			break;
+			return false;
 		case Ruim:
-			SetAceitarTruco(false);
-			break;
+			return false;
 		default:
-			break;
+			return false;
 		}
 	}
-	else 
+	else
 	{
 		// Jogador eh o ultimo a jogar da dupla
 		const Carta* carta_mais_alta = carta_mais_alta_rodada.first;
 		bool eh_da_sua_dupla = carta_mais_alta_rodada.second;
+		bool deve_aceitar = false;
 
 		switch (valor_mao)
 		{
 		case Otimo:
-			deve_aceitar = CalcularSeDeveTrucarOuCorrerOuAceitar(Alta);
-			SetAceitarTruco(deve_aceitar);
-			break;
+			return CalcularSeDeveTrucarOuCorrerOuAceitar(Alta);
 		case Bom:
-			deve_aceitar = CalcularSeDeveTrucarOuCorrerOuAceitar(Media);
-			SetAceitarTruco(deve_aceitar);
-			break;
+			return CalcularSeDeveTrucarOuCorrerOuAceitar(Media);
 		case Medio:
-			eh_da_sua_dupla ? SetAceitarTruco(true) : SetAceitarTruco(false);
-			break;
+			eh_da_sua_dupla ? deve_aceitar = true : deve_aceitar = false;
+			return deve_aceitar;
 		case Fraco:
-			eh_da_sua_dupla ? SetAceitarTruco(true) : SetAceitarTruco(false);
-			break;
+			eh_da_sua_dupla ? deve_aceitar = true : deve_aceitar = false;
+			return deve_aceitar;
 		case Ruim:
-			eh_da_sua_dupla ? SetAceitarTruco(true) : SetAceitarTruco(false);
-			break;
+			eh_da_sua_dupla ? deve_aceitar = true : deve_aceitar = false;
+			return deve_aceitar;
 		default:
-			break;
+			return deve_aceitar;
 		}
 	}
 }
 
-void Bot::VerificarSeDeveAceitarSegundaRodada(PosicaoNaDuplaParaJogar posicao, std::pair<const Carta*, bool> carta_mais_alta_rodada, bool dupla_esta_ganhando_ou_empatado, const Carta* vira) 
+bool Bot::VerificarSeDeveAceitarSegundaRodada(std::pair<const Carta*, bool> carta_mais_alta_rodada, bool dupla_esta_ganhando_ou_empatado, const Carta* vira)
 {
 	ValorDasCartasNaMao valor_mao = AnalisarMaoDeCartas();
-	std::vector<const Carta*> cartas = OrdenarCartasDaMao(vira);
-	bool deve_aceitar;
 
-	if (posicao == Primeiro) {
+	if (MesaDaRodada->RetornarSeEhPrimeiroParaJogarNaRodadaAtual()) {
 		switch (valor_mao)
 		{
 		case Otimo:
-			deve_aceitar = CalcularSeDeveTrucarOuCorrerOuAceitar(Alta);
-			SetAceitarTruco(deve_aceitar);
-			break;
+			return CalcularSeDeveTrucarOuCorrerOuAceitar(Alta);
 		case Bom:
 			if (dupla_esta_ganhando_ou_empatado) {
-				deve_aceitar = CalcularSeDeveTrucarOuCorrerOuAceitar(Alta);
+				return CalcularSeDeveTrucarOuCorrerOuAceitar(Alta);
 			}
 			else {
-				deve_aceitar = CalcularSeDeveTrucarOuCorrerOuAceitar(Media);
+				return CalcularSeDeveTrucarOuCorrerOuAceitar(Media);
 			}
-			SetAceitarTruco(deve_aceitar);
-			break;
 		case Medio:
 			if (dupla_esta_ganhando_ou_empatado) {
-				deve_aceitar = CalcularSeDeveTrucarOuCorrerOuAceitar(Media);
+				return CalcularSeDeveTrucarOuCorrerOuAceitar(Media);
 			}
 			else {
-				deve_aceitar = CalcularSeDeveTrucarOuCorrerOuAceitar(Baixa);
+				return CalcularSeDeveTrucarOuCorrerOuAceitar(Baixa);
 			}
-			SetAceitarTruco(deve_aceitar);
-			break;
 		case Fraco:
 			if (dupla_esta_ganhando_ou_empatado) {
-				deve_aceitar = CalcularSeDeveTrucarOuCorrerOuAceitar(Media);
+				return CalcularSeDeveTrucarOuCorrerOuAceitar(Media);
 			}
 			else {
-				deve_aceitar = false;
+				return false;
 			}
 			break;
 		case Ruim:
 			if (dupla_esta_ganhando_ou_empatado) {
-				deve_aceitar = CalcularSeDeveTrucarOuCorrerOuAceitar(Baixa);
+				return CalcularSeDeveTrucarOuCorrerOuAceitar(Baixa);
 			}
 			else {
-				deve_aceitar = false;
+				return false;
 			}
 			break;
 		default:
@@ -164,293 +124,207 @@ void Bot::VerificarSeDeveAceitarSegundaRodada(PosicaoNaDuplaParaJogar posicao, s
 		// Jogador eh o ultimo a jogar da dupla
 		const Carta* carta_mais_alta = carta_mais_alta_rodada.first;
 		bool eh_da_sua_dupla = carta_mais_alta_rodada.second;
+		bool deve_aceitar = false;
 
 		switch (valor_mao)
 		{
 		case Otimo:
-			deve_aceitar = CalcularSeDeveTrucarOuCorrerOuAceitar(Alta);
-			SetAceitarTruco(deve_aceitar);
-			break;
+			return CalcularSeDeveTrucarOuCorrerOuAceitar(Alta);
 		case Bom:
 			if (dupla_esta_ganhando_ou_empatado) {
-				deve_aceitar = CalcularSeDeveTrucarOuCorrerOuAceitar(Alta);
+				return CalcularSeDeveTrucarOuCorrerOuAceitar(Alta);
 			}
 			else {
-				deve_aceitar = CalcularSeDeveTrucarOuCorrerOuAceitar(Media);
+				return CalcularSeDeveTrucarOuCorrerOuAceitar(Media);
 			}
-			SetAceitarTruco(deve_aceitar);
-			break;
 		case Medio:
-			eh_da_sua_dupla && dupla_esta_ganhando_ou_empatado ? SetAceitarTruco(true) : SetAceitarTruco(false);
-			break;
+			eh_da_sua_dupla&& dupla_esta_ganhando_ou_empatado ? deve_aceitar = true : deve_aceitar = false;
+			return deve_aceitar;
 		case Fraco:
-			eh_da_sua_dupla && dupla_esta_ganhando_ou_empatado ? SetAceitarTruco(true) : SetAceitarTruco(false);
-			break;
+			eh_da_sua_dupla&& dupla_esta_ganhando_ou_empatado ? deve_aceitar = true : deve_aceitar = false;
+			return deve_aceitar;
 		case Ruim:
-			eh_da_sua_dupla && dupla_esta_ganhando_ou_empatado ? SetAceitarTruco(true) : SetAceitarTruco(false);
-			break;
+			eh_da_sua_dupla&& dupla_esta_ganhando_ou_empatado ? deve_aceitar = true : deve_aceitar = false;
+			return deve_aceitar;
 		default:
-			break;
+			return deve_aceitar;
 		}
 	}
 }
 
-void Bot::FazerUmaJogada(NumeroDaRodadaAtual tipo_rodada, PosicaoNaDuplaParaJogar posicao, std::pair<const Carta*, bool> carta_mais_alta_rodada, const Carta* vira)
+bool Bot::PedeTruco()
 {
-	// TODO: Adicionar logica para Segunda e Terceiras Rodadas e Mao de Onze
-	LimparDecisoesDoBot();
+	const Carta* vira = MesaDaRodada->QualOVira();
+	std::pair<const Carta*, bool> carta_mais_alta_rodada = MesaDaRodada->RetornarCartaMaisAltaDaRodadaESeEhDaDupla(this);
+	const Carta* carta_mais_alta = carta_mais_alta_rodada.first;
+	bool eh_carta_da_dupla = carta_mais_alta_rodada.second;
+	ValorDasCartasNaMao valor_mao = AnalisarMaoDeCartas();
 
-	switch (tipo_rodada)
+	if (!PodeTrucar()) {
+		return false;
+	}
+
+
+	if (MesaDaRodada->RetornarSeEhPrimeiroParaJogarNaRodadaAtual())
 	{
+		// Jogador eh o primeiro a jogar da dupla
+		switch (valor_mao)
+		{
+		case Otimo:
+			return CalcularSeDeveTrucarOuCorrerOuAceitar(Media);
+		case Bom:
+			return CalcularSeDeveTrucarOuCorrerOuAceitar(Media);
+		case Medio:
+			return CalcularSeDeveTrucarOuCorrerOuAceitar(Baixa);
+		case Fraco:
+			return CalcularSeDeveTrucarOuCorrerOuAceitar(Baixa);
+		case Ruim:
+		default:
+			return false;
+		}
+	}
+	else
+	{
+		// Jogador eh o ultimo a jogar da dupla
+		switch (valor_mao)
+		{
+		case Otimo:
+			if (eh_carta_da_dupla)
+			{
+				return false;
+			}
+			else
+			{
+				if (carta_mais_alta && Jogador::PegaAMelhorOuPiorCartaNaMao(true)->ObtemValor(vira) > carta_mais_alta->ObtemValor(vira))
+				{
+					return CalcularSeDeveTrucarOuCorrerOuAceitar(Alta);
+				}
+				else
+				{
+					return false;
+				}
+			}
+		case Bom:
+			if (eh_carta_da_dupla)
+			{
+				return false;
+			}
+			else
+			{
+				if (carta_mais_alta && Jogador::PegaAMelhorOuPiorCartaNaMao(true)->ObtemValor(vira) > carta_mais_alta->ObtemValor(vira))
+				{
+					return CalcularSeDeveTrucarOuCorrerOuAceitar(Media);
+
+				}
+				else {
+					return false;
+				}
+			}
+		case Medio:
+			if (eh_carta_da_dupla)
+			{
+				return false;
+			}
+			else
+			{
+				if (carta_mais_alta && Jogador::PegaAMelhorOuPiorCartaNaMao(true)->ObtemValor(vira) > carta_mais_alta->ObtemValor(vira))
+				{
+					return CalcularSeDeveTrucarOuCorrerOuAceitar(Baixa);
+
+				}
+				else {
+					return false;
+				}
+			}
+		case Fraco:
+		case Ruim:
+		default:
+			return false;
+		}
+	}
+
+}
+
+const Carta* Bot::FazerUmaJogada()
+{
+	NumeroDaRodadaAtual rodada = MesaDaRodada->RetornarNumeroDaRodadaAtual();
+
+	switch (rodada)
+	{
+	case Melando:
+		return JogarRodadaMelando();
 	case PrimeiraRodada:
 	case SegundaRodada:
 	case TerceiraRodada:
-		JogarRodadaNormal(posicao, carta_mais_alta_rodada, vira);
-		break;
-	case Melando:
-		JogarRodadaMelando(posicao, carta_mais_alta_rodada, vira);
-		break;
-	default:
-		break;
+	case MaoDeOnze:
+		return JogarRodadaNormal();
 	}
 }
 
-void Bot::JogarRodadaNormal(PosicaoNaDuplaParaJogar posicao, std::pair<const Carta*, bool> carta_mais_alta_rodada, const Carta* vira)
+const Carta* Bot::JogarRodadaNormal()
 {
-	if (posicao == Primeiro)
+	if (MesaDaRodada->RetornarSeEhPrimeiroParaJogarNaRodadaAtual())
 	{
-
-		JogarComoPrimeiro(carta_mais_alta_rodada, vira);
-
+		return JogarComoPrimeiro();
 	}
-	else if (posicao == Pe)
+	else
 	{
-
-		JogarComoPe(carta_mais_alta_rodada, vira);
+		return JogarComoPe();
 	}
 }
 
-void Bot::JogarRodadaMelando(PosicaoNaDuplaParaJogar posicao, std::pair<const Carta*, bool> carta_mais_alta_rodada, const Carta* vira)
+const Carta* Bot::JogarRodadaMelando()
+{
+	return Jogador::PegaAMelhorOuPiorCartaNaMao(true);
+}
+
+const Carta* Bot::JogarComoPrimeiro()
 {
 	ValorDasCartasNaMao valor_mao = AnalisarMaoDeCartas();
-
-	std::vector<const Carta*> cartas = OrdenarCartasDaMao(vira);
-
-	bool deve_trucar;
 
 	switch (valor_mao) {
 	case Otimo:
-		// Jogar a carta mais forte ou truca (probabilidade alta)
-		deve_trucar = CalcularSeDeveTrucarOuCorrerOuAceitar(Alta);
-		if (PodeTrucar() && deve_trucar) {
-			SetPedeTruco(true);
-		}
-		else {
-			SetJogadaBot(cartas[2]);
-		}
-		break;
+		// Jogar a carta mais fraca (blefe)
+		return Jogador::PegaAMelhorOuPiorCartaNaMao(false);
 	case Bom:
-		// Jogar a carta mais forte ou truca (probabilidade alta)
-		deve_trucar = CalcularSeDeveTrucarOuCorrerOuAceitar(Alta);
-		if (PodeTrucar() && deve_trucar) {
-			SetPedeTruco(true);
-		}
-		else {
-			SetJogadaBot(cartas[2]);
-		}		
-		break;
+		// Jogar a carta mais forte
+		return Jogador::PegaAMelhorOuPiorCartaNaMao(true);
 	case Medio:
 		// Jogar a carta mais forte
-		SetJogadaBot(cartas[2]);
-		break;
+		return Jogador::PegaAMelhorOuPiorCartaNaMao(true);
 	case Fraco:
-		// Jogar a carta mais forte
-		SetJogadaBot(cartas[2]);
-		break;
+		// Jogar a carta mais fraca
+		return Jogador::PegaAMelhorOuPiorCartaNaMao(false);
 	case Ruim:
-		// Jogar a carta mais forte
-		SetJogadaBot(cartas[2]);
-		break;
 	default:
-		break;
+		// Jogar a carta mais fraca
+		return Jogador::PegaAMelhorOuPiorCartaNaMao(false);
 	}
 }
 
-void Bot::JogarComoPrimeiro(std::pair<const Carta*, bool> carta_mais_alta_rodada, const Carta* vira)
+const Carta* Bot::JogarComoPe()
 {
-	ValorDasCartasNaMao valor_mao = AnalisarMaoDeCartas();
-
-	std::vector<const Carta*> cartas = OrdenarCartasDaMao(vira);
-
-	bool deve_trucar;
-
-	switch (valor_mao) {
-	case Otimo:
-		// Jogar a carta mais fraca
-		SetJogadaBot(cartas[0]);
-		break;
-	case Bom:
-		// Jogar a carta mais forte ou truca (probabilidade media)
-		deve_trucar = CalcularSeDeveTrucarOuCorrerOuAceitar(Media);
-		if (PodeTrucar() && deve_trucar) {
-			SetPedeTruco(true);
-		}
-		else {
-			SetJogadaBot(cartas[2]);
-		}
-		break;
-	case Medio:
-		// Jogar a carta mais forte
-		SetJogadaBot(cartas[2]);
-		break;
-	case Fraco:
-		// Jogar a carta mais fraca ou truca (probabilidade baixa)
-		deve_trucar = CalcularSeDeveTrucarOuCorrerOuAceitar(Baixa);
-		if (PodeTrucar() && deve_trucar) {
-			SetPedeTruco(true);
-		}
-		else {
-			SetJogadaBot(cartas[0]);
-		}
-		break;
-	case Ruim:
-		// Jogar a carta mais fraca
-		SetJogadaBot(cartas[0]);
-		break;
-	default:
-		break;
-	}
-}
-
-void Bot::JogarComoPe(std::pair<const Carta*, bool> carta_mais_alta_rodada, const Carta* vira)
-{
-	ValorDasCartasNaMao valor_mao = AnalisarMaoDeCartas();
-
-	std::vector<const Carta*> cartas = OrdenarCartasDaMao(vira);
-
+	const Carta* vira = MesaDaRodada->QualOVira();
+	std::pair<const Carta*, bool> carta_mais_alta_rodada = MesaDaRodada->RetornarCartaMaisAltaDaRodadaESeEhDaDupla(this);
 	const Carta* carta_mais_alta = carta_mais_alta_rodada.first;
 	bool eh_carta_da_dupla = carta_mais_alta_rodada.second;
 
-	bool deve_trucar;
-
-	switch (valor_mao)
+	if (eh_carta_da_dupla)
 	{
-	case Otimo:
-		if (eh_carta_da_dupla)
+		// Jogar a carta mais fraca
+		return Jogador::PegaAMelhorOuPiorCartaNaMao(false);
+	}
+	else
+	{
+		if (carta_mais_alta && Jogador::PegaAMelhorOuPiorCartaNaMao(true)->ObtemValor(vira) > carta_mais_alta->ObtemValor(vira))
 		{
-			// Jogar a carta mais fraca
-			SetJogadaBot(cartas[0]);
-		}
-		else
-		{
-			if (carta_mais_alta && cartas[2]->ObtemValor(vira) > carta_mais_alta->ObtemValor(vira))
-			{
-				// Jogar a carta mais forte ou truca (probabilidade alta)
-				deve_trucar = CalcularSeDeveTrucarOuCorrerOuAceitar(Alta);
-				if (PodeTrucar() && deve_trucar) {
-					SetPedeTruco(true);
-				}
-				else {
-					SetJogadaBot(cartas[2]);
-				}
-			}
-			else
-			{
-				// Jogar a carta mais fraca
-				SetJogadaBot(cartas[0]);
-			}
-		}
-		break;
-	case Bom:
-		if (eh_carta_da_dupla)
-		{
-			// Jogar a carta mais fraca
-			SetJogadaBot(cartas[0]);
-		}
-		else
-		{
-			if (carta_mais_alta && cartas[2]->ObtemValor(vira) > carta_mais_alta->ObtemValor(vira))
-			{
-				// Jogar a carta mais forte ou truca (probabilidade media)
-				deve_trucar = CalcularSeDeveTrucarOuCorrerOuAceitar(Media);
-				if (PodeTrucar() && deve_trucar) {
-					SetPedeTruco(true);
-				}
-				else {
-					SetJogadaBot(cartas[2]);
-				}
-			}
-			else {
-				// Jogar a carta mais fraca
-				SetJogadaBot(cartas[0]);
-			}
-		}
-		break;
-	case Medio:
-		if (eh_carta_da_dupla)
-		{
-			// Jogar a carta mais fraca
-			SetJogadaBot(cartas[0]);
+			// Jogar a carta mais forte
+			return Jogador::PegaAMelhorOuPiorCartaNaMao(true);
 		}
 		else {
-			if (carta_mais_alta && cartas[2]->ObtemValor(vira) > carta_mais_alta->ObtemValor(vira))
-			{
-				// Jogar a carta mais forte ou truca (probabilidade baixa)
-				deve_trucar = CalcularSeDeveTrucarOuCorrerOuAceitar(Baixa);
-				if (PodeTrucar() && deve_trucar) {
-					SetPedeTruco(true);
-				}
-				else {
-					SetJogadaBot(cartas[2]);
-				}
-			}
-			else
-			{
-				// Jogar a carta mais fraca
-				SetJogadaBot(cartas[0]);
-			}
-		}
-		break;
-	case Fraco:
-		if (eh_carta_da_dupla)
-		{
 			// Jogar a carta mais fraca
-			SetJogadaBot(cartas[0]);
+			return Jogador::PegaAMelhorOuPiorCartaNaMao(false);
 		}
-		else {
-			if (carta_mais_alta && cartas[2]->ObtemValor(vira) > carta_mais_alta->ObtemValor(vira))
-			{
-				// Jogar a carta mais forte
-				SetJogadaBot(cartas[2]);
-			}
-			else
-			{
-				// Jogar a carta mais fraca
-				SetJogadaBot(cartas[0]);
-			}
-		}
-		break;
-	case Ruim:
-		if (eh_carta_da_dupla)
-		{
-			// Jogar a carta mais fraca
-			SetJogadaBot(cartas[0]);
-		}
-		else
-		{
-			if (carta_mais_alta && cartas[2]->ObtemValor(vira) > carta_mais_alta->ObtemValor(vira))
-			{
-				// Jogar a carta mais forte
-				SetJogadaBot(cartas[2]);
-			}
-			else {
-				// Jogar a carta mais fraca
-				SetJogadaBot(cartas[0]);
-			}
-		}
-		break;
-	default:
-		break;
 	}
 }
 
@@ -511,41 +385,4 @@ std::vector<const Carta*> Bot::OrdenarCartasDaMao(const Carta* vira)
 		});
 
 	return cartas;
-}
-
-
-void Bot::LimparDecisoesDoBot() {
-	deve_aceitar_o_truco_ = false;
-	deve_pedir_truco_ = false;
-	jogada_bot_ = nullptr;
-}
-
-bool Bot::AceitarTruco() 
-{
-	return deve_aceitar_o_truco_;
-}
-
-bool Bot::PedeTruco() 
-{
-	return deve_pedir_truco_;
-}
-
-void Bot::SetAceitarTruco(bool decisao) 
-{
-	deve_aceitar_o_truco_ = decisao;
-}
-
-void Bot::SetPedeTruco(bool decisao) 
-{
-	deve_pedir_truco_ = decisao;
-}
-
-void Bot::SetJogadaBot(const Carta* carta_escolhida) 
-{
-	jogada_bot_ = carta_escolhida;
-}
-
-const Carta* Bot::GetJogadaBot() 
-{
-	return jogada_bot_;
 }

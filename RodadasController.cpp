@@ -4,6 +4,7 @@
 #include "Carta.h"
 #include "Jogador.h"
 #include "RodadasController.h"
+#include "Placar.h"
 
 RodadasController::RodadasController(bool jogoDeDupla)
 {
@@ -16,6 +17,10 @@ RodadasController::RodadasController(bool jogoDeDupla)
 	Rodadas[1] = nullptr;
 	Rodadas[2] = nullptr;
 	Vira = nullptr;
+
+	placar_ = nullptr;
+	Dupla1[0] = nullptr;
+	Dupla1[0] = nullptr;
 }
 
 
@@ -154,4 +159,86 @@ int RodadasController::MaiorCartaDaRodada(const CartaDaRodada* carta1, const Car
 bool RodadasController::BotFezAPrimeira()
 {
 	return (Rodadas[0]->QuemGanhou() != nullptr && Rodadas[0]->QuemGanhou()->EhUmBot());
+}
+
+NumeroDaRodadaAtual RodadasController::RetornarNumeroDaRodadaAtual()
+{
+	if (placar_->PontosDaDupla1 == placar_->PontosDaDupla2 && NumeroDaRodada != 1)
+	{
+		return Melando;
+	}
+	else if (placar_->EhMaoDe11())
+	{
+		return MaoDeOnze;
+	}
+
+	switch (NumeroDaRodada)
+	{
+	case 1:
+		return PrimeiraRodada;
+
+	case 2:
+		return SegundaRodada;
+
+	case 3:
+		return TerceiraRodada;
+
+	default:
+		return PrimeiraRodada;
+	}
+}
+
+std::pair<const Carta*, bool> RodadasController::RetornarCartaMaisAltaDaRodadaESeEhDaDupla(Jogador* jogador_atual)
+{
+	std::pair<const Carta*, bool> res;
+
+	CartaDaRodada* maior_carta_da_rodada = RetornaMaiorCartaDaRodadaAtual();
+	if (maior_carta_da_rodada)
+	{
+		res.first = maior_carta_da_rodada->CartaJogadaNaRodada;
+		res.second = VerificarSeEhMesmaDupla(jogador_atual, maior_carta_da_rodada->JogadorDaCarta);
+	}
+	else
+	{
+		res.first = nullptr;
+		res.second = false;
+	}
+
+	return res;
+}
+
+bool RodadasController::VerificarSeEhMesmaDupla(Jogador* jogador1, Jogador* jogador2)
+{
+	int numero_de_matchs = 0;
+
+	for (Jogador* jogador : Dupla1)
+	{
+		if (jogador->ObtemNumeroJogador() == jogador1->ObtemNumeroJogador() ||
+			jogador->ObtemNumeroJogador() == jogador2->ObtemNumeroJogador())
+		{
+			numero_de_matchs++;
+		}
+	}
+
+	return numero_de_matchs == 2 ? true : false;
+}
+
+bool RodadasController::RetornarSeDuplaEstaGanhandoOuEmpatado(Jogador* jogador_atual)
+{
+	bool esta_ganhando_ou_empatado = false;
+
+	if (placar_->PontosDaDupla1 == placar_->PontosDaDupla2)
+	{
+		esta_ganhando_ou_empatado = true;
+	}
+	else if (placar_->PontosDaDupla1 > placar_->PontosDaDupla2)
+	{
+		if (Dupla1[0]->ObtemNumeroJogador() == jogador_atual->ObtemNumeroJogador() ||
+			Dupla1[1]->ObtemNumeroJogador() == jogador_atual->ObtemNumeroJogador())
+		{
+			esta_ganhando_ou_empatado = true;
+		}
+	}
+
+	return esta_ganhando_ou_empatado;
 }

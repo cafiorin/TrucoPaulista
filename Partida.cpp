@@ -63,6 +63,8 @@ void Partida::InicializarPartida(int quantosJogadores)
 	placar->Inicializar();
 	EventosDaPartida->onInicioDaPartida();
 	QuemComecaRodada = Dupla1[0];
+	Rodadas->SetPlacar(placar);
+	Rodadas->SetDuplas(Dupla1);
 
 	InicializarRodada();
 }
@@ -200,15 +202,6 @@ void Partida::ProximoPasso(Jogador* jogador, AcaoRealizada acao)
 		Jogador* proximoJogador = GetProximoJogador();
 		if (proximoJogador->EhUmBot())
 		{
-			// TODO (BOT): Testar metodos e ver se funciona ok
-			/**
-			NumeroDaRodadaAtual rodada_atual = RetornarNumeroDaRodadaAtual();
-			PosicaoNaDuplaParaJogar posicao = RetornarPosicaoNaDuplaParaJogar();
-			std::pair<const Carta*, bool> carta_mais_alta = RetornarCartaMaisAltaDaRodadaESeEhDaDupla(proximoJogador);
-			bool dupla_esta_ganhando_ou_empatado = RetornarSeDuplaEstaGanhandoOuEmpatado(proximoJogador);
-
-			static_cast<Bot*>(proximoJogador)->VerificarSeDeveAceitarOuCorrer(rodada_atual, posicao, carta_mais_alta, dupla_esta_ganhando_ou_empatado, Vira);
-			*/
 			if (proximoJogador->AceitarTruco())
 			{
 				JogadorAceitou(proximoJogador);
@@ -374,107 +367,4 @@ bool Partida::ValidaQuemGanhouAsRodadas()
 		return true;
 	}
 	return false;
-}
-
-NumeroDaRodadaAtual Partida::RetornarNumeroDaRodadaAtual()
-{
-	//informação : O Jogador agora tem um objeto de contexto da Rodada : o MesaDaRodada , onde tem todas as informações necessarias para jogar uma carta
-
-
-	if (placar->PontosDaDupla1 == placar->PontosDaDupla2)
-	{
-		return Melando;
-	}
-	else if (placar->EhMaoDe11())
-	{
-		return MaoDeOnze;
-	}
-
-	switch (Rodadas->QualRodadaEsta())
-	{
-	case 1:
-		return PrimeiraRodada;
-
-	case 2:
-		return SegundaRodada;
-
-	case 3:
-		return TerceiraRodada;
-
-	default:
-		return PrimeiraRodada;
-	}
-}
-
-PosicaoNaDuplaParaJogar Partida::RetornarPosicaoNaDuplaParaJogar()
-{
-	//informação : O Jogador agora tem um objeto de contexto da Rodada : o MesaDaRodada , onde tem todas as informações necessarias para jogar uma carta
-
-	if (Rodadas->RetornarSeEhPrimeiroParaJogarNaRodadaAtual())
-	{
-		return Primeiro;
-	}
-
-	return Pe;
-}
-
-std::pair<const Carta*, bool> Partida::RetornarCartaMaisAltaDaRodadaESeEhDaDupla(Jogador* jogador_atual)
-{
-	//informação : O Jogador agora tem um objeto de contexto da Rodada : o MesaDaRodada , onde tem todas as informações necessarias para jogar uma carta
-
-	std::pair<const Carta*, bool> res;
-
-	CartaDaRodada* maior_carta_da_rodada = Rodadas->RetornaMaiorCartaDaRodadaAtual();
-	if (maior_carta_da_rodada)
-	{
-		res.first = maior_carta_da_rodada->CartaJogadaNaRodada;
-		res.second = VerificarSeEhMesmaDupla(jogador_atual, maior_carta_da_rodada->JogadorDaCarta);
-	}
-	else
-	{
-		res.first = nullptr;
-		res.second = false;
-	}
-
-	return res;
-}
-
-bool Partida::VerificarSeEhMesmaDupla(Jogador* jogador1, Jogador* jogador2)
-{
-	//informação : O Jogador agora tem um objeto de contexto da Rodada : o MesaDaRodada , onde tem todas as informações necessarias para jogar uma carta
-
-	int numero_de_matchs = 0;
-
-	for (Jogador* jogador : Dupla1)
-	{
-		if (jogador->ObtemNumeroJogador() == jogador1->ObtemNumeroJogador() ||
-			jogador->ObtemNumeroJogador() == jogador2->ObtemNumeroJogador())
-		{
-			numero_de_matchs++;
-		}
-	}
-
-	return numero_de_matchs == 2 ? true : false;
-}
-
-bool Partida::RetornarSeDuplaEstaGanhandoOuEmpatado(Jogador* jogador_atual)
-{
-	//informação : O Jogador agora tem um objeto de contexto da Rodada : o MesaDaRodada , onde tem todas as informações necessarias para jogar uma carta
-
-	bool esta_ganhando_ou_empatado = false;
-
-	if (placar->PontosDaDupla1 == placar->PontosDaDupla2)
-	{
-		esta_ganhando_ou_empatado = true;
-	}
-	else if (placar->PontosDaDupla1 > placar->PontosDaDupla2)
-	{
-		if (Dupla1[0]->ObtemNumeroJogador() == jogador_atual->ObtemNumeroJogador() ||
-			Dupla1[1]->ObtemNumeroJogador() == jogador_atual->ObtemNumeroJogador())
-		{
-			esta_ganhando_ou_empatado = true;
-		}
-	}
-
-	return esta_ganhando_ou_empatado;
 }
