@@ -78,13 +78,13 @@ void PersistenciaController::PersistirJSON(std::string& json) {
 	}
 }
 
-Json::Value const PersistenciaController::GetCartaVirada() {
+Json::Value const PersistenciaController::GetCarta(Carta* carta) {
 
 	Json::Value cartaViradaObject;
-	cartaViradaObject["id"] = Vira->id;
-	cartaViradaObject["valor"] = Vira->valor;
-	cartaViradaObject["nome"] = Vira->nome;
-	cartaViradaObject["naipe"] = Vira->naipe;
+	cartaViradaObject["id"] = carta->id;
+	cartaViradaObject["valor"] = carta->valor;
+	cartaViradaObject["nome"] = carta->nome;
+	cartaViradaObject["naipe"] = carta->naipe;
 
 	return cartaViradaObject;
 }
@@ -116,6 +116,8 @@ Json::Value const PersistenciaController::GetRodada() {
 		cartaJogada["naipe"] = cartaDaRodada->CartaJogadaNaRodada->naipe;
 		carta["cartaJogada"] = cartaJogada;
 		cartasDaMesa.append(carta);
+
+		delete cartaDaRodada;
 	}
 
 	rodada["cartasDaMesa"] = cartasDaMesa;
@@ -125,60 +127,74 @@ Json::Value const PersistenciaController::GetRodada() {
 	if (valorDaPartida > 1) // Se valor da partida for maior que 1 alguém pediu truco
 		rodada["idJogadorPediuTruco"] = Jogo->GetJogadorAtual()->ObtemNumeroJogador();
 	
+	delete rodadaAtual;
+
 	return rodada;
+}
+
+Json::Value const PersistenciaController::GetMao(std::vector<Carta*> mao) {
+	Json::Value maoDoJogador;
+
+	int numCartas = std::count_if(mao.begin(), mao.end(), [](Carta* carta) {
+		return carta != nullptr;
+	});
+
+	for (int i = 0; i < numCartas; i++)
+		maoDoJogador.append(GetCarta(mao[i]));
+
+	return maoDoJogador;
+}
+
+Json::Value const PersistenciaController::GetJogadores() {
+	Json::Value jogadores;
+
+	for (int i = 0; i < 2; i++)
+	{
+		Json::Value jogador;
+
+		jogador["id"] = Dupla1[i]->ObtemNumeroJogador();
+		jogador["bot"] = Dupla1[i]->EhUmBot();
+		bool estaNaVezDeJogar = Jogo->GetJogadorAtual()->ObtemNumeroJogador() == Dupla1[i]->ObtemNumeroJogador();
+		jogador["vezDeJogar"] = estaNaVezDeJogar;
+
+		jogador["mao"] = GetMao(Dupla1[i]->GetCartasNaoJogadas());
+
+		jogadores.append(jogador);
+	}
+
+	return jogadores;
+}
+
+Json::Value const PersistenciaController::GetTime(int pontosDoTime, int partidasVencidas) {
+	Json::Value time;
+
+	time["pontosDoTime"] = pontosDoTime;
+	time["partidasVencidas"] = partidasVencidas;
+
+	time["jogadores"] = GetJogadores();
+
+	return time;
+}
+
+Json::Value const PersistenciaController::GetTimes() {
+	Json::Value times;
+
+	times.append(GetTime(PlacarDaPartida->PontosDaDupla1, PlacarDaPartida->PartidasVencidasDaDupla1));
+	times.append(GetTime(PlacarDaPartida->PontosDaDupla2, PlacarDaPartida->PartidasVencidasDaDupla2));
+
+	return times;
 }
 
 std::string PersistenciaController::MontarJSON() {
 	Json::Value json;
 
-	json["cartaVirada"] = GetCartaVirada();
+	json["cartaVirada"] = GetCarta(Vira);
 	json["rodadaAtual"] = GetRodada();
-
-	// ---
-	Json::Value time1;
-
-
-	Json::Value jogador1;
-	jogador1["id"] = 1;
-	jogador1["bot"] = true;
-	jogador1["vezDeJogar"] = true;
-
-	Json::Value mao;
-
-	Json::Value primeiraCarta;
-	primeiraCarta["id"] = 1;
-	primeiraCarta["valor"] = 4;
-	primeiraCarta["nome"] = "Q";
-	primeiraCarta["naipe"] = "ouro";
-
-	Json::Value segundaCarta;
-	Json::Value terceitaCarta;
-
-	mao.append(primeiraCarta);
-	mao.append(segundaCarta);
-	mao.append(terceitaCarta);
-
-	jogador1["mao"] = mao;
-
-	//Json::Value jogador2;
-
-	Json::Value jogadores;
-	jogadores.append(jogador1);
-	//jogadores.append(jogador2);
-
-	time1["jogadores"] = jogadores;
-
-	time1["pontos"] = 1;
-
-	json["time1"] = time1;
-	// ---
+	json["times"] = GetTimes();
 
 	Json::StreamWriterBuilder writer;
 	return Json::writeString(writer, json);
 }
-
-
-
 
 /*  [JSON]
 {

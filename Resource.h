@@ -122,6 +122,7 @@
 #define IDC_PONTOS_PARTIDA_DUPLA1       1049
 #define IDC_PONTOS_PARTIDA_DUPLA2       1050
 #define IDC_TRUCAR2                     1051
+#define IDC_SALVAR						1052
 
 // Next default values for new objects
 // 

@@ -97,6 +97,7 @@ BEGIN_MESSAGE_MAP(CTrucoPaulistaDlg, CDialogEx)
 	ON_STN_CLICKED(IDC_PIC_PARC1, &CTrucoPaulistaDlg::OnStnClickedPicParc1)
 	ON_BN_CLICKED(IDC_TRUCAR2, &CTrucoPaulistaDlg::OnBnClickedTrucar2)
 	ON_BN_CLICKED(IDC_CORRER2, &CTrucoPaulistaDlg::OnBnClickedCorrer2)
+	ON_BN_CLICKED(IDC_SALVAR, &CTrucoPaulistaDlg::OnBnClickedSalvar)
 END_MESSAGE_MAP()
 
 
@@ -1220,4 +1221,9 @@ void CTrucoPaulistaDlg::OnBnClickedCorrer2()
 	{
 		//TODO: partidaMessagesController->EnviaCorrer(jogador->ObtemNumeroJogador());
 	}
+}
+
+void CTrucoPaulistaDlg::OnBnClickedSalvar()
+{
+	//Chamar persistencia e salvar partida
 }

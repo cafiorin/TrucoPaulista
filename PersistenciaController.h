@@ -46,6 +46,10 @@ private:
 	std::string MontarJSON();
 	void PersistirJSON(std::string &json);
 
-	const Json::Value GetCartaVirada();
+	const Json::Value GetCarta(Carta* carta);
 	const Json::Value GetRodada();
+	const Json::Value GetTimes();
+	const Json::Value GetJogadores();
+	const Json::Value GetTime(int pontosDoTime, int partidasVencidas);
+	const Json::Value GetMao(std::vector<Carta*> mao);
 };

@@ -4,6 +4,7 @@
 #include <iostream>
 #include <memory>
 #include <ctime>
+#include <vector>
 #include "Enums.h"
 
 #include "Carta.h"
@@ -41,6 +42,16 @@ public:
 
     void RecebeCartas(const Carta& carta1, const Carta& carta2, const Carta& carta3);
     void OrdenaCartas();
+
+    const std::vector<Carta*> GetCartasNaoJogadas() {
+        std::vector<Carta*> cartasNaoJogadas(3);
+
+        for (int i = 0; i < 3; i++)
+            if (!CartaUsada[i])
+                cartasNaoJogadas.push_back(mao[i].get());
+
+        return cartasNaoJogadas;
+    }
 
     const Carta* PrimeiraCartaNaMao() const 
     {
