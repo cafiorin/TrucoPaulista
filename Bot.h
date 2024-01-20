@@ -12,7 +12,7 @@
 class Bot : public Jogador
 {
 public:
-	Bot(int numero, std::string nome);
+	Bot(int numero, std::string nome, int numeroDaDupla);
 	~Bot();
 
 	// overrides Jogador.h
@@ -30,9 +30,6 @@ private:
 	const Carta* JogarRodadaMelando();
 	const Carta* JogarComoPrimeiro();
 	const Carta* JogarComoPe();
-
-	std::vector<const Carta*> OrdenarCartasDaMao(const Carta* vira);
-	bool CalcularSeDeveTrucarOuCorrerOuAceitar(ProbabilidadeDeTrucarOuCorrerOuAceitar probabilidade);
 
 	bool VerificarSeDeveAceitarPrimeiraRodada(std::pair<const Carta*, bool> carta_mais_alta_rodada, const Carta* vira);
 	bool VerificarSeDeveAceitarSegundaRodada(std::pair<const Carta*, bool> carta_mais_alta_rodada, bool dupla_esta_ganhando_ou_empatado, const Carta* vira);

@@ -6,7 +6,7 @@
 #include "RodadasController.h"
 #include "Placar.h"
 
-RodadasController::RodadasController(bool jogoDeDupla)
+RodadasController::RodadasController(Placar *placar, bool jogoDeDupla)
 {
 	NumeroDaRodada = 1;
 	QuantoValeARodada = 1;
@@ -18,7 +18,7 @@ RodadasController::RodadasController(bool jogoDeDupla)
 	Rodadas[2] = nullptr;
 	Vira = nullptr;
 
-	placar_ = nullptr;
+	placar_ = placar;
 	Dupla1[0] = nullptr;
 	Dupla1[0] = nullptr;
 }
@@ -64,7 +64,7 @@ Jogador* RodadasController::JaTemosUmVencedor()
 				return Rodadas[0]->QuemGanhou();
 			}
 
-			if (Rodadas[0]->QuemGanhou() == Rodadas[1]->QuemGanhou())
+			if (Rodadas[0]->QuemGanhou()->ObtemNumeroDaDupla() == Rodadas[1]->QuemGanhou()->ObtemNumeroDaDupla())
 			{
 				return Rodadas[0]->QuemGanhou();
 			}
@@ -76,12 +76,12 @@ Jogador* RodadasController::JaTemosUmVencedor()
 				return Rodadas[0]->QuemGanhou();
 			}
 
-			if (Rodadas[0]->QuemGanhou() == Rodadas[1]->QuemGanhou() ||
-				Rodadas[0]->QuemGanhou() == Rodadas[2]->QuemGanhou())
+			if (Rodadas[0]->QuemGanhou()->ObtemNumeroDaDupla() == Rodadas[1]->QuemGanhou()->ObtemNumeroDaDupla() ||
+				Rodadas[0]->QuemGanhou()->ObtemNumeroDaDupla() == Rodadas[2]->QuemGanhou()->ObtemNumeroDaDupla())
 			{
 				return Rodadas[0]->QuemGanhou();
 			}
-			else if (Rodadas[1]->QuemGanhou() == Rodadas[2]->QuemGanhou())
+			else if (Rodadas[1]->QuemGanhou()->ObtemNumeroDaDupla() == Rodadas[2]->QuemGanhou()->ObtemNumeroDaDupla())
 			{
 				return Rodadas[1]->QuemGanhou();
 			}
@@ -124,7 +124,7 @@ bool RodadasController::RetornarSeEhPrimeiroParaJogarNaRodadaAtual()
 
 CartaDaRodada* RodadasController::RetornaMaiorCartaDaRodadaAtual()
 {
-	return Rodadas[NumeroDaRodada]->RetornaMaiorCartaDaRodada();
+	return Rodadas[IndiceDaRodadaAtual()]->RetornaMaiorCartaDaRodada();
 }
 
 int RodadasController::MaiorCarta(const Carta* carta1, const Carta* carta2)
@@ -196,7 +196,7 @@ std::pair<const Carta*, bool> RodadasController::RetornarCartaMaisAltaDaRodadaES
 	if (maior_carta_da_rodada)
 	{
 		res.first = maior_carta_da_rodada->CartaJogadaNaRodada;
-		res.second = VerificarSeEhMesmaDupla(jogador_atual, maior_carta_da_rodada->JogadorDaCarta);
+		res.second = JogadoresSaoDupla(jogador_atual, maior_carta_da_rodada->JogadorDaCarta);
 	}
 	else
 	{
@@ -207,38 +207,12 @@ std::pair<const Carta*, bool> RodadasController::RetornarCartaMaisAltaDaRodadaES
 	return res;
 }
 
-bool RodadasController::VerificarSeEhMesmaDupla(Jogador* jogador1, Jogador* jogador2)
+bool RodadasController::JogadoresSaoDupla(Jogador* jogador1, Jogador* jogador2)
 {
-	int numero_de_matchs = 0;
-
-	for (Jogador* jogador : Dupla1)
-	{
-		if (jogador->ObtemNumeroJogador() == jogador1->ObtemNumeroJogador() ||
-			jogador->ObtemNumeroJogador() == jogador2->ObtemNumeroJogador())
-		{
-			numero_de_matchs++;
-		}
-	}
-
-	return numero_de_matchs == 2 ? true : false;
+	return jogador1->ObtemNumeroDaDupla() == jogador2->ObtemNumeroDaDupla();
 }
 
-bool RodadasController::RetornarSeDuplaEstaGanhandoOuEmpatado(Jogador* jogador_atual)
+bool RodadasController::BotEstaoPerdendo()
 {
-	bool esta_ganhando_ou_empatado = false;
-
-	if (placar_->PontosDaDupla1 == placar_->PontosDaDupla2)
-	{
-		esta_ganhando_ou_empatado = true;
-	}
-	else if (placar_->PontosDaDupla1 > placar_->PontosDaDupla2)
-	{
-		if (Dupla1[0]->ObtemNumeroJogador() == jogador_atual->ObtemNumeroJogador() ||
-			Dupla1[1]->ObtemNumeroJogador() == jogador_atual->ObtemNumeroJogador())
-		{
-			esta_ganhando_ou_empatado = true;
-		}
-	}
-
-	return esta_ganhando_ou_empatado;
+	return (placar_->PontosDaDupla1 > placar_->PontosDaDupla2);
 }

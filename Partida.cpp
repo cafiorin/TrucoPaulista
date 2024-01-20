@@ -7,10 +7,10 @@ Partida::Partida(IEventosDaPartida* eventosPartida)
 	EventosDaPartida = eventosPartida;
 	placar = new Placar();
 
-	Dupla1[0] = new Jogador(1, "Humano1", false);
-	Dupla1[1] = new Jogador(3, "Humano2", false);
-	Dupla2[0] = new BotJogaSozinho(2, "Bot1");
-	Dupla2[1] = new BotJogaSozinho(4, "Bot2");
+	Dupla1[0] = new Jogador(1, "Humano1", 1, false);
+	Dupla1[1] = new Jogador(3, "Humano2", 1, false);
+	Dupla2[0] = new BotJogaSozinho(2, "Bot1", 2);
+	Dupla2[1] = new BotJogaSozinho(4, "Bot2", 2);
 
 	BaralhoMesa = nullptr;
 	Vira = nullptr;
@@ -37,7 +37,7 @@ void Partida::InicializarPartida(int quantosJogadores)
 	QuantosJogadores = quantosJogadores;
 
 	delete Rodadas;
-	Rodadas = new RodadasController(quantosJogadores == 4);
+	Rodadas = new RodadasController(placar, quantosJogadores == 4);
 
 	delete Dupla1[0];
 	delete Dupla1[1];
@@ -46,17 +46,17 @@ void Partida::InicializarPartida(int quantosJogadores)
 
 	if (QuantosJogadores == 2)
 	{
-		Dupla1[0] = new Jogador(1, "Humano1", false);
-		Dupla1[1] = new Jogador(3, "Humano2", false);
-		Dupla2[0] = new BotJogaSozinho(2, "Bot1");
-		Dupla2[1] = new BotJogaSozinho(4, "Bot2");
+		Dupla1[0] = new Jogador(1, "Humano1",1, false);
+		Dupla1[1] = new Jogador(3, "Humano2",1, false);
+		Dupla2[0] = new BotJogaSozinho(2, "Bot1", 2);
+		Dupla2[1] = new BotJogaSozinho(4, "Bot2", 2);
 	}
 	else
 	{
-		Dupla1[0] = new Jogador(1, "Humano1", false);
-		Dupla1[1] = new Jogador(3, "Humano2", false);
-		Dupla2[0] = new Bot(2, "Bot1Duplas");
-		Dupla2[1] = new Bot(4, "Bot2Duplas");
+		Dupla1[0] = new Jogador(1, "Humano1", 1,false);
+		Dupla1[1] = new Jogador(3, "Humano2", 1,false);
+		Dupla2[0] = new Bot(2, "Bot1Duplas", 2);
+		Dupla2[1] = new Bot(4, "Bot2Duplas", 2);
 
 	}
 
@@ -157,13 +157,46 @@ void Partida::JogadorJogouACarta(Jogador* jogador, const Carta* carta)
 	ProximoPasso(jogador, AcaoRealizada::Jogou);
 }
 
-void Partida::JogadorTrucou(Jogador* jogador)
+void Partida::DuplaNaoPodePedirTruco(Jogador* jogador)
 {
 	jogador->NaoPodeMaisPedirTruco();
-	if (Rodadas->PodeTrucarAinda())
-		GetOponenteJogador(jogador)->JaPodePedirTruco();
+	Jogador* dupla = GetDuplaDoJogador(jogador);
+	dupla->NaoPodeMaisPedirTruco();
+
+	
+}
+
+void Partida::DuplaOponenteTruco(Jogador* jogador, bool podeTrucar)
+{
+	Jogador* oponente = GetOponenteJogador(jogador);
+	Jogador* dupla = GetDuplaDoJogador(oponente);
+
+	if (podeTrucar)
+	{
+		oponente->JaPodePedirTruco();
+		dupla->JaPodePedirTruco();
+	}
 	else
-		GetOponenteJogador(jogador)->NaoPodeMaisPedirTruco();
+	{
+		oponente->NaoPodeMaisPedirTruco();
+		dupla->NaoPodeMaisPedirTruco();
+	}
+
+}
+
+
+void Partida::JogadorTrucou(Jogador* jogador)
+{
+	DuplaNaoPodePedirTruco(jogador);
+
+	if (Rodadas->PodeTrucarAinda())
+	{
+		DuplaOponenteTruco(jogador, true);
+	}
+	else
+	{
+		DuplaOponenteTruco(jogador, false);
+	}
 
 	ProximoPasso(jogador, AcaoRealizada::Trucou);
 }
@@ -248,22 +281,21 @@ Jogador* Partida::GetJogadorByID(int idJogador)
 {
 	switch (idJogador)
 	{
-	case 1:
-		return Dupla1[0];
-		break;
-	case 2:
-		return Dupla2[0];
-		break;
-	case 3:
-		return Dupla1[1];
-		break;
-	case 4:
-		return Dupla2[1];
-		break;
-	default:
-		return nullptr;
-		break;
+		case 1:
+			return Dupla1[0];
+			break;
+		case 2:
+			return Dupla2[0];
+			break;
+		case 3:
+			return Dupla1[1];
+			break;
+		case 4:
+			return Dupla2[1];
+			break;
 	}
+
+	return nullptr;
 }
 
 bool Partida::ValidaQuemGanhouARodada()
@@ -299,6 +331,21 @@ Jogador* Partida::GetOponenteJogador(Jogador* jogador)
 {
 	return (jogador == Dupla1[0] ? Dupla2[0] : Dupla1[0]);
 }
+
+Jogador* Partida::GetDuplaDoJogador(Jogador* jogador)
+{
+	if (jogador == Dupla1[0]) 
+		return Dupla1[1];
+
+	if (jogador == Dupla1[1])
+		return Dupla1[0];
+
+	if (jogador == Dupla2[0])
+		return Dupla2[1];
+
+	return Dupla2[0];
+}
+
 
 void Partida::ProximoJogadorJoga()
 {

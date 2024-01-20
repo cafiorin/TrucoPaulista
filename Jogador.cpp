@@ -53,7 +53,6 @@ bool Jogador::TemCartaMaiorNaMao(const Carta* cartaDoAdversario)
 const Carta* Jogador::PrimeiraCartaMaiorNaMao(const Carta* cartaDoAdversario)
 {
 	const Carta* maior = nullptr;
-	int cartaUsada = 0;
 
 	for (int i = 0; i <= 2; i++)
 	{
@@ -61,19 +60,16 @@ const Carta* Jogador::PrimeiraCartaMaiorNaMao(const Carta* cartaDoAdversario)
 			MesaDaRodada->MaiorCarta(mao[i].get(), cartaDoAdversario) == 0)
 		{
 			maior = mao[i].get();
-			cartaUsada = i;
 			break;
 		}
 	}
 
-	CartaUsada[cartaUsada] = true;
 	return maior;
 }
 
 const Carta* Jogador::PegaAMelhorOuPiorCartaNaMao(bool melhor)
 {
 	const Carta* cartaProcurada = nullptr;
-	int cartaUsada = -1;
 	int comparaMelhor = melhor ? 0 : 1;
 
 	for (int i = 0; i <= 2; i++)
@@ -83,21 +79,18 @@ const Carta* Jogador::PegaAMelhorOuPiorCartaNaMao(bool melhor)
 			if (cartaProcurada == nullptr)
 			{
 				cartaProcurada = mao[i].get();
-				cartaUsada = i;
 			}
 			else
 			{
 				if (MesaDaRodada->MaiorCarta(mao[i].get(), cartaProcurada) == comparaMelhor)
 				{
 					cartaProcurada = mao[i].get();
-					cartaUsada = i;
 				}
 			}
 		}
 	}
 
-	ASSERT(cartaProcurada != nullptr && cartaUsada >= 0);
-	CartaUsada[cartaUsada] = true;
+	ASSERT(cartaProcurada != nullptr);
 	return cartaProcurada;
 }
 
@@ -331,3 +324,14 @@ bool Jogador::CalcularSeDeveTrucarOuCorrerOuAceitar(ProbabilidadeDeTrucarOuCorre
 	return resultado;
 }
 
+void Jogador::CartaQueFoiUsada(const Carta* cartaUsada)
+{
+	for (int i = 0; i < 3; i++)
+	{
+		if (cartaUsada == mao[i].get())
+		{
+			CartaUsada[i] = true;
+			return;
+		}
+	}
+}
