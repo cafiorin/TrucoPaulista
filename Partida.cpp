@@ -187,7 +187,6 @@ void Partida::DuplaOponenteTruco(Jogador* jogador, bool podeTrucar)
 
 void Partida::JogadorTrucou(Jogador* jogador)
 {
-	jogador->NaoPodeMaisPedirTruco();
 	DuplaNaoPodePedirTruco(jogador);
 
 	if (Rodadas->PodeTrucarAinda())
