@@ -60,13 +60,12 @@ void PartidaMessagesController::OnReceiveMessage(MSG* pMsg)
 			TrucoPaulistaView->AtualizaCartasJogadasCliente(numeroDaRodada, numeroJogador, carta);
 		}
 		break;
-		case WM_MESSAGE_FIM_RODADA:
-		{	unsigned int c1c2 = LOWORD(pMsg->lParam);
-			int firstIntValue = static_cast<int>(LOWORD(c1c2));
 
-			// Retrieving the second int value from the LPARAM
-			int secondIntValue = static_cast<int>(HIWORD(c1c2));
-			TrucoPaulistaView->ShowMessageQuemGanhouaRodada(firstIntValue, secondIntValue);
+		case WM_MESSAGE_FIM_RODADA:
+		{	int rodada = LOWORD(pMsg->lParam);
+			int jogador= HIWORD(pMsg->lParam);
+
+			TrucoPaulistaView->ShowMessageQuemGanhouaRodada(rodada, jogador);
 		}
 		break;	
 
@@ -75,11 +74,13 @@ void PartidaMessagesController::OnReceiveMessage(MSG* pMsg)
 		
 		}
 		break;
+
 		case WM_MESSAGE_ATUALIZAR_MESA:
 		{
 			TrucoPaulistaView->InicializarPartidaCliente();
 		}
 		break;
+
 		case WM_MESSAGE_JOGADOR_TRUCOU:
 		{
 			unsigned int jogador = LOWORD(pMsg->lParam);
@@ -135,10 +136,13 @@ void PartidaMessagesController::AtualizaCartaJogada(int NumeroDaRodada, int Nume
 void PartidaMessagesController::EnviaFimDaPartida(int jogadorVencedor)
 {
 	EnviaMsgParaJogador(WM_MESSAGE_FIM_PARTIDA, 0,jogadorVencedor);
-}void PartidaMessagesController::EnviaFimDaRodada(int rodada, int jogadorVencedor)
+}
+
+void PartidaMessagesController::EnviaFimDaRodada(int rodada, int jogadorVencedor)
 {
 	EnviaMsgParaJogador(WM_MESSAGE_FIM_RODADA, 0, MAKELPARAM(rodada, jogadorVencedor));
 }
+
 void PartidaMessagesController::EnviaAceitouTruco(int jogadorquetrucou)
 {
 	EnviaMsgParaJogador(WM_MESSAGE_JOGADOR_TRUCOU, 0, jogadorquetrucou);

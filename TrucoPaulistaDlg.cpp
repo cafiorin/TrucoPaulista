@@ -632,7 +632,8 @@ void CTrucoPaulistaDlg::onFimDaPartida(Jogador* JogadorQueGanhou)
 
 	AtualizaPlacarDePartidas();
 
-	partidaMessagesController->EnviaFimDaPartida(JogadorQueGanhou->ObtemNumeroJogador());
+	if(m_Instance == 1)
+		partidaMessagesController->EnviaFimDaPartida(JogadorQueGanhou->ObtemNumeroJogador());
 
 	AfxMessageBox(str, MB_ICONINFORMATION | MB_OK);
 
@@ -669,7 +670,8 @@ void CTrucoPaulistaDlg::onAceitouTruco(Jogador* jogador)
 		str.Format(_T("Jogador %s aceitou o Truco... Manda !"), strPlayerName);
 		AddOutput(str);
 
-		partidaMessagesController->EnviaAceitouTruco(jogador->ObtemNumeroJogador());
+		if(m_Instance == 1 && TwoInstances)
+			partidaMessagesController->EnviaAceitouTruco(jogador->ObtemNumeroJogador());
 
 		AfxMessageBox(str, MB_ICONINFORMATION | MB_OK);
 	}
@@ -729,7 +731,8 @@ void CTrucoPaulistaDlg::onFimDaRodada(int numeroRodada, Jogador* JogadorQueGanho
 
 	}
 
-     partidaMessagesController->EnviaFimDaRodada(numeroRodada, JogadorQueGanhou ? JogadorQueGanhou->ObtemNumeroJogador() : 10);
+	if(m_Instance == 1 && TwoInstances)
+		partidaMessagesController->EnviaFimDaRodada(numeroRodada, JogadorQueGanhou ? JogadorQueGanhou->ObtemNumeroJogador() : 0);
 
 }
 
@@ -744,7 +747,7 @@ void CTrucoPaulistaDlg::solicitaJogadorJogar(Jogador* jogador)
 
 	JogadorSolicitado = jogador;
 
-	if (m_Instance == 1 && jogador == partida->ObtemJogadorHumano2())
+	if (m_Instance == 1 && TwoInstances && jogador == partida->ObtemJogadorHumano2())
 	{
 		partidaMessagesController->SolicitaJogadorAJogar();
 	}
@@ -786,7 +789,8 @@ void CTrucoPaulistaDlg::onAcabouARodada(Jogador* JogadorQueGanhou)
 	str.Format(_T("O jogador %s ganhou a rodada"), strPlayerName);
 	AddOutput(str);
 
-	partidaMessagesController->EnviaFimDaPartida(JogadorQueGanhou->ObtemNumeroJogador());
+	if(m_Instance == 1 && TwoInstances)
+		partidaMessagesController->EnviaFimDaPartida(JogadorQueGanhou->ObtemNumeroJogador());
 
 	AfxMessageBox(str, MB_ICONINFORMATION | MB_OK);
 
@@ -816,7 +820,8 @@ void CTrucoPaulistaDlg::AtualizaPlacarDePartidas()
 	str.Format(_T("%d"), partida->PartidasVencidasDaDupla2());
 	GetDlgItem(IDC_PONTOS_PARTIDA_DUPLA2)->SetWindowText(str);
 
-	partidaMessagesController->EnviaMsgDeAtualizaPlacar(partida->PartidasVencidasDaDupla1(), partida->PartidasVencidasDaDupla2());
+	if(TwoInstances)
+		partidaMessagesController->EnviaMsgDeAtualizaPlacar(partida->PartidasVencidasDaDupla1(), partida->PartidasVencidasDaDupla2());
 }
 
 
@@ -988,7 +993,8 @@ void CTrucoPaulistaDlg::ShowMessageJogadorAceitouTruco(int jogadorqueTrucou)
 	str.Format(_T("Jogador %s aceitou o Truco... Manda !"), strPlayerName);
 	AddOutput(str);
 
-	partidaMessagesController->EnviaAceitouTruco(jogador->ObtemNumeroJogador());
+	if(m_Instance == 1 && TwoInstances)
+		partidaMessagesController->EnviaAceitouTruco(jogador->ObtemNumeroJogador());
 
 	AfxMessageBox(str, MB_ICONINFORMATION | MB_OK);
 }

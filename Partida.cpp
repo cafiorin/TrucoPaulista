@@ -248,22 +248,21 @@ Jogador* Partida::GetJogadorByID(int idJogador)
 {
 	switch (idJogador)
 	{
-	case 1:
-		return Dupla1[0];
-		break;
-	case 2:
-		return Dupla2[0];
-		break;
-	case 3:
-		return Dupla1[1];
-		break;
-	case 4:
-		return Dupla2[1];
-		break;
-	default:
-		return nullptr;
-		break;
+		case 1:
+			return Dupla1[0];
+			break;
+		case 2:
+			return Dupla2[0];
+			break;
+		case 3:
+			return Dupla1[1];
+			break;
+		case 4:
+			return Dupla2[1];
+			break;
 	}
+
+	return nullptr;
 }
 
 bool Partida::ValidaQuemGanhouARodada()
