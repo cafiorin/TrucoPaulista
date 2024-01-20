@@ -19,11 +19,11 @@ CartaDaRodada* Rodada::RetornaMaiorCartaDaRodada()
 	for (int i = 0; i < CartasAdicionadas; i++) 
 	{
 		CartaDaRodada* carta = cartas[i];
-		if (carta && 
-			!carta->CartaCoberta && 
-			carta->CartaJogadaNaRodada->ObtemValor(Rodadas->QualOVira()) >= maior_valor) 
+		if (!carta->CartaCoberta && 
+			carta->CartaJogadaNaRodada->ObtemValor(Rodadas->QualOVira()) > maior_valor) 
 		{
 			indice_maior_carta = i;
+			maior_valor = carta->CartaJogadaNaRodada->ObtemValor(Rodadas->QualOVira());
 		}
 	}
 

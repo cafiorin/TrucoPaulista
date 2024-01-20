@@ -236,16 +236,17 @@ const Carta* Bot::JogarComoPrimeiro()
 
 const Carta* Bot::JogarComoPe()
 {
-	const Carta* vira = MesaDaRodada->QualOVira();
 	std::pair<const Carta*, bool> carta_mais_alta_rodada = MesaDaRodada->RetornarCartaMaisAltaDaRodadaESeEhDaDupla(this);
+
 	const Carta* carta_mais_alta = carta_mais_alta_rodada.first;
 	bool eh_carta_da_dupla = carta_mais_alta_rodada.second;
 
-	if (!eh_carta_da_dupla)
+	if (!eh_carta_da_dupla && carta_mais_alta)
 	{
-		if (carta_mais_alta && Jogador::PegaAMelhorOuPiorCartaNaMao(true)->ObtemValor(vira) > carta_mais_alta->ObtemValor(vira))
+		const Carta* melhorCartaDaMao = Jogador::PrimeiraCartaMaiorNaMao(carta_mais_alta);
+		if (melhorCartaDaMao != nullptr)
 		{
-			return Jogador::PegaAMelhorOuPiorCartaNaMao(true);
+			return melhorCartaDaMao;
 		}
 	}
 
