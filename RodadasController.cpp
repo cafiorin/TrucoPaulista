@@ -64,7 +64,7 @@ Jogador* RodadasController::JaTemosUmVencedor()
 				return Rodadas[0]->QuemGanhou();
 			}
 
-			if (Rodadas[0]->QuemGanhou() == Rodadas[1]->QuemGanhou())
+			if (Rodadas[0]->QuemGanhou()->ObtemNumeroDaDupla() == Rodadas[1]->QuemGanhou()->ObtemNumeroDaDupla())
 			{
 				return Rodadas[0]->QuemGanhou();
 			}
@@ -76,12 +76,12 @@ Jogador* RodadasController::JaTemosUmVencedor()
 				return Rodadas[0]->QuemGanhou();
 			}
 
-			if (Rodadas[0]->QuemGanhou() == Rodadas[1]->QuemGanhou() ||
-				Rodadas[0]->QuemGanhou() == Rodadas[2]->QuemGanhou())
+			if (Rodadas[0]->QuemGanhou()->ObtemNumeroDaDupla() == Rodadas[1]->QuemGanhou()->ObtemNumeroDaDupla() ||
+				Rodadas[0]->QuemGanhou()->ObtemNumeroDaDupla() == Rodadas[2]->QuemGanhou()->ObtemNumeroDaDupla())
 			{
 				return Rodadas[0]->QuemGanhou();
 			}
-			else if (Rodadas[1]->QuemGanhou() == Rodadas[2]->QuemGanhou())
+			else if (Rodadas[1]->QuemGanhou()->ObtemNumeroDaDupla() == Rodadas[2]->QuemGanhou()->ObtemNumeroDaDupla())
 			{
 				return Rodadas[1]->QuemGanhou();
 			}
@@ -124,7 +124,7 @@ bool RodadasController::RetornarSeEhPrimeiroParaJogarNaRodadaAtual()
 
 CartaDaRodada* RodadasController::RetornaMaiorCartaDaRodadaAtual()
 {
-	return Rodadas[NumeroDaRodada]->RetornaMaiorCartaDaRodada();
+	return Rodadas[IndiceDaRodadaAtual()]->RetornaMaiorCartaDaRodada();
 }
 
 int RodadasController::MaiorCarta(const Carta* carta1, const Carta* carta2)

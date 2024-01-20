@@ -43,9 +43,36 @@ public:
 
 			if (Rodadas->MaiorCarta(cartas[0]->CartaJogadaNaRodada, cartas[1]->CartaJogadaNaRodada) == -1)
 				return nullptr;
+		
+			return cartas[1]->JogadorDaCarta; //quando tiver duplas move pra dentro do if
+		}
+
+		//4 jogadores
+		Jogador* ganhou = nullptr;
+		CartaDaRodada tempCartas[] = { *cartas[0], *cartas[1], *cartas[2], *cartas[3] };
+
+		std::sort(std::begin(tempCartas), std::end(tempCartas),
+			[this](const CartaDaRodada& a, const CartaDaRodada& b)
+			{
+				return (Rodadas->MaiorCartaDaRodada(&a, &b) == 1);
+			});
+
+		if (tempCartas[3].CartaJogadaNaRodada->ObtemValor(Rodadas->QualOVira()) == tempCartas[2].CartaJogadaNaRodada->ObtemValor(Rodadas->QualOVira())
+			&& ((tempCartas[3].JogadorDaCarta->ObtemNumeroDaDupla() != tempCartas[2].JogadorDaCarta->ObtemNumeroDaDupla())))
+			return nullptr; //empate
+
+		return (tempCartas[3].JogadorDaCarta);
+	}
+
+	bool FoiEmpate()
+	{
+		if (Rodadas->NumeroDeJogadores() == 2) //1 contra 1
+		{
+			return (Rodadas->MaiorCarta(cartas[0]->CartaJogadaNaRodada, cartas[1]->CartaJogadaNaRodada) == -1);
 		}
 		else
 		{
+			//4 jogadores
 			Jogador* ganhou = nullptr;
 			CartaDaRodada tempCartas[] = { *cartas[0], *cartas[1], *cartas[2], *cartas[3] };
 
@@ -55,36 +82,10 @@ public:
 					return (Rodadas->MaiorCartaDaRodada(&a, &b) == 1);
 				});
 
-			if(tempCartas[3].CartaJogadaNaRodada->ObtemValor(Rodadas->QualOVira()) == tempCartas[2].CartaJogadaNaRodada->ObtemValor(Rodadas->QualOVira())
-				&& ((tempCartas[3].JogadorDaCarta->ObtemNumeroJogador() == 1 && tempCartas[2].JogadorDaCarta->ObtemNumeroJogador() == 3) == false) 
-				&& ((tempCartas[3].JogadorDaCarta->ObtemNumeroJogador() == 3 && tempCartas[2].JogadorDaCarta->ObtemNumeroJogador() == 1) == false)
-				&& ((tempCartas[3].JogadorDaCarta->ObtemNumeroJogador() == 2 && tempCartas[2].JogadorDaCarta->ObtemNumeroJogador() == 4) == false)
-				&& ((tempCartas[3].JogadorDaCarta->ObtemNumeroJogador() == 4 && tempCartas[2].JogadorDaCarta->ObtemNumeroJogador() == 2) == false))
-				return nullptr;
+			if (tempCartas[3].CartaJogadaNaRodada->ObtemValor(Rodadas->QualOVira()) == tempCartas[2].CartaJogadaNaRodada->ObtemValor(Rodadas->QualOVira())
+				&& ((tempCartas[3].JogadorDaCarta->ObtemNumeroDaDupla() != tempCartas[2].JogadorDaCarta->ObtemNumeroDaDupla())))
+				return true; //empate
 
-			return (tempCartas[3].JogadorDaCarta);
-		}
-		return cartas[1]->JogadorDaCarta; //quando tiver duplas move pra dentro do if
-	}
-
-	bool FoiEmpate()
-	{
-		if (cartas[2] == nullptr) //1 contra 1
-		{
-			return (Rodadas->MaiorCarta(cartas[0]->CartaJogadaNaRodada, cartas[1]->CartaJogadaNaRodada) == -1);
-		}
-		else
-		{
-			Jogador* ganhou = nullptr;
-			Carta tempCartas[] = { *cartas[0]->CartaJogadaNaRodada, *cartas[1]->CartaJogadaNaRodada, *cartas[2]->CartaJogadaNaRodada, *cartas[3]->CartaJogadaNaRodada };
-
-			std::sort(std::begin(tempCartas), std::end(tempCartas),
-				[this](const Carta& a, const Carta& b)
-				{
-					return (Rodadas->MaiorCarta(&a, &b) == 1);
-				});
-
-			return (tempCartas[3].ObtemValor(Rodadas->QualOVira()) == tempCartas[2].ObtemValor(Rodadas->QualOVira()));
 		}
 		return false; //quando tiver duplas move pra dentro do if
 	}
