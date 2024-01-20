@@ -21,7 +21,7 @@ private:
 	bool JogoDeDupla;
 
 public:
-	RodadasController(bool jogoDeDuplas);
+	RodadasController(Placar *placar, bool jogoDeDuplas);
 	~RodadasController();
 
 	int QualRodadaEsta() { return NumeroDaRodada; }
@@ -71,8 +71,9 @@ public:
 	// Metodos usados para o Bot tomar alguma decisao
 	NumeroDaRodadaAtual RetornarNumeroDaRodadaAtual();
 	std::pair<const Carta*, bool> RetornarCartaMaisAltaDaRodadaESeEhDaDupla(Jogador* jogador_atual);
-	bool VerificarSeEhMesmaDupla(Jogador* jogador1, Jogador* jogador2);
-	bool RetornarSeDuplaEstaGanhandoOuEmpatado(Jogador* jogador_atual);
+	bool BotEstaoPerdendo();
+	bool JogadoresSaoDupla(Jogador* jogador1, Jogador* jogador2);
+
 };
 
 

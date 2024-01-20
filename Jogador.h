@@ -20,24 +20,18 @@ protected:
     bool Bot;
     bool PodePedirTruco;
     RodadasController* MesaDaRodada;
+    int NumeroDaDupla;
 
 public:
-    Jogador(int numero, std::string nome,bool bot) : NumeroJogador(numero), Nome(nome), status(EsperandoCartas),Bot(bot), PodePedirTruco(true){}
+    Jogador(int numero, std::string nome, int numeroDaDupla, bool bot) : NumeroJogador(numero), Nome(nome), status(EsperandoCartas), NumeroDaDupla(numeroDaDupla), Bot(bot), PodePedirTruco(true){}
 
-    std::string ObtemNome() const
-    {
-        return Nome;
-    };
-
-    int ObtemNumeroJogador()
-    {
-        return NumeroJogador;
-    };
-
+    std::string ObtemNome() const { return Nome; }
+    int ObtemNumeroJogador() { return NumeroJogador; }
+    int ObtemNumeroDaDupla() { return NumeroDaDupla; }
     bool PodeTrucar() { return PodePedirTruco; }
     void JaPodePedirTruco() { PodePedirTruco = true; }
     void NaoPodeMaisPedirTruco() { PodePedirTruco = false; }
-    bool EhUmBot() const { return Bot; };
+    bool EhUmBot() const { return Bot; }
 
     void RecebeCartas(const Carta& carta1, const Carta& carta2, const Carta& carta3);
     void OrdenaCartas();
@@ -85,4 +79,5 @@ public:
    const Carta* PrimeiraCartaMaiorNaMao(const Carta* cartaDoAdversario);
    bool TemCartaMaiorNaMao(const Carta* cartaDoAdversario);
    const Carta* PegaAMelhorOuPiorCartaNaMao(bool melhor);
+   void CartaQueFoiUsada(const Carta* cartaUsada);
 };

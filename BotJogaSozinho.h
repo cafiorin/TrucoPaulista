@@ -12,7 +12,7 @@
 class BotJogaSozinho : public Jogador
 {
 public:
-	BotJogaSozinho(int numero, std::string nome);
+	BotJogaSozinho(int numero, std::string nome, int numeroDaDupla);
 	~BotJogaSozinho();
 
 	virtual const Carta* FazerUmaJogada();
