@@ -75,6 +75,7 @@ public:
 	Jogador* GetJogadorAtual() { return UltimoJogadorAJogar; }
 	
 	Jogador* GetOponenteJogador(Jogador* jogador);
+	Jogador* GetDuplaDoJogador(Jogador* jogador);
 
 	bool ValidaQuemGanhouAsRodadas();
 
@@ -83,5 +84,8 @@ public:
 
 	int PartidasVencidasDaDupla1() { return placar->PartidasVencidasDaDupla1; }
 	int PartidasVencidasDaDupla2() { return placar->PartidasVencidasDaDupla2; }
+
+	void DuplaNaoPodePedirTruco(Jogador* jogador);
+	void DuplaOponenteTruco(Jogador* jogador, bool podeTrucar);
 };
 

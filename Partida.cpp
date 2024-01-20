@@ -157,13 +157,47 @@ void Partida::JogadorJogouACarta(Jogador* jogador, const Carta* carta)
 	ProximoPasso(jogador, AcaoRealizada::Jogou);
 }
 
+void Partida::DuplaNaoPodePedirTruco(Jogador* jogador)
+{
+	jogador->NaoPodeMaisPedirTruco();
+	Jogador* dupla = GetDuplaDoJogador(jogador);
+	dupla->NaoPodeMaisPedirTruco();
+
+	
+}
+
+void Partida::DuplaOponenteTruco(Jogador* jogador, bool podeTrucar)
+{
+	Jogador* oponente = GetOponenteJogador(jogador);
+	Jogador* dupla = GetDuplaDoJogador(oponente);
+
+	if (podeTrucar)
+	{
+		oponente->JaPodePedirTruco();
+		dupla->JaPodePedirTruco();
+	}
+	else
+	{
+		oponente->NaoPodeMaisPedirTruco();
+		dupla->NaoPodeMaisPedirTruco();
+	}
+
+}
+
+
 void Partida::JogadorTrucou(Jogador* jogador)
 {
 	jogador->NaoPodeMaisPedirTruco();
+	DuplaNaoPodePedirTruco(jogador);
+
 	if (Rodadas->PodeTrucarAinda())
-		GetOponenteJogador(jogador)->JaPodePedirTruco();
+	{
+		DuplaOponenteTruco(jogador, true);
+	}
 	else
-		GetOponenteJogador(jogador)->NaoPodeMaisPedirTruco();
+	{
+		DuplaOponenteTruco(jogador, false);
+	}
 
 	ProximoPasso(jogador, AcaoRealizada::Trucou);
 }
@@ -298,6 +332,21 @@ Jogador* Partida::GetOponenteJogador(Jogador* jogador)
 {
 	return (jogador == Dupla1[0] ? Dupla2[0] : Dupla1[0]);
 }
+
+Jogador* Partida::GetDuplaDoJogador(Jogador* jogador)
+{
+	if (jogador == Dupla1[0]) 
+		return Dupla1[1];
+
+	if (jogador == Dupla1[1])
+		return Dupla1[0];
+
+	if (jogador == Dupla2[0])
+		return Dupla2[1];
+
+	return Dupla2[0];
+}
+
 
 void Partida::ProximoJogadorJoga()
 {
