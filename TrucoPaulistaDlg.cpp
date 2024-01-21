@@ -13,6 +13,7 @@
 #include "TrucoPaulistaDlg.h"
 #include "AboutDlg.h"
 #include "PartidaMessagesController.h"
+#include "PersistenciaController.h"
 
 #include <atlimage.h>
 #include <windows.h>
@@ -935,6 +936,18 @@ void CTrucoPaulistaDlg::InicializaRodada()
 		partidaMessagesController->EnviaCartasParaJogador(c1, c2, c3, c4);
 	}
 
+	Jogador* time1[2];
+	Jogador* time2[2];
+
+	time1[0] = partida->ObtemJogadorHumano1();
+	time1[1] = partida->ObtemJogadorHumano2();
+	time2[0] = partida->ObtemJogadorBot1();
+	time2[1] = partida->ObtemJogadorBot2();
+
+	//if (partida->ObtemNumeroDeJogadores() == 4) { }
+	
+	persistencia = new PersistenciaController(partida);
+
 	Invalidate();
 }
 
@@ -1231,5 +1244,9 @@ void CTrucoPaulistaDlg::OnBnClickedCorrer2()
 
 void CTrucoPaulistaDlg::OnBnClickedSalvar()
 {
-	//Chamar persistencia e salvar partida
+	if (persistencia != nullptr) { // Somente primeira instância irá salvar?
+		bool temJogoSalvo = persistencia->TemJogoSalvo();
+		
+		persistencia->AtualizarArquivo();
+	}
 }

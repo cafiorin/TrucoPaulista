@@ -1,35 +1,25 @@
 #include "pch.h"
-#include "json\include\json.h"
 #include "PersistenciaController.h"
 #include <fstream>
+#include "json\include\json.h"
 
-PersistenciaController::PersistenciaController(Jogador* quemComecaRodada,
-											   Jogador* ultimoJogadorAJogar,
-											   Placar* placar,
-											   Jogador* dupla1[2],
-											   Jogador* dupla2[2],
-											   RodadasController* rodadas,
-											   Carta* vira, 
-											   Partida* jogo) {
-	QuemComecaRodada = quemComecaRodada;
-	UltimoJogadorAJogar = ultimoJogadorAJogar;
-	PlacarDaPartida = placar;
+PersistenciaController::PersistenciaController(Partida* jogo) {
+
+	PlacarDaPartida = jogo->GetPlacar();
 	
-	Dupla1[0] = dupla1[0];
-	Dupla1[1] = dupla1[1];
+	Dupla1[0] = jogo->ObtemJogadorHumano1();
+	Dupla1[1] = jogo->ObtemJogadorHumano2();
 
-	Dupla2[0] = dupla2[0];
-	Dupla2[1] = dupla1[1];
+	Dupla2[0] = jogo->ObtemJogadorBot1();
+	Dupla2[1] = jogo->ObtemJogadorBot2();
 
-	Rodadas = rodadas;
-	Vira = vira;
+	Rodadas = jogo->GetRodada();
+	Vira = jogo->ObtemVira();
 
 	Jogo = jogo;
 }
 
 PersistenciaController::~PersistenciaController() {
-	delete QuemComecaRodada;
-	delete UltimoJogadorAJogar;
 	delete PlacarDaPartida;
 	delete Dupla1[0];
 	delete Dupla1[1];
@@ -40,24 +30,25 @@ PersistenciaController::~PersistenciaController() {
 	delete Jogo;
 }
 
-bool PersistenciaController::ContinuarJogoPausado() {
+bool PersistenciaController::TemJogoSalvo() {
 	std::ofstream arquivoTruco(nomeArquivo, std::ios::out);
 
 	if (!arquivoTruco)
 		return false;
 
-	if (arquivoTruco.is_open())
+	arquivoTruco.seekp(0, std::ios::end);
+
+	if (arquivoTruco.is_open() && arquivoTruco.tellp() != 0)
 	{
 		// Solicitar ao usuário se ele deseja continuar
 
 		arquivoTruco.close();
+		return true;
 	}
 
-	return false;
-}
+	arquivoTruco.close();
 
-void PersistenciaController::CriarArquivo() {
-	std::ofstream arquivoTruco(nomeArquivo);
+	return false;
 }
 
 void PersistenciaController::AtualizarArquivo() {
@@ -127,7 +118,7 @@ Json::Value const PersistenciaController::GetRodada() {
 	if (valorDaPartida > 1) // Se valor da partida for maior que 1 alguém pediu truco
 		rodada["idJogadorPediuTruco"] = Jogo->GetJogadorAtual()->ObtemNumeroJogador();
 	
-	delete rodadaAtual;
+	//delete rodadaAtual;
 
 	return rodada;
 }
@@ -188,12 +179,24 @@ Json::Value const PersistenciaController::GetTimes() {
 std::string PersistenciaController::MontarJSON() {
 	Json::Value json;
 
-	json["cartaVirada"] = GetCarta(Vira);
-	json["rodadaAtual"] = GetRodada();
+	json["cartaVirada"] = GetCarta(Vira); //ok
+	json["rodadaAtual"] = GetRodada(); //ok
 	json["times"] = GetTimes();
 
+	try {
+		
+		Json::Value teste;
+		teste["foo"] = "bar";
+		std::string jsonString = teste.toStyledString();
+		;
+	}
+	catch (const std::exception& e) {
+		std::cerr << "Exceção: " << e.what() << std::endl;
+	}
+
 	Json::StreamWriterBuilder writer;
-	return Json::writeString(writer, json);
+	std::string value = Json::writeString(writer, json);
+	return value;
 }
 
 /*  [JSON]

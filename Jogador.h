@@ -38,11 +38,17 @@ public:
     void OrdenaCartas();
 
     const std::vector<Carta*> GetCartasNaoJogadas() {
-        std::vector<Carta*> cartasNaoJogadas(3);
+        std::vector<Carta*> cartasNaoJogadas;
 
-        for (int i = 0; i < 3; i++)
-            if (!CartaUsada[i])
+        for (int i = 0; i < 3; i++) {
+            if (CartaUsada[i]) {
+                continue;
+            }
+            else {
                 cartasNaoJogadas.push_back(mao[i].get());
+            }
+
+        }
 
         return cartasNaoJogadas;
     }

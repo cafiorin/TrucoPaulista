@@ -149,7 +149,6 @@ Jogador* Partida::ObtemJogadorBot2()
 	return Dupla2[1];
 }
 
-
 void Partida::JogadorJogouACarta(Jogador* jogador, const Carta* carta)
 {
 	Rodadas->CartaJogada(carta, jogador);

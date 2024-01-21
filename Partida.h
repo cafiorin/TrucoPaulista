@@ -85,6 +85,10 @@ public:
 	int PartidasVencidasDaDupla1() { return placar->PartidasVencidasDaDupla1; }
 	int PartidasVencidasDaDupla2() { return placar->PartidasVencidasDaDupla2; }
 
+	Placar* GetPlacar() { return placar; }
+
+	RodadasController* GetRodada() { return Rodadas; }
+
 	void DuplaNaoPodePedirTruco(Jogador* jogador);
 	void DuplaOponenteTruco(Jogador* jogador, bool podeTrucar);
 };

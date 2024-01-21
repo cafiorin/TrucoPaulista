@@ -8,6 +8,7 @@ class Partida;
 class Jogador;
 class Carta;
 class PartidaMessagesController;
+class PersistenciaController;
 
 #include "IEventosDaPartida.h"  
 
@@ -37,6 +38,7 @@ public:
 	bool DoisJogadores;
 	Jogador* JogadorSolicitado;
 	bool TwoInstances;
+	PersistenciaController* persistencia;
 
 	void InicializaRodada();
 	void CleanCheckBox();
