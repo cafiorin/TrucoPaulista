@@ -163,7 +163,7 @@ bool RodadasController::BotFezAPrimeira()
 
 NumeroDaRodadaAtual RodadasController::RetornarNumeroDaRodadaAtual()
 {
-	if (placar_->PontosDaDupla1 == placar_->PontosDaDupla2 && NumeroDaRodada != 1)
+	if (NumeroDaRodada > 1 && Rodadas[0]->QuemGanhou() == nullptr)
 	{
 		return Melando;
 	}
