@@ -957,7 +957,7 @@ void CTrucoPaulistaDlg::OnBnClickedCorrer()
 	}
 }
 
-//Cliente
+//Metodos da instancia Cliente
 void CTrucoPaulistaDlg::AtualizaPlacar(int PontosDaDupla1, int PontosDaDupla2)
 {
 	CString str;

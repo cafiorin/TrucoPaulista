@@ -231,7 +231,7 @@ void Partida::ProximoPasso(Jogador* jogador, AcaoRealizada acao)
 	break;
 
 	case AcaoRealizada::Trucou:
-	{// implementar ações do bot, hoje a classe bot não esta sendo chamada, ela precisa ser ajustada para que possa ser chamada neste trecho de codigo
+	{
 		Jogador* proximoJogador = GetProximoJogador();
 		if (proximoJogador->EhUmBot())
 		{
