@@ -313,7 +313,7 @@ Jogador* Partida::GetProximoJogador()
 
 	if (QuantosJogadores == 2)
 	{
-		idProxJogador = (idProxJogador == 1 ? 3 : 1);
+		idProxJogador = (idProxJogador == 1 ? 2 : 1);
 	}
 	else
 	{
