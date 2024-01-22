@@ -8,8 +8,8 @@ Partida::Partida(IEventosDaPartida* eventosPartida)
 	placar = new Placar();
 
 	Dupla1[0] = new Jogador(1, "Humano1", 1, false);
-	Dupla1[1] = new Jogador(3, "Humano2", 1, false);
 	Dupla2[0] = new BotJogaSozinho(2, "Bot1", 2);
+	Dupla1[1] = new Jogador(3, "Humano2", 1, false);
 	Dupla2[1] = new BotJogaSozinho(4, "Bot2", 2);
 
 	BaralhoMesa = nullptr;
@@ -309,26 +309,38 @@ bool Partida::ValidaQuemGanhouARodada()
 
 Jogador* Partida::GetProximoJogador()
 {
+	int idProxJogador = UltimoJogadorAJogar->ObtemNumeroJogador();
+
 	if (QuantosJogadores == 2)
 	{
-		return (UltimoJogadorAJogar == Dupla1[0] ? Dupla2[0] : Dupla1[0]);
+		idProxJogador = (idProxJogador == 1 ? 3 : 1);
+	}
+	else
+	{
+		idProxJogador = idProxJogador + 1 > 4 ? 1 : idProxJogador + 1;
 	}
 
-	if (UltimoJogadorAJogar == Dupla1[0])
-		return Dupla2[0];
-
-	if (UltimoJogadorAJogar == Dupla2[0])
-		return Dupla1[1];
-
-	if (UltimoJogadorAJogar == Dupla1[1])
-		return Dupla2[1];
-
-	return Dupla1[0];
+	return GetJogadorByID(idProxJogador);
 }
 
 Jogador* Partida::GetOponenteJogador(Jogador* jogador)
 {
-	return (jogador == Dupla1[0] ? Dupla2[0] : Dupla1[0]);
+	Dupla1[0] = new Jogador(1, "Humano1", 1, false);
+	Dupla2[0] = new BotJogaSozinho(2, "Bot1", 2);
+	Dupla1[1] = new Jogador(3, "Humano2", 1, false);
+	Dupla2[1] = new BotJogaSozinho(4, "Bot2", 2);
+
+
+	if (jogador == Dupla1[0])
+		return Dupla2[0];
+
+	if (jogador == Dupla1[1])
+		return Dupla2[1];
+
+	if (jogador == Dupla2[0])
+		return Dupla1[0];
+
+	return Dupla1[1];
 }
 
 Jogador* Partida::GetDuplaDoJogador(Jogador* jogador)
@@ -374,7 +386,7 @@ void Partida::ProximoJogadorJoga()
 
 void Partida::AcabouRodada(Jogador* ganhou)
 {
-	if (ganhou == Dupla1[0])
+	if (ganhou == Dupla1[0] || ganhou == Dupla1[1])
 	{
 		placar->PontosDaDupla1 += Rodadas->QuantoEstaValendoARodada();
 		if (placar->PontosDaDupla1 >= 12)

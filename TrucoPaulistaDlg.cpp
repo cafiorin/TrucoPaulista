@@ -763,7 +763,11 @@ void CTrucoPaulistaDlg::onBotJogouACarta(int NumeroDaRodada, Jogador* jogadorAjo
 
 void CTrucoPaulistaDlg::onPedeTruco()
 {
-	Jogador* jogador = partida->ObtemJogadorHumano1();
+	Jogador* jogador = partida->GetProximoJogador();
+	if (!DoisJogadores)
+	{
+		jogador = partida->GetDuplaDoJogador(jogador);
+	}
 
 	CString str;
 	str.Format(_T("Truco !!!!"));
