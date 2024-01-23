@@ -146,6 +146,7 @@ BOOL CTrucoPaulistaDlg::OnInitDialog()
 
 	partida = new Partida(this);
 	partidaMessagesController = new PartidaMessagesController(this, m_Instance == 1);
+	persistencia = new PersistenciaController(partida);
 
 	if (m_Instance == 2)
 	{
@@ -691,6 +692,9 @@ void CTrucoPaulistaDlg::onInicioDaRodada(int numeroRodada)
 {
 	CleanCheckBox();
 	CleanOutput();
+	GetDlgItem(IDC_SUAVEZ_H1)->ShowWindow(SW_HIDE);
+	GetDlgItem(IDC_SUAVEZ_H1)->ShowWindow(SW_HIDE);
+
 	solicitaJogadorJogar(partida->QuemJoga());
 }
 
@@ -1010,8 +1014,6 @@ void CTrucoPaulistaDlg::InicializaRodada()
 		int c4 = partida->ObtemVira()->idResource;
 		partidaMessagesController->EnviaCartasParaJogador(c1, c2, c3, c4);
 	}
-
-	persistencia = new PersistenciaController(partida);
 
 	Invalidate();
 }

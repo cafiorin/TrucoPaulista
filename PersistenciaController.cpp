@@ -2,7 +2,8 @@
 #include "PersistenciaController.h"
 #include <fstream>
 
-PersistenciaController::PersistenciaController(Partida* jogo) {
+PersistenciaController::PersistenciaController(Partida* jogo) 
+{
 
 	PlacarDaPartida = jogo->GetPlacar();
 	
@@ -14,24 +15,14 @@ PersistenciaController::PersistenciaController(Partida* jogo) {
 
 	Rodadas = jogo->GetRodada();
 	Vira = jogo->ObtemVira();
-
-	Jogo = jogo;
 }
 
-PersistenciaController::~PersistenciaController() {
-	delete PlacarDaPartida;
-	delete Dupla1[0];
-	delete Dupla1[1];
-	delete Dupla2[0];
-	delete Dupla2[1];
-	delete Dupla1;
-	delete Dupla2;
-	delete Rodadas;
-	delete Vira;
-	delete Jogo;
+PersistenciaController::~PersistenciaController() 
+{
 }
 
-bool PersistenciaController::TemJogoSalvo() {
+bool PersistenciaController::TemJogoSalvo() 
+{
 	std::ofstream arquivoTruco(nomeArquivo, std::ios::out);
 
 	if (!arquivoTruco)
@@ -52,16 +43,19 @@ bool PersistenciaController::TemJogoSalvo() {
 	return false;
 }
 
-void PersistenciaController::AtualizarArquivo() {
+void PersistenciaController::AtualizarArquivo() 
+{
 	std::string json = MontarJSON();
 	PersistirJSON(json);
 }
 
-void PersistenciaController::RemoverArquivo() {
+void PersistenciaController::RemoverArquivo() 
+{
 	std::remove(nomeArquivo.c_str());
 }
 
-void PersistenciaController::PersistirJSON(std::string& json) {
+void PersistenciaController::PersistirJSON(std::string& json) 
+{
 	std::ofstream trucoArquivo(nomeArquivo.c_str(), std::ios::out | std::ios::trunc);
 
 	if (trucoArquivo.is_open()) {
