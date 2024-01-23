@@ -325,12 +325,6 @@ Jogador* Partida::GetProximoJogador()
 
 Jogador* Partida::GetOponenteJogador(Jogador* jogador)
 {
-	Dupla1[0] = new Jogador(1, "Humano1", 1, false);
-	Dupla2[0] = new BotJogaSozinho(2, "Bot1", 2);
-	Dupla1[1] = new Jogador(3, "Humano2", 1, false);
-	Dupla2[1] = new BotJogaSozinho(4, "Bot2", 2);
-
-
 	if (jogador == Dupla1[0])
 		return Dupla2[0];
 
