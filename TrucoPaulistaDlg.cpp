@@ -35,6 +35,7 @@ CTrucoPaulistaDlg::~CTrucoPaulistaDlg()
 {
 	delete partida;
 	delete partidaMessagesController;
+	delete persistencia;
 }
 
 BOOL CTrucoPaulistaDlg::PreTranslateMessage(MSG* pMsg)
@@ -1010,16 +1011,6 @@ void CTrucoPaulistaDlg::InicializaRodada()
 		partidaMessagesController->EnviaCartasParaJogador(c1, c2, c3, c4);
 	}
 
-	Jogador* time1[2];
-	Jogador* time2[2];
-
-	time1[0] = partida->ObtemJogadorHumano1();
-	time1[1] = partida->ObtemJogadorHumano2();
-	time2[0] = partida->ObtemJogadorBot1();
-	time2[1] = partida->ObtemJogadorBot2();
-
-	//if (partida->ObtemNumeroDeJogadores() == 4) { }
-	
 	persistencia = new PersistenciaController(partida);
 
 	Invalidate();

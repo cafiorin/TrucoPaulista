@@ -24,6 +24,8 @@ PersistenciaController::~PersistenciaController() {
 	delete Dupla1[1];
 	delete Dupla2[0];
 	delete Dupla2[1];
+	delete Dupla1;
+	delete Dupla2;
 	delete Rodadas;
 	delete Vira;
 	delete Jogo;
@@ -80,8 +82,6 @@ Json::Value const PersistenciaController::GetCarta(Carta* carta) {
 }
 
 Json::Value const PersistenciaController::GetRodada() {
-	Rodada* rodadaAtual = Rodadas->PegarRodadaAtual();
-
 	Json::Value rodada;
 
 	rodada["numeroDaRodada"] = Rodadas->QualRodadaEsta();
@@ -90,24 +90,21 @@ Json::Value const PersistenciaController::GetRodada() {
 
 	for (int i = 0; i < 4; i++)
 	{
-		CartaDaRodada* cartaDaRodada = rodadaAtual->cartas[i];
-
-		if (cartaDaRodada == nullptr)
+		if (Rodadas->PegarRodadaAtual()->cartas[i] == nullptr) {
 			break;
+		}
 
 		Json::Value carta;
-		carta["cartaCoberta"] = cartaDaRodada->CartaCoberta;
-		carta["idJogador"] = cartaDaRodada->JogadorDaCarta->ObtemNumeroJogador();
+		carta["cartaCoberta"] = Rodadas->PegarRodadaAtual()->cartas[i]->CartaCoberta;
+		carta["idJogador"] = Rodadas->PegarRodadaAtual()->cartas[i]->JogadorDaCarta->ObtemNumeroJogador();
 
 		Json::Value cartaJogada;
-		cartaJogada["id"] = cartaDaRodada->CartaJogadaNaRodada->id;
-		cartaJogada["valor"] = cartaDaRodada->CartaJogadaNaRodada->valor;
-		cartaJogada["nome"] = cartaDaRodada->CartaJogadaNaRodada->nome;
-		cartaJogada["naipe"] = cartaDaRodada->CartaJogadaNaRodada->naipe;
+		cartaJogada["id"] = Rodadas->PegarRodadaAtual()->cartas[i]->CartaJogadaNaRodada->id;
+		cartaJogada["valor"] = Rodadas->PegarRodadaAtual()->cartas[i]->CartaJogadaNaRodada->valor;
+		cartaJogada["nome"] = Rodadas->PegarRodadaAtual()->cartas[i]->CartaJogadaNaRodada->nome;
+		cartaJogada["naipe"] = Rodadas->PegarRodadaAtual()->cartas[i]->CartaJogadaNaRodada->naipe;
 		carta["cartaJogada"] = cartaJogada;
 		cartasDaMesa.append(carta);
-
-		delete cartaDaRodada;
 	}
 
 	rodada["cartasDaMesa"] = cartasDaMesa;
@@ -117,8 +114,6 @@ Json::Value const PersistenciaController::GetRodada() {
 	if (valorDaPartida > 1) // Se valor da partida for maior que 1 alguém pediu truco
 		rodada["idJogadorPediuTruco"] = Jogo->GetJogadorAtual()->ObtemNumeroJogador();
 	
-	//delete rodadaAtual;
-
 	return rodada;
 }
 
@@ -184,6 +179,7 @@ std::string PersistenciaController::MontarJSON() {
 
 	Json::StreamWriterBuilder writer;
 	std::string value = Json::writeString(writer, json);
+
 	return value;
 }
 
