@@ -122,7 +122,9 @@
 #define IDC_PONTOS_PARTIDA_DUPLA1       1049
 #define IDC_PONTOS_PARTIDA_DUPLA2       1050
 #define IDC_TRUCAR2                     1051
-#define IDC_SALVAR						1052
+#define IDC_SALVAR                      1052
+#define IDC_SUAVEZ_H1                   1053
+#define IDC_SUAVEZ_H2                   1054
 
 // Next default values for new objects
 // 
@@ -130,7 +132,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        240
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1051
+#define _APS_NEXT_CONTROL_VALUE         1054
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

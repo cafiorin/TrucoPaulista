@@ -83,6 +83,7 @@ void CTrucoPaulistaDlg::DoDataExchange(CDataExchange* pDX)
 }
 
 BEGIN_MESSAGE_MAP(CTrucoPaulistaDlg, CDialogEx)
+	ON_WM_CTLCOLOR()
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
 	ON_BN_CLICKED(IDM_ABOUTBOX, &CTrucoPaulistaDlg::OnBnClickedAbout)
@@ -102,6 +103,24 @@ BEGIN_MESSAGE_MAP(CTrucoPaulistaDlg, CDialogEx)
 END_MESSAGE_MAP()
 
 
+HBRUSH CTrucoPaulistaDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
+{
+	switch (nCtlColor)
+	{
+	case CTLCOLOR_STATIC:
+		if (pWnd->GetSafeHwnd() == GetDlgItem(IDC_SUAVEZ_H1)->GetSafeHwnd() || 
+			pWnd->GetSafeHwnd() == GetDlgItem(IDC_SUAVEZ_H2)->GetSafeHwnd())
+		{
+			pDC->SetTextColor(RGB(255, 0, 0));
+			return (HBRUSH)GetStockObject(NULL_BRUSH);
+		}
+		return CDialog::OnCtlColor(pDC, pWnd, nCtlColor);
+
+	default:
+		return CDialog::OnCtlColor(pDC, pWnd, nCtlColor);
+	}
+}
+
 BOOL CTrucoPaulistaDlg::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
@@ -109,10 +128,21 @@ BOOL CTrucoPaulistaDlg::OnInitDialog()
 	if (!VerifyInstances())
 		return FALSE;
 
+	CFont* currentFont = GetFont();
+	LOGFONT lf;                        // Used to create the CFont.
+	currentFont->GetLogFont(&lf);
+	lf.lfHeight = 28;
+
+	m_Font.DeleteObject();
+	m_Font.CreateFontIndirect(&lf);    // Create the font.
+
 	SetIcon(m_hIcon, TRUE);			// Set big icon
 	SetIcon(m_hIcon, FALSE);		// Set small icon
 
 	InicializaTelaInicial();//Espera evento de iniciar a partida
+	InitFontToText(IDC_SUAVEZ_H1);
+	InitFontToText(IDC_SUAVEZ_H2);
+
 	partida = new Partida(this);
 	partidaMessagesController = new PartidaMessagesController(this, m_Instance == 1);
 
@@ -122,6 +152,18 @@ BOOL CTrucoPaulistaDlg::OnInitDialog()
 	}
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
+
+void CTrucoPaulistaDlg::InitFontToText(int idText)
+{
+	CStatic* pStaticText = (CStatic*)GetDlgItem(idText);
+	if (pStaticText)
+	{
+		pStaticText->SetFont(&m_Font);
+		pStaticText->ShowWindow(SW_HIDE);
+	}
+}
+
+
 
 void CTrucoPaulistaDlg::InicializarPartidaCliente()
 {
@@ -747,6 +789,19 @@ void CTrucoPaulistaDlg::solicitaJogadorJogar(Jogador* jogador)
 	str.Format(_T("Sua Vez %s..."), strPlayerName);
 	AddOutput(str);
 
+	if (jogador->ObtemNumeroJogador() == 1)
+	{
+		CStatic* pStaticText = (CStatic*)GetDlgItem(IDC_SUAVEZ_H1);
+		if (pStaticText)
+			pStaticText->ShowWindow(SW_SHOW);
+	}
+	else if (jogador->ObtemNumeroJogador() == 3)
+	{
+		CStatic* pStaticText = (CStatic*)GetDlgItem(IDC_SUAVEZ_H2);
+		if (pStaticText)
+			pStaticText->ShowWindow(SW_SHOW);
+	}
+
 	JogadorSolicitado = jogador;
 
 	if (m_Instance == 1 && TwoInstances && jogador == partida->ObtemJogadorHumano2())
@@ -757,6 +812,21 @@ void CTrucoPaulistaDlg::solicitaJogadorJogar(Jogador* jogador)
 
 void CTrucoPaulistaDlg::onBotJogouACarta(int NumeroDaRodada, Jogador* jogadorAjogar, const Carta* cartaJogada)
 {
+	std::string playerName = jogadorAjogar->ObtemNome();
+	CString strPlayerName(playerName.c_str());
+
+	CString str;
+	str.Format(_T("Sua Vez %s..."), strPlayerName);
+	AddOutput(str);
+
+	CStatic* pStaticText = (CStatic*)GetDlgItem(IDC_SUAVEZ_H1);
+	if (pStaticText)
+		pStaticText->ShowWindow(SW_HIDE);
+	
+	pStaticText = (CStatic*)GetDlgItem(IDC_SUAVEZ_H2);
+	if (pStaticText)
+		pStaticText->ShowWindow(SW_HIDE);
+
 	SetCurrectBitmapFromBot(jogadorAjogar, cartaJogada);
 	Invalidate();
 }

@@ -21,7 +21,8 @@ public:
 	virtual ~CTrucoPaulistaDlg();
 	void SetBitmapOnStaticControl(CStatic& staticControl, CBitmap& bitmap);
 	void SetBitmapCartasAvesso();
-	
+	void InitFontToText(int idText);
+
 	void CleanOutput();
 	void AddOutput(const CString& novaLinha);
 
@@ -39,6 +40,7 @@ public:
 	Jogador* JogadorSolicitado;
 	bool TwoInstances;
 	PersistenciaController* persistencia;
+	CFont m_Font;
 
 	void InicializaRodada();
 	void CleanCheckBox();
@@ -92,6 +94,7 @@ protected:
 	virtual BOOL OnInitDialog();
 	afx_msg void OnSysCommand(UINT nID, LPARAM lParam);
 	afx_msg void OnPaint();
+	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
 	afx_msg HCURSOR OnQueryDragIcon();
 	DECLARE_MESSAGE_MAP()
 public:
