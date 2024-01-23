@@ -14,6 +14,8 @@
 #define WM_MESSAGE_JOGADOR_TRUCOU (WM_USER + 10)
 #define WM_MESSAGE_ATUALIZAR_MESA (WM_USER + 11)
 #define WM_MESSAGE_INICIALIZA_RODADA  (WM_USER + 12)
+#define WM_MESSAGE_CORRE_TRUCO  (WM_USER + 13)
+#define WM_MESSAGE_ENVIA_TRUCO  (WM_USER + 14)
 
 #define WM_CUSTOM_MESSAGE_FIM (WM_USER + 100)
 
@@ -35,7 +37,8 @@ public:
 	void AtualizaCartaJogada(int NumeroDaRodada, int NumeroJogador, int idResource);
 	void EnviaAceitouTruco(int jogadorquetrucou);
 	void EnviaInicializaRodada(int JogadorQueComeca);
-
+	void EnviaCorreTruco(int jogadorQueCorre);
+	void EnviaTruco(int jogadorQueTrucou);
 	void EnviaMsgParaJogador(UINT message, WPARAM wParam, LPARAM lParam);
 	void EnviaMsgParaServer(UINT message, WPARAM wParam, LPARAM lParam);
 	void EnviaFimDaPartida(int jogadorVencedor);

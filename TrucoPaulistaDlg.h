@@ -75,6 +75,8 @@ public:
 	void ShowMessageQuemGanhouaRodada(int rodada, int jogadorGanhouRodada);
 	void ShowMessageQuemGanhoaPartida(int jogadorGanhouPartida);
 	void InicializaRodadaCliente(int jogadorQueComeca);
+	void Jogador2Correu(int jogadorCorreu);
+	void Jogador2Trucou(int jogadorCorreu);
 
 // Dialog Data
 #ifdef AFX_DESIGN_TIME

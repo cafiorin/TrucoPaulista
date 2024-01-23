@@ -16,8 +16,6 @@ void PartidaMessagesController::OnReceiveMessage(MSG* pMsg)
 		{
 			unsigned int c1c2 = LOWORD(pMsg->lParam);
 			int firstIntValue = static_cast<int>(LOWORD(c1c2));
-
-			// Retrieving the second int value from the LPARAM
 			int secondIntValue = static_cast<int>(HIWORD(c1c2));
 			TrucoPaulistaView->AtualizaPlacar(firstIntValue, secondIntValue);
 		}
@@ -94,7 +92,19 @@ void PartidaMessagesController::OnReceiveMessage(MSG* pMsg)
 			TrucoPaulistaView->InicializaRodadaCliente(jogador);
 		}
 		break;
+		case WM_MESSAGE_ENVIA_TRUCO:
+		{
+			unsigned int jogador = LOWORD(pMsg->lParam);
+			TrucoPaulistaView->Jogador2Trucou(jogador);
 
+		}
+			break;
+		case WM_MESSAGE_CORRE_TRUCO:
+		{
+			unsigned int jogador = LOWORD(pMsg->lParam);
+			TrucoPaulistaView->Jogador2Correu(jogador);
+		}
+		break;
 		default:
 			break;
 	}
@@ -152,8 +162,14 @@ void PartidaMessagesController::EnviaInicializaRodada(int JogadorQueComeca)
 {
 	EnviaMsgParaJogador(WM_MESSAGE_INICIALIZA_RODADA, 0, JogadorQueComeca);
 }
-
-
+void PartidaMessagesController::EnviaTruco(int jogadorqueTruco)
+{
+	EnviaMsgParaServer(WM_MESSAGE_ENVIA_TRUCO, 0, jogadorqueTruco);
+}
+void PartidaMessagesController::EnviaCorreTruco(int jogadorCorreu)
+{
+	EnviaMsgParaServer(WM_MESSAGE_CORRE_TRUCO, 0, jogadorCorreu);
+}
 
 
 // metodos para enviar as mensagens

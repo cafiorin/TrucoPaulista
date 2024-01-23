@@ -1040,12 +1040,12 @@ void CTrucoPaulistaDlg::OnBnClickedCorrer()
 //Metodos da instancia Cliente
 void CTrucoPaulistaDlg::AtualizaPlacar(int PontosDaDupla1, int PontosDaDupla2)
 {
-	CString str;
-	str.Format(_T("%d"), PontosDaDupla1);
-	GetDlgItem(IDC_PONTOS_DUPLA1)->SetWindowText(str);
+		CString str;
+		str.Format(_T("%d"), PontosDaDupla1);
+		GetDlgItem(IDC_PONTOS_DUPLA1)->SetWindowText(str);
 
-	str.Format(_T("%d"), PontosDaDupla2);
-	GetDlgItem(IDC_PONTOS_DUPLA2)->SetWindowText(str);
+		str.Format(_T("%d"), PontosDaDupla2);
+		GetDlgItem(IDC_PONTOS_DUPLA2)->SetWindowText(str);
 }
 
 void CTrucoPaulistaDlg::AtualizaCartasJogadasCliente(int numeroDaRodada, int numeroJogador, int carta)
@@ -1110,6 +1110,20 @@ void CTrucoPaulistaDlg::ShowMessageQuemGanhouaRodada(int numeroRodada, int jogad
 		CButton* pCheckBox = (CButton*)GetDlgItem(baseCheckBox);
 		if (pCheckBox != nullptr)
 			pCheckBox->SetCheck(BST_CHECKED);
+	}
+}
+void CTrucoPaulistaDlg::Jogador2Correu(int jogadorGanhouPartida)
+{
+	Jogador* JogadorCorreu = partida->GetJogadorByID(jogadorGanhouPartida);
+	partida->JogadorCorreu(JogadorCorreu);
+}
+void CTrucoPaulistaDlg::Jogador2Trucou(int jogadorGanhouPartida)
+{
+	Jogador* jogador = partida->GetJogadorByID(jogadorGanhouPartida);
+	if (JogadorSolicitado == jogador)
+	{
+		GetDlgItem(IDC_TRUCAR)->ShowWindow(SW_HIDE);
+		partida->JogadorTrucou(jogador);
 	}
 }
 void CTrucoPaulistaDlg::ShowMessageQuemGanhoaPartida(int jogadorGanhador)
@@ -1295,7 +1309,7 @@ void CTrucoPaulistaDlg::OnBnClickedTrucar2()
 	Jogador* jogador = partida->ObtemJogadorHumano2();
 	if (JogadorSolicitado == jogador)
 	{
-		//TODO: partidaMessagesController->EnviaTruco(jogador->ObtemNumeroJogador());
+		partidaMessagesController->EnviaTruco(jogador->ObtemNumeroJogador());
 	}
 }
 
@@ -1305,7 +1319,7 @@ void CTrucoPaulistaDlg::OnBnClickedCorrer2()
 	Jogador* jogador = partida->ObtemJogadorHumano2();
 	if (JogadorSolicitado == jogador)
 	{
-		//TODO: partidaMessagesController->EnviaCorrer(jogador->ObtemNumeroJogador());
+		 partidaMessagesController->EnviaCorreTruco(jogador->ObtemNumeroJogador());
 	}
 }
 
