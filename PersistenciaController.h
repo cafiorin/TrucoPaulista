@@ -4,7 +4,7 @@
 #include "Placar.h"
 #include "Baralho.h"
 #include "Partida.h"
-#include "json\include\json.h"
+#include "D:\C++\TrucoPaulista\json\include\json.h"
 
 class PersistenciaController
 {
@@ -19,7 +19,7 @@ public:
 	void AtualizarArquivo();
 
 private:
-	const std::string nomeArquivo = "aaaaaaaaaaaaaaaaaatrucoPaulista.json";
+	const std::string nomeArquivo = "_trucoPaulista.json";
 
 	Placar* PlacarDaPartida;
 
@@ -37,7 +37,7 @@ private:
 	const Json::Value GetCarta(Carta* carta);
 	const Json::Value GetRodada();
 	const Json::Value GetTimes();
-	const Json::Value GetJogadores();
-	const Json::Value GetTime(int pontosDoTime, int partidasVencidas);
+	const Json::Value GetJogadores(Jogador* dupla[2]);
+	const Json::Value GetTime(Jogador* dupla[2], int pontosDoTime, int partidasVencidas);
 	const Json::Value GetMao(std::vector<Carta*> mao);
 };

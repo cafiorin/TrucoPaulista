@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "PersistenciaController.h"
 #include <fstream>
-#include "json\include\json.h"
 
 PersistenciaController::PersistenciaController(Partida* jogo) {
 
@@ -136,19 +135,19 @@ Json::Value const PersistenciaController::GetMao(std::vector<Carta*> mao) {
 	return maoDoJogador;
 }
 
-Json::Value const PersistenciaController::GetJogadores() {
+Json::Value const PersistenciaController::GetJogadores(Jogador* dupla[2]) {
 	Json::Value jogadores;
 
 	for (int i = 0; i < 2; i++)
 	{
 		Json::Value jogador;
 
-		jogador["id"] = Dupla1[i]->ObtemNumeroJogador();
-		jogador["bot"] = Dupla1[i]->EhUmBot();
-		bool estaNaVezDeJogar = Jogo->GetJogadorAtual()->ObtemNumeroJogador() == Dupla1[i]->ObtemNumeroJogador();
+		jogador["id"] = dupla[i]->ObtemNumeroJogador();
+		jogador["bot"] = dupla[i]->EhUmBot();
+		bool estaNaVezDeJogar = Jogo->GetJogadorAtual()->ObtemNumeroJogador() == dupla[i]->ObtemNumeroJogador();
 		jogador["vezDeJogar"] = estaNaVezDeJogar;
 
-		jogador["mao"] = GetMao(Dupla1[i]->GetCartasNaoJogadas());
+		jogador["mao"] = GetMao(dupla[i]->GetCartasNaoJogadas());
 
 		jogadores.append(jogador);
 	}
@@ -156,13 +155,13 @@ Json::Value const PersistenciaController::GetJogadores() {
 	return jogadores;
 }
 
-Json::Value const PersistenciaController::GetTime(int pontosDoTime, int partidasVencidas) {
+Json::Value const PersistenciaController::GetTime(Jogador* dupla[2], int pontosDoTime, int partidasVencidas) {
 	Json::Value time;
 
 	time["pontosDoTime"] = pontosDoTime;
 	time["partidasVencidas"] = partidasVencidas;
 
-	time["jogadores"] = GetJogadores();
+	time["jogadores"] = GetJogadores(dupla);
 
 	return time;
 }
@@ -170,8 +169,8 @@ Json::Value const PersistenciaController::GetTime(int pontosDoTime, int partidas
 Json::Value const PersistenciaController::GetTimes() {
 	Json::Value times;
 
-	times.append(GetTime(PlacarDaPartida->PontosDaDupla1, PlacarDaPartida->PartidasVencidasDaDupla1));
-	times.append(GetTime(PlacarDaPartida->PontosDaDupla2, PlacarDaPartida->PartidasVencidasDaDupla2));
+	times.append(GetTime(Dupla1, PlacarDaPartida->PontosDaDupla1, PlacarDaPartida->PartidasVencidasDaDupla1));
+	times.append(GetTime(Dupla2, PlacarDaPartida->PontosDaDupla2, PlacarDaPartida->PartidasVencidasDaDupla2));
 
 	return times;
 }
@@ -182,17 +181,6 @@ std::string PersistenciaController::MontarJSON() {
 	json["cartaVirada"] = GetCarta(Vira); //ok
 	json["rodadaAtual"] = GetRodada(); //ok
 	json["times"] = GetTimes();
-
-	try {
-		
-		Json::Value teste;
-		teste["foo"] = "bar";
-		std::string jsonString = teste.toStyledString();
-		;
-	}
-	catch (const std::exception& e) {
-		std::cerr << "Exceção: " << e.what() << std::endl;
-	}
 
 	Json::StreamWriterBuilder writer;
 	std::string value = Json::writeString(writer, json);

@@ -76,6 +76,8 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
+    <IncludePath>$(SolutionDir)json\include;$(IncludePath)</IncludePath>
+    <ReferencePath>$(SolutionDir)json\lib;$(ReferencePath)</ReferencePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
@@ -97,6 +99,7 @@
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
+      <AdditionalDependencies>D:\vcpkg\installed\x64-windows\json\lib\jsoncpp.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <Midl>
       <MkTypLibCompatible>false</MkTypLibCompatible>
@@ -210,7 +213,9 @@
     <ClInclude Include="json\include\value.h" />
     <ClInclude Include="json\include\version.h" />
     <ClInclude Include="json\include\writer.h" />
+    <ClInclude Include="json_tool.h" />
     <ClInclude Include="Partida.h" />
+    <ClInclude Include="PartidaController.h" />
     <ClInclude Include="PartidaMessagesController.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="PersistenciaController.h" />
@@ -230,8 +235,13 @@
     <ClCompile Include="Carta.cpp" />
     <ClCompile Include="CartaDaRodada.cpp" />
     <ClCompile Include="CartasBitmap.cpp" />
+    <ClCompile Include="Enums.cpp" />
     <ClCompile Include="Jogador.cpp" />
+    <ClCompile Include="json_reader.cpp" />
+    <ClCompile Include="json_value.cpp" />
+    <ClCompile Include="json_writer.cpp" />
     <ClCompile Include="Partida.cpp" />
+    <ClCompile Include="PartidaController.cpp" />
     <ClCompile Include="PartidaMessagesController.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -250,7 +260,8 @@
     <ResourceCompile Include="TrucoPaulista.rc" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="json\bin\jsoncpp.dll" />
+    <None Include="json\bin\jsoncpp.dll" />   
+    <None Include="json_valueiterator.inl" />
     <None Include="res\TrucoPaulista.rc2" />
   </ItemGroup>
   <ItemGroup>
