@@ -4,7 +4,7 @@
 #include "Placar.h"
 #include "Baralho.h"
 #include "Partida.h"
-#include "D:\C++\TrucoPaulista\json\include\json.h"
+#include "json\include\json.h"
 
 class PersistenciaController
 {

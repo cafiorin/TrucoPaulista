@@ -99,7 +99,7 @@
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
-      <AdditionalDependencies>D:\vcpkg\installed\x64-windows\json\lib\jsoncpp.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <Midl>
       <MkTypLibCompatible>false</MkTypLibCompatible>
@@ -260,7 +260,7 @@
     <ResourceCompile Include="TrucoPaulista.rc" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="json\bin\jsoncpp.dll" />   
+    <None Include="json\bin\jsoncpp.dll" />
     <None Include="json_valueiterator.inl" />
     <None Include="res\TrucoPaulista.rc2" />
   </ItemGroup>
