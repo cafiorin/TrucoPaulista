@@ -143,6 +143,21 @@ int RodadasController::MaiorCarta(const Carta* carta1, const Carta* carta2)
 
 int RodadasController::MaiorCartaDaRodada(const CartaDaRodada* carta1, const CartaDaRodada* carta2)
 {
+	if (carta1->CartaCoberta && !carta2->CartaCoberta)
+	{
+		return 1;
+	}
+
+	if (carta2->CartaCoberta && !carta1->CartaCoberta)
+	{
+		return 0;
+	}
+
+	if (carta1->CartaCoberta && carta2->CartaCoberta)
+	{
+		return -1;
+	}
+
 	int valor1 = carta1->CartaJogadaNaRodada->ObtemValor(Vira);
 	int valor2 = carta2->CartaJogadaNaRodada->ObtemValor(Vira);
 

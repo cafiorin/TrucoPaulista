@@ -114,7 +114,7 @@ Json::Value const PersistenciaController::GetRodada() {
 Json::Value const PersistenciaController::GetMao(std::vector<Carta*> mao) {
 	Json::Value maoDoJogador;
 
-	int numCartas = std::count_if(mao.begin(), mao.end(), [](Carta* carta) {
+	__int64 numCartas = std::count_if(mao.begin(), mao.end(), [](Carta* carta) {
 		return carta != nullptr;
 	});
 

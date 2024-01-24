@@ -22,6 +22,9 @@
     <Filter Include="Source Files\Model">
       <UniqueIdentifier>{fe522717-f472-479f-a687-7f25c27d704a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="JsonLibrary">
+      <UniqueIdentifier>{e64c450a-ccae-41db-bf13-b056ba50d37f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="TrucoPaulista.h">
@@ -84,6 +87,48 @@
     <ClInclude Include="RodadasController.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="AboutDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="json\include\allocator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="json\include\assertions.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="json\include\config.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="json\include\forwards.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="json\include\json.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="json\include\json_features.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="json\include\reader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="json\include\value.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="json\include\version.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="json\include\writer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="json_tool.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PartidaController.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PartidaMessagesController.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TrucoPaulista.cpp">
@@ -131,6 +176,27 @@
     <ClCompile Include="BotJogaSozinho.cpp">
       <Filter>Source Files\Model</Filter>
     </ClCompile>
+    <ClCompile Include="AboutDlg.cpp">
+      <Filter>Source Files\View</Filter>
+    </ClCompile>
+    <ClCompile Include="PartidaController.cpp">
+      <Filter>Source Files\Controller</Filter>
+    </ClCompile>
+    <ClCompile Include="PartidaMessagesController.cpp">
+      <Filter>Source Files\Controller</Filter>
+    </ClCompile>
+    <ClCompile Include="Enums.cpp">
+      <Filter>Source Files\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="json_reader.cpp">
+      <Filter>JsonLibrary</Filter>
+    </ClCompile>
+    <ClCompile Include="json_value.cpp">
+      <Filter>JsonLibrary</Filter>
+    </ClCompile>
+    <ClCompile Include="json_writer.cpp">
+      <Filter>JsonLibrary</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="TrucoPaulista.rc">
@@ -140,6 +206,10 @@
   <ItemGroup>
     <None Include="res\TrucoPaulista.rc2">
       <Filter>Resource Files</Filter>
+    </None>
+    <None Include="json\bin\jsoncpp.dll" />
+    <None Include="json_valueiterator.inl">
+      <Filter>Header Files</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -479,5 +549,8 @@
     <Image Include="res\Cartas\mesa.bmp">
       <Filter>Resource Files</Filter>
     </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="json\lib\jsoncpp.lib" />
   </ItemGroup>
 </Project>

@@ -38,10 +38,10 @@ public:
 	{
 		if (Rodadas->NumeroDeJogadores() == 2) 
 		{
-			if (Rodadas->MaiorCarta(cartas[0]->CartaJogadaNaRodada, cartas[1]->CartaJogadaNaRodada) == 0)
+			if (Rodadas->MaiorCartaDaRodada(cartas[0], cartas[1]) == 0)
 				return cartas[0]->JogadorDaCarta;
 
-			if (Rodadas->MaiorCarta(cartas[0]->CartaJogadaNaRodada, cartas[1]->CartaJogadaNaRodada) == -1)
+			if (Rodadas->MaiorCartaDaRodada(cartas[0], cartas[1]) == -1)
 				return nullptr;
 		
 			return cartas[1]->JogadorDaCarta; //quando tiver duplas move pra dentro do if
@@ -68,7 +68,7 @@ public:
 	{
 		if (Rodadas->NumeroDeJogadores() == 2) //1 contra 1
 		{
-			return (Rodadas->MaiorCarta(cartas[0]->CartaJogadaNaRodada, cartas[1]->CartaJogadaNaRodada) == -1);
+			return (Rodadas->MaiorCartaDaRodada(cartas[0], cartas[1]) == -1);
 		}
 		else
 		{
