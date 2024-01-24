@@ -52,7 +52,8 @@ public:
 	void SetCurrectBitmapFromBot(Jogador* bot, const Carta* carta);
 	void SetCurrectBitmapFromHumano(Jogador* bot, const Carta* carta);
 	void MouseLeftClick(int idControl);
-
+	int ObtemNumeroDaRodada();
+	int m_NumeroDaRodadaCliente;
 
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
 

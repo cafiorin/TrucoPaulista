@@ -676,6 +676,14 @@ void CTrucoPaulistaDlg::OnStnClickedPicParc1()
 	}
 }
 
+int CTrucoPaulistaDlg::ObtemNumeroDaRodada()
+{
+	if (m_Instance == 1)
+		return partida->ObtemNumeroDaRodada();
+
+	return m_NumeroDaRodadaCliente;
+}
+
 void CTrucoPaulistaDlg::MouseLeftClick(int idControl)
 {
 	switch (idControl)
@@ -714,7 +722,7 @@ void CTrucoPaulistaDlg::MouseLeftClick(int idControl)
 		break;
 
 	case IDC_PIC_PARC1:
-		if (JogadorSolicitado == partida->ObtemJogadorHumano2() && partida->ObtemNumeroDaRodada() > 1)
+		if (JogadorSolicitado == partida->ObtemJogadorHumano2() && ObtemNumeroDaRodada() > 1)
 		{
 			if (m_Instance == 2)
 			{
@@ -733,11 +741,11 @@ void CTrucoPaulistaDlg::MouseLeftClick(int idControl)
 		break;
 
 	case IDC_PIC_PARC2:
-		if (JogadorSolicitado == partida->ObtemJogadorHumano2() && partida->ObtemNumeroDaRodada() > 1)
+		if (JogadorSolicitado == partida->ObtemJogadorHumano2() && ObtemNumeroDaRodada() > 1)
 		{
 			if (m_Instance == 2)
 			{
-				m_PicCartaParc1.ShowWindow(SW_HIDE);
+				m_PicCartaParc2.ShowWindow(SW_HIDE);
 				partidaMessagesController->JogadorJogouCarta(3, true);
 			}
 			else if (!TwoInstances)
@@ -752,11 +760,11 @@ void CTrucoPaulistaDlg::MouseLeftClick(int idControl)
 		break;
 
 	case IDC_PIC_PARC3:
-		if (JogadorSolicitado == partida->ObtemJogadorHumano2() && partida->ObtemNumeroDaRodada() > 1)
+		if (JogadorSolicitado == partida->ObtemJogadorHumano2() && ObtemNumeroDaRodada() > 1)
 		{
 			if (m_Instance == 2)
 			{
-				m_PicCartaParc1.ShowWindow(SW_HIDE);
+				m_PicCartaParc3.ShowWindow(SW_HIDE);
 				partidaMessagesController->JogadorJogouCarta(3, true);
 			}
 			else if (!TwoInstances)
@@ -911,7 +919,7 @@ void CTrucoPaulistaDlg::solicitaJogadorJogar(Jogador* jogador)
 		if (pStaticText)
 			pStaticText->ShowWindow(SW_SHOW);
 	}
-	else if (jogador->ObtemNumeroJogador() == 3)
+	else if (jogador->ObtemNumeroJogador() == 3 && !TwoInstances)
 	{
 		CStatic* pStaticText = (CStatic*)GetDlgItem(IDC_SUAVEZ_H2);
 		if (pStaticText)
@@ -1020,6 +1028,7 @@ void CTrucoPaulistaDlg::AtualizaPlacarDePartidas()
 
 void CTrucoPaulistaDlg::InicializaRodada()
 {
+	m_NumeroDaRodadaCliente = 1;
 	AtualizaPlacar();
 
 	GetDlgItem(IDC_RADIO7)->ShowWindow(SW_HIDE);
@@ -1192,6 +1201,8 @@ void CTrucoPaulistaDlg::ShowMessageJogadorAceitouTruco(int jogadorqueTrucou)
 }
 void CTrucoPaulistaDlg::ShowMessageQuemGanhouaRodada(int numeroRodada, int jogadorGanhouRodada)
 {
+	m_NumeroDaRodadaCliente++;
+
 	Jogador* JogadorQueGanhou = partida->GetJogadorByID(jogadorGanhouRodada);
 	if (JogadorQueGanhou == nullptr)
 	{
