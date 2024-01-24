@@ -52,7 +52,7 @@ public:
 
 	int ObtemNumeroDeJogadores() { return QuantosJogadores; }
 
-	void JogadorJogouACarta(Jogador* jogador, const Carta* carta);
+	void JogadorJogouACarta(Jogador* jogador, const Carta* carta, bool cartaCoberta);
 
 	Jogador* QuemJoga();
 	Jogador* GetJogadorByID(int idJogador);

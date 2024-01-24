@@ -106,9 +106,9 @@ Jogador* RodadasController::QuemGanhouARodadaAtual()
 	return Rodadas[IndiceDaRodadaAtual()]->QuemGanhou(); 
 }
 
-void RodadasController::CartaJogada(const Carta* carta, Jogador* jogador)
+void RodadasController::CartaJogada(const Carta* carta, Jogador* jogador, bool cartaCoberta)
 {
-	Rodadas[IndiceDaRodadaAtual()]->CartaJogada(*carta, *jogador);
+	Rodadas[IndiceDaRodadaAtual()]->CartaJogada(*carta, *jogador, cartaCoberta);
 }
 
 const Carta* RodadasController::QualCartaJogadaNaRodada()

@@ -36,18 +36,33 @@ CTrucoPaulistaDlg::~CTrucoPaulistaDlg()
 	delete partida;
 	delete partidaMessagesController;
 	delete persistencia;
+	delete cartaCoberta;
 }
 
 BOOL CTrucoPaulistaDlg::PreTranslateMessage(MSG* pMsg)
 {
-	// Verificar se é a mensagem personalizada
+	// Msg trocada entre instancias
 	if (pMsg->message >= WM_CUSTOM_MESSAGE_INICIO && pMsg->message <= WM_CUSTOM_MESSAGE_FIM)
 	{
 		partidaMessagesController->OnReceiveMessage(pMsg);
 		return TRUE;
 	}
 
-	// Chame a implementação padrão para outras mensagens
+	//Right click
+	if (pMsg->message == WM_RBUTTONDOWN)
+	{
+		CPoint point;
+		GetCursorPos(&point); 
+		ScreenToClient(&point); 
+
+		CWnd* pWnd = ChildWindowFromPoint(point, CWP_ALL);
+		if (pWnd)
+		{
+			MouseLeftClick(pWnd->GetDlgCtrlID());
+			return TRUE;
+		}
+	}
+
 	return CDialogEx::PreTranslateMessage(pMsg);
 }
 
@@ -130,24 +145,24 @@ BOOL CTrucoPaulistaDlg::OnInitDialog()
 		return FALSE;
 
 	CFont* currentFont = GetFont();
-	LOGFONT lf;                        // Used to create the CFont.
+	LOGFONT lf;                        
 	currentFont->GetLogFont(&lf);
 	lf.lfHeight = 28;
 
 	m_Font.DeleteObject();
-	m_Font.CreateFontIndirect(&lf);    // Create the font.
+	m_Font.CreateFontIndirect(&lf);    
 
 	SetIcon(m_hIcon, TRUE);			// Set big icon
 	SetIcon(m_hIcon, FALSE);		// Set small icon
 
-	InicializaTelaInicial();//Espera evento de iniciar a partida
+	InicializaTelaInicial();
 	InitFontToText(IDC_SUAVEZ_H1);
 	InitFontToText(IDC_SUAVEZ_H2);
 
 	partida = new Partida(this);
 	partidaMessagesController = new PartidaMessagesController(this, m_Instance == 1);
 	persistencia = new PersistenciaController(partida);
-
+	cartaCoberta = new CartaCoberta();
 	if (m_Instance == 2)
 	{
 		InicializarPartidaCliente();
@@ -555,7 +570,7 @@ void CTrucoPaulistaDlg::OnStnClickedPic3()
 
 		SetCurrectBitmapFromHumano(jogador, carta);
 		m_Pic3.ShowWindow(SW_HIDE);
-		partida->JogadorJogouACarta(jogador, carta);
+		partida->JogadorJogouACarta(jogador, carta, false);
 	}
 }
 
@@ -573,7 +588,7 @@ void CTrucoPaulistaDlg::OnStnClickedPic2()
 
 		SetCurrectBitmapFromHumano(jogador, carta);
 		m_Pic2.ShowWindow(SW_HIDE);
-		partida->JogadorJogouACarta(jogador, carta);
+		partida->JogadorJogouACarta(jogador, carta, false);
 	}
 }
 
@@ -591,7 +606,7 @@ void CTrucoPaulistaDlg::OnStnClickedPic1()
 
 		SetCurrectBitmapFromHumano(jogador, carta);
 		m_Pic1.ShowWindow(SW_HIDE);
-		partida->JogadorJogouACarta(jogador, carta);
+		partida->JogadorJogouACarta(jogador, carta, false);
 	}
 }
 
@@ -608,12 +623,12 @@ void CTrucoPaulistaDlg::OnStnClickedPicParc3()
 		SetCurrectBitmapFromHumano(jogador, carta);
 		m_PicCartaParc1.ShowWindow(SW_HIDE);
 
-		partida->JogadorJogouACarta(jogador, carta);
+		partida->JogadorJogouACarta(jogador, carta, false);
 	}
 	else if (m_Instance == 2)
 	{
 		m_PicCartaParc1.ShowWindow(SW_HIDE);
-		partidaMessagesController->JogadorJogouCarta(1);
+		partidaMessagesController->JogadorJogouCarta(1,false);
 	}
 }
 
@@ -630,12 +645,12 @@ void CTrucoPaulistaDlg::OnStnClickedPicParc2()
 
 		SetCurrectBitmapFromHumano(jogador, carta);
 		m_PicCartaParc2.ShowWindow(SW_HIDE);
-		partida->JogadorJogouACarta(jogador, carta);
+		partida->JogadorJogouACarta(jogador, carta, false);
 	}
 	else if (m_Instance == 2)
 	{
 		m_PicCartaParc2.ShowWindow(SW_HIDE);
-		partidaMessagesController->JogadorJogouCarta(2);
+		partidaMessagesController->JogadorJogouCarta(2, false);
 	}
 }
 
@@ -652,12 +667,108 @@ void CTrucoPaulistaDlg::OnStnClickedPicParc1()
 
 		SetCurrectBitmapFromHumano(jogador, carta);
 		m_PicCartaParc3.ShowWindow(SW_HIDE);
-		partida->JogadorJogouACarta(jogador, carta);
+		partida->JogadorJogouACarta(jogador, carta, false);
 	}
 	else if (m_Instance == 2)
 	{
 		m_PicCartaParc3.ShowWindow(SW_HIDE);
-		partidaMessagesController->JogadorJogouCarta(3);
+		partidaMessagesController->JogadorJogouCarta(3, false);
+	}
+}
+
+void CTrucoPaulistaDlg::MouseLeftClick(int idControl)
+{
+	switch (idControl)
+	{
+	case IDC_PIC1:
+		if (JogadorSolicitado == partida->ObtemJogadorHumano1() && partida->ObtemNumeroDaRodada() > 1)
+		{
+			const Carta* carta = JogadorSolicitado->PrimeiraCartaNaMao();
+
+			SetCurrectBitmapFromHumano(JogadorSolicitado, cartaCoberta);
+			m_Pic1.ShowWindow(SW_HIDE);
+			partida->JogadorJogouACarta(JogadorSolicitado, carta, true);
+		}
+		break;
+
+	case IDC_PIC2:
+		if (JogadorSolicitado == partida->ObtemJogadorHumano1() && partida->ObtemNumeroDaRodada() > 1)
+		{
+			const Carta* carta = JogadorSolicitado->SegundaCartaNaMao();
+
+			SetCurrectBitmapFromHumano(JogadorSolicitado, cartaCoberta);
+			m_Pic2.ShowWindow(SW_HIDE);
+			partida->JogadorJogouACarta(JogadorSolicitado, carta, true);
+		}
+		break;
+
+	case IDC_PIC3:
+		if (JogadorSolicitado == partida->ObtemJogadorHumano1() && partida->ObtemNumeroDaRodada() > 1)
+		{
+			const Carta* carta = JogadorSolicitado->TerceiraCartaNaMao();
+
+			SetCurrectBitmapFromHumano(JogadorSolicitado, cartaCoberta);
+			m_Pic3.ShowWindow(SW_HIDE);
+			partida->JogadorJogouACarta(JogadorSolicitado, carta, true);
+		}
+		break;
+
+	case IDC_PIC_PARC1:
+		if (JogadorSolicitado == partida->ObtemJogadorHumano2() && partida->ObtemNumeroDaRodada() > 1)
+		{
+			if (m_Instance == 2)
+			{
+				m_PicCartaParc1.ShowWindow(SW_HIDE);
+				partidaMessagesController->JogadorJogouCarta(3, true);
+			}
+			else if(!TwoInstances)
+			{
+				const Carta* carta = JogadorSolicitado->PrimeiraCartaNaMao();
+
+				SetCurrectBitmapFromHumano(JogadorSolicitado, cartaCoberta);
+				m_PicCartaParc1.ShowWindow(SW_HIDE);
+				partida->JogadorJogouACarta(JogadorSolicitado, carta, true);
+			}
+		}
+		break;
+
+	case IDC_PIC_PARC2:
+		if (JogadorSolicitado == partida->ObtemJogadorHumano2() && partida->ObtemNumeroDaRodada() > 1)
+		{
+			if (m_Instance == 2)
+			{
+				m_PicCartaParc1.ShowWindow(SW_HIDE);
+				partidaMessagesController->JogadorJogouCarta(3, true);
+			}
+			else if (!TwoInstances)
+			{
+				const Carta* carta = JogadorSolicitado->SegundaCartaNaMao();
+
+				SetCurrectBitmapFromHumano(JogadorSolicitado, cartaCoberta);
+				m_PicCartaParc2.ShowWindow(SW_HIDE);
+				partida->JogadorJogouACarta(JogadorSolicitado, carta, true);
+			}
+		}
+		break;
+
+	case IDC_PIC_PARC3:
+		if (JogadorSolicitado == partida->ObtemJogadorHumano2() && partida->ObtemNumeroDaRodada() > 1)
+		{
+			if (m_Instance == 2)
+			{
+				m_PicCartaParc1.ShowWindow(SW_HIDE);
+				partidaMessagesController->JogadorJogouCarta(3, true);
+			}
+			else if (!TwoInstances)
+			{
+				const Carta* carta = JogadorSolicitado->TerceiraCartaNaMao();
+
+				SetCurrectBitmapFromHumano(JogadorSolicitado, cartaCoberta);
+				m_PicCartaParc3.ShowWindow(SW_HIDE);
+				partida->JogadorJogouACarta(JogadorSolicitado, carta, true);
+			}
+		}
+		break;
 	}
 }
 
@@ -815,7 +926,7 @@ void CTrucoPaulistaDlg::solicitaJogadorJogar(Jogador* jogador)
 	}
 }
 
-void CTrucoPaulistaDlg::onBotJogouACarta(int NumeroDaRodada, Jogador* jogadorAjogar, const Carta* cartaJogada)
+void CTrucoPaulistaDlg::onBotJogouACarta(int NumeroDaRodada, Jogador* jogadorAjogar, const Carta* cartaJogada, bool cartaCoberta)
 {
 	std::string playerName = jogadorAjogar->ObtemNome();
 	CString strPlayerName(playerName.c_str());
@@ -1230,13 +1341,17 @@ void CTrucoPaulistaDlg::SetCurrectBitmapCliente(int rodada, int numeroJogador, i
 
 
 
-void CTrucoPaulistaDlg::JogouACartaCliente(int numeroCarta)
+void CTrucoPaulistaDlg::JogouACartaCliente(int numeroCarta, bool _cartaCoberta)
 {
 	if (m_Instance == 1)
 	{
 		Jogador* jogador = partida->ObtemJogadorHumano2();
 		const Carta* carta = jogador->getjogadabot(numeroCarta - 1);
-		SetCurrectBitmapFromHumano(jogador, carta);
+
+		if(!_cartaCoberta)
+			SetCurrectBitmapFromHumano(jogador, carta);
+		else
+			SetCurrectBitmapFromHumano(jogador, cartaCoberta);
 
 		switch (numeroCarta)
 		{
@@ -1251,7 +1366,7 @@ void CTrucoPaulistaDlg::JogouACartaCliente(int numeroCarta)
 			break;
 		}
 
-		partida->JogadorJogouACarta(jogador, carta);
+		partida->JogadorJogouACarta(jogador, carta, _cartaCoberta);
 	}
 }
 
@@ -1295,11 +1410,11 @@ void CTrucoPaulistaDlg::AtualizaClientePodeTrucar(bool trucar)
 	GetDlgItem(IDC_TRUCAR2)->ShowWindow(trucar ? SW_SHOW : SW_HIDE);
 }
 
-void CTrucoPaulistaDlg::onCartaJogada(int NumeroDaRodada, Jogador* jogador, const Carta* carta)
+void CTrucoPaulistaDlg::onCartaJogada(int NumeroDaRodada, Jogador* jogador, const Carta* carta, bool _cartaCoberta)
 {
 	if (TwoInstances && m_Instance == 1)
 	{
-		partidaMessagesController->AtualizaCartaJogada(NumeroDaRodada, jogador->ObtemNumeroJogador(), carta->idResource);
+		partidaMessagesController->AtualizaCartaJogada(NumeroDaRodada, jogador->ObtemNumeroJogador(), _cartaCoberta ? cartaCoberta->idResource :  carta->idResource); 
 	}
 }
 

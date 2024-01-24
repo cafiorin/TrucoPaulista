@@ -149,10 +149,10 @@ Jogador* Partida::ObtemJogadorBot2()
 	return Dupla2[1];
 }
 
-void Partida::JogadorJogouACarta(Jogador* jogador, const Carta* carta)
+void Partida::JogadorJogouACarta(Jogador* jogador, const Carta* carta, bool cartaCoberta)
 {
-	Rodadas->CartaJogada(carta, jogador);
-	EventosDaPartida->onCartaJogada(Rodadas->QualRodadaEsta(), jogador, carta);
+	Rodadas->CartaJogada(carta, jogador, cartaCoberta);
+	EventosDaPartida->onCartaJogada(Rodadas->QualRodadaEsta(), jogador, carta, cartaCoberta);
 	ProximoPasso(jogador, AcaoRealizada::Jogou);
 }
 
@@ -368,8 +368,9 @@ void Partida::ProximoJogadorJoga()
 		else
 		{
 			const Carta* cartaJogada = jogadorAjogar->FazerUmaJogada();
-			EventosDaPartida->onBotJogouACarta(Rodadas->QualRodadaEsta(), jogadorAjogar, cartaJogada);
-			JogadorJogouACarta(jogadorAjogar, cartaJogada);
+			bool cartaCoberta = cartaJogada == nullptr;
+			EventosDaPartida->onBotJogouACarta(Rodadas->QualRodadaEsta(), jogadorAjogar, cartaJogada, cartaCoberta);
+			JogadorJogouACarta(jogadorAjogar, cartaJogada, cartaCoberta);
 		}
 	}
 	else if (!Rodadas->RodadaEstaCompleta())

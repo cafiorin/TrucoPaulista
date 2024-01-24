@@ -32,7 +32,7 @@ public:
 	void EnviaMsgDeAtualizaPlacar(int PontosDaDupla1, int PontosDaDupla2);
 	void EnviaCartasParaJogador(int c1, int c2, int c3, int c4);
 	void SolicitaJogadorAJogar();
-	void JogadorJogouCarta(int numeroCarta);
+	void JogadorJogouCarta(int numeroCarta, bool cartaCoberta);
 	
 	void AtualizaCartaJogada(int NumeroDaRodada, int NumeroJogador, int idResource);
 	void EnviaAceitouTruco(int jogadorquetrucou);

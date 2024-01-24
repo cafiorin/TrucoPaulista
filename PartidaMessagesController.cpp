@@ -44,7 +44,8 @@ void PartidaMessagesController::OnReceiveMessage(MSG* pMsg)
 		case WM_MESSAGE_JOGADOR_JOGOU_CARTA:
 		{
 			unsigned int numeroCarta = LOWORD(pMsg->lParam);
-			TrucoPaulistaView->JogouACartaCliente(numeroCarta);
+			bool cartaCoberta = HIWORD(pMsg->lParam);
+			TrucoPaulistaView->JogouACartaCliente(numeroCarta, cartaCoberta);
 		}
 		break;
 
@@ -132,9 +133,9 @@ void PartidaMessagesController::SolicitaJogadorAJogar()
 	EnviaMsgParaJogador(WM_MESSAGE_SOLICITA_JOGADOR_JOGAR, 0, 0);
 }
 
-void PartidaMessagesController::JogadorJogouCarta(int numeroCarta)
+void PartidaMessagesController::JogadorJogouCarta(int numeroCarta, bool cartaCoberta)
 {
-	EnviaMsgParaServer(WM_MESSAGE_JOGADOR_JOGOU_CARTA, 0, numeroCarta);
+	EnviaMsgParaServer(WM_MESSAGE_JOGADOR_JOGOU_CARTA, 0, MAKELPARAM(numeroCarta, cartaCoberta));
 }
 
 void PartidaMessagesController::AtualizaCartaJogada(int NumeroDaRodada, int NumeroJogador, int idResource)

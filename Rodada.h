@@ -32,7 +32,7 @@ public:
 		delete cartas[3];
 	}
 
-	void CartaJogada(const Carta& carta, Jogador& Jogador);
+	void CartaJogada(const Carta& carta, Jogador& Jogador, bool cartaCoberta);
 
 	Jogador* QuemGanhou()
 	{

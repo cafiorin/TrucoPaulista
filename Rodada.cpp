@@ -2,9 +2,10 @@
 #include "Rodada.h"
 #include "Jogador.h"
 
-void Rodada::CartaJogada(const Carta& carta, Jogador& jogador)
+void Rodada::CartaJogada(const Carta& carta, Jogador& jogador, bool cartaCoberta)
 {
 	CartaDaRodada* cartaRodada = new CartaDaRodada(NumeroDaRodada);
+	cartaRodada->CartaCoberta = cartaCoberta;
 	cartaRodada->CartaJogada(carta, jogador);
 	cartas[CartasAdicionadas] = cartaRodada;
 	jogador.CartaQueFoiUsada(&carta);

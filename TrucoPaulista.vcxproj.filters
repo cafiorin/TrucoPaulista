@@ -129,6 +129,9 @@
     <ClInclude Include="PartidaMessagesController.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="CartaCoberta.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TrucoPaulista.cpp">
@@ -196,6 +199,9 @@
     </ClCompile>
     <ClCompile Include="json_writer.cpp">
       <Filter>JsonLibrary</Filter>
+    </ClCompile>
+    <ClCompile Include="CartaCoberta.cpp">
+      <Filter>Source Files\Model</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

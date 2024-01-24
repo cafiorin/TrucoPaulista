@@ -11,6 +11,7 @@ class PartidaMessagesController;
 class PersistenciaController;
 
 #include "IEventosDaPartida.h"  
+#include "CartaCoberta.h"
 
 // CTrucoPaulistaDlg dialog
 class CTrucoPaulistaDlg : public CDialogEx, public IEventosDaPartida
@@ -36,6 +37,7 @@ public:
 	int m_Instance;
 	Partida* partida;
 	PartidaMessagesController* partidaMessagesController;
+	CartaCoberta* cartaCoberta;
 	bool DoisJogadores;
 	Jogador* JogadorSolicitado;
 	bool TwoInstances;
@@ -49,6 +51,9 @@ public:
 
 	void SetCurrectBitmapFromBot(Jogador* bot, const Carta* carta);
 	void SetCurrectBitmapFromHumano(Jogador* bot, const Carta* carta);
+	void MouseLeftClick(int idControl);
+
+
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
 
 	virtual void onInicioDaPartida();
@@ -57,18 +62,18 @@ public:
 	virtual void onInicioDaRodada(int numeroRodada);
 	virtual void onFimDaRodada(int numeroRodada, Jogador* JogadorQueGanhou);
 	virtual void solicitaJogadorJogar(Jogador* jogador);
-	virtual void onBotJogouACarta(int NumeroDaRodada, Jogador* jogadorAjogar, const Carta* cartaJogada);
+	virtual void onBotJogouACarta(int NumeroDaRodada, Jogador* jogadorAjogar, const Carta* cartaJogada, bool cartaCoberta);
 	virtual void onAcabouARodada(Jogador* JogadorQueGanhou);
 	virtual void onPedeTruco();
 	virtual void onAceitouTruco(Jogador* jogador);
-	virtual void onCartaJogada(int NumeroDaRodada, Jogador* jogadorAjogar, const Carta* cartaJogada);
+	virtual void onCartaJogada(int NumeroDaRodada, Jogador* jogadorAjogar, const Carta* cartaJogada, bool cartaCoberta);
 
 	//Cliente
 	void AtualizaPlacar(int PontosDaDupla1, int PontosDaDupla2);
 	void AtualizaCartasCliente(int c1,int c2, int c3, int c4);
 	void AtualizaClientePodeTrucar(bool trucar);
 	void SolicitaAcaoJogadorCliente();
-	void JogouACartaCliente(int numeroCarta);
+	void JogouACartaCliente(int numeroCarta, bool _cartaCoberta);
 	void AtualizaCartasJogadasCliente(int numeroDaRodada, int numeroJogador, int carta);
 	void SetCurrectBitmapCliente(int rodada, int numeroJogador, int carta);
 	void ShowMessageJogadorAceitouTruco(int jogadorqueTrucou);

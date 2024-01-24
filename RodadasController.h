@@ -54,7 +54,7 @@ public:
 	void InicializarRodada(Carta* vira);
 
 	Carta* QualOVira() { return Vira; }
-	void CartaJogada(const Carta* carta, Jogador* jogador);
+	void CartaJogada(const Carta* carta, Jogador* jogador, bool cartaCoberta);
 	const Carta* QualCartaJogadaNaRodada();
 	bool RetornarSeEhPrimeiroParaJogarNaRodadaAtual();
 	CartaDaRodada* RetornaMaiorCartaDaRodadaAtual();

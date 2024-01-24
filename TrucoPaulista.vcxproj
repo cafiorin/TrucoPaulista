@@ -197,6 +197,7 @@
     <ClInclude Include="Bot.h" />
     <ClInclude Include="BotJogaSozinho.h" />
     <ClInclude Include="Carta.h" />
+    <ClInclude Include="CartaCoberta.h" />
     <ClInclude Include="CartaDaRodada.h" />
     <ClInclude Include="CartasBitmap.h" />
     <ClInclude Include="Enums.h" />
@@ -233,6 +234,7 @@
     <ClCompile Include="Bot.cpp" />
     <ClCompile Include="BotJogaSozinho.cpp" />
     <ClCompile Include="Carta.cpp" />
+    <ClCompile Include="CartaCoberta.cpp" />
     <ClCompile Include="CartaDaRodada.cpp" />
     <ClCompile Include="CartasBitmap.cpp" />
     <ClCompile Include="Enums.cpp" />
