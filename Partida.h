@@ -92,5 +92,11 @@ public:
 
 	void DuplaNaoPodePedirTruco(Jogador* jogador);
 	void DuplaOponenteTruco(Jogador* jogador, bool podeTrucar);
+
+	CString ObterMensagemDeQuantoVale()
+	{
+		return Rodadas->ObterMensagemDeQuantoVale();
+	}
+
 };
 

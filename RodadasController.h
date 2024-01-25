@@ -36,6 +36,30 @@ public:
 	Jogador* QuemGanhouARodadaAtual();
 	Jogador* JaTemosUmVencedor();
 
+	CString ObterMensagemDeQuantoVale()
+	{
+		CString resultado;
+
+		switch (QuantoValeARodada)
+		{
+		case 3:
+			resultado = _T("Seis");
+			break;
+		case 6:
+			resultado = _T("Nove");
+			break;
+		case 9:
+			resultado = _T("Doze");
+			break;
+		default:
+			resultado = _T("Truco");
+			break;
+		}
+
+		return resultado;
+	}
+
+
 	bool BotFezAPrimeira();
 
 	int QuantoEstaValendoARodada() { return QuantoValeARodada; }

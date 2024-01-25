@@ -919,6 +919,10 @@ void CTrucoPaulistaDlg::solicitaJogadorJogar(Jogador* jogador)
 		if (pStaticText)
 			pStaticText->ShowWindow(SW_SHOW);
 
+		pStaticText = (CStatic*)GetDlgItem(IDC_SUAVEZ_H2);
+		if (pStaticText)
+			pStaticText->ShowWindow(SW_HIDE);
+
 		GetDlgItem(IDC_TRUCAR2)->ShowWindow(SW_HIDE);
 		GetDlgItem(IDC_CORRER2)->ShowWindow(SW_HIDE);
 
@@ -932,6 +936,9 @@ void CTrucoPaulistaDlg::solicitaJogadorJogar(Jogador* jogador)
 		CStatic* pStaticText = (CStatic*)GetDlgItem(IDC_SUAVEZ_H2);
 		if (pStaticText)
 			pStaticText->ShowWindow(SW_SHOW);
+		pStaticText = (CStatic*)GetDlgItem(IDC_SUAVEZ_H1);
+		if (pStaticText)
+			pStaticText->ShowWindow(SW_HIDE);
 
 		GetDlgItem(IDC_TRUCAR)->ShowWindow(SW_HIDE);
 		GetDlgItem(IDC_CORRER)->ShowWindow(SW_HIDE);
@@ -978,21 +985,30 @@ void CTrucoPaulistaDlg::onPedeTruco()
 		jogador = partida->GetDuplaDoJogador(jogador);
 	}
 
+	CString quantovale = partida->ObterMensagemDeQuantoVale();
+
 	CString str;
-	str.Format(_T("Truco !!!!"));
+	str.Format(_T("%s !!!!"), quantovale);
 	AddOutput(str);
 
-	int resultado = AfxMessageBox(_T("Aceita o Truco?"), MB_YESNO | MB_ICONQUESTION);
-	GetDlgItem(IDC_TRUCAR)->ShowWindow(SW_SHOW);
+	str.Format(_T("Aceita o %s ?"), quantovale);
+	int resultado = AfxMessageBox(str, MB_YESNO | MB_ICONQUESTION);
 
 	if (resultado == IDYES)
 	{
 		partida->JogadorAceitou(jogador);
+
+		quantovale = partida->ObterMensagemDeQuantoVale();
+		GetDlgItem(IDC_TRUCAR)->SetWindowTextW(quantovale);
+		GetDlgItem(IDC_TRUCAR2)->SetWindowTextW(quantovale);
+
+		GetDlgItem(IDC_TRUCAR)->ShowWindow(SW_SHOW);
 	}
 	else
 	{
 		partida->JogadorCorreu(jogador);
 	}
+
 }
 
 void CTrucoPaulistaDlg::onAcabouARodada(Jogador* JogadorQueGanhou)
@@ -1117,6 +1133,10 @@ void CTrucoPaulistaDlg::InicializaRodada()
 
 	GetDlgItem(IDC_TRUCAR2)->ShowWindow(SW_HIDE);
 	GetDlgItem(IDC_CORRER2)->ShowWindow(SW_HIDE);
+
+	CString quantovale = partida->ObterMensagemDeQuantoVale();
+	GetDlgItem(IDC_TRUCAR)->SetWindowTextW(quantovale);
+	GetDlgItem(IDC_TRUCAR2)->SetWindowTextW(quantovale);
 
 
 	SetBitmapCartasAvesso();
