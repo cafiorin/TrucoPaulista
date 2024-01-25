@@ -1145,10 +1145,13 @@ void CTrucoPaulistaDlg::InicializaRodada()
 	GetDlgItem(IDC_TRUCAR2)->ShowWindow(SW_HIDE);
 	GetDlgItem(IDC_CORRER2)->ShowWindow(SW_HIDE);
 
-	CString quantovale = partida->ObterMensagemDeQuantoVale();
-	GetDlgItem(IDC_TRUCAR)->SetWindowTextW(quantovale);
-	GetDlgItem(IDC_TRUCAR2)->SetWindowTextW(quantovale);
-	AtualizaTento();
+	if (m_Instance == 1)
+	{
+		CString quantovale = partida->ObterMensagemDeQuantoVale();
+		GetDlgItem(IDC_TRUCAR)->SetWindowTextW(quantovale);
+		GetDlgItem(IDC_TRUCAR2)->SetWindowTextW(quantovale);
+		AtualizaTento();
+	}
 
 	SetBitmapCartasAvesso();
 
