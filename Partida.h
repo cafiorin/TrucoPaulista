@@ -68,9 +68,10 @@ public:
 
 	bool ValidaQuemGanhouARodada();
 
-	void ProximoJogadorJoga();
+	void ProximoJogadorJoga(bool trucou=false);
 	
 	Jogador* GetProximoJogador();
+	Jogador* GetJogadorAnterior();
 
 	Jogador* GetJogadorAtual() { return UltimoJogadorAJogar; }
 	

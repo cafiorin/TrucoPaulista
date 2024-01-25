@@ -918,12 +918,27 @@ void CTrucoPaulistaDlg::solicitaJogadorJogar(Jogador* jogador)
 		CStatic* pStaticText = (CStatic*)GetDlgItem(IDC_SUAVEZ_H1);
 		if (pStaticText)
 			pStaticText->ShowWindow(SW_SHOW);
+
+		GetDlgItem(IDC_TRUCAR2)->ShowWindow(SW_HIDE);
+		GetDlgItem(IDC_CORRER2)->ShowWindow(SW_HIDE);
+
+		if (jogador->PodeTrucar())
+			GetDlgItem(IDC_TRUCAR)->ShowWindow(SW_SHOW);
+		GetDlgItem(IDC_CORRER)->ShowWindow(SW_SHOW);
+
 	}
 	else if (jogador->ObtemNumeroJogador() == 3 && !TwoInstances)
 	{
 		CStatic* pStaticText = (CStatic*)GetDlgItem(IDC_SUAVEZ_H2);
 		if (pStaticText)
 			pStaticText->ShowWindow(SW_SHOW);
+
+		GetDlgItem(IDC_TRUCAR)->ShowWindow(SW_HIDE);
+		GetDlgItem(IDC_CORRER)->ShowWindow(SW_HIDE);
+
+		if(jogador->PodeTrucar())
+			GetDlgItem(IDC_TRUCAR2)->ShowWindow(SW_SHOW);
+		GetDlgItem(IDC_CORRER2)->ShowWindow(SW_SHOW);
 	}
 
 	JogadorSolicitado = jogador;
@@ -1435,17 +1450,32 @@ void CTrucoPaulistaDlg::OnBnClickedTrucar2()
 	Jogador* jogador = partida->ObtemJogadorHumano2();
 	if (JogadorSolicitado == jogador)
 	{
-		partidaMessagesController->EnviaTruco(jogador->ObtemNumeroJogador());
+		if (m_Instance == 2)
+		{
+			partidaMessagesController->EnviaTruco(jogador->ObtemNumeroJogador());
+		}
+		else
+		{
+			GetDlgItem(IDC_TRUCAR2)->ShowWindow(SW_HIDE);
+			partida->JogadorTrucou(jogador);
+		}
 	}
 }
-
 
 void CTrucoPaulistaDlg::OnBnClickedCorrer2()
 {
 	Jogador* jogador = partida->ObtemJogadorHumano2();
 	if (JogadorSolicitado == jogador)
 	{
-		 partidaMessagesController->EnviaCorreTruco(jogador->ObtemNumeroJogador());
+		if (m_Instance == 2)
+		{
+			partidaMessagesController->EnviaCorreTruco(jogador->ObtemNumeroJogador());
+		}
+		else
+		{
+			GetDlgItem(IDC_TRUCAR2)->ShowWindow(SW_HIDE);
+			partida->JogadorCorreu(jogador);
+		}
 	}
 }
 

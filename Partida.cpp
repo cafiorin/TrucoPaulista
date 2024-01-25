@@ -226,6 +226,7 @@ void Partida::ProximoPasso(Jogador* jogador, AcaoRealizada acao)
 	case AcaoRealizada::Jogou:
 	{
 		ProximoJogadorJoga();
+		return;
 	}
 	break;
 
@@ -237,6 +238,7 @@ void Partida::ProximoPasso(Jogador* jogador, AcaoRealizada acao)
 			if (proximoJogador->AceitarTruco())
 			{
 				JogadorAceitou(proximoJogador);
+				return;
 			}
 			else
 			{
@@ -264,7 +266,7 @@ void Partida::ProximoPasso(Jogador* jogador, AcaoRealizada acao)
 	{
 		Rodadas->TrucoAceitoParaRodada();
 		EventosDaPartida->onAceitouTruco(UltimoJogadorAJogar);
-		ProximoJogadorJoga();
+		ProximoJogadorJoga(UltimoJogadorAJogar->EhUmBot());
 	}
 	break;
 	}
@@ -306,6 +308,23 @@ bool Partida::ValidaQuemGanhouARodada()
 
 	return ValidaQuemGanhouAsRodadas();
 }
+
+Jogador* Partida::GetJogadorAnterior()
+{
+	int idProxJogador = UltimoJogadorAJogar->ObtemNumeroJogador();
+
+	if (QuantosJogadores == 2)
+	{
+		idProxJogador = (idProxJogador == 1 ? 2 : 1);
+	}
+	else
+	{
+		idProxJogador = idProxJogador - 1 < 1 ? 1 : idProxJogador - 1;
+	}
+
+	return GetJogadorByID(idProxJogador);
+}
+
 
 Jogador* Partida::GetProximoJogador()
 {
@@ -351,10 +370,9 @@ Jogador* Partida::GetDuplaDoJogador(Jogador* jogador)
 	return Dupla2[0];
 }
 
-
-void Partida::ProximoJogadorJoga()
+void Partida::ProximoJogadorJoga(bool trucou/*=false*/)
 {
-	Jogador* jogadorAjogar = GetProximoJogador();
+	Jogador* jogadorAjogar = trucou ? GetJogadorAnterior() : GetProximoJogador();
 
 	if (Rodadas->RodadaEstaComecando())
 		jogadorAjogar = QuemComecaRodada;
