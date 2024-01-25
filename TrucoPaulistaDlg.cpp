@@ -961,6 +961,23 @@ void CTrucoPaulistaDlg::solicitaJogadorJogar(Jogador* jogador)
 	{
 		partidaMessagesController->SolicitaJogadorAJogar();
 	}
+	else if (m_Instance == 2)
+	{
+		if (JogadorSolicitado == partida->ObtemJogadorHumano2())
+		{
+			GetDlgItem(IDC_SUAVEZ_H2)->ShowWindow(SW_SHOW);
+			if(m_PodeTrucarCliente)
+				GetDlgItem(IDC_TRUCAR2)->ShowWindow(SW_SHOW);
+			GetDlgItem(IDC_CORRER2)->ShowWindow(SW_SHOW);
+		}
+		else
+		{
+			GetDlgItem(IDC_SUAVEZ_H2)->ShowWindow(SW_HIDE);
+			GetDlgItem(IDC_TRUCAR2)->ShowWindow(SW_HIDE);
+			GetDlgItem(IDC_CORRER2)->ShowWindow(SW_HIDE);
+
+		}
+	}
 }
 
 void CTrucoPaulistaDlg::onBotJogouACarta(int NumeroDaRodada, Jogador* jogadorAjogar, const Carta* cartaJogada, bool cartaCoberta)
@@ -1071,6 +1088,8 @@ void CTrucoPaulistaDlg::AtualizaPlacarDePartidas()
 void CTrucoPaulistaDlg::InicializaRodada()
 {
 	m_NumeroDaRodadaCliente = 1;
+	m_PodeTrucarCliente = true;
+
 	AtualizaPlacar();
 
 	GetDlgItem(IDC_RADIO7)->ShowWindow(SW_HIDE);
@@ -1467,7 +1486,7 @@ void CTrucoPaulistaDlg::AtualizaCartasCliente(int c1, int c2, int c3, int c4)
 
 void CTrucoPaulistaDlg::AtualizaClientePodeTrucar(bool trucar)
 {
-	GetDlgItem(IDC_TRUCAR2)->ShowWindow(trucar ? SW_SHOW : SW_HIDE);
+	m_PodeTrucarCliente = trucar;
 }
 
 void CTrucoPaulistaDlg::onCartaJogada(int NumeroDaRodada, Jogador* jogador, const Carta* carta, bool _cartaCoberta)

@@ -55,6 +55,7 @@ public:
 	void MouseLeftClick(int idControl);
 	int ObtemNumeroDaRodada();
 	int m_NumeroDaRodadaCliente;
+	bool m_PodeTrucarCliente;
 
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
 
