@@ -266,7 +266,7 @@ void Partida::ProximoPasso(Jogador* jogador, AcaoRealizada acao)
 	{
 		Rodadas->TrucoAceitoParaRodada();
 		EventosDaPartida->onAceitouTruco(UltimoJogadorAJogar);
-		ProximoJogadorJoga(UltimoJogadorAJogar->EhUmBot());
+		ProximoJogadorJoga(true);
 	}
 	break;
 	}

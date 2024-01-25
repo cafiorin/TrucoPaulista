@@ -843,6 +843,13 @@ void CTrucoPaulistaDlg::onAceitouTruco(Jogador* jogador)
 
 		AfxMessageBox(str, MB_ICONINFORMATION | MB_OK);
 	}
+
+	CString quantovale = partida->ObterMensagemDeQuantoVale();
+	GetDlgItem(IDC_TRUCAR)->SetWindowTextW(quantovale);
+	GetDlgItem(IDC_TRUCAR2)->SetWindowTextW(quantovale);
+
+	AtualizaTento();
+
 }
 
 void CTrucoPaulistaDlg::CleanOutput()
@@ -980,13 +987,8 @@ void CTrucoPaulistaDlg::onBotJogouACarta(int NumeroDaRodada, Jogador* jogadorAjo
 void CTrucoPaulistaDlg::onPedeTruco()
 {
 	Jogador* jogador = partida->GetProximoJogador();
-	if (!DoisJogadores)
-	{
-		jogador = partida->GetDuplaDoJogador(jogador);
-	}
 
 	CString quantovale = partida->ObterMensagemDeQuantoVale();
-
 	CString str;
 	str.Format(_T("%s !!!!"), quantovale);
 	AddOutput(str);
@@ -997,18 +999,12 @@ void CTrucoPaulistaDlg::onPedeTruco()
 	if (resultado == IDYES)
 	{
 		partida->JogadorAceitou(jogador);
-
-		quantovale = partida->ObterMensagemDeQuantoVale();
-		GetDlgItem(IDC_TRUCAR)->SetWindowTextW(quantovale);
-		GetDlgItem(IDC_TRUCAR2)->SetWindowTextW(quantovale);
-
-		GetDlgItem(IDC_TRUCAR)->ShowWindow(SW_SHOW);
 	}
 	else
 	{
 		partida->JogadorCorreu(jogador);
+		return;
 	}
-
 }
 
 void CTrucoPaulistaDlg::onAcabouARodada(Jogador* JogadorQueGanhou)
@@ -1040,6 +1036,21 @@ void CTrucoPaulistaDlg::AtualizaPlacar()
 			partidaMessagesController->EnviaMsgDeAtualizaPlacar(partida->PontosDaDupla1(), partida->PontosDaDupla2());
 	}
 }
+
+void CTrucoPaulistaDlg::AtualizaTento()
+{
+	if (m_Instance == 1)
+	{
+		int valor = partida->ObterValorDaRodada();
+		CString str;
+		str.Format(_T("%d"), valor);
+		GetDlgItem(IDC_TENTOS)->SetWindowText(str);
+
+		//if (TwoInstances)
+		//	partidaMessagesController->EnviaMsgDeAtualizaTento(valor);
+	}
+}
+
 
 void CTrucoPaulistaDlg::AtualizaPlacarDePartidas()
 {
@@ -1137,7 +1148,7 @@ void CTrucoPaulistaDlg::InicializaRodada()
 	CString quantovale = partida->ObterMensagemDeQuantoVale();
 	GetDlgItem(IDC_TRUCAR)->SetWindowTextW(quantovale);
 	GetDlgItem(IDC_TRUCAR2)->SetWindowTextW(quantovale);
-
+	AtualizaTento();
 
 	SetBitmapCartasAvesso();
 

@@ -26,6 +26,7 @@ public:
 
 	void CleanOutput();
 	void AddOutput(const CString& novaLinha);
+	void AtualizaTento();
 
 	void SetBitmapMesa();
 	void InicializaTelaInicial();

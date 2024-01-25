@@ -98,5 +98,9 @@ public:
 		return Rodadas->ObterMensagemDeQuantoVale();
 	}
 
+	int ObterValorDaRodada()
+	{
+		return Rodadas->QuantoEstaValendoARodada();
+	}
 };
 
