@@ -243,7 +243,7 @@ void CTrucoPaulistaDlg::InicializaPartida()
 	}
 
 	DoisJogadores = doisJogadores;
-	partida->InicializarPartida(doisJogadores ? 2 : 4);
+	partida->InicializarPartida(doisJogadores ? 2 : 4, TwoInstances);
 	InicializaRodada();
 }
 
@@ -802,7 +802,7 @@ void CTrucoPaulistaDlg::onFimDaPartida(Jogador* JogadorQueGanhou)
 
 	AfxMessageBox(str, MB_ICONINFORMATION | MB_OK);
 
-	partida->InicializarPartida(DoisJogadores ? 2 : 4);
+	partida->InicializarPartida(DoisJogadores ? 2 : 4, TwoInstances);
 	InicializaRodada();
 
 }

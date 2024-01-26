@@ -200,10 +200,12 @@
     <ClInclude Include="CartaCoberta.h" />
     <ClInclude Include="CartaDaRodada.h" />
     <ClInclude Include="CartasBitmap.h" />
+    <ClInclude Include="DadosInstanciaCliente.h" />
     <ClInclude Include="Enums.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="IEventosDaPartida.h" />
     <ClInclude Include="Jogador.h" />
+    <ClInclude Include="JogadorView.h" />
     <ClInclude Include="json\include\allocator.h" />
     <ClInclude Include="json\include\assertions.h" />
     <ClInclude Include="json\include\config.h" />
@@ -215,6 +217,7 @@
     <ClInclude Include="json\include\version.h" />
     <ClInclude Include="json\include\writer.h" />
     <ClInclude Include="json_tool.h" />
+    <ClInclude Include="MesaView.h" />
     <ClInclude Include="Partida.h" />
     <ClInclude Include="PartidaController.h" />
     <ClInclude Include="PartidaMessagesController.h" />
@@ -237,11 +240,14 @@
     <ClCompile Include="CartaCoberta.cpp" />
     <ClCompile Include="CartaDaRodada.cpp" />
     <ClCompile Include="CartasBitmap.cpp" />
+    <ClCompile Include="DadosInstanciaCliente.cpp" />
     <ClCompile Include="Enums.cpp" />
     <ClCompile Include="Jogador.cpp" />
+    <ClCompile Include="JogadorView.cpp" />
     <ClCompile Include="json_reader.cpp" />
     <ClCompile Include="json_value.cpp" />
     <ClCompile Include="json_writer.cpp" />
+    <ClCompile Include="MesaView.cpp" />
     <ClCompile Include="Partida.cpp" />
     <ClCompile Include="PartidaController.cpp" />
     <ClCompile Include="PartidaMessagesController.cpp" />

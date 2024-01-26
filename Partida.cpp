@@ -7,9 +7,9 @@ Partida::Partida(IEventosDaPartida* eventosPartida)
 	EventosDaPartida = eventosPartida;
 	placar = new Placar();
 
-	Dupla1[0] = new Jogador(1, "Humano1", 1, false);
+	Dupla1[0] = new Jogador(1, "Humano1", 1, false, true);
 	Dupla2[0] = new BotJogaSozinho(2, "Bot1", 2);
-	Dupla1[1] = new Jogador(3, "Humano2", 1, false);
+	Dupla1[1] = new Jogador(3, "Humano2", 1, false, false);
 	Dupla2[1] = new BotJogaSozinho(4, "Bot2", 2);
 
 	BaralhoMesa = nullptr;
@@ -32,9 +32,10 @@ Partida::~Partida()
 	delete placar;
 }
 
-void Partida::InicializarPartida(int quantosJogadores)
+void Partida::InicializarPartida(int quantosJogadores, bool duasInstancias)
 {
 	QuantosJogadores = quantosJogadores;
+	DuasInstancias = duasInstancias;
 
 	delete Rodadas;
 	Rodadas = new RodadasController(placar, quantosJogadores == 4);
@@ -46,15 +47,15 @@ void Partida::InicializarPartida(int quantosJogadores)
 
 	if (QuantosJogadores == 2)
 	{
-		Dupla1[0] = new Jogador(1, "Humano1",1, false);
-		Dupla1[1] = new Jogador(3, "Humano2",1, false);
+		Dupla1[0] = new Jogador(1, "Humano1", 1, false, true);
+		Dupla1[1] = new Jogador(3, "Humano2", 1, false, false);
 		Dupla2[0] = new BotJogaSozinho(2, "Bot1", 2);
 		Dupla2[1] = new BotJogaSozinho(4, "Bot2", 2);
 	}
 	else
 	{
-		Dupla1[0] = new Jogador(1, "Humano1", 1,false);
-		Dupla1[1] = new Jogador(3, "Humano2", 1,false);
+		Dupla1[0] = new Jogador(1, "Humano1", 1,false, true);
+		Dupla1[1] = new Jogador(3, "Humano2", 1,false, !duasInstancias);
 		Dupla2[0] = new Bot(2, "Bot1Duplas", 2);
 		Dupla2[1] = new Bot(4, "Bot2Duplas", 2);
 

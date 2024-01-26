@@ -2,7 +2,7 @@
 
 enum Naipes { Espadas, Copas, Ouro, Paus };
 
-enum StatusJogador { EsperandoCartas, EsperandoJogada, EscolhendoCarta, Jogando }; //Deve ter mais
+enum StatusJogador { Inicia, EsperandoCartas, RecebeuCartas, SuaVez, JogouCarta, Truca , Aceita }; //Deve ter mais
 
 enum AcaoRealizada { Jogou, Trucou, Correu, Aceitou }; //Deve ter mais
 

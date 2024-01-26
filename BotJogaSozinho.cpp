@@ -2,7 +2,7 @@
 #include "BotJogaSozinho.h"
 #include "RodadasController.h"
 
-BotJogaSozinho::BotJogaSozinho(int numero, std::string nome, int numeroDaDupla) : Jogador(numero, nome, numeroDaDupla, true)
+BotJogaSozinho::BotJogaSozinho(int numero, std::string nome, int numeroDaDupla) : Jogador(numero, nome, numeroDaDupla, true, false)
 {
 }
 

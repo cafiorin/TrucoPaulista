@@ -22,10 +22,12 @@ protected:
     bool PodePedirTruco;
     RodadasController* MesaDaRodada;
     int NumeroDaDupla;
+    bool MostraCartaDistribuida;
 
 public:
-    Jogador(int numero, std::string nome, int numeroDaDupla, bool bot) : NumeroJogador(numero), Nome(nome), status(EsperandoCartas), NumeroDaDupla(numeroDaDupla), Bot(bot), PodePedirTruco(true){}
-
+    Jogador(int numero, std::string nome, int numeroDaDupla, bool bot, bool mostraCartaDistribuida) : NumeroJogador(numero), Nome(nome), 
+        status(EsperandoCartas), NumeroDaDupla(numeroDaDupla), Bot(bot), PodePedirTruco(true), MostraCartaDistribuida(mostraCartaDistribuida){}
+    bool PodeMostrarAsCartas() { return MostraCartaDistribuida; }
     std::string ObtemNome() const { return Nome; }
     int ObtemNumeroJogador() { return NumeroJogador; }
     int ObtemNumeroDaDupla() { return NumeroDaDupla; }

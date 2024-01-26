@@ -16,7 +16,7 @@ void Jogador::RecebeCartas(const Carta& carta1, const Carta& carta2, const Carta
     CartaUsada[1] = false;
     CartaUsada[2] = false;
 
-    status = EsperandoJogada;
+    status = StatusJogador::Inicia;
 }
 
 

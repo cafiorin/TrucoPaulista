@@ -4,7 +4,7 @@
 #include "RodadasController.h"
 
 
-Bot::Bot(int numero, std::string nome, int numeroDaDupla) : Jogador(numero, nome, numeroDaDupla, true)
+Bot::Bot(int numero, std::string nome, int numeroDaDupla) : Jogador(numero, nome, numeroDaDupla, true, false)
 {
 }
 

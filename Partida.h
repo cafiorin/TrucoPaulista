@@ -17,6 +17,7 @@ private:
 	Jogador* UltimoJogadorAJogar;
 
 	int QuantosJogadores = 2;
+	bool DuasInstancias;
 	Placar* placar;
 
 	Jogador* Dupla1[2];
@@ -32,7 +33,7 @@ public:
 	Partida(IEventosDaPartida* eventosPartida);
 	~Partida();
 	
-	void InicializarPartida(int quantosJogadores);
+	void InicializarPartida(int quantosJogadores, bool duasInstancias);
 
 	bool InicializarRodada();
 
