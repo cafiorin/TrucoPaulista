@@ -52,8 +52,8 @@ BOOL CTrucoPaulistaDlg::PreTranslateMessage(MSG* pMsg)
 	if (pMsg->message == WM_RBUTTONDOWN)
 	{
 		CPoint point;
-		GetCursorPos(&point); 
-		ScreenToClient(&point); 
+		GetCursorPos(&point);
+		ScreenToClient(&point);
 
 		CWnd* pWnd = ChildWindowFromPoint(point, CWP_ALL);
 		if (pWnd)
@@ -124,7 +124,7 @@ HBRUSH CTrucoPaulistaDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 	switch (nCtlColor)
 	{
 	case CTLCOLOR_STATIC:
-		if (pWnd->GetSafeHwnd() == GetDlgItem(IDC_SUAVEZ_H1)->GetSafeHwnd() || 
+		if (pWnd->GetSafeHwnd() == GetDlgItem(IDC_SUAVEZ_H1)->GetSafeHwnd() ||
 			pWnd->GetSafeHwnd() == GetDlgItem(IDC_SUAVEZ_H2)->GetSafeHwnd())
 		{
 			pDC->SetTextColor(RGB(255, 0, 0));
@@ -145,12 +145,12 @@ BOOL CTrucoPaulistaDlg::OnInitDialog()
 		return FALSE;
 
 	CFont* currentFont = GetFont();
-	LOGFONT lf;                        
+	LOGFONT lf;
 	currentFont->GetLogFont(&lf);
 	lf.lfHeight = 28;
 
 	m_Font.DeleteObject();
-	m_Font.CreateFontIndirect(&lf);    
+	m_Font.CreateFontIndirect(&lf);
 
 	SetIcon(m_hIcon, TRUE);			// Set big icon
 	SetIcon(m_hIcon, FALSE);		// Set small icon
@@ -628,7 +628,7 @@ void CTrucoPaulistaDlg::OnStnClickedPicParc3()
 	else if (m_Instance == 2)
 	{
 		m_PicCartaParc1.ShowWindow(SW_HIDE);
-		partidaMessagesController->JogadorJogouCarta(1,false);
+		partidaMessagesController->JogadorJogouCarta(1, false);
 	}
 }
 
@@ -729,7 +729,7 @@ void CTrucoPaulistaDlg::MouseLeftClick(int idControl)
 				m_PicCartaParc1.ShowWindow(SW_HIDE);
 				partidaMessagesController->JogadorJogouCarta(3, true);
 			}
-			else if(!TwoInstances)
+			else if (!TwoInstances)
 			{
 				const Carta* carta = JogadorSolicitado->PrimeiraCartaNaMao();
 
@@ -782,9 +782,8 @@ void CTrucoPaulistaDlg::MouseLeftClick(int idControl)
 
 
 
-void CTrucoPaulistaDlg::onInicioDaPartida() 
+void CTrucoPaulistaDlg::onInicioDaPartida()
 {
-	//TODO: partidaMessagesController->EnviaInicioDaPartida();
 }
 
 void CTrucoPaulistaDlg::onFimDaPartida(Jogador* JogadorQueGanhou)
@@ -797,7 +796,7 @@ void CTrucoPaulistaDlg::onFimDaPartida(Jogador* JogadorQueGanhou)
 
 	AtualizaPlacarDePartidas();
 
-	if(m_Instance == 1)
+	if (m_Instance == 1)
 		partidaMessagesController->EnviaFimDaPartida(JogadorQueGanhou->ObtemNumeroJogador());
 
 	AfxMessageBox(str, MB_ICONINFORMATION | MB_OK);
@@ -838,7 +837,7 @@ void CTrucoPaulistaDlg::onAceitouTruco(Jogador* jogador)
 		str.Format(_T("Jogador %s aceitou o Truco... Manda !"), strPlayerName);
 		AddOutput(str);
 
-		if(m_Instance == 1 && TwoInstances)
+		if (m_Instance == 1 && TwoInstances)
 			partidaMessagesController->EnviaAceitouTruco(jogador->ObtemNumeroJogador());
 
 		AfxMessageBox(str, MB_ICONINFORMATION | MB_OK);
@@ -906,7 +905,7 @@ void CTrucoPaulistaDlg::onFimDaRodada(int numeroRodada, Jogador* JogadorQueGanho
 
 	}
 
-	if(m_Instance == 1 && TwoInstances)
+	if (m_Instance == 1 && TwoInstances)
 		partidaMessagesController->EnviaFimDaRodada(numeroRodada, JogadorQueGanhou ? JogadorQueGanhou->ObtemNumeroJogador() : 0);
 
 }
@@ -950,7 +949,7 @@ void CTrucoPaulistaDlg::solicitaJogadorJogar(Jogador* jogador)
 		GetDlgItem(IDC_TRUCAR)->ShowWindow(SW_HIDE);
 		GetDlgItem(IDC_CORRER)->ShowWindow(SW_HIDE);
 
-		if(jogador->PodeTrucar())
+		if (jogador->PodeTrucar())
 			GetDlgItem(IDC_TRUCAR2)->ShowWindow(SW_SHOW);
 		GetDlgItem(IDC_CORRER2)->ShowWindow(SW_SHOW);
 	}
@@ -966,7 +965,7 @@ void CTrucoPaulistaDlg::solicitaJogadorJogar(Jogador* jogador)
 		if (JogadorSolicitado == partida->ObtemJogadorHumano2())
 		{
 			GetDlgItem(IDC_SUAVEZ_H2)->ShowWindow(SW_SHOW);
-			if(m_PodeTrucarCliente)
+			if (m_PodeTrucarCliente)
 				GetDlgItem(IDC_TRUCAR2)->ShowWindow(SW_SHOW);
 			GetDlgItem(IDC_CORRER2)->ShowWindow(SW_SHOW);
 		}
@@ -992,7 +991,7 @@ void CTrucoPaulistaDlg::onBotJogouACarta(int NumeroDaRodada, Jogador* jogadorAjo
 	CStatic* pStaticText = (CStatic*)GetDlgItem(IDC_SUAVEZ_H1);
 	if (pStaticText)
 		pStaticText->ShowWindow(SW_HIDE);
-	
+
 	pStaticText = (CStatic*)GetDlgItem(IDC_SUAVEZ_H2);
 	if (pStaticText)
 		pStaticText->ShowWindow(SW_HIDE);
@@ -1033,9 +1032,10 @@ void CTrucoPaulistaDlg::onAcabouARodada(Jogador* JogadorQueGanhou)
 	str.Format(_T("O jogador %s ganhou a rodada"), strPlayerName);
 	AddOutput(str);
 
-	if(m_Instance == 1 && TwoInstances)
+	if (m_Instance == 1 && TwoInstances)
 		partidaMessagesController->EnviaFimDaPartida(JogadorQueGanhou->ObtemNumeroJogador());
 
+	AtualizaPlacarDePartidas();
 	AfxMessageBox(str, MB_ICONINFORMATION | MB_OK);
 
 	bool botComeca = partida->InicializarRodada();
@@ -1049,7 +1049,7 @@ void CTrucoPaulistaDlg::AtualizaPlacar()
 	if (m_Instance == 1)
 	{
 		AtualizaPlacar(partida->PontosDaDupla1(), partida->PontosDaDupla2());
-		if(TwoInstances)
+		if (TwoInstances)
 			partidaMessagesController->EnviaMsgDeAtualizaPlacar(partida->PontosDaDupla1(), partida->PontosDaDupla2());
 	}
 }
@@ -1063,8 +1063,8 @@ void CTrucoPaulistaDlg::AtualizaTento()
 		str.Format(_T("%d"), valor);
 		GetDlgItem(IDC_TENTOS)->SetWindowText(str);
 
-		//if (TwoInstances)
-		//	partidaMessagesController->EnviaMsgDeAtualizaTento(valor);
+		if (TwoInstances)
+			partidaMessagesController->EnviaMsgDeAtualizaTento(valor);
 	}
 }
 
@@ -1079,7 +1079,7 @@ void CTrucoPaulistaDlg::AtualizaPlacarDePartidas()
 	str.Format(_T("%d"), partida->PartidasVencidasDaDupla2());
 	GetDlgItem(IDC_PONTOS_PARTIDA_DUPLA2)->SetWindowText(str);
 
-	if(TwoInstances)
+	if (TwoInstances)
 		partidaMessagesController->EnviaMsgDeAtualizaPlacar(partida->PartidasVencidasDaDupla1(), partida->PartidasVencidasDaDupla2());
 }
 
@@ -1228,12 +1228,23 @@ void CTrucoPaulistaDlg::OnBnClickedCorrer()
 //Metodos da instancia Cliente
 void CTrucoPaulistaDlg::AtualizaPlacar(int PontosDaDupla1, int PontosDaDupla2)
 {
-		CString str;
-		str.Format(_T("%d"), PontosDaDupla1);
-		GetDlgItem(IDC_PONTOS_DUPLA1)->SetWindowText(str);
+	CString str;
+	str.Format(_T("%d"), PontosDaDupla1);
+	GetDlgItem(IDC_PONTOS_DUPLA1)->SetWindowText(str);
 
-		str.Format(_T("%d"), PontosDaDupla2);
-		GetDlgItem(IDC_PONTOS_DUPLA2)->SetWindowText(str);
+	str.Format(_T("%d"), PontosDaDupla2);
+	GetDlgItem(IDC_PONTOS_DUPLA2)->SetWindowText(str);
+}
+void CTrucoPaulistaDlg::AtualizaPlacarCliente(int PontosDaDupla1, int PontosDaDupla2)
+{
+
+	CString str;
+	str.Format(_T("%d"), PontosDaDupla1);
+	GetDlgItem(IDC_PONTOS_DUPLA1)->SetWindowText(str);
+
+	str.Format(_T("%d"), PontosDaDupla2);
+	GetDlgItem(IDC_PONTOS_DUPLA2)->SetWindowText(str);
+
 }
 
 void CTrucoPaulistaDlg::AtualizaCartasJogadasCliente(int numeroDaRodada, int numeroJogador, int carta)
@@ -1242,6 +1253,13 @@ void CTrucoPaulistaDlg::AtualizaCartasJogadasCliente(int numeroDaRodada, int num
 	{
 		SetCurrectBitmapCliente(numeroDaRodada, numeroJogador, carta);
 	}
+}
+void CTrucoPaulistaDlg::AtualizaTentoCliente(int tento)
+{
+	CString str;
+	str.Format(_T("%d"), tento);
+	GetDlgItem(IDC_TENTOS)->SetWindowText(str);
+
 }
 
 void CTrucoPaulistaDlg::InicializaRodadaCliente(int jogadorQueComeca)
@@ -1262,7 +1280,7 @@ void CTrucoPaulistaDlg::ShowMessageJogadorAceitouTruco(int jogadorqueTrucou)
 	str.Format(_T("Jogador %s aceitou o Truco... Manda !"), strPlayerName);
 	AddOutput(str);
 
-	if(m_Instance == 1 && TwoInstances)
+	if (m_Instance == 1 && TwoInstances)
 		partidaMessagesController->EnviaAceitouTruco(jogador->ObtemNumeroJogador());
 
 	AfxMessageBox(str, MB_ICONINFORMATION | MB_OK);
@@ -1427,7 +1445,7 @@ void CTrucoPaulistaDlg::JogouACartaCliente(int numeroCarta, bool _cartaCoberta)
 		Jogador* jogador = partida->ObtemJogadorHumano2();
 		const Carta* carta = jogador->getjogadabot(numeroCarta - 1);
 
-		if(!_cartaCoberta)
+		if (!_cartaCoberta)
 			SetCurrectBitmapFromHumano(jogador, carta);
 		else
 			SetCurrectBitmapFromHumano(jogador, cartaCoberta);
@@ -1493,7 +1511,7 @@ void CTrucoPaulistaDlg::onCartaJogada(int NumeroDaRodada, Jogador* jogador, cons
 {
 	if (TwoInstances && m_Instance == 1)
 	{
-		partidaMessagesController->AtualizaCartaJogada(NumeroDaRodada, jogador->ObtemNumeroJogador(), _cartaCoberta ? cartaCoberta->idResource :  carta->idResource); 
+		partidaMessagesController->AtualizaCartaJogada(NumeroDaRodada, jogador->ObtemNumeroJogador(), _cartaCoberta ? cartaCoberta->idResource : carta->idResource);
 	}
 }
 
@@ -1536,7 +1554,7 @@ void CTrucoPaulistaDlg::OnBnClickedSalvar()
 {
 	if (persistencia != nullptr) { // Somente primeira instância irá salvar?
 		bool temJogoSalvo = persistencia->TemJogoSalvo();
-		
+
 		persistencia->AtualizarArquivo();
 	}
 }

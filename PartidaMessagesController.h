@@ -16,6 +16,8 @@
 #define WM_MESSAGE_INICIALIZA_RODADA  (WM_USER + 12)
 #define WM_MESSAGE_CORRE_TRUCO  (WM_USER + 13)
 #define WM_MESSAGE_ENVIA_TRUCO  (WM_USER + 14)
+#define WM_MESSAGE_ENVIA_INICIO_PARTIDA  (WM_USER + 15)
+#define WM_MESSAGE_ENVIA_ATUALIZA_TENTO  (WM_USER + 16)
 
 #define WM_CUSTOM_MESSAGE_FIM (WM_USER + 100)
 
@@ -38,10 +40,12 @@ public:
 	void EnviaAceitouTruco(int jogadorquetrucou);
 	void EnviaInicializaRodada(int JogadorQueComeca);
 	void EnviaCorreTruco(int jogadorQueCorre);
+	void EnviaInicioDaPartida(int PontosDaDupla1, int PontosDaDupla2);
 	void EnviaTruco(int jogadorQueTrucou);
 	void EnviaMsgParaJogador(UINT message, WPARAM wParam, LPARAM lParam);
 	void EnviaMsgParaServer(UINT message, WPARAM wParam, LPARAM lParam);
 	void EnviaFimDaPartida(int jogadorVencedor);
 	void EnviaFimDaRodada(int rodada, int jogadorVencedor);
+	void EnviaMsgDeAtualizaTento(int tento);
 };
 

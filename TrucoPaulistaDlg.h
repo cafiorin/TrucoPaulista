@@ -16,7 +16,7 @@ class PersistenciaController;
 // CTrucoPaulistaDlg dialog
 class CTrucoPaulistaDlg : public CDialogEx, public IEventosDaPartida
 {
-// Construction
+	// Construction
 public:
 	CTrucoPaulistaDlg(CWnd* pParent = nullptr);	// standard constructor
 	virtual ~CTrucoPaulistaDlg();
@@ -73,11 +73,13 @@ public:
 
 	//Cliente
 	void AtualizaPlacar(int PontosDaDupla1, int PontosDaDupla2);
-	void AtualizaCartasCliente(int c1,int c2, int c3, int c4);
+	void AtualizaCartasCliente(int c1, int c2, int c3, int c4);
 	void AtualizaClientePodeTrucar(bool trucar);
 	void SolicitaAcaoJogadorCliente();
+	void AtualizaPlacarCliente(int PontosDaDupla1, int PontosDaDupla2);
 	void JogouACartaCliente(int numeroCarta, bool _cartaCoberta);
 	void AtualizaCartasJogadasCliente(int numeroDaRodada, int numeroJogador, int carta);
+	void AtualizaTentoCliente(int tento);
 	void SetCurrectBitmapCliente(int rodada, int numeroJogador, int carta);
 	void ShowMessageJogadorAceitouTruco(int jogadorqueTrucou);
 	void ShowMessageQuemGanhouaRodada(int rodada, int jogadorGanhouRodada);
@@ -86,17 +88,17 @@ public:
 	void Jogador2Correu(int jogadorCorreu);
 	void Jogador2Trucou(int jogadorCorreu);
 
-// Dialog Data
+	// Dialog Data
 #ifdef AFX_DESIGN_TIME
 	enum { IDD = IDD_TRUCOPAULISTA_DIALOG };
 #endif
 
-	protected:
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV support
 
 
-	
-// Implementation
+
+	// Implementation
 protected:
 	HICON m_hIcon;
 

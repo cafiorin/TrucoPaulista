@@ -12,102 +12,114 @@ void PartidaMessagesController::OnReceiveMessage(MSG* pMsg)
 {
 	switch (pMsg->message)
 	{
-		case WM_MESSAGE_ATUALIZA_PLACAR:
-		{
-			unsigned int c1c2 = LOWORD(pMsg->lParam);
-			int firstIntValue = static_cast<int>(LOWORD(c1c2));
-			int secondIntValue = static_cast<int>(HIWORD(c1c2));
-			TrucoPaulistaView->AtualizaPlacar(firstIntValue, secondIntValue);
-		}
+	case WM_MESSAGE_ATUALIZA_PLACAR:
+	{
+		unsigned int c1c2 = LOWORD(pMsg->lParam);
+		int firstIntValue = static_cast<int>(LOWORD(c1c2));
+		int secondIntValue = static_cast<int>(HIWORD(c1c2));
+		TrucoPaulistaView->AtualizaPlacarCliente(firstIntValue, secondIntValue);
+	}
+	break;
+
+
+	case WM_MESSAGE_ATUALIZA_CARTAS:
+	{
+		unsigned int c1c2 = LOWORD(pMsg->lParam);
+		int c1 = LOBYTE(c1c2);
+		int c2 = HIBYTE(c1c2);
+
+		unsigned int c3c4 = HIWORD(pMsg->lParam);
+		int c3 = LOBYTE(c3c4);
+		int c4 = HIBYTE(c3c4);
+		TrucoPaulistaView->AtualizaCartasCliente(c1, c2, c3, c4);
+	}
+	break;
+
+	case WM_MESSAGE_SOLICITA_JOGADOR_JOGAR:
+	{
+		TrucoPaulistaView->SolicitaAcaoJogadorCliente();
+	}
+	break;
+	case WM_MESSAGE_ENVIA_INICIO_PARTIDA:
+	{
+		TrucoPaulistaView->CleanCheckBox();
+	}
+	break;
+
+	case WM_MESSAGE_ENVIA_ATUALIZA_TENTO:
+	{
+		int valorTento = LOWORD(pMsg->lParam);
+		TrucoPaulistaView->AtualizaTentoCliente(valorTento);
+	}
+	break;
+	case WM_MESSAGE_JOGADOR_JOGOU_CARTA:
+	{
+		unsigned int numeroCarta = LOWORD(pMsg->lParam);
+		bool cartaCoberta = HIWORD(pMsg->lParam);
+		TrucoPaulistaView->JogouACartaCliente(numeroCarta, cartaCoberta);
+	}
+	break;
+
+	case WM_MESSAGE_ATUALIZA_CARTA_JOGADA:
+	{
+		unsigned int chave1 = LOWORD(pMsg->lParam);
+		int numeroJogador = LOBYTE(chave1);
+		int numeroDaRodada = HIBYTE(chave1);
+
+		unsigned int carta = HIWORD(pMsg->lParam);
+		TrucoPaulistaView->AtualizaCartasJogadasCliente(numeroDaRodada, numeroJogador, carta);
+	}
+	break;
+
+	case WM_MESSAGE_FIM_RODADA:
+	{
+		int rodada = LOWORD(pMsg->lParam);
+		int jogador = HIWORD(pMsg->lParam);
+
+		TrucoPaulistaView->ShowMessageQuemGanhouaRodada(rodada, jogador);
+	}
+	break;
+
+	break;
+	case WM_MESSAGE_FIM_PARTIDA:
+	{
+
+	}
+	break;
+
+	case WM_MESSAGE_ATUALIZAR_MESA:
+	{
+		TrucoPaulistaView->InicializarPartidaCliente();
+	}
+	break;
+
+	case WM_MESSAGE_JOGADOR_TRUCOU:
+	{
+		unsigned int jogador = LOWORD(pMsg->lParam);
+		TrucoPaulistaView->ShowMessageJogadorAceitouTruco(jogador);
+	}
+	break;
+
+	case WM_MESSAGE_INICIALIZA_RODADA:
+	{
+		unsigned int jogador = LOWORD(pMsg->lParam);
+		TrucoPaulistaView->InicializaRodadaCliente(jogador);
+	}
+	break;
+	case WM_MESSAGE_ENVIA_TRUCO:
+	{
+		unsigned int jogador = LOWORD(pMsg->lParam);
+		TrucoPaulistaView->Jogador2Trucou(jogador);
+	}
+	break;
+	case WM_MESSAGE_CORRE_TRUCO:
+	{
+		unsigned int jogador = LOWORD(pMsg->lParam);
+		TrucoPaulistaView->Jogador2Correu(jogador);
+	}
+	break;
+	default:
 		break;
-
-
-		case WM_MESSAGE_ATUALIZA_CARTAS:
-		{
-			unsigned int c1c2 = LOWORD(pMsg->lParam);  
-			int c1 = LOBYTE(c1c2);
-			int c2 = HIBYTE(c1c2);
-
-			unsigned int c3c4 = HIWORD(pMsg->lParam);  
-			int c3 = LOBYTE(c3c4);
-			int c4 = HIBYTE(c3c4);
-			TrucoPaulistaView->AtualizaCartasCliente(c1,c2,c3,c4);
-		}
-		break;
-
-		case WM_MESSAGE_SOLICITA_JOGADOR_JOGAR:
-		{
-			TrucoPaulistaView->SolicitaAcaoJogadorCliente();
-		}
-		break;
-
-		case WM_MESSAGE_JOGADOR_JOGOU_CARTA:
-		{
-			unsigned int numeroCarta = LOWORD(pMsg->lParam);
-			bool cartaCoberta = HIWORD(pMsg->lParam);
-			TrucoPaulistaView->JogouACartaCliente(numeroCarta, cartaCoberta);
-		}
-		break;
-
-		case WM_MESSAGE_ATUALIZA_CARTA_JOGADA:
-		{
-			unsigned int chave1 = LOWORD(pMsg->lParam);
-			int numeroJogador = LOBYTE(chave1);
-			int numeroDaRodada = HIBYTE(chave1);
-
-			unsigned int carta = HIWORD(pMsg->lParam);
-			TrucoPaulistaView->AtualizaCartasJogadasCliente(numeroDaRodada, numeroJogador, carta);
-		}
-		break;
-
-		case WM_MESSAGE_FIM_RODADA:
-		{	int rodada = LOWORD(pMsg->lParam);
-			int jogador= HIWORD(pMsg->lParam);
-
-			TrucoPaulistaView->ShowMessageQuemGanhouaRodada(rodada, jogador);
-		}
-		break;	
-
-		case WM_MESSAGE_FIM_PARTIDA:
-		{
-		
-		}
-		break;
-
-		case WM_MESSAGE_ATUALIZAR_MESA:
-		{
-			TrucoPaulistaView->InicializarPartidaCliente();
-		}
-		break;
-
-		case WM_MESSAGE_JOGADOR_TRUCOU:
-		{
-			unsigned int jogador = LOWORD(pMsg->lParam);
-			TrucoPaulistaView->ShowMessageJogadorAceitouTruco(jogador);
-		}
-		break;
-
-		case WM_MESSAGE_INICIALIZA_RODADA:
-		{
-			unsigned int jogador = LOWORD(pMsg->lParam);
-			TrucoPaulistaView->InicializaRodadaCliente(jogador);
-		}
-		break;
-		case WM_MESSAGE_ENVIA_TRUCO:
-		{
-			unsigned int jogador = LOWORD(pMsg->lParam);
-			TrucoPaulistaView->Jogador2Trucou(jogador);
-
-		}
-			break;
-		case WM_MESSAGE_CORRE_TRUCO:
-		{
-			unsigned int jogador = LOWORD(pMsg->lParam);
-			TrucoPaulistaView->Jogador2Correu(jogador);
-		}
-		break;
-		default:
-			break;
 	}
 }
 
@@ -146,9 +158,16 @@ void PartidaMessagesController::AtualizaCartaJogada(int NumeroDaRodada, int Nume
 
 void PartidaMessagesController::EnviaFimDaPartida(int jogadorVencedor)
 {
-	EnviaMsgParaJogador(WM_MESSAGE_FIM_PARTIDA, 0,jogadorVencedor);
+	EnviaMsgParaJogador(WM_MESSAGE_FIM_PARTIDA, 0, jogadorVencedor);
 }
-
+void PartidaMessagesController::EnviaInicioDaPartida(int PontosDaDupla1, int PontosDaDupla2)
+{
+	EnviaMsgParaJogador(WM_MESSAGE_ENVIA_INICIO_PARTIDA, 0, MAKELPARAM(PontosDaDupla1, PontosDaDupla2));
+}
+void PartidaMessagesController::EnviaMsgDeAtualizaTento(int tento)
+{
+	EnviaMsgParaJogador(WM_MESSAGE_ENVIA_ATUALIZA_TENTO, 0, tento);
+}
 void PartidaMessagesController::EnviaFimDaRodada(int rodada, int jogadorVencedor)
 {
 	EnviaMsgParaJogador(WM_MESSAGE_FIM_RODADA, 0, MAKELPARAM(rodada, jogadorVencedor));
