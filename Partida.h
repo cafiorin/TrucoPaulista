@@ -33,6 +33,8 @@ public:
 	Partida(IEventosDaPartida* eventosPartida);
 	~Partida();
 	
+
+	void Create2Jogadores(bool duasInstancias);
 	void InicializarPartida(int quantosJogadores, bool duasInstancias);
 
 	bool InicializarRodada();
