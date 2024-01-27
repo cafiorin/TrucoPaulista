@@ -22,14 +22,11 @@ private:
 	const std::string nomeArquivo = "_trucoPaulista.json";
 
 	Placar* PlacarDaPartida;
-
 	Jogador* Dupla1[2];
 	Jogador* Dupla2[2];
-
 	RodadasController* Rodadas;
 	Carta* Vira;
-
-	Partida* Jogo;
+	Jogador* UltimoJogar;
 
 	std::string MontarJSON();
 	void PersistirJSON(std::string &json);

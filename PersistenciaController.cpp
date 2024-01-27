@@ -4,7 +4,6 @@
 
 PersistenciaController::PersistenciaController(Partida* jogo) 
 {
-
 	PlacarDaPartida = jogo->GetPlacar();
 	
 	Dupla1[0] = jogo->ObtemJogadorHumano1();
@@ -15,6 +14,8 @@ PersistenciaController::PersistenciaController(Partida* jogo)
 
 	Rodadas = jogo->GetRodada();
 	Vira = jogo->ObtemVira();
+
+	UltimoJogar = jogo->GetJogadorAtual();
 }
 
 PersistenciaController::~PersistenciaController() 
@@ -106,7 +107,7 @@ Json::Value const PersistenciaController::GetRodada() {
 	rodada["valorDaRodada"] = valorDaPartida;
 
 	if (valorDaPartida > 1) // Se valor da partida for maior que 1 alguém pediu truco
-		rodada["idJogadorPediuTruco"] = Jogo->GetJogadorAtual()->ObtemNumeroJogador();
+		rodada["idJogadorPediuTruco"] = UltimoJogar->ObtemNumeroJogador();
 	
 	return rodada;
 }
@@ -133,7 +134,7 @@ Json::Value const PersistenciaController::GetJogadores(Jogador* dupla[2]) {
 
 		jogador["id"] = dupla[i]->ObtemNumeroJogador();
 		jogador["bot"] = dupla[i]->EhUmBot();
-		bool estaNaVezDeJogar = Jogo->GetJogadorAtual()->ObtemNumeroJogador() == dupla[i]->ObtemNumeroJogador();
+		bool estaNaVezDeJogar = UltimoJogar->ObtemNumeroJogador() == dupla[i]->ObtemNumeroJogador();
 		jogador["vezDeJogar"] = estaNaVezDeJogar;
 
 		jogador["mao"] = GetMao(dupla[i]->GetCartasNaoJogadas());
