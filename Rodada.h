@@ -32,6 +32,10 @@ public:
 		delete cartas[3];
 	}
 
+	void CarregarRodadaController(RodadasController* rodadaController) {
+		Rodadas = rodadaController;
+	}
+
 	void CartaJogada(const Carta& carta, Jogador& Jogador, bool cartaCoberta);
 
 	Jogador* QuemGanhou()

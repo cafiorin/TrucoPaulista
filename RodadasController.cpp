@@ -6,6 +6,8 @@
 #include "RodadasController.h"
 #include "Placar.h"
 
+RodadasController::RodadasController(){}
+
 RodadasController::RodadasController(Placar *placar, bool jogoDeDupla)
 {
 	NumeroDaRodada = 1;
@@ -22,6 +24,17 @@ RodadasController::RodadasController(Placar *placar, bool jogoDeDupla)
 	Dupla1[0] = nullptr;
 	Dupla1[0] = nullptr;
 }
+
+//RodadasController::RodadasController(Rodada* rodadas[3], Carta* vira, Placar* placar, int numeroDaRodada, int quantoValeARodada, bool jogoDeDupla) {
+//	Rodadas[0] = rodadas[0];
+//	Rodadas[1] = rodadas[1];
+//	Rodadas[2] = rodadas[2];
+//	Vira = vira;
+//	placar_ = placar;
+//	NumeroDaRodada = numeroDaRodada;
+//	QuantoValeARodada = quantoValeARodada;
+//	JogoDeDupla = jogoDeDupla;
+//}
 
 
 RodadasController::~RodadasController()
@@ -46,6 +59,10 @@ void RodadasController::InicializarRodada(Carta *vira)
 	Rodadas[0] = new Rodada(1, this);
 	Rodadas[1] = new Rodada(2, this);
 	Rodadas[2] = new Rodada(3, this);
+}
+
+void RodadasController::RecriarRodada(Rodada* rodada, int numRodada) {
+	Rodadas[numRodada] = rodada;
 }
 
 Jogador* RodadasController::JaTemosUmVencedor()

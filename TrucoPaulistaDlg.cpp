@@ -161,7 +161,6 @@ BOOL CTrucoPaulistaDlg::OnInitDialog()
 
 	partida = new Partida(this);
 	partidaMessagesController = new PartidaMessagesController(this, m_Instance == 1);
-	persistencia = new PersistenciaController(partida);
 	cartaCoberta = new CartaCoberta();
 	if (m_Instance == 2)
 	{
@@ -246,8 +245,6 @@ void CTrucoPaulistaDlg::InicializaPartida()
 	partida->InicializarPartida(doisJogadores ? 2 : 4, TwoInstances);
 	InicializaRodada();
 }
-
-
 
 BOOL CTrucoPaulistaDlg::VerifyInstances()
 {
@@ -419,6 +416,7 @@ void CTrucoPaulistaDlg::OnBnClickedSync()
 void CTrucoPaulistaDlg::OnBnClickedButton1()
 {
 	InicializaPartida();
+	persistencia = new PersistenciaController(partida);
 }
 
 void CTrucoPaulistaDlg::SetCurrectBitmapFromBot(Jogador* bot, const Carta* carta)
@@ -1556,5 +1554,7 @@ void CTrucoPaulistaDlg::OnBnClickedSalvar()
 		bool temJogoSalvo = persistencia->TemJogoSalvo();
 
 		persistencia->AtualizarArquivo();
+
+		//persistencia->RecriarPartida();
 	}
 }
