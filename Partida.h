@@ -16,7 +16,7 @@ private:
 	Jogador* QuemComecaRodada;
 	Jogador* UltimoJogadorAJogar;
 
-	int QuantosJogadores = 2;
+	int QuantosJogadores = 4;
 	bool DuasInstancias;
 	Placar* placar;
 

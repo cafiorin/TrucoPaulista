@@ -5,6 +5,7 @@ class Jogador;
 class DadosInstanciaCliente;
 class CTrucoPaulistaDlg;
 class Partida;
+class Carta;
 
 class JogadorView
 {
@@ -26,6 +27,12 @@ public:
 	DadosInstanciaCliente* m_Cliente;
 
 	void AtualizaStatusDoJogador(StatusJogador status);
+	void JogouACarta(const Carta* carta, bool cartaCoberta=false);
+
+	
+	static void ControiJogadoresView(CTrucoPaulistaDlg* pDialog, DadosInstanciaCliente* cliente, Partida* partida);
+	static void AtualizaStatusDosJogadores(CTrucoPaulistaDlg* pDialog, StatusJogador status);
+	static void AtualizaStatusDoJogadorEscolhido(CTrucoPaulistaDlg* pDialog, StatusJogador status, Jogador* jogadorParaAtualizar);
 
 };
 

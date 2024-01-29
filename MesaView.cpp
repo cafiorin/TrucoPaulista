@@ -39,8 +39,7 @@ void MesaView::Inicializa()
 	//Esconde o Vira ate o jogo comecar
 	m_PicVira->ShowWindow(SW_HIDE);
 
-
-
+	InicializaRodada(0);
 }
 
 void MesaView::InicializaRodada(int idViraResource)
@@ -61,10 +60,50 @@ void MesaView::InicializaRodada(int idViraResource)
 	m_CartaBOT2_R2->ShowWindow(SW_HIDE);
 	m_CartaBOT2_R3->ShowWindow(SW_HIDE);
 
+	if (idViraResource > 0)
+	{
+		CartasBitmap cartaVira(idViraResource);
+		m_pDialog->SetBitmapOnStaticControl(*m_PicVira, *cartaVira.Getbitmap());
 
-	CartasBitmap cartaVira(idViraResource);
-	m_pDialog->SetBitmapOnStaticControl(*m_PicVira, *cartaVira.Getbitmap());
+		m_PicVira->ShowWindow(SW_SHOW);
+	}
+}
 
-	m_PicVira->ShowWindow(SW_SHOW);
+void MesaView::JogadorJogouACarta(Jogador* jogador, const Carta* carta, bool cartaCoberta, int rodada, int numeroDeJogadores)
+{
+	int numeroDoJogador = jogador->ObtemNumeroJogador();
+	CStatic* pictureControl = nullptr;
+
+	if (numeroDeJogadores == 2)
+	{
+		CStatic* jogadorPorRodada[4][2] = 
+		{
+			{nullptr,nullptr}, 
+			{m_CartaH2_R1, m_CartaBOT1_R1},
+			{m_CartaH2_R2, m_CartaBOT1_R2},
+			{m_CartaH2_R3, m_CartaBOT1_R3}
+		};
+
+		pictureControl = jogadorPorRodada[numeroDoJogador][rodada];
+	}
+	else // duplas
+	{
+		CStatic* jogadorPorRodada[4][4] =
+		{
+			{nullptr,nullptr,nullptr,nullptr},
+			{m_CartaH1_R1, m_CartaH2_R1, m_CartaBOT1_R1, m_CartaBOT2_R1},
+			{m_CartaH1_R2, m_CartaH2_R2, m_CartaBOT1_R2, m_CartaBOT2_R2},
+			{m_CartaH1_R3, m_CartaH2_R3, m_CartaBOT1_R3, m_CartaBOT2_R3}
+		};
+		
+		pictureControl = jogadorPorRodada[numeroDoJogador][rodada];
+	}
+
+	if (pictureControl != nullptr)
+	{
+		CartasBitmap bitmap(cartaCoberta ? IDB_BITMAP_VERSO : carta->idResource );
+		m_pDialog->SetBitmapOnStaticControl(*pictureControl, *bitmap.Getbitmap());
+		pictureControl->ShowWindow(SW_SHOW);
+	}
 }
 

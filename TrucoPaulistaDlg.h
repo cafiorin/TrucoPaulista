@@ -9,6 +9,9 @@ class Jogador;
 class Carta;
 class PartidaMessagesController;
 class PersistenciaController;
+class JogadorView;
+class MesaView;
+class DadosInstanciaCliente;
 
 #include "IEventosDaPartida.h"  
 #include "CartaCoberta.h"
@@ -21,14 +24,12 @@ public:
 	CTrucoPaulistaDlg(CWnd* pParent = nullptr);	// standard constructor
 	virtual ~CTrucoPaulistaDlg();
 	void SetBitmapOnStaticControl(CStatic& staticControl, CBitmap& bitmap);
-	void SetBitmapCartasAvesso();
 	void InitFontToText(int idText);
 
 	void CleanOutput();
 	void AddOutput(const CString& novaLinha);
 	void AtualizaTento();
 
-	void SetBitmapMesa();
 	void InicializaTelaInicial();
 	void InicializaPartida();
 	void InicializarPartidaCliente();
@@ -44,14 +45,18 @@ public:
 	bool TwoInstances;
 	PersistenciaController* persistencia;
 	CFont m_Font;
+	JogadorView* m_JogadorHumano1View;
+	JogadorView* m_JogadorHumano2View;
+	JogadorView* m_JogadorBot1View;
+	JogadorView* m_JogadorBot2View;
+	MesaView* m_MesaView;
+	DadosInstanciaCliente* m_Cliente;
 
 	void InicializaRodada();
 	void CleanCheckBox();
 	void AtualizaPlacar();
 	void AtualizaPlacarDePartidas();
 
-	void SetCurrectBitmapFromBot(Jogador* bot, const Carta* carta);
-	void SetCurrectBitmapFromHumano(Jogador* bot, const Carta* carta);
 	void MouseLeftClick(int idControl);
 	int ObtemNumeroDaRodada();
 	int m_NumeroDaRodadaCliente;

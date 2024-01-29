@@ -11,6 +11,7 @@ public:
 	void Inicializa();
 	void InicializaRodada();
 	void ProximaRodada();
+	void SetaPodePedirTruco(bool podePedir) { m_JogadorPodePedirTruco = podePedir; }
 
 	bool InstanciaEstaRodando() { return m_InstanciaClienteRodando; }
 	int ObtemRodadaAtual() { return m_RodadaAtual; }
