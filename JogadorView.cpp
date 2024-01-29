@@ -20,7 +20,7 @@ void JogadorView::ControiJogadoresView(CTrucoPaulistaDlg* pDialog, DadosInstanci
 	{
 		pDialog->m_JogadorHumano1View = new JogadorView(pDialog, IDC_PIC1, IDC_PIC2, IDC_PIC3, IDC_SUAVEZ_H1, IDC_TRUCAR, IDC_CORRER, partida->ObtemJogadorHumano1(), cliente, partida);
 		pDialog->m_JogadorBot1View = new JogadorView(pDialog, IDC_PIC13, IDC_PIC12, IDC_PIC8, 0, 0, 0, partida->ObtemJogadorBot1(), cliente, partida);
-		pDialog->m_JogadorHumano2View = new JogadorView(pDialog, IDC_PIC13, IDC_PIC12, IDC_PIC8, IDC_SUAVEZ_H2, IDC_TRUCAR2, IDC_CORRER2, partida->ObtemJogadorHumano2(), cliente, partida);
+		pDialog->m_JogadorHumano2View = new JogadorView(pDialog, IDC_PIC5, IDC_PIC7, IDC_PIC6, IDC_SUAVEZ_H2, IDC_TRUCAR2, IDC_CORRER2, partida->ObtemJogadorHumano2(), cliente, partida);
 		pDialog->m_JogadorBot2View = new JogadorView(pDialog, IDC_PIC9, IDC_PIC11, IDC_PIC10, 0, 0, 0, partida->ObtemJogadorBot2(), cliente, partida);
 	}
 	else
@@ -112,8 +112,12 @@ void JogadorView::AtualizaStatusDoJogador(StatusJogador status)
 			m_pDialog->SetBitmapOnStaticControl(*m_Carta1View, *cartaBitmap1.Getbitmap());
 			m_pDialog->SetBitmapOnStaticControl(*m_Carta2View, *cartaBitmap2.Getbitmap());
 			m_pDialog->SetBitmapOnStaticControl(*m_Carta3View, *cartaBitmap3.Getbitmap());
+
+			m_Carta1View->ShowWindow(SW_SHOW);
+			m_Carta2View->ShowWindow(SW_SHOW);
+			m_Carta3View->ShowWindow(SW_SHOW);
 		}
-		else
+		else if (m_Jogador->ObtemNumeroJogador() <= m_Partida->ObtemNumeroDeJogadores())
 		{
 			if (!m_Jogador->EhUmBot() || m_Partida->ObtemNumeroDeJogadores() == 2)
 			{
@@ -134,11 +138,10 @@ void JogadorView::AtualizaStatusDoJogador(StatusJogador status)
 				m_pDialog->SetBitmapOnStaticControl(*m_Carta3View, bitmap);
 			}
 
+			m_Carta1View->ShowWindow(SW_SHOW);
+			m_Carta2View->ShowWindow(SW_SHOW);
+			m_Carta3View->ShowWindow(SW_SHOW);
 		}
-
-		m_Carta1View->ShowWindow(SW_SHOW);
-		m_Carta2View->ShowWindow(SW_SHOW);
-		m_Carta3View->ShowWindow(SW_SHOW);
 	}
 	break;
 
@@ -193,11 +196,11 @@ void JogadorView::AtualizaStatusDoJogador(StatusJogador status)
 		{
 			m_Carta1View->ShowWindow(SW_HIDE);
 		}
-		else if (m_Jogador->PrimeiraCartaNaMao()->idResource == carta->idResource)
+		else if (m_Jogador->SegundaCartaNaMao()->idResource == carta->idResource)
 		{
 			m_Carta2View->ShowWindow(SW_HIDE);
 		}
-		else if (m_Jogador->PrimeiraCartaNaMao()->idResource == carta->idResource)
+		else if (m_Jogador->TerceiraCartaNaMao()->idResource == carta->idResource)
 		{
 			m_Carta3View->ShowWindow(SW_HIDE);
 		}
