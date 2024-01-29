@@ -72,8 +72,8 @@ JogadorView::JogadorView(CTrucoPaulistaDlg* pDialog, int idCarta1, int idCarta2,
 		m_BotaoCorrer = pDialog->GetDlgItem(idCorrer);
 
 		m_Carta1View->ModifyStyle(0, SS_NOTIFY);
-		m_Carta1View->ModifyStyle(0, SS_NOTIFY);
-		m_Carta1View->ModifyStyle(0, SS_NOTIFY);
+		m_Carta2View->ModifyStyle(0, SS_NOTIFY);
+		m_Carta3View->ModifyStyle(0, SS_NOTIFY);
 	}
 
 	m_Jogador = jogador;

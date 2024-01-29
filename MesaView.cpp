@@ -17,11 +17,11 @@ MesaView::MesaView(CTrucoPaulistaDlg* pDialog)
 	m_CartaH1_R3 = dynamic_cast<CStatic*>(pDialog->GetDlgItem(IDC_PIC_CARTA_H1_R3));
 	m_CartaH2_R3 = dynamic_cast<CStatic*>(pDialog->GetDlgItem(IDC_PIC_CARTA_H2_R3));
 	m_CartaBOT1_R1 = dynamic_cast<CStatic*>(pDialog->GetDlgItem(IDC_PIC_CARTA_BOT1_R1));
-	m_CartaBOT1_R2 = dynamic_cast<CStatic*>(pDialog->GetDlgItem(IDC_PIC_CARTA_BOT2_R2));
-	m_CartaBOT1_R3 = dynamic_cast<CStatic*>(pDialog->GetDlgItem(IDC_PIC_CARTA_BOT1_R1));
-	m_CartaBOT2_R1 = dynamic_cast<CStatic*>(pDialog->GetDlgItem(IDC_PIC_CARTA_BOT2_R2));
-	m_CartaBOT2_R2 = dynamic_cast<CStatic*>(pDialog->GetDlgItem(IDC_PIC_CARTA_BOT1_R1));
-	m_CartaBOT2_R3 = dynamic_cast<CStatic*>(pDialog->GetDlgItem(IDC_PIC_CARTA_BOT2_R2));
+	m_CartaBOT1_R2 = dynamic_cast<CStatic*>(pDialog->GetDlgItem(IDC_PIC_CARTA_BOT1_R2));
+	m_CartaBOT1_R3 = dynamic_cast<CStatic*>(pDialog->GetDlgItem(IDC_PIC_CARTA_BOT1_R3));
+	m_CartaBOT2_R1 = dynamic_cast<CStatic*>(pDialog->GetDlgItem(IDC_PIC_CARTA_BOT2_R1));
+	m_CartaBOT2_R2 = dynamic_cast<CStatic*>(pDialog->GetDlgItem(IDC_PIC_CARTA_BOT2_R2));
+	m_CartaBOT2_R3 = dynamic_cast<CStatic*>(pDialog->GetDlgItem(IDC_PIC_CARTA_BOT2_R3));
 }
 
 void MesaView::Inicializa()
@@ -76,27 +76,25 @@ void MesaView::JogadorJogouACarta(Jogador* jogador, const Carta* carta, bool car
 
 	if (numeroDeJogadores == 2)
 	{
-		CStatic* jogadorPorRodada[4][2] = 
+		CStatic* jogadorPorRodada[3][2] = 
 		{
-			{nullptr,nullptr}, 
 			{m_CartaH2_R1, m_CartaBOT1_R1},
 			{m_CartaH2_R2, m_CartaBOT1_R2},
 			{m_CartaH2_R3, m_CartaBOT1_R3}
 		};
 
-		pictureControl = jogadorPorRodada[numeroDoJogador][rodada];
+		pictureControl = jogadorPorRodada[rodada-1][numeroDoJogador - 1];
 	}
 	else // duplas
 	{
-		CStatic* jogadorPorRodada[4][4] =
+		CStatic* jogadorPorRodada[3][4] =
 		{
-			{nullptr,nullptr,nullptr,nullptr},
 			{m_CartaH1_R1, m_CartaH2_R1, m_CartaBOT1_R1, m_CartaBOT2_R1},
 			{m_CartaH1_R2, m_CartaH2_R2, m_CartaBOT1_R2, m_CartaBOT2_R2},
 			{m_CartaH1_R3, m_CartaH2_R3, m_CartaBOT1_R3, m_CartaBOT2_R3}
 		};
 		
-		pictureControl = jogadorPorRodada[numeroDoJogador][rodada];
+		pictureControl = jogadorPorRodada[rodada - 1][numeroDoJogador - 1];
 	}
 
 	if (pictureControl != nullptr)
