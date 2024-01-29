@@ -10,6 +10,8 @@ PartidaMessagesController::PartidaMessagesController(CTrucoPaulistaDlg* trucoPau
 
 void PartidaMessagesController::OnReceiveMessage(MSG* pMsg)
 {
+	OutputDebugString(_T("PartidaMessagesController::OnReceiveMessage()\n"));
+
 	switch (pMsg->message)
 	{
 	case WM_MESSAGE_ATUALIZA_PLACAR:

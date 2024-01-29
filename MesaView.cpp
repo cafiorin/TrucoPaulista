@@ -89,9 +89,9 @@ void MesaView::JogadorJogouACarta(Jogador* jogador, const Carta* carta, bool car
 	{
 		CStatic* jogadorPorRodada[3][4] =
 		{
-			{m_CartaH1_R1, m_CartaH2_R1, m_CartaBOT1_R1, m_CartaBOT2_R1},
-			{m_CartaH1_R2, m_CartaH2_R2, m_CartaBOT1_R2, m_CartaBOT2_R2},
-			{m_CartaH1_R3, m_CartaH2_R3, m_CartaBOT1_R3, m_CartaBOT2_R3}
+			{m_CartaH1_R1, m_CartaBOT1_R1, m_CartaH2_R1, m_CartaBOT2_R1},
+			{m_CartaH1_R2, m_CartaBOT1_R2, m_CartaH2_R2, m_CartaBOT2_R2},
+			{m_CartaH1_R3, m_CartaBOT1_R3, m_CartaH2_R3, m_CartaBOT2_R3}
 		};
 		
 		pictureControl = jogadorPorRodada[rodada - 1][numeroDoJogador - 1];

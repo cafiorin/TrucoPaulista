@@ -56,6 +56,9 @@ public:
 	void CleanCheckBox();
 	void AtualizaPlacar();
 	void AtualizaPlacarDePartidas();
+	void JogadorClicouNaCarta(Jogador* jogador, int posicaoDaCarta);
+	void JogadorParceiroClicouNaCarta(Jogador* jogador, int posicaoDaCarta);
+
 
 	void MouseLeftClick(int idControl);
 	int ObtemNumeroDaRodada();

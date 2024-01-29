@@ -381,110 +381,67 @@ void CTrucoPaulistaDlg::OnBnClickedButton1()
 	InicializaPartida();
 }
 
-void CTrucoPaulistaDlg::OnStnClickedPic3()
+void CTrucoPaulistaDlg::JogadorClicouNaCarta(Jogador *jogador, int posicaoDaCarta)
 {
-	if (JogadorSolicitado != partida->ObtemJogadorHumano1())
+	if (JogadorSolicitado != jogador)
 		return;
 
-	// Joga a Carta1
 	if (m_Instance == 1 || partida->ObtemNumeroDeJogadores() == 2)
 	{
-		Jogador* jogador = partida->ObtemJogadorHumano1();
-		const Carta* carta = jogador->TerceiraCartaNaMao();
+		const Carta* carta = jogador->getjogadabot(posicaoDaCarta-1);
 		m_JogadorHumano1View->JogouACarta(carta);
 		partida->JogadorJogouACarta(jogador, carta, false);
 	}
 }
 
-
-void CTrucoPaulistaDlg::OnStnClickedPic2()
+void CTrucoPaulistaDlg::JogadorParceiroClicouNaCarta(Jogador* jogador, int posicaoDaCarta)
 {
-	if (JogadorSolicitado != partida->ObtemJogadorHumano1())
-		return;
-
-	// Joga a carta 2
-	if (m_Instance == 1 || partida->ObtemNumeroDeJogadores() == 2)
-	{
-		Jogador* jogador = partida->ObtemJogadorHumano1();
-		const Carta* carta = jogador->SegundaCartaNaMao();
-		m_JogadorHumano1View->JogouACarta(carta);
-		partida->JogadorJogouACarta(jogador, carta, false);
-	}
-}
-
-
-void CTrucoPaulistaDlg::OnStnClickedPic1()
-{
-	if (JogadorSolicitado != partida->ObtemJogadorHumano1())
-		return;
-
-	//Joga a carta 3
-	if (m_Instance == 1 || partida->ObtemNumeroDeJogadores() == 2)
-	{
-		Jogador* jogador = partida->ObtemJogadorHumano1();
-		const Carta* carta = jogador->PrimeiraCartaNaMao();
-		m_JogadorHumano1View->JogouACarta(carta);
-		partida->JogadorJogouACarta(jogador, carta, false);
-	}
-}
-
-void CTrucoPaulistaDlg::OnStnClickedPicParc3()
-{
-	if (JogadorSolicitado != partida->ObtemJogadorHumano2() || TwoInstances)
+	if (JogadorSolicitado != jogador || TwoInstances)
 		return;
 
 	if (partida->ObtemNumeroDeJogadores() == 4)
 	{
-		Jogador* jogador = partida->ObtemJogadorHumano2();
-		const Carta* carta = jogador->PrimeiraCartaNaMao();
+		const Carta* carta = jogador->getjogadabot(posicaoDaCarta - 1);
 		m_JogadorHumano2View->JogouACarta(carta);
 		partida->JogadorJogouACarta(jogador, carta, false);
 	}
 	else if (m_Instance == 2)
 	{
-		m_PicCartaParc1.ShowWindow(SW_HIDE);
-		partidaMessagesController->JogadorJogouCarta(1, false);
+		//TODO: m_PicCartaParc1.ShowWindow(SW_HIDE);
+		partidaMessagesController->JogadorJogouCarta(posicaoDaCarta, false);
 	}
+}
+
+void CTrucoPaulistaDlg::OnStnClickedPic3()
+{
+	JogadorClicouNaCarta(partida->ObtemJogadorHumano1(), 3);
+}
+
+void CTrucoPaulistaDlg::OnStnClickedPic2()
+{
+	JogadorClicouNaCarta(partida->ObtemJogadorHumano1(), 2);
+}
+
+void CTrucoPaulistaDlg::OnStnClickedPic1()
+{
+	JogadorClicouNaCarta(partida->ObtemJogadorHumano1(), 3);
+}
+
+void CTrucoPaulistaDlg::OnStnClickedPicParc3()
+{
+	JogadorParceiroClicouNaCarta(partida->ObtemJogadorHumano2(), 1);
 }
 
 
 void CTrucoPaulistaDlg::OnStnClickedPicParc2()
 {
-	if (JogadorSolicitado != partida->ObtemJogadorHumano2() || TwoInstances)
-		return;
-
-	if (partida->ObtemNumeroDeJogadores() == 4)
-	{
-		Jogador* jogador = partida->ObtemJogadorHumano2();
-		const Carta* carta = jogador->SegundaCartaNaMao();
-		m_JogadorHumano2View->JogouACarta(carta);
-		partida->JogadorJogouACarta(jogador, carta, false);
-	}
-	else if (m_Instance == 2)
-	{
-		m_PicCartaParc2.ShowWindow(SW_HIDE);
-		partidaMessagesController->JogadorJogouCarta(2, false);
-	}
+	JogadorParceiroClicouNaCarta(partida->ObtemJogadorHumano2(), 2);
 }
 
 
 void CTrucoPaulistaDlg::OnStnClickedPicParc1()
 {
-	if (JogadorSolicitado != partida->ObtemJogadorHumano2() || TwoInstances)
-		return;
-
-	if (partida->ObtemNumeroDeJogadores() == 4)
-	{
-		Jogador* jogador = partida->ObtemJogadorHumano2();
-		const Carta* carta = jogador->TerceiraCartaNaMao();
-		m_JogadorHumano2View->JogouACarta(carta);
-		partida->JogadorJogouACarta(jogador, carta, false);
-	}
-	else if (m_Instance == 2)
-	{
-		m_PicCartaParc3.ShowWindow(SW_HIDE);
-		partidaMessagesController->JogadorJogouCarta(3, false);
-	}
+	JogadorParceiroClicouNaCarta(partida->ObtemJogadorHumano2(), 3);
 }
 
 int CTrucoPaulistaDlg::ObtemNumeroDaRodada()
@@ -492,7 +449,7 @@ int CTrucoPaulistaDlg::ObtemNumeroDaRodada()
 	if (m_Instance == 1)
 		return partida->ObtemNumeroDaRodada();
 
-	return m_NumeroDaRodadaCliente;
+	return m_Cliente->ObtemRodadaAtual();
 }
 
 void CTrucoPaulistaDlg::MouseLeftClick(int idControl)
@@ -580,13 +537,15 @@ void CTrucoPaulistaDlg::MouseLeftClick(int idControl)
 }
 
 
-
 void CTrucoPaulistaDlg::onInicioDaPartida()
 {
+	OutputDebugString(_T("CTrucoPaulistaDlg::onInicioDaPartida()\n"));
 }
 
 void CTrucoPaulistaDlg::onFimDaPartida(Jogador* JogadorQueGanhou)
 {
+	OutputDebugString(_T("CTrucoPaulistaDlg::onFimDaPartida()\n"));
+
 	std::string playerName = JogadorQueGanhou->ObtemNome();
 	CString strPlayerName(playerName.c_str());
 
@@ -601,31 +560,17 @@ void CTrucoPaulistaDlg::onFimDaPartida(Jogador* JogadorQueGanhou)
 	AfxMessageBox(str, MB_ICONINFORMATION | MB_OK);
 
 	partida->InicializarPartida(DoisJogadores ? 2 : 4, TwoInstances);
-	InicializaRodada();
 
+	InicializaRodada();
 }
 
 void CTrucoPaulistaDlg::onInicioDaRodada(int numeroRodada)
 {
+	OutputDebugString(_T("CTrucoPaulistaDlg::onInicioDaRodada()\n"));
+
 	CleanCheckBox();
 	CleanOutput();
-	GetDlgItem(IDC_SUAVEZ_H1)->ShowWindow(SW_HIDE);
-	GetDlgItem(IDC_SUAVEZ_H1)->ShowWindow(SW_HIDE);
-
-	Jogador* jogadorDaVez = partida->QuemJoga();
-
 	solicitaJogadorJogar(partida->QuemJoga());
-
-}
-
-void CTrucoPaulistaDlg::CleanCheckBox()
-{
-	for (int i = IDC_CHECK1; i <= IDC_CHECK6; i++)
-	{
-		CButton* pCheckBox = (CButton*)GetDlgItem(i);
-		if (pCheckBox != nullptr)
-			pCheckBox->SetCheck(BST_UNCHECKED);
-	}
 }
 
 void CTrucoPaulistaDlg::onAceitouTruco(Jogador* jogador)
@@ -653,27 +598,10 @@ void CTrucoPaulistaDlg::onAceitouTruco(Jogador* jogador)
 
 }
 
-void CTrucoPaulistaDlg::CleanOutput()
-{
-	CEdit* pEdit = static_cast<CEdit*>(GetDlgItem(IDC_EDIT1));
-	CString strTextoAtual;
-	strTextoAtual = _T("");
-	pEdit->SetWindowText(strTextoAtual);
-
-}
-
-void CTrucoPaulistaDlg::AddOutput(const CString& novaLinha)
-{
-	CEdit* pEdit = static_cast<CEdit*>(GetDlgItem(IDC_EDIT1));
-	CString strTextoAtual;
-	pEdit->GetWindowText(strTextoAtual);
-	strTextoAtual += novaLinha + _T("\r\n");
-	pEdit->SetWindowText(strTextoAtual);
-	pEdit->LineScroll(pEdit->GetLineCount());
-}
-
 void CTrucoPaulistaDlg::onFimDaRodada(int numeroRodada, Jogador* JogadorQueGanhou)
 {
+	OutputDebugString(_T("CTrucoPaulistaDlg::onFimDaRodada()\n"));
+
 	if (JogadorQueGanhou == nullptr)
 	{
 		CString str;
@@ -709,20 +637,38 @@ void CTrucoPaulistaDlg::onFimDaRodada(int numeroRodada, Jogador* JogadorQueGanho
 
 	if (m_Instance == 1 && TwoInstances)
 		partidaMessagesController->EnviaFimDaRodada(numeroRodada, JogadorQueGanhou ? JogadorQueGanhou->ObtemNumeroJogador() : 0);
+}
 
+
+void CTrucoPaulistaDlg::CleanOutput()
+{
+	CEdit* pEdit = static_cast<CEdit*>(GetDlgItem(IDC_EDIT1));
+	CString strTextoAtual;
+	strTextoAtual = _T("");
+	pEdit->SetWindowText(strTextoAtual);
+
+}
+
+void CTrucoPaulistaDlg::AddOutput(const CString& novaLinha)
+{
+	CEdit* pEdit = static_cast<CEdit*>(GetDlgItem(IDC_EDIT1));
+	CString strTextoAtual;
+	pEdit->GetWindowText(strTextoAtual);
+	strTextoAtual += novaLinha + _T("\r\n");
+	pEdit->SetWindowText(strTextoAtual);
+	pEdit->LineScroll(pEdit->GetLineCount());
 }
 
 void CTrucoPaulistaDlg::solicitaJogadorJogar(Jogador* jogador)
 {
+	OutputDebugString(_T("CTrucoPaulistaDlg::solicitaJogadorJogar()\n"));
+
 	std::string playerName = jogador->ObtemNome();
 	CString strPlayerName(playerName.c_str());
 
 	CString str;
 	str.Format(_T("Sua Vez %s..."), strPlayerName);
 	AddOutput(str);
-
-	JogadorView::AtualizaStatusDoJogadorEscolhido(this, StatusJogador::SuaVez, jogador);
-
 
 	if (jogador->ObtemNumeroJogador() == 1)
 	{
@@ -1233,3 +1179,14 @@ void CTrucoPaulistaDlg::OnBnClickedSalvar()
 		persistencia->AtualizarArquivo();
 	}
 }
+
+void CTrucoPaulistaDlg::CleanCheckBox()
+{
+	for (int i = IDC_CHECK1; i <= IDC_CHECK6; i++)
+	{
+		CButton* pCheckBox = (CButton*)GetDlgItem(i);
+		if (pCheckBox != nullptr)
+			pCheckBox->SetCheck(BST_UNCHECKED);
+	}
+}
+
