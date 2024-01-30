@@ -42,6 +42,7 @@ CTrucoPaulistaDlg::CTrucoPaulistaDlg(CWnd* pParent) : CDialogEx(IDD_TRUCOPAULIST
 	persistencia = nullptr;
 	cartaCoberta = nullptr;
 	m_MesaView = nullptr;
+	m_Cliente = nullptr;
 }
 
 CTrucoPaulistaDlg::~CTrucoPaulistaDlg()
@@ -57,6 +58,7 @@ CTrucoPaulistaDlg::~CTrucoPaulistaDlg()
 	delete m_JogadorBot2View;
 
 	delete m_MesaView;
+	delete m_Cliente;
 }
 
 
