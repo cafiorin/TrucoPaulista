@@ -126,6 +126,7 @@
 #define IDC_SUAVEZ_H1                   1053
 #define IDC_SUAVEZ_H2                   1054
 #define IDC_TENTOS                      1055
+#define IDC_RECARREGAR                  1056
 
 // Next default values for new objects
 // 

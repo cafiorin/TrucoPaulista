@@ -116,6 +116,7 @@ BEGIN_MESSAGE_MAP(CTrucoPaulistaDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_TRUCAR2, &CTrucoPaulistaDlg::OnBnClickedTrucar2)
 	ON_BN_CLICKED(IDC_CORRER2, &CTrucoPaulistaDlg::OnBnClickedCorrer2)
 	ON_BN_CLICKED(IDC_SALVAR, &CTrucoPaulistaDlg::OnBnClickedSalvar)
+	ON_BN_CLICKED(IDC_RECARREGAR, &CTrucoPaulistaDlg::OnBnClickedRecarregar)
 END_MESSAGE_MAP()
 
 
@@ -1094,6 +1095,7 @@ void CTrucoPaulistaDlg::InicializaRodada()
 	GetDlgItem(IDC_RADIO8)->ShowWindow(SW_HIDE);
 	GetDlgItem(IDC_RADIO9)->ShowWindow(SW_HIDE);
 	GetDlgItem(IDC_BUTTON1)->ShowWindow(SW_HIDE);
+	GetDlgItem(IDC_RECARREGAR)->ShowWindow(SW_HIDE);
 	GetDlgItem(IDC_STATIC)->ShowWindow(SW_HIDE);
 	GetDlgItem(IDC_EDIT1)->ShowWindow(SW_SHOW);
 	CString str;
@@ -1548,13 +1550,15 @@ void CTrucoPaulistaDlg::OnBnClickedCorrer2()
 	}
 }
 
+void CTrucoPaulistaDlg::OnBnClickedRecarregar() {
+	GetDlgItem(IDC_RECARREGAR)->ShowWindow(SW_HIDE);
+}
+
 void CTrucoPaulistaDlg::OnBnClickedSalvar()
 {
-	if (persistencia != nullptr) { // Somente primeira instância irá salvar?
+	if (persistencia != nullptr) {
 		bool temJogoSalvo = persistencia->TemJogoSalvo();
 
 		persistencia->AtualizarArquivo();
-
-		//persistencia->RecriarPartida();
 	}
 }

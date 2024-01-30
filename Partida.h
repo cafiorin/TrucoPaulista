@@ -29,6 +29,14 @@ private:
 	IEventosDaPartida* EventosDaPartida;
 
 public:
+	Partida(Placar* placar, Jogador* dupla1[2], Jogador* dupla2[2], RodadasController* rodadas, Carta* vira) : placar(placar), Rodadas(rodadas), Vira(vira)
+	{
+		Dupla1[0] = dupla1[0];
+		Dupla1[1] = dupla1[1];
+
+		Dupla2[0] = dupla2[0];
+		Dupla2[1] = dupla2[1];
+	}
 
 	Partida(IEventosDaPartida* eventosPartida);
 	~Partida();

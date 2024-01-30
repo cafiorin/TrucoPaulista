@@ -18,7 +18,7 @@ public:
 
 	void AtualizarArquivo();
 
-	Partida RecriarPartida();
+	Partida* RecriarPartida();
 
 private:
 	const std::string nomeArquivo = "_trucoPaulista.json";
@@ -42,7 +42,8 @@ private:
 	const Json::Value GetMao(std::vector<Carta*> mao);
 
 	//Read
-	Partida MontarPartida(std::string json);
-	Carta* CarregarCarta(Json::Value cartaVirada);
-	RodadasController CarregarRodada(Json::Value rodadaAtual);
+	Partida* MontarPartida(std::string json);
+	Carta* CriarCarta(Json::Value cartaVirada);
+	RodadasController* CriarRodadaController(Json::Value rodadaAtual, std::vector<Jogador*> jogadores);
+	Partida* CriarPartida(Json::Value json);
 };
