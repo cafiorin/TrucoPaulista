@@ -16,6 +16,7 @@ Partida::Partida(IEventosDaPartida* eventosPartida)
 	Vira = nullptr;
 	UltimoJogadorAJogar = nullptr;
 	Rodadas = nullptr;
+	m_TipoDePartida = TipoDePartida::DoisJogadores;
 }
 
 Partida::~Partida()
@@ -39,13 +40,25 @@ void Partida::Create2Jogadores(bool duasInstancias)
 	Dupla2[1] = new Bot(4, "Bot2Duplas", 2);
 }
 
-void Partida::InicializarPartida(int quantosJogadores, bool duasInstancias)
+void Partida::InicializarPartida(TipoDePartida tipoDePartida)
 {
-	QuantosJogadores = quantosJogadores;
-	DuasInstancias = duasInstancias;
+	m_TipoDePartida = tipoDePartida;
+	QuantosJogadores = 4;
+	DuasInstancias = false;
+
+	switch (tipoDePartida)
+	{
+	case TipoDePartida::DoisJogadores:
+		QuantosJogadores = 2;
+		break;
+
+	case TipoDePartida::QuatroJogadores_umremoto:
+		DuasInstancias = true;
+		break;
+	}
 
 	delete Rodadas;
-	Rodadas = new RodadasController(placar, quantosJogadores == 4);
+	Rodadas = new RodadasController(placar, QuantosJogadores == 4);
 
 	delete Dupla1[0];
 	delete Dupla1[1];
@@ -61,7 +74,7 @@ void Partida::InicializarPartida(int quantosJogadores, bool duasInstancias)
 	}
 	else
 	{
-		Create2Jogadores(duasInstancias);
+		Create2Jogadores(DuasInstancias);
 	}
 
 	placar->Inicializar();

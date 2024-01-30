@@ -223,6 +223,7 @@
     <ClInclude Include="pch.h" />
     <ClInclude Include="PersistenciaController.h" />
     <ClInclude Include="Placar.h" />
+    <ClInclude Include="PlacarView.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="Rodada.h" />
     <ClInclude Include="RodadasController.h" />
@@ -257,6 +258,7 @@
     </ClCompile>
     <ClCompile Include="PersistenciaController.cpp" />
     <ClCompile Include="Placar.cpp" />
+    <ClCompile Include="PlacarView.cpp" />
     <ClCompile Include="Rodada.cpp" />
     <ClCompile Include="RodadasController.cpp" />
     <ClCompile Include="TrucoPaulista.cpp" />

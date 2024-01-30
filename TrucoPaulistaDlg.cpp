@@ -17,6 +17,7 @@
 #include "MesaView.h"
 #include "JogadorView.h"
 #include "DadosInstanciaCliente.h"
+#include "PlacarView.h"
 
 #include <atlimage.h>
 #include <windows.h>
@@ -43,6 +44,7 @@ CTrucoPaulistaDlg::CTrucoPaulistaDlg(CWnd* pParent) : CDialogEx(IDD_TRUCOPAULIST
 	cartaCoberta = nullptr;
 	m_MesaView = nullptr;
 	m_Cliente = nullptr;
+	m_PlacarView = nullptr;
 }
 
 CTrucoPaulistaDlg::~CTrucoPaulistaDlg()
@@ -59,6 +61,7 @@ CTrucoPaulistaDlg::~CTrucoPaulistaDlg()
 
 	delete m_MesaView;
 	delete m_Cliente;
+	delete m_PlacarView;
 }
 
 
@@ -82,6 +85,7 @@ BOOL CTrucoPaulistaDlg::OnInitDialog()
 	m_MesaView = new MesaView(this);
 	m_Cliente = new DadosInstanciaCliente();
 	partida = new Partida(this);
+	m_PlacarView = new PlacarView(this,partida);
 	JogadorView::ControiJogadoresView(this, m_Cliente, partida);
 	partidaMessagesController = new PartidaMessagesController(this, m_Instance == 1);
 	persistencia = new PersistenciaController(partida);
@@ -109,7 +113,7 @@ void CTrucoPaulistaDlg::InicializaTelaInicial()
 	m_MesaView->Inicializa();
 	JogadorView::AtualizaStatusDosJogadores(this, StatusJogador::Inicia);
 
-	CButton* pRadioButton = reinterpret_cast<CButton*>(GetDlgItem(IDC_RADIO7));
+	CButton* pRadioButton = reinterpret_cast<CButton*>(GetDlgItem(IDC_RB2PLAYERS));
 	if (pRadioButton)
 	{
 		pRadioButton->SetCheck(BST_CHECKED);
@@ -119,24 +123,15 @@ void CTrucoPaulistaDlg::InicializaTelaInicial()
 void CTrucoPaulistaDlg::InicializaPartida()
 {
 	TwoInstances = false;
-	bool doisJogadores = false;
-	CButton* pRadioButton = reinterpret_cast<CButton*>(GetDlgItem(IDC_RADIO7));
-	if (pRadioButton && pRadioButton->GetCheck() == 1)
+	TipoDePartida tipoDePartida = ObtemTipoDePartida();
+
+	if (tipoDePartida == TipoDePartida::QuatroJogadores_umremoto)
 	{
-		doisJogadores = true;
-	}
-	else
-	{
-		CButton* pRBNovaInstancia = reinterpret_cast<CButton*>(GetDlgItem(IDC_RADIO9));
-		if (pRBNovaInstancia && pRBNovaInstancia->GetCheck() == 1)
-		{
-			CreateNewInstance();
-			TwoInstances = true;
-		}
+		CreateNewInstance();
+		TwoInstances = true;
 	}
 
-	DoisJogadores = doisJogadores;
-	partida->InicializarPartida(doisJogadores ? 2 : 4, TwoInstances);
+	partida->InicializarPartida(tipoDePartida);
 	JogadorView::ControiJogadoresView(this, m_Cliente, partida);
 	partida->InicializarRodada();
 	InicializaRodada();
@@ -295,7 +290,7 @@ void CTrucoPaulistaDlg::onFimDaPartida(Jogador* JogadorQueGanhou)
 
 	AfxMessageBox(str, MB_ICONINFORMATION | MB_OK);
 
-	partida->InicializarPartida(DoisJogadores ? 2 : 4, TwoInstances);
+	partida->InicializarPartida(partida->ObtemTipoDePartida());
 	JogadorView::ControiJogadoresView(this, m_Cliente, partida);
 	partida->InicializarRodada();
 	InicializaRodada();
@@ -325,10 +320,6 @@ void CTrucoPaulistaDlg::onAceitouTruco(Jogador* jogador)
 			partidaMessagesController->EnviaAceitouTruco(jogador->ObtemNumeroJogador());
 		AfxMessageBox(str, MB_ICONINFORMATION | MB_OK);
 	}
-
-	CString quantovale = partida->ObterMensagemDeQuantoVale();
-	GetDlgItem(IDC_TRUCAR)->SetWindowTextW(quantovale);
-	GetDlgItem(IDC_TRUCAR2)->SetWindowTextW(quantovale);
 
 	AtualizaTento();
 
@@ -378,7 +369,7 @@ void CTrucoPaulistaDlg::onFimDaRodada(int numeroRodada, Jogador* JogadorQueGanho
 
 void CTrucoPaulistaDlg::CleanOutput()
 {
-	CEdit* pEdit = static_cast<CEdit*>(GetDlgItem(IDC_EDIT1));
+	CEdit* pEdit = static_cast<CEdit*>(GetDlgItem(IDC_EDIT_TEXT_OUTPUT));
 	CString strTextoAtual;
 	strTextoAtual = _T("");
 	pEdit->SetWindowText(strTextoAtual);
@@ -387,7 +378,7 @@ void CTrucoPaulistaDlg::CleanOutput()
 
 void CTrucoPaulistaDlg::AddOutput(const CString& novaLinha)
 {
-	CEdit* pEdit = static_cast<CEdit*>(GetDlgItem(IDC_EDIT1));
+	CEdit* pEdit = static_cast<CEdit*>(GetDlgItem(IDC_EDIT_TEXT_OUTPUT));
 	CString strTextoAtual;
 	pEdit->GetWindowText(strTextoAtual);
 	strTextoAtual += novaLinha + _T("\r\n");
@@ -514,7 +505,8 @@ void CTrucoPaulistaDlg::AtualizaPlacar()
 {
 	if (m_Instance == 1)
 	{
-		AtualizaPlacar(partida->PontosDaDupla1(), partida->PontosDaDupla2());
+		m_PlacarView->AtualizaPlacar(partida->PontosDaDupla1(), partida->PontosDaDupla2());
+
 		if (TwoInstances)
 			partidaMessagesController->EnviaMsgDeAtualizaPlacar(partida->PontosDaDupla1(), partida->PontosDaDupla2());
 	}
@@ -522,29 +514,16 @@ void CTrucoPaulistaDlg::AtualizaPlacar()
 
 void CTrucoPaulistaDlg::AtualizaTento()
 {
-	if (m_Instance == 1)
+	JogadorView::AtualizaStatusDosJogadores(this, StatusJogador::AtualizaTento);
+	if (m_Instance == 1 && TwoInstances)
 	{
-		int valor = partida->ObterValorDaRodada();
-		CString str;
-		str.Format(_T("%d"), valor);
-		GetDlgItem(IDC_TENTOS)->SetWindowText(str);
-
-		if (TwoInstances)
-			partidaMessagesController->EnviaMsgDeAtualizaTento(valor);
+		partidaMessagesController->EnviaMsgDeAtualizaTento(partida->ObterValorDaRodada());
 	}
 }
 
-
 void CTrucoPaulistaDlg::AtualizaPlacarDePartidas()
 {
-	CString str;
-
-	str.Format(_T("%d"), partida->PartidasVencidasDaDupla1());
-	GetDlgItem(IDC_PONTOS_PARTIDA_DUPLA1)->SetWindowText(str);
-
-	str.Format(_T("%d"), partida->PartidasVencidasDaDupla2());
-	GetDlgItem(IDC_PONTOS_PARTIDA_DUPLA2)->SetWindowText(str);
-
+	m_PlacarView->AtualizaPlacarDePartidas();
 	if (TwoInstances)
 		partidaMessagesController->EnviaMsgDeAtualizaPlacar(partida->PartidasVencidasDaDupla1(), partida->PartidasVencidasDaDupla2());
 }
@@ -553,16 +532,10 @@ void CTrucoPaulistaDlg::InicializaRodada()
 {
 	m_Cliente->InicializaRodada();
 	m_Cliente->JogadorPodePedirTruco();
+	m_PlacarView->InicializaRodada();
 
 	AtualizaPlacar();
 
-	GetDlgItem(IDC_RADIO7)->ShowWindow(SW_HIDE);
-	GetDlgItem(IDC_RADIO8)->ShowWindow(SW_HIDE);
-	GetDlgItem(IDC_RADIO9)->ShowWindow(SW_HIDE);
-	GetDlgItem(IDC_BUTTON1)->ShowWindow(SW_HIDE);
-	GetDlgItem(IDC_STATIC)->ShowWindow(SW_HIDE);
-	GetDlgItem(IDC_EDIT1)->ShowWindow(SW_SHOW);
-	CString str;
 
 	if (m_Instance == 1)
 	{
@@ -618,15 +591,7 @@ void CTrucoPaulistaDlg::OnBnClickedCorrer()
 }
 
 //Metodos da instancia Cliente
-void CTrucoPaulistaDlg::AtualizaPlacar(int PontosDaDupla1, int PontosDaDupla2)
-{
-	CString str;
-	str.Format(_T("%d"), PontosDaDupla1);
-	GetDlgItem(IDC_PONTOS_DUPLA1)->SetWindowText(str);
 
-	str.Format(_T("%d"), PontosDaDupla2);
-	GetDlgItem(IDC_PONTOS_DUPLA2)->SetWindowText(str);
-}
 void CTrucoPaulistaDlg::AtualizaPlacarCliente(int PontosDaDupla1, int PontosDaDupla2)
 {
 
@@ -728,15 +693,13 @@ void CTrucoPaulistaDlg::Jogador2Trucou(int jogadorGanhouPartida)
 }
 void CTrucoPaulistaDlg::ShowMessageQuemGanhoaPartida(int jogadorGanhador)
 {
+	AtualizaPlacarDePartidas();
+
 	Jogador* JogadorQueGanhou = partida->GetJogadorByID(jogadorGanhador);
 	std::string playerName = JogadorQueGanhou->ObtemNome();
 	CString strPlayerName(playerName.c_str());
-
 	CString str;
 	str.Format(_T("PARABENS !!!! O jogador %s ganhou a PARTIDA!!!!"), strPlayerName);
-
-	AtualizaPlacarDePartidas();
-
 	AfxMessageBox(str, MB_ICONINFORMATION | MB_OK);
 }
 
@@ -999,7 +962,7 @@ BEGIN_MESSAGE_MAP(CTrucoPaulistaDlg, CDialogEx)
 	ON_WM_QUERYDRAGICON()
 	ON_BN_CLICKED(IDM_ABOUTBOX, &CTrucoPaulistaDlg::OnBnClickedAbout)
 	ON_BN_CLICKED(ID_SYNC, &CTrucoPaulistaDlg::OnBnClickedSync)
-	ON_BN_CLICKED(IDC_BUTTON1, &CTrucoPaulistaDlg::OnBnClickedButton1)
+	ON_BN_CLICKED(IDC_BTN_START, &CTrucoPaulistaDlg::OnBnClickedButton1)
 	ON_STN_CLICKED(IDC_PIC3, &CTrucoPaulistaDlg::OnStnClickedPic3)
 	ON_STN_CLICKED(IDC_PIC2, &CTrucoPaulistaDlg::OnStnClickedPic2)
 	ON_STN_CLICKED(IDC_PIC1, &CTrucoPaulistaDlg::OnStnClickedPic1)
@@ -1152,4 +1115,23 @@ void CTrucoPaulistaDlg::CreateNewInstance()
 			}
 		}
 	}
+}
+
+TipoDePartida CTrucoPaulistaDlg::ObtemTipoDePartida()
+{
+	CButton* pRadioButton = reinterpret_cast<CButton*>(GetDlgItem(IDC_RB2PLAYERS));
+	if (pRadioButton && pRadioButton->GetCheck() == 1)
+	{
+		return TipoDePartida::DoisJogadores;
+	}
+	else
+	{
+		CButton* pRBNovaInstancia = reinterpret_cast<CButton*>(GetDlgItem(IDC_RB4PLAYERS_REMOTE));
+		if (pRBNovaInstancia && pRBNovaInstancia->GetCheck() == 1)
+		{
+			return TipoDePartida::QuatroJogadores_umremoto;
+		}
+	}
+
+	return TipoDePartida::QuatroJogadores;
 }

@@ -1,8 +1,11 @@
 #pragma once
 
+enum TipoDePartida { DoisJogadores, QuatroJogadores, QuatroJogadores_umremoto};
+
 enum Naipes { Espadas, Copas, Ouro, Paus };
 
-enum StatusJogador { Inicia, EsperandoCartas, RecebeuCartas, SuaVez, NaoEhSuaVez, Truca };
+enum StatusJogador { Inicia, EsperandoCartas, RecebeuCartas, SuaVez, NaoEhSuaVez, Truca, AtualizaTento
+};
 
 enum AcaoRealizada { Jogou, Trucou, Correu, Aceitou }; 
 

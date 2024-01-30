@@ -27,15 +27,16 @@ private:
 	Baralho* BaralhoMesa;
 	Carta* Vira;
 	IEventosDaPartida* EventosDaPartida;
+	TipoDePartida m_TipoDePartida;
 
 public:
 
 	Partida(IEventosDaPartida* eventosPartida);
 	~Partida();
 	
-
+	TipoDePartida ObtemTipoDePartida() { return m_TipoDePartida; }
 	void Create2Jogadores(bool duasInstancias);
-	void InicializarPartida(int quantosJogadores, bool duasInstancias);
+	void InicializarPartida(TipoDePartida tipoDePartida);
 
 	bool InicializarRodada();
 

@@ -185,6 +185,17 @@ void JogadorView::AtualizaStatusDoJogador(StatusJogador status)
 	}
 	break;
 
+	case StatusJogador::AtualizaTento:
+	{
+		if (!m_Jogador->EhUmBot())
+		{
+			CString quantovale = m_Partida->ObterMensagemDeQuantoVale();
+			m_BotaoTruco->SetWindowTextW(quantovale);
+		}
+	}
+	break;
+
+
 	}
 }
 

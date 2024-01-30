@@ -12,9 +12,12 @@ class PersistenciaController;
 class JogadorView;
 class MesaView;
 class DadosInstanciaCliente;
+class PlacarView;
+
 
 #include "IEventosDaPartida.h"  
 #include "CartaCoberta.h"
+#include "Enums.h"
 
 // CTrucoPaulistaDlg dialog
 class CTrucoPaulistaDlg : public CDialogEx, public IEventosDaPartida
@@ -25,6 +28,7 @@ public:
 	virtual ~CTrucoPaulistaDlg();
 	void SetBitmapOnStaticControl(CStatic& staticControl, CBitmap& bitmap);
 	void InitFontToText(int idText);
+	TipoDePartida ObtemTipoDePartida();
 
 	void CleanOutput();
 	void AddOutput(const CString& novaLinha);
@@ -52,6 +56,7 @@ public:
 	JogadorView* m_JogadorBot1View;
 	JogadorView* m_JogadorBot2View;
 	MesaView* m_MesaView;
+	PlacarView* m_PlacarView;
 	DadosInstanciaCliente* m_Cliente;
 
 	void InicializaRodada();
@@ -80,7 +85,6 @@ public:
 	virtual void onCartaJogada(int NumeroDaRodada, Jogador* jogadorAjogar, const Carta* cartaJogada, bool cartaCoberta);
 
 	//Cliente
-	void AtualizaPlacar(int PontosDaDupla1, int PontosDaDupla2);
 	void AtualizaCartasCliente(int c1, int c2, int c3, int c4);
 	void AtualizaClientePodeTrucar(bool trucar);
 	void SolicitaAcaoJogadorCliente();
