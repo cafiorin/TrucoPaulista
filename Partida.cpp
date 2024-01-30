@@ -31,6 +31,13 @@ Partida::~Partida()
 	delete Vira;
 	delete placar;
 }
+void Partida::Create2Jogadores(bool duasInstancias)
+{
+	Dupla1[0] = new Jogador(1, "Humano1", 1, false, true);
+	Dupla1[1] = new Jogador(3, "Humano2", 1, false, !duasInstancias);
+	Dupla2[0] = new Bot(2, "Bot1Duplas", 2);
+	Dupla2[1] = new Bot(4, "Bot2Duplas", 2);
+}
 
 void Partida::InicializarPartida(int quantosJogadores, bool duasInstancias)
 {
@@ -54,11 +61,7 @@ void Partida::InicializarPartida(int quantosJogadores, bool duasInstancias)
 	}
 	else
 	{
-		Dupla1[0] = new Jogador(1, "Humano1", 1,false, true);
-		Dupla1[1] = new Jogador(3, "Humano2", 1,false, !duasInstancias);
-		Dupla2[0] = new Bot(2, "Bot1Duplas", 2);
-		Dupla2[1] = new Bot(4, "Bot2Duplas", 2);
-
+		Create2Jogadores(duasInstancias);
 	}
 
 	placar->Inicializar();
