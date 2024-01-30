@@ -25,18 +25,6 @@ RodadasController::RodadasController(Placar *placar, bool jogoDeDupla)
 	Dupla1[0] = nullptr;
 }
 
-//RodadasController::RodadasController(Rodada* rodadas[3], Carta* vira, Placar* placar, int numeroDaRodada, int quantoValeARodada, bool jogoDeDupla) {
-//	Rodadas[0] = rodadas[0];
-//	Rodadas[1] = rodadas[1];
-//	Rodadas[2] = rodadas[2];
-//	Vira = vira;
-//	placar_ = placar;
-//	NumeroDaRodada = numeroDaRodada;
-//	QuantoValeARodada = quantoValeARodada;
-//	JogoDeDupla = jogoDeDupla;
-//}
-
-
 RodadasController::~RodadasController()
 {
 	delete Rodadas[0];
