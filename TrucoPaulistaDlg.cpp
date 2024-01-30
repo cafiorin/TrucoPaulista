@@ -32,6 +32,16 @@
 CTrucoPaulistaDlg::CTrucoPaulistaDlg(CWnd* pParent) : CDialogEx(IDD_TRUCOPAULISTA_DIALOG, pParent)
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
+
+	m_JogadorHumano1View = nullptr;
+	m_JogadorHumano2View = nullptr;
+	m_JogadorBot1View = nullptr;
+	m_JogadorBot2View = nullptr;
+	partida = nullptr;
+	partidaMessagesController = nullptr;
+	persistencia = nullptr;
+	cartaCoberta = nullptr;
+	m_MesaView = nullptr;
 }
 
 CTrucoPaulistaDlg::~CTrucoPaulistaDlg()
@@ -49,103 +59,6 @@ CTrucoPaulistaDlg::~CTrucoPaulistaDlg()
 	delete m_MesaView;
 }
 
-BOOL CTrucoPaulistaDlg::PreTranslateMessage(MSG* pMsg)
-{
-	// Msg trocada entre instancias
-	if (pMsg->message >= WM_CUSTOM_MESSAGE_INICIO && pMsg->message <= WM_CUSTOM_MESSAGE_FIM)
-	{
-		partidaMessagesController->OnReceiveMessage(pMsg);
-		return TRUE;
-	}
-
-	//Right click
-	if (pMsg->message == WM_RBUTTONDOWN)
-	{
-		CPoint point;
-		GetCursorPos(&point);
-		ScreenToClient(&point);
-
-		CWnd* pWnd = ChildWindowFromPoint(point, CWP_ALL);
-		if (pWnd)
-		{
-			MouseLeftClick(pWnd->GetDlgCtrlID());
-			return TRUE;
-		}
-	}
-
-	return CDialogEx::PreTranslateMessage(pMsg);
-}
-
-void CTrucoPaulistaDlg::DoDataExchange(CDataExchange* pDX)
-{
-	CDialogEx::DoDataExchange(pDX);
-	DDX_Control(pDX, IDC_PIC1, m_Pic1);
-	DDX_Control(pDX, IDC_PIC2, m_Pic2);
-	DDX_Control(pDX, IDC_PIC3, m_Pic3);
-	DDX_Control(pDX, IDC_PIC4, m_PicMesa);
-	DDX_Control(pDX, IDC_PIC5, m_PicCartaOp1);
-	DDX_Control(pDX, IDC_PIC7, m_PicCartaOp2);
-	DDX_Control(pDX, IDC_PIC6, m_PicCartaOp3);
-	DDX_Control(pDX, IDC_PIC9, m_PicCartaOp21);
-	DDX_Control(pDX, IDC_PIC11, m_PicCartaOp22);
-	DDX_Control(pDX, IDC_PIC10, m_PicCartaOp23);
-	DDX_Control(pDX, IDC_PIC13, m_PicCartaParc1);
-	DDX_Control(pDX, IDC_PIC12, m_PicCartaParc2);
-	DDX_Control(pDX, IDC_PIC8, m_PicCartaParc3);
-	DDX_Control(pDX, IDC_PIC15, m_PicBaralho);
-	DDX_Control(pDX, IDC_PIC14, m_PicVira);
-	DDX_Control(pDX, IDC_PIC_CARTA_H1_R1, m_CartaH1_R1);
-	DDX_Control(pDX, IDC_PIC_CARTA_H2_R1, m_CartaH2_R1);
-	DDX_Control(pDX, IDC_PIC_CARTA_H1_R2, m_CartaH1_R2);
-	DDX_Control(pDX, IDC_PIC_CARTA_H2_R2, m_CartaH2_R2);
-	DDX_Control(pDX, IDC_PIC_CARTA_H1_R3, m_CartaH1_R3);
-	DDX_Control(pDX, IDC_PIC_CARTA_H2_R3, m_CartaH2_R3);
-	DDX_Control(pDX, IDC_PIC_CARTA_BOT1_R1, m_CartaBOT1_R1);
-	DDX_Control(pDX, IDC_PIC_CARTA_BOT1_R2, m_CartaBOT1_R2);
-	DDX_Control(pDX, IDC_PIC_CARTA_BOT1_R3, m_CartaBOT1_R3);
-	DDX_Control(pDX, IDC_PIC_CARTA_BOT2_R1, m_CartaBOT2_R1);
-	DDX_Control(pDX, IDC_PIC_CARTA_BOT2_R2, m_CartaBOT2_R2);
-	DDX_Control(pDX, IDC_PIC_CARTA_BOT2_R3, m_CartaBOT2_R3);
-}
-
-BEGIN_MESSAGE_MAP(CTrucoPaulistaDlg, CDialogEx)
-	ON_WM_CTLCOLOR()
-	ON_WM_PAINT()
-	ON_WM_QUERYDRAGICON()
-	ON_BN_CLICKED(IDM_ABOUTBOX, &CTrucoPaulistaDlg::OnBnClickedAbout)
-	ON_BN_CLICKED(ID_SYNC, &CTrucoPaulistaDlg::OnBnClickedSync)
-	ON_BN_CLICKED(IDC_BUTTON1, &CTrucoPaulistaDlg::OnBnClickedButton1)
-	ON_STN_CLICKED(IDC_PIC3, &CTrucoPaulistaDlg::OnStnClickedPic3)
-	ON_STN_CLICKED(IDC_PIC2, &CTrucoPaulistaDlg::OnStnClickedPic2)
-	ON_STN_CLICKED(IDC_PIC1, &CTrucoPaulistaDlg::OnStnClickedPic1)
-	ON_BN_CLICKED(IDC_TRUCAR, &CTrucoPaulistaDlg::OnBnClickedTrucar)
-	ON_BN_CLICKED(IDC_CORRER, &CTrucoPaulistaDlg::OnBnClickedCorrer)
-	ON_STN_CLICKED(IDC_PIC_PARC3, &CTrucoPaulistaDlg::OnStnClickedPicParc3)
-	ON_STN_CLICKED(IDC_PIC_PARC2, &CTrucoPaulistaDlg::OnStnClickedPicParc2)
-	ON_STN_CLICKED(IDC_PIC_PARC1, &CTrucoPaulistaDlg::OnStnClickedPicParc1)
-	ON_BN_CLICKED(IDC_TRUCAR2, &CTrucoPaulistaDlg::OnBnClickedTrucar2)
-	ON_BN_CLICKED(IDC_CORRER2, &CTrucoPaulistaDlg::OnBnClickedCorrer2)
-	ON_BN_CLICKED(IDC_SALVAR, &CTrucoPaulistaDlg::OnBnClickedSalvar)
-END_MESSAGE_MAP()
-
-
-HBRUSH CTrucoPaulistaDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
-{
-	switch (nCtlColor)
-	{
-	case CTLCOLOR_STATIC:
-		if (pWnd->GetSafeHwnd() == GetDlgItem(IDC_SUAVEZ_H1)->GetSafeHwnd() ||
-			pWnd->GetSafeHwnd() == GetDlgItem(IDC_SUAVEZ_H2)->GetSafeHwnd())
-		{
-			pDC->SetTextColor(RGB(255, 0, 0));
-			return (HBRUSH)GetStockObject(NULL_BRUSH);
-		}
-		return CDialog::OnCtlColor(pDC, pWnd, nCtlColor);
-
-	default:
-		return CDialog::OnCtlColor(pDC, pWnd, nCtlColor);
-	}
-}
 
 BOOL CTrucoPaulistaDlg::OnInitDialog()
 {
@@ -158,7 +71,6 @@ BOOL CTrucoPaulistaDlg::OnInitDialog()
 	LOGFONT lf;
 	currentFont->GetLogFont(&lf);
 	lf.lfHeight = 28;
-
 	m_Font.DeleteObject();
 	m_Font.CreateFontIndirect(&lf);
 
@@ -168,13 +80,7 @@ BOOL CTrucoPaulistaDlg::OnInitDialog()
 	m_MesaView = new MesaView(this);
 	m_Cliente = new DadosInstanciaCliente();
 	partida = new Partida(this);
-
-	m_JogadorHumano1View = nullptr;
-	m_JogadorHumano2View = nullptr;
-	m_JogadorBot1View = nullptr;
-	m_JogadorBot2View = nullptr;
 	JogadorView::ControiJogadoresView(this, m_Cliente, partida);
-
 	partidaMessagesController = new PartidaMessagesController(this, m_Instance == 1);
 	persistencia = new PersistenciaController(partida);
 	cartaCoberta = new CartaCoberta();
@@ -187,26 +93,14 @@ BOOL CTrucoPaulistaDlg::OnInitDialog()
 	{
 		InicializarPartidaCliente();
 	}
+
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
-
-void CTrucoPaulistaDlg::InitFontToText(int idText)
-{
-	CStatic* pStaticText = (CStatic*)GetDlgItem(idText);
-	if (pStaticText)
-	{
-		pStaticText->SetFont(&m_Font);
-		pStaticText->ShowWindow(SW_HIDE);
-	}
-}
-
-
 
 void CTrucoPaulistaDlg::InicializarPartidaCliente()
 {
 	InicializaRodada();
 }
-
 
 void CTrucoPaulistaDlg::InicializaTelaInicial()
 {
@@ -242,123 +136,10 @@ void CTrucoPaulistaDlg::InicializaPartida()
 	DoisJogadores = doisJogadores;
 	partida->InicializarPartida(doisJogadores ? 2 : 4, TwoInstances);
 	JogadorView::ControiJogadoresView(this, m_Cliente, partida);
+	partida->InicializarRodada();
 	InicializaRodada();
 }
 
-
-
-BOOL CTrucoPaulistaDlg::VerifyInstances()
-{
-	m_Instance = 2;
-	m_hMutex = CreateMutex(NULL, FALSE, _T("TrucoPaulista"));
-	if (GetLastError() == ERROR_ALREADY_EXISTS)
-	{
-		SetWindowText(_T("Truco Paulista - HUMANO 2"));
-		ReleaseMutex(m_hMutex);
-
-		if (WaitForSingleObject(m_hMutex, 0) == WAIT_TIMEOUT)
-		{
-			// AfxMessageBox(_T("Apenas duas instâncias do aplicativo são permitidas."));
-			PostMessage(WM_CLOSE);
-		}
-	}
-	else
-	{
-
-		m_Instance = 1;
-		SetWindowText(_T("Truco Paulista - HUMANO 1"));
-
-	}
-	return TRUE;
-}
-
-
-void CTrucoPaulistaDlg::SetBitmapOnStaticControl(CStatic& staticControl, CBitmap& bitmap)
-{
-	staticControl.ModifyStyle(SS_ENHMETAFILE, SS_BITMAP | SS_CENTERIMAGE);
-
-	CRect rect;
-	staticControl.GetClientRect(&rect);
-	//rect.InflateRect(3, 3);
-
-	CDC dc;
-	dc.CreateCompatibleDC(nullptr);
-
-	dc.SelectObject(&bitmap);
-
-	BITMAP bmpInfo;
-	bitmap.GetBitmap(&bmpInfo);
-	int bmpWidth = bmpInfo.bmWidth;
-	int bmpHeight = bmpInfo.bmHeight;
-
-	CBitmap bmpResized;
-	bmpResized.CreateCompatibleBitmap(&dc, rect.Width(), rect.Height());
-
-	CDC dcResized;
-	dcResized.CreateCompatibleDC(nullptr);
-	dcResized.SelectObject(&bmpResized);
-
-	dcResized.SetStretchBltMode(HALFTONE);
-
-	dcResized.SetBrushOrg(0, 0);
-	dcResized.SetStretchBltMode(COLORONCOLOR);
-	dcResized.SetBrushOrg(0, 0);
-	dcResized.StretchBlt(0, 0, rect.Width(), rect.Height(), &dc, 0, 0, bmpWidth, bmpHeight, SRCCOPY);
-
-	staticControl.SetBitmap((HBITMAP)bmpResized.Detach());
-}
-
-void CTrucoPaulistaDlg::OnPaint()
-{
-	if (IsIconic())
-	{
-		CPaintDC dc(this); // device context for painting
-
-		SendMessage(WM_ICONERASEBKGND, reinterpret_cast<WPARAM>(dc.GetSafeHdc()), 0);
-
-		// Center icon in client rectangle
-		int cxIcon = GetSystemMetrics(SM_CXICON);
-		int cyIcon = GetSystemMetrics(SM_CYICON);
-		CRect rect;
-		GetClientRect(&rect);
-		int x = (rect.Width() - cxIcon + 1) / 2;
-		int y = (rect.Height() - cyIcon + 1) / 2;
-
-		// Draw the icon
-		dc.DrawIcon(x, y, m_hIcon);
-	}
-	else
-	{
-		CDialogEx::OnPaint();
-	}
-}
-
-HCURSOR CTrucoPaulistaDlg::OnQueryDragIcon()
-{
-	return static_cast<HCURSOR>(m_hIcon);
-}
-
-void CTrucoPaulistaDlg::OnBnClickedAbout()
-{
-	CAboutDlg dlgAbout;
-	dlgAbout.DoModal();
-}
-
-void CTrucoPaulistaDlg::CreateNewInstance()
-{
-	HWND hwndExistingInstance = ::FindWindow(NULL, m_Instance == 1 ? _T("Truco Paulista - HUMANO 2") : _T("Truco Paulista - HUMANO 1"));
-	if (hwndExistingInstance == NULL)
-	{
-		TCHAR szExePath[MAX_PATH];
-		if (GetModuleFileName(NULL, szExePath, MAX_PATH) != 0)
-		{
-			if (ShellExecute(NULL, _T("open"), szExePath, NULL, NULL, SW_SHOWNORMAL) <= (HINSTANCE)32)
-			{
-				AfxMessageBox(_T("Falha ao abrir a segunda instância do aplicativo."));
-			}
-		}
-	}
-}
 
 void CTrucoPaulistaDlg::OnBnClickedSync()
 {
@@ -424,7 +205,7 @@ void CTrucoPaulistaDlg::OnStnClickedPic2()
 
 void CTrucoPaulistaDlg::OnStnClickedPic1()
 {
-	JogadorClicouNaCarta(partida->ObtemJogadorHumano1(), 3);
+	JogadorClicouNaCarta(partida->ObtemJogadorHumano1(), 1);
 }
 
 void CTrucoPaulistaDlg::OnStnClickedPicParc3()
@@ -452,88 +233,42 @@ int CTrucoPaulistaDlg::ObtemNumeroDaRodada()
 	return m_Cliente->ObtemRodadaAtual();
 }
 
-void CTrucoPaulistaDlg::MouseLeftClick(int idControl)
+void CTrucoPaulistaDlg::JogadorCobriuACarta(int idControl)
 {
-	switch (idControl)
+	if (partida->ObtemNumeroDaRodada() > 1)
 	{
-	case IDC_PIC1:
-		if (JogadorSolicitado == partida->ObtemJogadorHumano1() && partida->ObtemNumeroDaRodada() > 1)
+		if (idControl >= IDC_PIC1 && idControl <= IDC_PIC3)
 		{
-			const Carta* carta = JogadorSolicitado->PrimeiraCartaNaMao();
-			m_JogadorHumano1View->JogouACarta(carta, true);
-			partida->JogadorJogouACarta(JogadorSolicitado, carta, true);
+			if (JogadorSolicitado == partida->ObtemJogadorHumano1())
+			{
+				const Carta* carta = JogadorSolicitado->getjogadabot(idControl - IDC_PIC1);
+				m_JogadorHumano1View->JogouACarta(carta, true);
+				partida->JogadorJogouACarta(JogadorSolicitado, carta, true);
+			}
 		}
-		break;
-
-	case IDC_PIC2:
-		if (JogadorSolicitado == partida->ObtemJogadorHumano1() && partida->ObtemNumeroDaRodada() > 1)
-		{
-			const Carta* carta = JogadorSolicitado->SegundaCartaNaMao();
-			m_JogadorHumano1View->JogouACarta(carta, true);
-			partida->JogadorJogouACarta(JogadorSolicitado, carta, true);
-		}
-		break;
-
-	case IDC_PIC3:
-		if (JogadorSolicitado == partida->ObtemJogadorHumano1() && partida->ObtemNumeroDaRodada() > 1)
-		{
-			const Carta* carta = JogadorSolicitado->TerceiraCartaNaMao();
-			m_JogadorHumano1View->JogouACarta(carta, true);
-			partida->JogadorJogouACarta(JogadorSolicitado, carta, true);
-		}
-		break;
-
-	case IDC_PIC_PARC1:
-		if (JogadorSolicitado == partida->ObtemJogadorHumano2() && ObtemNumeroDaRodada() > 1)
+		else if (JogadorSolicitado == partida->ObtemJogadorHumano2())
 		{
 			if (m_Instance == 2)
 			{
 				m_PicCartaParc1.ShowWindow(SW_HIDE);
-				partidaMessagesController->JogadorJogouCarta(3, true);
+				partidaMessagesController->JogadorJogouCarta(idControl - IDC_PIC_PARC1 + 1, true);
 			}
 			else if (!TwoInstances)
 			{
-				const Carta* carta = JogadorSolicitado->PrimeiraCartaNaMao();
+				const Carta* carta = JogadorSolicitado->getjogadabot(idControl - IDC_PIC_PARC1);
 				m_JogadorHumano2View->JogouACarta(carta, true);
 				partida->JogadorJogouACarta(JogadorSolicitado, carta, true);
 			}
 		}
-		break;
-
-	case IDC_PIC_PARC2:
-		if (JogadorSolicitado == partida->ObtemJogadorHumano2() && ObtemNumeroDaRodada() > 1)
-		{
-			if (m_Instance == 2)
-			{
-				m_PicCartaParc2.ShowWindow(SW_HIDE);
-				partidaMessagesController->JogadorJogouCarta(3, true);
-			}
-			else if (!TwoInstances)
-			{
-				const Carta* carta = JogadorSolicitado->SegundaCartaNaMao();
-				m_JogadorHumano2View->JogouACarta(carta, true);
-				partida->JogadorJogouACarta(JogadorSolicitado, carta, true);
-			}
-		}
-		break;
-
-	case IDC_PIC_PARC3:
-		if (JogadorSolicitado == partida->ObtemJogadorHumano2() && ObtemNumeroDaRodada() > 1)
-		{
-			if (m_Instance == 2)
-			{
-				m_PicCartaParc3.ShowWindow(SW_HIDE);
-				partidaMessagesController->JogadorJogouCarta(3, true);
-			}
-			else if (!TwoInstances)
-			{
-				const Carta* carta = JogadorSolicitado->TerceiraCartaNaMao();
-				m_JogadorHumano2View->JogouACarta(carta, true);
-				partida->JogadorJogouACarta(JogadorSolicitado, carta, true);
-			}
-		}
-		break;
 	}
+}
+
+
+void CTrucoPaulistaDlg::MouseLeftClick(int idControl)
+{
+	OutputDebugString(_T("CTrucoPaulistaDlg::MouseLeftClick()\n"));
+
+	JogadorCobriuACarta(idControl);
 }
 
 
@@ -548,7 +283,6 @@ void CTrucoPaulistaDlg::onFimDaPartida(Jogador* JogadorQueGanhou)
 
 	std::string playerName = JogadorQueGanhou->ObtemNome();
 	CString strPlayerName(playerName.c_str());
-
 	CString str;
 	str.Format(_T("PARABENS !!!! O jogador %s ganhou a PARTIDA!!!!"), strPlayerName);
 
@@ -560,7 +294,8 @@ void CTrucoPaulistaDlg::onFimDaPartida(Jogador* JogadorQueGanhou)
 	AfxMessageBox(str, MB_ICONINFORMATION | MB_OK);
 
 	partida->InicializarPartida(DoisJogadores ? 2 : 4, TwoInstances);
-
+	JogadorView::ControiJogadoresView(this, m_Cliente, partida);
+	partida->InicializarRodada();
 	InicializaRodada();
 }
 
@@ -575,18 +310,17 @@ void CTrucoPaulistaDlg::onInicioDaRodada(int numeroRodada)
 
 void CTrucoPaulistaDlg::onAceitouTruco(Jogador* jogador)
 {
+	OutputDebugString(_T("CTrucoPaulistaDlg::onAceitouTruco()\n"));
+
 	if (jogador->EhUmBot())
 	{
 		std::string playerName = jogador->ObtemNome();
 		CString strPlayerName(playerName.c_str());
-
 		CString str;
 		str.Format(_T("Jogador %s aceitou o Truco... Manda !"), strPlayerName);
 		AddOutput(str);
-
 		if (m_Instance == 1 && TwoInstances)
 			partidaMessagesController->EnviaAceitouTruco(jogador->ObtemNumeroJogador());
-
 		AfxMessageBox(str, MB_ICONINFORMATION | MB_OK);
 	}
 
@@ -659,6 +393,20 @@ void CTrucoPaulistaDlg::AddOutput(const CString& novaLinha)
 	pEdit->LineScroll(pEdit->GetLineCount());
 }
 
+void CTrucoPaulistaDlg::AtualizaDeQuemEhAVezDeJogar(Jogador* jogador)
+{
+	if (jogador->ObtemNumeroJogador() == 1)
+	{
+		JogadorView::AtualizaStatusDoJogadorEscolhido(this, StatusJogador::SuaVez, jogador);
+		JogadorView::AtualizaStatusDoJogadorEscolhido(this, StatusJogador::NaoEhSuaVez, partida->ObtemJogadorHumano2());
+	}
+	else if (jogador->ObtemNumeroJogador() == 3 && !TwoInstances)
+	{
+		JogadorView::AtualizaStatusDoJogadorEscolhido(this, StatusJogador::SuaVez, jogador);
+		JogadorView::AtualizaStatusDoJogadorEscolhido(this, StatusJogador::NaoEhSuaVez, partida->ObtemJogadorHumano1());
+	}
+}
+
 void CTrucoPaulistaDlg::solicitaJogadorJogar(Jogador* jogador)
 {
 	OutputDebugString(_T("CTrucoPaulistaDlg::solicitaJogadorJogar()\n"));
@@ -670,16 +418,7 @@ void CTrucoPaulistaDlg::solicitaJogadorJogar(Jogador* jogador)
 	str.Format(_T("Sua Vez %s..."), strPlayerName);
 	AddOutput(str);
 
-	if (jogador->ObtemNumeroJogador() == 1)
-	{
-		JogadorView::AtualizaStatusDoJogadorEscolhido(this, StatusJogador::SuaVez, jogador);
-		JogadorView::AtualizaStatusDoJogadorEscolhido(this, StatusJogador::NaoEhSuaVez, partida->ObtemJogadorHumano2());
-	}
-	else if (jogador->ObtemNumeroJogador() == 3 && !TwoInstances)
-	{
-		JogadorView::AtualizaStatusDoJogadorEscolhido(this, StatusJogador::SuaVez, jogador);
-		JogadorView::AtualizaStatusDoJogadorEscolhido(this, StatusJogador::NaoEhSuaVez, partida->ObtemJogadorHumano1());
-	}
+	AtualizaDeQuemEhAVezDeJogar(jogador);
 
 	JogadorSolicitado = jogador;
 
@@ -691,6 +430,8 @@ void CTrucoPaulistaDlg::solicitaJogadorJogar(Jogador* jogador)
 
 void CTrucoPaulistaDlg::onBotJogouACarta(int NumeroDaRodada, Jogador* jogadorAjogar, const Carta* cartaJogada, bool cartaCoberta)
 {
+	OutputDebugString(_T("CTrucoPaulistaDlg::onBotJogouACarta()\n"));
+
 	std::string playerName = jogadorAjogar->ObtemNome();
 	CString strPlayerName(playerName.c_str());
 
@@ -711,6 +452,8 @@ void CTrucoPaulistaDlg::onBotJogouACarta(int NumeroDaRodada, Jogador* jogadorAjo
 
 void CTrucoPaulistaDlg::onPedeTruco()
 {
+	OutputDebugString(_T("CTrucoPaulistaDlg::onPedeTruco()\n"));
+
 	Jogador* jogador = partida->GetProximoJogador();
 
 	CString quantovale = partida->ObterMensagemDeQuantoVale();
@@ -734,6 +477,8 @@ void CTrucoPaulistaDlg::onPedeTruco()
 
 void CTrucoPaulistaDlg::onAcabouARodada(Jogador* JogadorQueGanhou)
 {
+	OutputDebugString(_T("CTrucoPaulistaDlg::onAcabouARodada()\n"));
+
 	std::string playerName = JogadorQueGanhou->ObtemNome();
 	CString strPlayerName(playerName.c_str());
 
@@ -751,6 +496,16 @@ void CTrucoPaulistaDlg::onAcabouARodada(Jogador* JogadorQueGanhou)
 	InicializaRodada();
 	if (botComeca)
 		partida->ProximoJogadorJoga();
+}
+
+void CTrucoPaulistaDlg::onCartaJogada(int NumeroDaRodada, Jogador* jogador, const Carta* carta, bool _cartaCoberta)
+{
+	OutputDebugString(_T("CTrucoPaulistaDlg::onCartaJogada()\n"));
+
+	if (TwoInstances && m_Instance == 1)
+	{
+		partidaMessagesController->AtualizaCartaJogada(NumeroDaRodada, jogador->ObtemNumeroJogador(), _cartaCoberta ? cartaCoberta->idResource : carta->idResource);
+	}
 }
 
 void CTrucoPaulistaDlg::AtualizaPlacar()
@@ -792,14 +547,10 @@ void CTrucoPaulistaDlg::AtualizaPlacarDePartidas()
 		partidaMessagesController->EnviaMsgDeAtualizaPlacar(partida->PartidasVencidasDaDupla1(), partida->PartidasVencidasDaDupla2());
 }
 
-
-
 void CTrucoPaulistaDlg::InicializaRodada()
 {
-	m_NumeroDaRodadaCliente = 1;
 	m_Cliente->InicializaRodada();
 	m_Cliente->JogadorPodePedirTruco();
-	m_PodeTrucarCliente = true;
 
 	AtualizaPlacar();
 
@@ -816,6 +567,8 @@ void CTrucoPaulistaDlg::InicializaRodada()
 		JogadorView::AtualizaStatusDosJogadores(this, StatusJogador::Inicia);
 		JogadorView::AtualizaStatusDosJogadores(this, StatusJogador::RecebeuCartas);
 		m_MesaView->InicializaRodada(partida->ObtemVira()->idResource);
+		Jogador* jogadorDaVez = partida->QuemJoga();
+		AtualizaDeQuemEhAVezDeJogar(jogadorDaVez);
 	}
 
 	if (m_Instance == 1)
@@ -924,7 +677,6 @@ void CTrucoPaulistaDlg::ShowMessageJogadorAceitouTruco(int jogadorqueTrucou)
 }
 void CTrucoPaulistaDlg::ShowMessageQuemGanhouaRodada(int numeroRodada, int jogadorGanhouRodada)
 {
-	m_NumeroDaRodadaCliente++;
 	m_Cliente->ProximaRodada();
 
 	Jogador* JogadorQueGanhou = partida->GetJogadorByID(jogadorGanhouRodada);
@@ -1124,18 +876,8 @@ void CTrucoPaulistaDlg::AtualizaCartasCliente(int c1, int c2, int c3, int c4)
 
 void CTrucoPaulistaDlg::AtualizaClientePodeTrucar(bool trucar)
 {
-	m_PodeTrucarCliente = trucar;
 	m_Cliente->SetaPodePedirTruco(trucar);
 }
-
-void CTrucoPaulistaDlg::onCartaJogada(int NumeroDaRodada, Jogador* jogador, const Carta* carta, bool _cartaCoberta)
-{
-	if (TwoInstances && m_Instance == 1)
-	{
-		partidaMessagesController->AtualizaCartaJogada(NumeroDaRodada, jogador->ObtemNumeroJogador(), _cartaCoberta ? cartaCoberta->idResource : carta->idResource);
-	}
-}
-
 
 void CTrucoPaulistaDlg::OnBnClickedTrucar2()
 {
@@ -1190,3 +932,222 @@ void CTrucoPaulistaDlg::CleanCheckBox()
 	}
 }
 
+BOOL CTrucoPaulistaDlg::PreTranslateMessage(MSG* pMsg)
+{
+	// Msg trocada entre instancias
+	if (pMsg->message >= WM_CUSTOM_MESSAGE_INICIO && pMsg->message <= WM_CUSTOM_MESSAGE_FIM)
+	{
+		partidaMessagesController->OnReceiveMessage(pMsg);
+		return TRUE;
+	}
+
+	//Right click
+	if (pMsg->message == WM_RBUTTONDOWN)
+	{
+		CPoint point;
+		GetCursorPos(&point);
+		ScreenToClient(&point);
+
+		CWnd* pWnd = ChildWindowFromPoint(point, CWP_ALL);
+		if (pWnd)
+		{
+			MouseLeftClick(pWnd->GetDlgCtrlID());
+			return TRUE;
+		}
+	}
+
+	return CDialogEx::PreTranslateMessage(pMsg);
+}
+
+void CTrucoPaulistaDlg::DoDataExchange(CDataExchange* pDX)
+{
+	CDialogEx::DoDataExchange(pDX);
+	DDX_Control(pDX, IDC_PIC1, m_Pic1);
+	DDX_Control(pDX, IDC_PIC2, m_Pic2);
+	DDX_Control(pDX, IDC_PIC3, m_Pic3);
+	DDX_Control(pDX, IDC_PIC4, m_PicMesa);
+	DDX_Control(pDX, IDC_PIC5, m_PicCartaOp1);
+	DDX_Control(pDX, IDC_PIC7, m_PicCartaOp2);
+	DDX_Control(pDX, IDC_PIC6, m_PicCartaOp3);
+	DDX_Control(pDX, IDC_PIC9, m_PicCartaOp21);
+	DDX_Control(pDX, IDC_PIC11, m_PicCartaOp22);
+	DDX_Control(pDX, IDC_PIC10, m_PicCartaOp23);
+	DDX_Control(pDX, IDC_PIC13, m_PicCartaParc1);
+	DDX_Control(pDX, IDC_PIC12, m_PicCartaParc2);
+	DDX_Control(pDX, IDC_PIC8, m_PicCartaParc3);
+	DDX_Control(pDX, IDC_PIC15, m_PicBaralho);
+	DDX_Control(pDX, IDC_PIC14, m_PicVira);
+	DDX_Control(pDX, IDC_PIC_CARTA_H1_R1, m_CartaH1_R1);
+	DDX_Control(pDX, IDC_PIC_CARTA_H2_R1, m_CartaH2_R1);
+	DDX_Control(pDX, IDC_PIC_CARTA_H1_R2, m_CartaH1_R2);
+	DDX_Control(pDX, IDC_PIC_CARTA_H2_R2, m_CartaH2_R2);
+	DDX_Control(pDX, IDC_PIC_CARTA_H1_R3, m_CartaH1_R3);
+	DDX_Control(pDX, IDC_PIC_CARTA_H2_R3, m_CartaH2_R3);
+	DDX_Control(pDX, IDC_PIC_CARTA_BOT1_R1, m_CartaBOT1_R1);
+	DDX_Control(pDX, IDC_PIC_CARTA_BOT1_R2, m_CartaBOT1_R2);
+	DDX_Control(pDX, IDC_PIC_CARTA_BOT1_R3, m_CartaBOT1_R3);
+	DDX_Control(pDX, IDC_PIC_CARTA_BOT2_R1, m_CartaBOT2_R1);
+	DDX_Control(pDX, IDC_PIC_CARTA_BOT2_R2, m_CartaBOT2_R2);
+	DDX_Control(pDX, IDC_PIC_CARTA_BOT2_R3, m_CartaBOT2_R3);
+}
+
+BEGIN_MESSAGE_MAP(CTrucoPaulistaDlg, CDialogEx)
+	ON_WM_CTLCOLOR()
+	ON_WM_PAINT()
+	ON_WM_QUERYDRAGICON()
+	ON_BN_CLICKED(IDM_ABOUTBOX, &CTrucoPaulistaDlg::OnBnClickedAbout)
+	ON_BN_CLICKED(ID_SYNC, &CTrucoPaulistaDlg::OnBnClickedSync)
+	ON_BN_CLICKED(IDC_BUTTON1, &CTrucoPaulistaDlg::OnBnClickedButton1)
+	ON_STN_CLICKED(IDC_PIC3, &CTrucoPaulistaDlg::OnStnClickedPic3)
+	ON_STN_CLICKED(IDC_PIC2, &CTrucoPaulistaDlg::OnStnClickedPic2)
+	ON_STN_CLICKED(IDC_PIC1, &CTrucoPaulistaDlg::OnStnClickedPic1)
+	ON_BN_CLICKED(IDC_TRUCAR, &CTrucoPaulistaDlg::OnBnClickedTrucar)
+	ON_BN_CLICKED(IDC_CORRER, &CTrucoPaulistaDlg::OnBnClickedCorrer)
+	ON_STN_CLICKED(IDC_PIC_PARC3, &CTrucoPaulistaDlg::OnStnClickedPicParc3)
+	ON_STN_CLICKED(IDC_PIC_PARC2, &CTrucoPaulistaDlg::OnStnClickedPicParc2)
+	ON_STN_CLICKED(IDC_PIC_PARC1, &CTrucoPaulistaDlg::OnStnClickedPicParc1)
+	ON_BN_CLICKED(IDC_TRUCAR2, &CTrucoPaulistaDlg::OnBnClickedTrucar2)
+	ON_BN_CLICKED(IDC_CORRER2, &CTrucoPaulistaDlg::OnBnClickedCorrer2)
+	ON_BN_CLICKED(IDC_SALVAR, &CTrucoPaulistaDlg::OnBnClickedSalvar)
+END_MESSAGE_MAP()
+
+
+HBRUSH CTrucoPaulistaDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
+{
+	switch (nCtlColor)
+	{
+	case CTLCOLOR_STATIC:
+		if (pWnd->GetSafeHwnd() == GetDlgItem(IDC_SUAVEZ_H1)->GetSafeHwnd() ||
+			pWnd->GetSafeHwnd() == GetDlgItem(IDC_SUAVEZ_H2)->GetSafeHwnd())
+		{
+			pDC->SetTextColor(RGB(255, 0, 0));
+			return (HBRUSH)GetStockObject(NULL_BRUSH);
+		}
+		return CDialog::OnCtlColor(pDC, pWnd, nCtlColor);
+
+	default:
+		return CDialog::OnCtlColor(pDC, pWnd, nCtlColor);
+	}
+}
+
+
+BOOL CTrucoPaulistaDlg::VerifyInstances()
+{
+	m_Instance = 2;
+	m_hMutex = CreateMutex(NULL, FALSE, _T("TrucoPaulista"));
+	if (GetLastError() == ERROR_ALREADY_EXISTS)
+	{
+		SetWindowText(_T("Truco Paulista - HUMANO 2"));
+		ReleaseMutex(m_hMutex);
+
+		if (WaitForSingleObject(m_hMutex, 0) == WAIT_TIMEOUT)
+		{
+			// AfxMessageBox(_T("Apenas duas instâncias do aplicativo são permitidas."));
+			PostMessage(WM_CLOSE);
+		}
+	}
+	else
+	{
+		m_Instance = 1;
+		SetWindowText(_T("Truco Paulista - HUMANO 1"));
+
+	}
+	return TRUE;
+}
+
+void CTrucoPaulistaDlg::InitFontToText(int idText)
+{
+	CStatic* pStaticText = (CStatic*)GetDlgItem(idText);
+	if (pStaticText)
+	{
+		pStaticText->SetFont(&m_Font);
+		pStaticText->ShowWindow(SW_HIDE);
+	}
+}
+
+void CTrucoPaulistaDlg::SetBitmapOnStaticControl(CStatic& staticControl, CBitmap& bitmap)
+{
+	staticControl.ModifyStyle(SS_ENHMETAFILE, SS_BITMAP | SS_CENTERIMAGE);
+
+	CRect rect;
+	staticControl.GetClientRect(&rect);
+	//rect.InflateRect(3, 3);
+
+	CDC dc;
+	dc.CreateCompatibleDC(nullptr);
+
+	dc.SelectObject(&bitmap);
+
+	BITMAP bmpInfo;
+	bitmap.GetBitmap(&bmpInfo);
+	int bmpWidth = bmpInfo.bmWidth;
+	int bmpHeight = bmpInfo.bmHeight;
+
+	CBitmap bmpResized;
+	bmpResized.CreateCompatibleBitmap(&dc, rect.Width(), rect.Height());
+
+	CDC dcResized;
+	dcResized.CreateCompatibleDC(nullptr);
+	dcResized.SelectObject(&bmpResized);
+
+	dcResized.SetStretchBltMode(HALFTONE);
+
+	dcResized.SetBrushOrg(0, 0);
+	dcResized.SetStretchBltMode(COLORONCOLOR);
+	dcResized.SetBrushOrg(0, 0);
+	dcResized.StretchBlt(0, 0, rect.Width(), rect.Height(), &dc, 0, 0, bmpWidth, bmpHeight, SRCCOPY);
+
+	staticControl.SetBitmap((HBITMAP)bmpResized.Detach());
+}
+
+void CTrucoPaulistaDlg::OnPaint()
+{
+	if (IsIconic())
+	{
+		CPaintDC dc(this); // device context for painting
+
+		SendMessage(WM_ICONERASEBKGND, reinterpret_cast<WPARAM>(dc.GetSafeHdc()), 0);
+
+		// Center icon in client rectangle
+		int cxIcon = GetSystemMetrics(SM_CXICON);
+		int cyIcon = GetSystemMetrics(SM_CYICON);
+		CRect rect;
+		GetClientRect(&rect);
+		int x = (rect.Width() - cxIcon + 1) / 2;
+		int y = (rect.Height() - cyIcon + 1) / 2;
+
+		// Draw the icon
+		dc.DrawIcon(x, y, m_hIcon);
+	}
+	else
+	{
+		CDialogEx::OnPaint();
+	}
+}
+
+HCURSOR CTrucoPaulistaDlg::OnQueryDragIcon()
+{
+	return static_cast<HCURSOR>(m_hIcon);
+}
+
+void CTrucoPaulistaDlg::OnBnClickedAbout()
+{
+	CAboutDlg dlgAbout;
+	dlgAbout.DoModal();
+}
+
+void CTrucoPaulistaDlg::CreateNewInstance()
+{
+	HWND hwndExistingInstance = ::FindWindow(NULL, m_Instance == 1 ? _T("Truco Paulista - HUMANO 2") : _T("Truco Paulista - HUMANO 1"));
+	if (hwndExistingInstance == NULL)
+	{
+		TCHAR szExePath[MAX_PATH];
+		if (GetModuleFileName(NULL, szExePath, MAX_PATH) != 0)
+		{
+			if (ShellExecute(NULL, _T("open"), szExePath, NULL, NULL, SW_SHOWNORMAL) <= (HINSTANCE)32)
+			{
+				AfxMessageBox(_T("Falha ao abrir a segunda instância do aplicativo."));
+			}
+		}
+	}
+}

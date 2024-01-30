@@ -69,8 +69,6 @@ void Partida::InicializarPartida(int quantosJogadores, bool duasInstancias)
 	QuemComecaRodada = Dupla1[0];
 	Rodadas->SetPlacar(placar);
 	Rodadas->SetDuplas(Dupla1);
-
-	InicializarRodada();
 }
 
 void Partida::GanhouPartida()
@@ -427,8 +425,6 @@ void Partida::AcabouRodada(Jogador* ganhou)
 	}
 
 	EventosDaPartida->onAcabouARodada(ganhou);
-
-
 }
 
 

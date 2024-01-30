@@ -36,7 +36,7 @@ void RodadasController::InicializarRodada(Carta *vira)
 	Vira = vira;
 
 	NumeroDaRodada = 1;
-	QuantoValeARodada = 1;
+	QuantoValeARodada = placar_->EhMaoDe11() ? 3 : 1;
 	QuantasVezesTrucou = 0;
 
 	delete Rodadas[0];

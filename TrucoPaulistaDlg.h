@@ -29,6 +29,8 @@ public:
 	void CleanOutput();
 	void AddOutput(const CString& novaLinha);
 	void AtualizaTento();
+	void JogadorCobriuACarta(int idControl);
+	void AtualizaDeQuemEhAVezDeJogar(Jogador* jogador);
 
 	void InicializaTelaInicial();
 	void InicializaPartida();
@@ -62,8 +64,6 @@ public:
 
 	void MouseLeftClick(int idControl);
 	int ObtemNumeroDaRodada();
-	int m_NumeroDaRodadaCliente;
-	bool m_PodeTrucarCliente;
 
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
 
