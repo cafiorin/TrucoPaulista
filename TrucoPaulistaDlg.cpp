@@ -1557,6 +1557,8 @@ void CTrucoPaulistaDlg::OnBnClickedRecarregar() {
 
 	Partida* ultimaPartida = persistencia->RecriarPartida();
 	ultimaPartida->AtualizarEventosDaPartida(this);
+
+	//TODO: criar segunda instância e passar valores para ela
 }
 
 void CTrucoPaulistaDlg::OnBnClickedSalvar()
