@@ -201,7 +201,7 @@ void JogadorView::AtualizaStatusDoJogador(StatusJogador status)
 
 	void JogadorView::JogouACarta(const Carta * carta, bool cartaCoberta)
 	{
-		m_pDialog->m_MesaView->JogadorJogouACarta(m_Jogador, carta, cartaCoberta, m_Partida->ObtemNumeroDaRodada(), m_Partida->ObtemNumeroDeJogadores());
+		m_pDialog->m_MesaView->JogadorJogouACarta(m_Jogador, carta, cartaCoberta, m_Cliente->ObtemRodadaAtual(), m_Partida->ObtemNumeroDeJogadores());
 
 		if (m_Jogador->PrimeiraCartaNaMao()->idResource == carta->idResource)
 		{

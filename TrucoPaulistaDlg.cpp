@@ -79,8 +79,10 @@ BOOL CTrucoPaulistaDlg::OnInitDialog()
 	m_Font.DeleteObject();
 	m_Font.CreateFontIndirect(&lf);
 
-	SetIcon(m_hIcon, TRUE);			// Set big icon
-	SetIcon(m_hIcon, FALSE);		// Set small icon
+	HICON hIcon = LoadIcon(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDI_ICON1));
+	SetIcon(hIcon, TRUE);
+	SetIcon(hIcon, FALSE);
+
 
 	m_MesaView = new MesaView(this);
 	m_Cliente = new DadosInstanciaCliente();
@@ -177,16 +179,17 @@ void CTrucoPaulistaDlg::JogadorParceiroClicouNaCarta(Jogador* jogador, int posic
 	if (JogadorSolicitado != jogador || TwoInstances)
 		return;
 
-	if (partida->ObtemNumeroDeJogadores() == 4)
+	if (m_Instance == 2)
+	{
+		int ID = IDC_PIC13 - posicaoDaCarta + 1;
+		GetDlgItem(ID)->ShowWindow(SW_HIDE);
+		partidaMessagesController->JogadorJogouCarta(posicaoDaCarta, false);
+	}
+	else if (partida->ObtemNumeroDeJogadores() == 4)
 	{
 		const Carta* carta = jogador->getjogadabot(posicaoDaCarta - 1);
 		m_JogadorHumano2View->JogouACarta(carta);
 		partida->JogadorJogouACarta(jogador, carta, false);
-	}
-	else if (m_Instance == 2)
-	{
-		//TODO: m_PicCartaParc1.ShowWindow(SW_HIDE);
-		partidaMessagesController->JogadorJogouCarta(posicaoDaCarta, false);
 	}
 }
 
@@ -443,11 +446,9 @@ void CTrucoPaulistaDlg::onBotJogouACarta(int NumeroDaRodada, Jogador* jogadorAjo
 	Invalidate();
 }
 
-void CTrucoPaulistaDlg::onPedeTruco()
+void CTrucoPaulistaDlg::onPedeTruco(Jogador* jogador)
 {
 	OutputDebugString(_T("CTrucoPaulistaDlg::onPedeTruco()\n"));
-
-	Jogador* jogador = partida->GetProximoJogador();
 
 	CString quantovale = partida->ObterMensagemDeQuantoVale();
 	CString str;
@@ -514,6 +515,7 @@ void CTrucoPaulistaDlg::AtualizaPlacar()
 
 void CTrucoPaulistaDlg::AtualizaTento()
 {
+	m_PlacarView->AtualizaTento();
 	JogadorView::AtualizaStatusDosJogadores(this, StatusJogador::AtualizaTento);
 	if (m_Instance == 1 && TwoInstances)
 	{
@@ -536,18 +538,15 @@ void CTrucoPaulistaDlg::InicializaRodada()
 
 	AtualizaPlacar();
 
+	JogadorView::AtualizaStatusDosJogadores(this, StatusJogador::Inicia);
 
 	if (m_Instance == 1)
 	{
-		JogadorView::AtualizaStatusDosJogadores(this, StatusJogador::Inicia);
 		JogadorView::AtualizaStatusDosJogadores(this, StatusJogador::RecebeuCartas);
 		m_MesaView->InicializaRodada(partida->ObtemVira()->idResource);
 		Jogador* jogadorDaVez = partida->QuemJoga();
 		AtualizaDeQuemEhAVezDeJogar(jogadorDaVez);
-	}
 
-	if (m_Instance == 1)
-	{
 		CString quantovale = partida->ObterMensagemDeQuantoVale();
 		GetDlgItem(IDC_TRUCAR)->SetWindowTextW(quantovale);
 		GetDlgItem(IDC_TRUCAR2)->SetWindowTextW(quantovale);
@@ -576,7 +575,7 @@ void CTrucoPaulistaDlg::OnBnClickedTrucar()
 	Jogador* jogador = partida->ObtemJogadorHumano1();
 	if (JogadorSolicitado == jogador)
 	{
-		GetDlgItem(IDC_TRUCAR)->ShowWindow(SW_HIDE);
+		m_JogadorHumano1View->AtualizaStatusDoJogador(StatusJogador::Truca);
 		partida->JogadorTrucou(jogador);
 	}
 }
@@ -589,6 +588,40 @@ void CTrucoPaulistaDlg::OnBnClickedCorrer()
 		partida->JogadorCorreu(jogador);
 	}
 }
+
+void CTrucoPaulistaDlg::OnBnClickedTrucar2()
+{
+	Jogador* jogador = partida->ObtemJogadorHumano2();
+	if (JogadorSolicitado == jogador)
+	{
+		if (m_Instance == 2)
+		{
+			partidaMessagesController->EnviaTruco(jogador->ObtemNumeroJogador());
+		}
+		else
+		{
+			m_JogadorHumano2View->AtualizaStatusDoJogador(StatusJogador::Truca);
+			partida->JogadorTrucou(jogador);
+		}
+	}
+}
+
+void CTrucoPaulistaDlg::OnBnClickedCorrer2()
+{
+	Jogador* jogador = partida->ObtemJogadorHumano2();
+	if (JogadorSolicitado == jogador)
+	{
+		if (m_Instance == 2)
+		{
+			partidaMessagesController->EnviaCorreTruco(jogador->ObtemNumeroJogador());
+		}
+		else
+		{
+			partida->JogadorCorreu(jogador);
+		}
+	}
+}
+
 
 //Metodos da instancia Cliente
 
@@ -818,9 +851,9 @@ void CTrucoPaulistaDlg::AtualizaCartasCliente(int c1, int c2, int c3, int c4)
 	if (m_Instance == 2)
 	{
 		AtualizaClientePodeTrucar(true);
-		GetDlgItem(IDC_CORRER2)->ShowWindow(SW_SHOW);
-		GetDlgItem(IDC_TRUCAR)->ShowWindow(SW_HIDE);
-		GetDlgItem(IDC_CORRER)->ShowWindow(SW_HIDE);
+		m_JogadorBot1View->AtualizaStatusDoJogador(StatusJogador::RecebeuCartas);
+		m_JogadorBot2View->AtualizaStatusDoJogador(StatusJogador::RecebeuCartas);
+		m_JogadorHumano1View->AtualizaStatusDoJogador(StatusJogador::RecebeuCartas);
 
 		CartasBitmap cartaBitmap1(c1);
 		CartasBitmap cartaBitmap2(c2);
@@ -832,9 +865,14 @@ void CTrucoPaulistaDlg::AtualizaCartasCliente(int c1, int c2, int c3, int c4)
 		m_PicCartaParc1.ModifyStyle(0, SS_NOTIFY);
 		m_PicCartaParc2.ModifyStyle(0, SS_NOTIFY);
 		m_PicCartaParc3.ModifyStyle(0, SS_NOTIFY);
+		m_PicCartaParc1.ShowWindow(SW_SHOW);
+		m_PicCartaParc2.ShowWindow(SW_SHOW);
+		m_PicCartaParc3.ShowWindow(SW_SHOW);
 
 		CartasBitmap cartaBitmap4(c4);
 		SetBitmapOnStaticControl(m_PicVira, *cartaBitmap4.Getbitmap());
+		m_PicVira.ShowWindow(SW_SHOW);
+
 		Invalidate();
 	}
 }
@@ -842,40 +880,6 @@ void CTrucoPaulistaDlg::AtualizaCartasCliente(int c1, int c2, int c3, int c4)
 void CTrucoPaulistaDlg::AtualizaClientePodeTrucar(bool trucar)
 {
 	m_Cliente->SetaPodePedirTruco(trucar);
-}
-
-void CTrucoPaulistaDlg::OnBnClickedTrucar2()
-{
-	Jogador* jogador = partida->ObtemJogadorHumano2();
-	if (JogadorSolicitado == jogador)
-	{
-		if (m_Instance == 2)
-		{
-			partidaMessagesController->EnviaTruco(jogador->ObtemNumeroJogador());
-		}
-		else
-		{
-			GetDlgItem(IDC_TRUCAR2)->ShowWindow(SW_HIDE);
-			partida->JogadorTrucou(jogador);
-		}
-	}
-}
-
-void CTrucoPaulistaDlg::OnBnClickedCorrer2()
-{
-	Jogador* jogador = partida->ObtemJogadorHumano2();
-	if (JogadorSolicitado == jogador)
-	{
-		if (m_Instance == 2)
-		{
-			partidaMessagesController->EnviaCorreTruco(jogador->ObtemNumeroJogador());
-		}
-		else
-		{
-			GetDlgItem(IDC_TRUCAR2)->ShowWindow(SW_HIDE);
-			partida->JogadorCorreu(jogador);
-		}
-	}
 }
 
 void CTrucoPaulistaDlg::OnBnClickedSalvar()

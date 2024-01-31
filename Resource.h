@@ -66,6 +66,9 @@
 #define IDB_BITMAP_VAZIA_90             237
 #define IDB_BITMAP_VERSO_90             238
 #define IDB_BITMAP_MESA                 239
+#define IDI_ICON1                       240
+#define IDI_ICON2                       241
+#define IDI_ICON3                       242
 #define IDC_PIC1                        1000
 #define IDC_PIC2                        1001
 #define IDC_PIC3                        1002
@@ -131,7 +134,7 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        240
+#define _APS_NEXT_RESOURCE_VALUE        243
 #define _APS_NEXT_COMMAND_VALUE         32771
 #define _APS_NEXT_CONTROL_VALUE         1056
 #define _APS_NEXT_SYMED_VALUE           101

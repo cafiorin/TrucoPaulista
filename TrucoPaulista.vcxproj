@@ -326,6 +326,9 @@
     <Image Include="..\..\..\Users\TestDevice\Downloads\10-30-Playing-Cards-master\10-30-Playing-Cards\res\Pokers\dk.bmp" />
     <Image Include="..\..\..\Users\TestDevice\Downloads\10-30-Playing-Cards-master\10-30-Playing-Cards\res\Pokers\dl.bmp" />
     <Image Include="..\..\..\Users\TestDevice\Downloads\10-30-Playing-Cards-master\10-30-Playing-Cards\res\Pokers\dm.bmp" />
+    <Image Include="..\..\..\Users\TestDevice\Downloads\cards_5569 (1).ico" />
+    <Image Include="..\..\..\Users\TestDevice\Downloads\cards_5569 (2).ico" />
+    <Image Include="..\..\..\Users\TestDevice\Downloads\cards_5569.ico" />
     <Image Include="..\..\..\Users\TestDevice\OneDrive\Pictures\mesa.bmp" />
     <Image Include="res\Cartas\aa.bmp" />
     <Image Include="res\Cartas\ab.bmp" />

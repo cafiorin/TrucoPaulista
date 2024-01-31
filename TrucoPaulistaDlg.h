@@ -80,7 +80,7 @@ public:
 	virtual void solicitaJogadorJogar(Jogador* jogador);
 	virtual void onBotJogouACarta(int NumeroDaRodada, Jogador* jogadorAjogar, const Carta* cartaJogada, bool cartaCoberta);
 	virtual void onAcabouARodada(Jogador* JogadorQueGanhou);
-	virtual void onPedeTruco();
+	virtual void onPedeTruco(Jogador* jogador);
 	virtual void onAceitouTruco(Jogador* jogador);
 	virtual void onCartaJogada(int NumeroDaRodada, Jogador* jogadorAjogar, const Carta* cartaJogada, bool cartaCoberta);
 

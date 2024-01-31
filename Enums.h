@@ -1,6 +1,6 @@
 #pragma once
 
-enum TipoDePartida { DoisJogadores, QuatroJogadores, QuatroJogadores_umremoto};
+enum TipoDePartida { Cliente, DoisJogadores, QuatroJogadores, QuatroJogadores_umremoto};
 
 enum Naipes { Espadas, Copas, Ouro, Paus };
 
