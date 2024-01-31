@@ -6,8 +6,6 @@
 #include "RodadasController.h"
 #include "Placar.h"
 
-RodadasController::RodadasController(){}
-
 RodadasController::RodadasController(Placar *placar, bool jogoDeDupla)
 {
 	NumeroDaRodada = 1;

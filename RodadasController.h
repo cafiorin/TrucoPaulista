@@ -21,7 +21,10 @@ private:
 	bool JogoDeDupla;
 
 public:
-	RodadasController();
+	RodadasController(Placar* placar, Carta* vira, bool jogoDeDuplas, int valorRodada, int quantasVezesTrucou, int numRodada): 
+		placar_(placar),  Vira(vira), JogoDeDupla(jogoDeDuplas), 
+		QuantoValeARodada(valorRodada), QuantasVezesTrucou(quantasVezesTrucou),
+		NumeroDaRodada(numRodada){}
 	RodadasController(Placar *placar, bool jogoDeDuplas);
 	~RodadasController();
 
@@ -76,6 +79,10 @@ public:
 			QuantasVezesTrucou++;
 
 		QuantoValeARodada = 3 * QuantasVezesTrucou;	
+	}
+
+	int QuantosVezesTrucou() const {
+		return QuantasVezesTrucou;
 	}
 
 	void InicializarRodada(Carta* vira);

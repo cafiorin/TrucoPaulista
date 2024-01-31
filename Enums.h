@@ -13,3 +13,5 @@ enum PosicaoNaDuplaParaJogar { Primeiro, Pe };
 enum ValorDasCartasNaMao {Otimo, Bom, Medio, Fraco, Ruim};
 
 enum ProbabilidadeDeTrucarOuCorrerOuAceitar {Alta, Media, Baixa};
+
+enum TipoPartida { singlePlayer, multiPlayerMultiInstance, multiPlayerSingleInstance };

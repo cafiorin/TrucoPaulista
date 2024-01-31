@@ -102,7 +102,8 @@ Json::Value const PersistenciaController::GetCarta(Carta* carta) {
 Json::Value const PersistenciaController::GetRodada() {
 	Json::Value rodada;
 
-	rodada["numeroDaRodada"] = Rodadas->QualRodadaEsta();
+	rodada["numeroDaRodada"] = Rodadas->IndiceDaRodadaAtual();
+	rodada["quantasVezesTrucou"] = Rodadas->QuantosVezesTrucou();
 
 	Json::Value cartasDaMesa;
 
@@ -291,7 +292,7 @@ Partida* PersistenciaController::CriarPartida(Json::Value json) {
 	}
 
 	Carta* vira = CriarCarta(json["cartaVirada"]);
-	RodadasController* rodada = CriarRodadaController(json["rodadaAtual"], jogadores);
+	RodadasController* rodada = CriarRodadaController(json["rodadaAtual"], jogadores, placar, vira);
 
 	return new Partida(placar, dupla1, dupla2, rodada, vira);
 }
@@ -305,11 +306,12 @@ Carta* PersistenciaController::CriarCarta(Json::Value cartaVirada) {
 	return new Carta(id, valor, nome, naipe);
 }
 
-RodadasController* PersistenciaController::CriarRodadaController(Json::Value rodadaAtual, std::vector<Jogador*> jogadores) {
+RodadasController* PersistenciaController::CriarRodadaController(Json::Value rodadaAtual, std::vector<Jogador*> jogadores, Placar* placar, Carta* vira) {
 	int numRodada = rodadaAtual["numeroDaRodada"].asInt();
 	int valorDaRodada = rodadaAtual["valorDaRodada"].asInt();
+	int quantasVezesTrucou = rodadaAtual["quantasVezesTrucou"].asInt();
 	
-	RodadasController* rodadaController = new RodadasController();
+	RodadasController* rodadaController = new RodadasController(placar, vira, true, valorDaRodada, quantasVezesTrucou, numRodada);
 	
 	Rodada* rodada = new Rodada(numRodada, rodadaController);
 	int numCartas = 0;
