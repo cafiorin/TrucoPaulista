@@ -535,6 +535,7 @@ void CTrucoPaulistaDlg::InicializaRodada()
 	m_Cliente->InicializaRodada();
 	m_Cliente->JogadorPodePedirTruco();
 	m_PlacarView->InicializaRodada();
+	m_MesaView->InicializaRodada(0);
 
 	AtualizaPlacar();
 
@@ -675,6 +676,7 @@ void CTrucoPaulistaDlg::ShowMessageJogadorAceitouTruco(int jogadorqueTrucou)
 
 	AfxMessageBox(str, MB_ICONINFORMATION | MB_OK);
 }
+
 void CTrucoPaulistaDlg::ShowMessageQuemGanhouaRodada(int numeroRodada, int jogadorGanhouRodada)
 {
 	m_Cliente->ProximaRodada();
@@ -710,6 +712,7 @@ void CTrucoPaulistaDlg::ShowMessageQuemGanhouaRodada(int numeroRodada, int jogad
 			pCheckBox->SetCheck(BST_CHECKED);
 	}
 }
+
 void CTrucoPaulistaDlg::Jogador2Correu(int jogadorGanhouPartida)
 {
 	Jogador* JogadorCorreu = partida->GetJogadorByID(jogadorGanhouPartida);
