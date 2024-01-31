@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "PartidaMessagesController.h"
 #include "TrucoPaulistaDlg.h"
+#include "PlacarView.h"
 
 PartidaMessagesController::PartidaMessagesController(CTrucoPaulistaDlg* trucoPaulistaView, bool server)
 {
@@ -44,7 +45,7 @@ void PartidaMessagesController::OnReceiveMessage(MSG* pMsg)
 	break;
 	case WM_MESSAGE_ENVIA_INICIO_PARTIDA:
 	{
-		TrucoPaulistaView->CleanCheckBox();
+		TrucoPaulistaView->m_PlacarView->LimpaOutput();
 	}
 	break;
 

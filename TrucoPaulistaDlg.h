@@ -30,7 +30,6 @@ public:
 	void InitFontToText(int idText);
 	TipoDePartida ObtemTipoDePartida();
 
-	void CleanOutput();
 	void AddOutput(const CString& novaLinha);
 	void AtualizaTento();
 	void JogadorCobriuACarta(int idControl);
@@ -60,7 +59,6 @@ public:
 	DadosInstanciaCliente* m_Cliente;
 
 	void InicializaRodada();
-	void CleanCheckBox();
 	void AtualizaPlacar();
 	void AtualizaPlacarDePartidas();
 	void JogadorClicouNaCarta(Jogador* jogador, int posicaoDaCarta);

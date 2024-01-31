@@ -105,3 +105,21 @@ void MesaView::JogadorJogouACarta(Jogador* jogador, const Carta* carta, bool car
 	}
 }
 
+
+void MesaView::JogadorJogouACartaCliente(int rodada, int numeroJogador, int carta)
+{
+	CStatic* jogadorPorRodada[3][4] =
+	{
+		{m_CartaH1_R1, m_CartaBOT1_R1, m_CartaH2_R1, m_CartaBOT2_R1},
+		{m_CartaH1_R2, m_CartaBOT1_R2, m_CartaH2_R2, m_CartaBOT2_R2},
+		{m_CartaH1_R3, m_CartaBOT1_R3, m_CartaH2_R3, m_CartaBOT2_R3}
+	};
+
+	CStatic* pictureControl = jogadorPorRodada[rodada - 1][numeroJogador - 1];
+
+	CartasBitmap bitmap(carta);
+	m_pDialog->SetBitmapOnStaticControl(*pictureControl, *bitmap.Getbitmap());
+	pictureControl->ShowWindow(SW_SHOW);
+
+}
+

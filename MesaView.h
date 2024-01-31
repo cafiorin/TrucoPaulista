@@ -26,6 +26,7 @@ public:
 	void Inicializa();
 	void InicializaRodada(int idViraResource);
 	void JogadorJogouACarta(Jogador* jogador, const Carta *carta, bool cartaCoberta, int rodada, int numeroDeJogadores);
+	void JogadorJogouACartaCliente(int rodada, int numeroJogador, int carta);
 
 };
 

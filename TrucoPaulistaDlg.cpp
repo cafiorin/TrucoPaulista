@@ -303,8 +303,8 @@ void CTrucoPaulistaDlg::onInicioDaRodada(int numeroRodada)
 {
 	OutputDebugString(_T("CTrucoPaulistaDlg::onInicioDaRodada()\n"));
 
-	CleanCheckBox();
-	CleanOutput();
+	m_PlacarView->InicializaRodadasCheckBox();
+	m_PlacarView->LimpaOutput();
 	solicitaJogadorJogar(partida->QuemJoga());
 }
 
@@ -318,7 +318,7 @@ void CTrucoPaulistaDlg::onAceitouTruco(Jogador* jogador)
 		CString strPlayerName(playerName.c_str());
 		CString str;
 		str.Format(_T("Jogador %s aceitou o Truco... Manda !"), strPlayerName);
-		AddOutput(str);
+		m_PlacarView->EscreveNoOutput(str);
 		if (m_Instance == 1 && TwoInstances)
 			partidaMessagesController->EnviaAceitouTruco(jogador->ObtemNumeroJogador());
 		AfxMessageBox(str, MB_ICONINFORMATION | MB_OK);
@@ -336,7 +336,7 @@ void CTrucoPaulistaDlg::onFimDaRodada(int numeroRodada, Jogador* JogadorQueGanho
 	{
 		CString str;
 		str.Format(_T("Empatou a rodada %d..."), numeroRodada);
-		AddOutput(str);
+		m_PlacarView->EscreveNoOutput(str);
 
 		int baseCheckBox = IDC_CHECK1 + ((numeroRodada - 1) * 2);
 		CButton* pCheckBox = (CButton*)GetDlgItem(baseCheckBox);
@@ -354,7 +354,7 @@ void CTrucoPaulistaDlg::onFimDaRodada(int numeroRodada, Jogador* JogadorQueGanho
 
 		CString str;
 		str.Format(_T("Jogador %s ganhou a rodada %d..."), strPlayerName, numeroRodada);
-		AddOutput(str);
+		m_PlacarView->EscreveNoOutput(str);
 
 		int baseCheckBox = IDC_CHECK1 + ((numeroRodada - 1) * 2);
 		baseCheckBox = JogadorQueGanhou->EhUmBot() ? baseCheckBox + 1 : baseCheckBox;
@@ -369,36 +369,15 @@ void CTrucoPaulistaDlg::onFimDaRodada(int numeroRodada, Jogador* JogadorQueGanho
 		partidaMessagesController->EnviaFimDaRodada(numeroRodada, JogadorQueGanhou ? JogadorQueGanhou->ObtemNumeroJogador() : 0);
 }
 
-
-void CTrucoPaulistaDlg::CleanOutput()
-{
-	CEdit* pEdit = static_cast<CEdit*>(GetDlgItem(IDC_EDIT_TEXT_OUTPUT));
-	CString strTextoAtual;
-	strTextoAtual = _T("");
-	pEdit->SetWindowText(strTextoAtual);
-
-}
-
-void CTrucoPaulistaDlg::AddOutput(const CString& novaLinha)
-{
-	CEdit* pEdit = static_cast<CEdit*>(GetDlgItem(IDC_EDIT_TEXT_OUTPUT));
-	CString strTextoAtual;
-	pEdit->GetWindowText(strTextoAtual);
-	strTextoAtual += novaLinha + _T("\r\n");
-	pEdit->SetWindowText(strTextoAtual);
-	pEdit->LineScroll(pEdit->GetLineCount());
-}
-
 void CTrucoPaulistaDlg::AtualizaDeQuemEhAVezDeJogar(Jogador* jogador)
 {
+	JogadorView::AtualizaStatusDoJogadorEscolhido(this, StatusJogador::SuaVez, jogador);
 	if (jogador->ObtemNumeroJogador() == 1)
 	{
-		JogadorView::AtualizaStatusDoJogadorEscolhido(this, StatusJogador::SuaVez, jogador);
 		JogadorView::AtualizaStatusDoJogadorEscolhido(this, StatusJogador::NaoEhSuaVez, partida->ObtemJogadorHumano2());
 	}
 	else if (jogador->ObtemNumeroJogador() == 3 && !TwoInstances)
 	{
-		JogadorView::AtualizaStatusDoJogadorEscolhido(this, StatusJogador::SuaVez, jogador);
 		JogadorView::AtualizaStatusDoJogadorEscolhido(this, StatusJogador::NaoEhSuaVez, partida->ObtemJogadorHumano1());
 	}
 }
@@ -412,7 +391,7 @@ void CTrucoPaulistaDlg::solicitaJogadorJogar(Jogador* jogador)
 
 	CString str;
 	str.Format(_T("Sua Vez %s..."), strPlayerName);
-	AddOutput(str);
+	m_PlacarView->EscreveNoOutput(str);
 
 	AtualizaDeQuemEhAVezDeJogar(jogador);
 
@@ -433,9 +412,8 @@ void CTrucoPaulistaDlg::onBotJogouACarta(int NumeroDaRodada, Jogador* jogadorAjo
 
 	CString str;
 	str.Format(_T("Sua Vez %s..."), strPlayerName);
-	AddOutput(str);
+	m_PlacarView->EscreveNoOutput(str);
 
-	JogadorView::AtualizaStatusDoJogadorEscolhido(this, StatusJogador::NaoEhSuaVez, partida->ObtemJogadorHumano1());
 	JogadorView::AtualizaStatusDoJogadorEscolhido(this, StatusJogador::NaoEhSuaVez, partida->ObtemJogadorHumano1());
 
 	if(jogadorAjogar == partida->ObtemJogadorBot1())
@@ -453,7 +431,7 @@ void CTrucoPaulistaDlg::onPedeTruco(Jogador* jogador)
 	CString quantovale = partida->ObterMensagemDeQuantoVale();
 	CString str;
 	str.Format(_T("%s !!!!"), quantovale);
-	AddOutput(str);
+	m_PlacarView->EscreveNoOutput(str);
 
 	str.Format(_T("Aceita o %s ?"), quantovale);
 	int resultado = AfxMessageBox(str, MB_YESNO | MB_ICONQUESTION);
@@ -478,7 +456,7 @@ void CTrucoPaulistaDlg::onAcabouARodada(Jogador* JogadorQueGanhou)
 
 	CString str;
 	str.Format(_T("O jogador %s ganhou a rodada"), strPlayerName);
-	AddOutput(str);
+	m_PlacarView->EscreveNoOutput(str);
 
 	if (m_Instance == 1 && TwoInstances)
 		partidaMessagesController->EnviaFimDaPartida(JogadorQueGanhou->ObtemNumeroJogador());
@@ -669,7 +647,7 @@ void CTrucoPaulistaDlg::ShowMessageJogadorAceitouTruco(int jogadorqueTrucou)
 
 	CString str;
 	str.Format(_T("Jogador %s aceitou o Truco... Manda !"), strPlayerName);
-	AddOutput(str);
+	m_PlacarView->EscreveNoOutput(str);
 
 	if (m_Instance == 1 && TwoInstances)
 		partidaMessagesController->EnviaAceitouTruco(jogador->ObtemNumeroJogador());
@@ -686,7 +664,7 @@ void CTrucoPaulistaDlg::ShowMessageQuemGanhouaRodada(int numeroRodada, int jogad
 	{
 		CString str;
 		str.Format(_T("Empatou a rodada %d..."), numeroRodada);
-		AddOutput(str);
+		m_PlacarView->EscreveNoOutput(str);
 
 		int baseCheckBox = IDC_CHECK1 + ((numeroRodada - 1) * 2);
 		CButton* pCheckBox = (CButton*)GetDlgItem(baseCheckBox);
@@ -703,7 +681,7 @@ void CTrucoPaulistaDlg::ShowMessageQuemGanhouaRodada(int numeroRodada, int jogad
 		CString strPlayerName(playerName.c_str());
 		CString str;
 		str.Format(_T("Jogador %s ganhou a rodada %d..."), strPlayerName, numeroRodada);
-		AddOutput(str);
+		m_PlacarView->EscreveNoOutput(str);
 		int baseCheckBox = IDC_CHECK1 + ((numeroRodada - 1) * 2);
 		baseCheckBox = JogadorQueGanhou->EhUmBot() ? baseCheckBox + 1 : baseCheckBox;
 
@@ -741,93 +719,16 @@ void CTrucoPaulistaDlg::ShowMessageQuemGanhoaPartida(int jogadorGanhador)
 
 void CTrucoPaulistaDlg::SetCurrectBitmapCliente(int rodada, int numeroJogador, int carta)
 {
-	CartasBitmap bitmap(carta);
+	m_MesaView->JogadorJogouACartaCliente(rodada, numeroJogador, carta);
 
-	if (numeroJogador == 1)
-	{
-		switch (rodada)
-		{
-		case 1:
-			SetBitmapOnStaticControl(m_CartaH2_R1, *bitmap.Getbitmap());
-			m_CartaH2_R1.ShowWindow(SW_SHOW);
-			m_Pic1.ShowWindow(SW_HIDE);
-			break;
-		case 2:
-			SetBitmapOnStaticControl(m_CartaH2_R2, *bitmap.Getbitmap());
-			m_CartaH2_R2.ShowWindow(SW_SHOW);
-			m_Pic2.ShowWindow(SW_HIDE);
-			break;
-		case 3:
-			SetBitmapOnStaticControl(m_CartaH2_R3, *bitmap.Getbitmap());
-			m_CartaH2_R3.ShowWindow(SW_SHOW);
-			m_Pic3.ShowWindow(SW_HIDE);
-			break;
-		}
-	}
-	else if (numeroJogador == 2)
-	{
-		switch (rodada)
-		{
-		case 1:
-			SetBitmapOnStaticControl(m_CartaBOT1_R1, *bitmap.Getbitmap());
-			m_CartaBOT1_R1.ShowWindow(SW_SHOW);
-			m_PicCartaOp1.ShowWindow(SW_HIDE);
-			break;
-		case 2:
-			SetBitmapOnStaticControl(m_CartaBOT1_R2, *bitmap.Getbitmap());
-			m_CartaBOT1_R2.ShowWindow(SW_SHOW);
-			m_PicCartaOp2.ShowWindow(SW_HIDE);
-			break;
-		case 3:
-			SetBitmapOnStaticControl(m_CartaBOT1_R3, *bitmap.Getbitmap());
-			m_CartaBOT1_R3.ShowWindow(SW_SHOW);
-			m_PicCartaOp3.ShowWindow(SW_HIDE);
-			break;
-		}
-	}
-	else if (numeroJogador == 3)
-	{
-		switch (rodada)
-		{
-		case 1:
-			SetBitmapOnStaticControl(m_CartaH1_R1, *bitmap.Getbitmap());
-			m_CartaH1_R1.ShowWindow(SW_SHOW);
-			break;
-		case 2:
-			SetBitmapOnStaticControl(m_CartaH1_R2, *bitmap.Getbitmap());
-			m_CartaH1_R2.ShowWindow(SW_SHOW);
-			break;
-		case 3:
-			SetBitmapOnStaticControl(m_CartaH1_R3, *bitmap.Getbitmap());
-			m_CartaH1_R3.ShowWindow(SW_SHOW);
-			break;
-		}
-	}
-	else if (numeroJogador == 4)
-	{
-		switch (rodada)
-		{
-		case 1:
-			SetBitmapOnStaticControl(m_CartaBOT2_R1, *bitmap.Getbitmap());
-			m_CartaBOT2_R1.ShowWindow(SW_SHOW);
-			m_PicCartaOp21.ShowWindow(SW_HIDE);
-			break;
-		case 2:
-			SetBitmapOnStaticControl(m_CartaBOT2_R2, *bitmap.Getbitmap());
-			m_CartaBOT2_R2.ShowWindow(SW_SHOW);
-			m_PicCartaOp22.ShowWindow(SW_HIDE);
-			break;
-		case 3:
-			SetBitmapOnStaticControl(m_CartaBOT2_R3, *bitmap.Getbitmap());
-			m_CartaBOT2_R3.ShowWindow(SW_SHOW);
-			m_PicCartaOp23.ShowWindow(SW_HIDE);
-			break;
-		}
-	}
+	CStatic* cartaJogador[4] = { nullptr, &m_Pic1, &m_Pic2 , &m_Pic3 };
+	CStatic* pictureControl = cartaJogador[rodada];
+	pictureControl->ShowWindow(SW_HIDE);
+
+	JogadorView::AtualizaStatusDoJogadorEscolhido(this, StatusJogador::NaoEhSuaVez, partida->ObtemJogadorHumano2());
+
 	Invalidate();
 }
-
-
 
 void CTrucoPaulistaDlg::JogouACartaCliente(int numeroCarta, bool _cartaCoberta)
 {
@@ -891,16 +792,6 @@ void CTrucoPaulistaDlg::OnBnClickedSalvar()
 		bool temJogoSalvo = persistencia->TemJogoSalvo();
 
 		persistencia->AtualizarArquivo();
-	}
-}
-
-void CTrucoPaulistaDlg::CleanCheckBox()
-{
-	for (int i = IDC_CHECK1; i <= IDC_CHECK6; i++)
-	{
-		CButton* pCheckBox = (CButton*)GetDlgItem(i);
-		if (pCheckBox != nullptr)
-			pCheckBox->SetCheck(BST_UNCHECKED);
 	}
 }
 
