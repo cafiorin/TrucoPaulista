@@ -1555,7 +1555,8 @@ void CTrucoPaulistaDlg::OnBnClickedRecarregar() {
 
 	persistencia = new PersistenciaController(nullptr);
 
-	Partida* foo = persistencia->RecriarPartida();
+	Partida* ultimaPartida = persistencia->RecriarPartida();
+	ultimaPartida->AtualizarEventosDaPartida(this);
 }
 
 void CTrucoPaulistaDlg::OnBnClickedSalvar()

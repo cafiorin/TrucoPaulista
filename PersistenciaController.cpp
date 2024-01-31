@@ -19,6 +19,9 @@ PersistenciaController::PersistenciaController(Partida* jogo)
 		Vira = jogo->ObtemVira();
 
 		JogadorAtual = jogo->QuemJoga();
+
+		NumeroJogadores = jogo->PegarNumeroJogadores();
+		MultiplasInstancias = jogo->MultiInstancia();
 	}
 }
 
@@ -88,7 +91,7 @@ void PersistenciaController::PersistirJSON(std::string& json)
 	}
 }
 
-Json::Value const PersistenciaController::GetCarta(Carta* carta) {
+Json::Value PersistenciaController::GetCarta(Carta* carta) {
 
 	Json::Value cartaViradaObject;
 	cartaViradaObject["id"] = carta->id;
@@ -99,7 +102,7 @@ Json::Value const PersistenciaController::GetCarta(Carta* carta) {
 	return cartaViradaObject;
 }
 
-Json::Value const PersistenciaController::GetRodada() {
+Json::Value PersistenciaController::GetRodada() {
 	Json::Value rodada;
 
 	rodada["numeroDaRodada"] = Rodadas->IndiceDaRodadaAtual();
@@ -136,7 +139,7 @@ Json::Value const PersistenciaController::GetRodada() {
 	return rodada;
 }
 
-Json::Value const PersistenciaController::GetMao(Carta* mao[3]) {
+Json::Value PersistenciaController::GetMao(Carta* mao[3]) {
 	Json::Value maoDoJogador;
 
 	for (int i = 0; i < 3; i++)
@@ -145,7 +148,7 @@ Json::Value const PersistenciaController::GetMao(Carta* mao[3]) {
 	return maoDoJogador;
 }
 
-Json::Value const PersistenciaController::GetJogadores(Jogador* dupla[2]) {
+Json::Value PersistenciaController::GetJogadores(Jogador* dupla[2]) {
 	Json::Value jogadores;
 
 	for (int i = 0; i < 2; i++)
@@ -182,7 +185,7 @@ Json::Value const PersistenciaController::GetJogadores(Jogador* dupla[2]) {
 	return jogadores;
 }
 
-Json::Value const PersistenciaController::GetTime(Jogador* dupla[2], int pontosDoTime, int partidasVencidas) {
+Json::Value PersistenciaController::GetTime(Jogador* dupla[2], int pontosDoTime, int partidasVencidas) {
 	Json::Value time;
 
 	time["pontosDoTime"] = pontosDoTime;
@@ -193,7 +196,7 @@ Json::Value const PersistenciaController::GetTime(Jogador* dupla[2], int pontosD
 	return time;
 }
 
-Json::Value const PersistenciaController::GetTimes() {
+Json::Value PersistenciaController::GetTimes() {
 	Json::Value times;
 
 	times.append(GetTime(Dupla1, PlacarDaPartida->PontosDaDupla1, PlacarDaPartida->PartidasVencidasDaDupla1));
@@ -202,12 +205,22 @@ Json::Value const PersistenciaController::GetTimes() {
 	return times;
 }
 
+Json::Value PersistenciaController::GetConfiguracoes() {
+	Json::Value configuracoes;
+
+	configuracoes["numeroJogadores"] = NumeroJogadores;
+	configuracoes["multiInstance"] = MultiplasInstancias;
+
+	return configuracoes;
+}
+
 std::string PersistenciaController::MontarJSON() {
 	Json::Value json;
 
-	json["cartaVirada"] = GetCarta(Vira); //ok
-	json["rodadaAtual"] = GetRodada(); //ok
+	json["cartaVirada"] = GetCarta(Vira);
+	json["rodadaAtual"] = GetRodada();
 	json["times"] = GetTimes();
+	json["configuracoes"] = GetConfiguracoes();
 
 	Json::StreamWriterBuilder writer;
 	std::string value = Json::writeString(writer, json);
@@ -294,7 +307,10 @@ Partida* PersistenciaController::CriarPartida(Json::Value json) {
 	Carta* vira = CriarCarta(json["cartaVirada"]);
 	RodadasController* rodada = CriarRodadaController(json["rodadaAtual"], jogadores, placar, vira);
 
-	return new Partida(placar, dupla1, dupla2, rodada, vira);
+	int numeroDeJogadores = json["configuracoes"]["numeroJogadores"].asInt();
+	bool multiInstance = json["configuracoes"]["multiInstance"].asBool();
+
+	return new Partida(placar, dupla1, dupla2, rodada, vira, numeroDeJogadores, multiInstance);
 }
 
 Carta* PersistenciaController::CriarCarta(Json::Value cartaVirada) {

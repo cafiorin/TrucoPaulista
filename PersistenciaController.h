@@ -29,17 +29,20 @@ private:
 	RodadasController* Rodadas;
 	Carta* Vira;
 	Jogador* JogadorAtual;
+	int NumeroJogadores;
+	bool MultiplasInstancias;
 
 	std::string MontarJSON();
 	void PersistirJSON(std::string &json);
 
 	// Write
-	const Json::Value GetCarta(Carta* carta);
-	const Json::Value GetRodada();
-	const Json::Value GetTimes();
-	const Json::Value GetJogadores(Jogador* dupla[2]);
-	const Json::Value GetTime(Jogador* dupla[2], int pontosDoTime, int partidasVencidas);
-	const Json::Value GetMao(Carta* mao[3]);
+	Json::Value GetCarta(Carta* carta);
+	Json::Value GetRodada();
+	Json::Value GetTimes();
+	Json::Value GetJogadores(Jogador* dupla[2]);
+	Json::Value GetTime(Jogador* dupla[2], int pontosDoTime, int partidasVencidas);
+	Json::Value GetMao(Carta* mao[3]);
+	Json::Value GetConfiguracoes();
 
 	//Read
 	Partida* MontarPartida(std::string json);

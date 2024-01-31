@@ -29,7 +29,8 @@ private:
 	IEventosDaPartida* EventosDaPartida;
 
 public:
-	Partida(Placar* placar, Jogador* dupla1[2], Jogador* dupla2[2], RodadasController* rodadas, Carta* vira) : placar(placar), Rodadas(rodadas), Vira(vira)
+	Partida(Placar* placar, Jogador* dupla1[2], Jogador* dupla2[2], RodadasController* rodadas, Carta* vira, int numJogadores, bool multiInstancia) : 
+		placar(placar), Rodadas(rodadas), Vira(vira), QuantosJogadores(numJogadores), DuasInstancias(multiInstancia)
 	{
 		Dupla1[0] = dupla1[0];
 		Dupla1[1] = dupla1[1];
@@ -41,6 +42,7 @@ public:
 	Partida(IEventosDaPartida* eventosPartida);
 	~Partida();
 	
+	void AtualizarEventosDaPartida(IEventosDaPartida* eventosPartida);
 
 	void Create2Jogadores(bool duasInstancias);
 	void InicializarPartida(int quantosJogadores, bool duasInstancias);
@@ -112,6 +114,14 @@ public:
 	int ObterValorDaRodada()
 	{
 		return Rodadas->QuantoEstaValendoARodada();
+	}
+
+	int PegarNumeroJogadores() const {
+		return QuantosJogadores;
+	}
+
+	bool MultiInstancia() const {
+		return DuasInstancias;
 	}
 };
 
