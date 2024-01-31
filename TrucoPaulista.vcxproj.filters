@@ -573,6 +573,24 @@
     <Image Include="res\Cartas\mesa.bmp">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="..\..\..\Users\TestDevice\Downloads\cards_5569 (1).ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\..\..\Users\TestDevice\Downloads\cards_5569 (2).ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\..\..\Users\TestDevice\Downloads\cards_5569.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Icones\cards_5569 (2).ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Icones\cards_5569 (1).ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Icones\cards_5569.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <Library Include="json\lib\jsoncpp.lib" />

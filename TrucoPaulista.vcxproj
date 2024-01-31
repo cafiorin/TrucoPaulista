@@ -387,6 +387,9 @@
     <Image Include="res\Cartas\vazia_90.bmp" />
     <Image Include="res\Cartas\verso.bmp" />
     <Image Include="res\Cartas\verso_90.bmp" />
+    <Image Include="res\Icones\cards_5569 (1).ico" />
+    <Image Include="res\Icones\cards_5569 (2).ico" />
+    <Image Include="res\Icones\cards_5569.ico" />
     <Image Include="res\TrucoPaulista.ico" />
   </ItemGroup>
   <ItemGroup>
