@@ -21,8 +21,8 @@ RodadasController::RodadasController(Placar *placar, bool jogoDeDupla)
 	Vira = nullptr;
 
 	placar_ = placar;
-	Dupla1[0] = nullptr;
-	Dupla1[0] = nullptr;
+	//Dupla1[0] = nullptr;
+	//Dupla1[0] = nullptr;
 }
 
 RodadasController::~RodadasController()

@@ -39,7 +39,7 @@ private:
 	const Json::Value GetTimes();
 	const Json::Value GetJogadores(Jogador* dupla[2]);
 	const Json::Value GetTime(Jogador* dupla[2], int pontosDoTime, int partidasVencidas);
-	const Json::Value GetMao(std::vector<Carta*> mao);
+	const Json::Value GetMao(Carta* mao[3]);
 
 	//Read
 	Partida* MontarPartida(std::string json);

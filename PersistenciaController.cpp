@@ -6,18 +6,20 @@
 
 PersistenciaController::PersistenciaController(Partida* jogo) 
 {
-	PlacarDaPartida = jogo->GetPlacar();
-	
-	Dupla1[0] = jogo->ObtemJogadorHumano1();
-	Dupla1[1] = jogo->ObtemJogadorHumano2();
+	if (jogo != nullptr) {
+		PlacarDaPartida = jogo->GetPlacar();
+		
+		Dupla1[0] = jogo->ObtemJogadorHumano1();
+		Dupla1[1] = jogo->ObtemJogadorHumano2();
 
-	Dupla2[0] = jogo->ObtemJogadorBot1();
-	Dupla2[1] = jogo->ObtemJogadorBot2();
+		Dupla2[0] = jogo->ObtemJogadorBot1();
+		Dupla2[1] = jogo->ObtemJogadorBot2();
 
-	Rodadas = jogo->GetRodada();
-	Vira = jogo->ObtemVira();
+		Rodadas = jogo->GetRodada();
+		Vira = jogo->ObtemVira();
 
-	JogadorAtual = jogo->QuemJoga();
+		JogadorAtual = jogo->QuemJoga();
+	}
 }
 
 PersistenciaController::~PersistenciaController() 
@@ -133,14 +135,10 @@ Json::Value const PersistenciaController::GetRodada() {
 	return rodada;
 }
 
-Json::Value const PersistenciaController::GetMao(std::vector<Carta*> mao) {
+Json::Value const PersistenciaController::GetMao(Carta* mao[3]) {
 	Json::Value maoDoJogador;
 
-	__int64 numCartas = std::count_if(mao.begin(), mao.end(), [](Carta* carta) {
-		return carta != nullptr;
-	});
-
-	for (int i = 0; i < numCartas; i++)
+	for (int i = 0; i < 3; i++)
 		maoDoJogador.append(GetCarta(mao[i]));
 
 	return maoDoJogador;
@@ -158,7 +156,24 @@ Json::Value const PersistenciaController::GetJogadores(Jogador* dupla[2]) {
 		bool estaNaVezDeJogar = JogadorAtual->ObtemNumeroJogador() == dupla[i]->ObtemNumeroJogador();
 		jogador["vezDeJogar"] = estaNaVezDeJogar;
 
-		jogador["mao"] = GetMao(dupla[i]->GetCartasNaoJogadas());
+		Carta* cartasDoJogador[3];
+
+		std::vector<std::tuple<Carta*, bool>> cartasJogador = dupla[i]->GetCartasDoJogador();
+		for (const auto& tupla : cartasJogador) {
+			bool cartaJogada;
+			Carta* cartaDoJogador;
+
+			std::tie(cartaDoJogador, cartaJogada) = tupla;
+
+			auto it = std::find(cartasJogador.begin(), cartasJogador.end(), tupla);
+			size_t indiceDaCarta = std::distance(cartasJogador.begin(), it);
+			cartasDoJogador[indiceDaCarta] = cartaDoJogador;
+
+			std::string chave = "carta_" + std::to_string(indiceDaCarta) + "_jogada";
+			jogador[chave] = cartaJogada;
+		}
+
+		jogador["mao"] = GetMao(cartasDoJogador);
 
 		jogadores.append(jogador);
 	}
@@ -239,7 +254,7 @@ Partida* PersistenciaController::CriarPartida(Json::Value json) {
 			placar->PontosDaDupla2 = pontosDoTime;
 		}
 
-		int idJogador = 0;
+		int jogadorIdx = 0;
 
 		for (const auto& jogador : time["jogadores"]) {
 
@@ -249,20 +264,27 @@ Partida* PersistenciaController::CriarPartida(Json::Value json) {
 
 			std::string nomeJogador = bot ? nomeBot + std::to_string(numDupla) : nomeHumano + std::to_string(numDupla);
 			
-			Jogador* jogador = new Jogador(idJogador, nomeJogador, numDupla, bot, !bot);// TODO: verificar param mostra carta distribuida
+			Jogador* player = new Jogador(idJogador, nomeJogador, numDupla, bot, !bot);
 
 			Carta* cartasJogador[3] = { nullptr, nullptr, nullptr };
 			int idCarta = 0;
-			for (const auto& mao : time["mao"]) {
+			for (const auto& mao : jogador["mao"]) {
 				cartasJogador[idCarta] = CriarCarta(mao);
 				idCarta++;
 			}
 
-			jogador->RecebeCartas(cartasJogador[0], cartasJogador[1], cartasJogador[2]);
+			player->RecebeCartas(cartasJogador[0], jogador["carta_0_jogada"].asBool(),
+							     cartasJogador[1], jogador["carta_1_jogada"].asBool(),
+								 cartasJogador[2], jogador["carta_2_jogada"].asBool());
 
-			jogadores.push_back(jogador);
+			if (numDupla == 1)
+				dupla1[jogadorIdx] = player;
+			else 
+				dupla2[jogadorIdx] = player;
 
-			idJogador++;
+			jogadores.push_back(player);
+
+			jogadorIdx++;
 		}
 
 		numDupla++;

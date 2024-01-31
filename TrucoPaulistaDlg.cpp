@@ -1552,6 +1552,10 @@ void CTrucoPaulistaDlg::OnBnClickedCorrer2()
 
 void CTrucoPaulistaDlg::OnBnClickedRecarregar() {
 	GetDlgItem(IDC_RECARREGAR)->ShowWindow(SW_HIDE);
+
+	persistencia = new PersistenciaController(nullptr);
+
+	Partida* foo = persistencia->RecriarPartida();
 }
 
 void CTrucoPaulistaDlg::OnBnClickedSalvar()

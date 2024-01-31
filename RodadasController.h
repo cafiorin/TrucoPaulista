@@ -13,7 +13,7 @@ private:
 	Rodada* Rodadas[3];
 	Carta* Vira;
 	Placar* placar_;
-	Jogador* Dupla1[2];
+	//Jogador* Dupla1[2];
 
 	int NumeroDaRodada;
 	int QuantoValeARodada;
@@ -91,8 +91,8 @@ public:
 
 	void SetPlacar(Placar* placar) { placar_ = placar; };
 	void SetDuplas(Jogador* duplas[2]) { 
-		Dupla1[0] = duplas[0];
-		Dupla1[1] = duplas[1];
+		//Dupla1[0] = duplas[0];
+		//Dupla1[1] = duplas[1];
 	}
 
 	// Metodos usados para o Bot tomar alguma decisao
