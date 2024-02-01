@@ -124,6 +124,7 @@ public:
 	afx_msg void OnBnClickedAbout();
 	afx_msg void OnBnClickedSync();
 	afx_msg void OnBnClickedSalvar();
+	afx_msg void OnBnClickedRecarregar();
 	void GetBotAction();
 	CStatic m_Pic1;
 	CStatic m_Pic2;

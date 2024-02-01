@@ -13,7 +13,7 @@ private:
 	Rodada* Rodadas[3];
 	Carta* Vira;
 	Placar* placar_;
-	Jogador* Dupla1[2];
+	//Jogador* Dupla1[2];
 
 	int NumeroDaRodada;
 	int QuantoValeARodada;
@@ -21,8 +21,14 @@ private:
 	bool JogoDeDupla;
 
 public:
+	RodadasController(Placar* placar, Carta* vira, bool jogoDeDuplas, int valorRodada, int quantasVezesTrucou, int numRodada): 
+		placar_(placar),  Vira(vira), JogoDeDupla(jogoDeDuplas), 
+		QuantoValeARodada(valorRodada), QuantasVezesTrucou(quantasVezesTrucou),
+		NumeroDaRodada(numRodada){}
 	RodadasController(Placar *placar, bool jogoDeDuplas);
 	~RodadasController();
+
+	void RecriarRodada(Rodada* rodada, int numRodada);
 
 	int QualRodadaEsta() { return NumeroDaRodada; }
 	void ProximaRodada() { if (NumeroDaRodada < 3) NumeroDaRodada++; }
@@ -75,6 +81,10 @@ public:
 		QuantoValeARodada = 3 * QuantasVezesTrucou;	
 	}
 
+	int QuantosVezesTrucou() const {
+		return QuantasVezesTrucou;
+	}
+
 	void InicializarRodada(Carta* vira);
 
 	Carta* QualOVira() { return Vira; }
@@ -88,8 +98,8 @@ public:
 
 	void SetPlacar(Placar* placar) { placar_ = placar; };
 	void SetDuplas(Jogador* duplas[2]) { 
-		Dupla1[0] = duplas[0];
-		Dupla1[1] = duplas[1];
+		//Dupla1[0] = duplas[0];
+		//Dupla1[1] = duplas[1];
 	}
 
 	// Metodos usados para o Bot tomar alguma decisao

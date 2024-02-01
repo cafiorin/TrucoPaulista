@@ -19,6 +19,17 @@ void Jogador::RecebeCartas(const Carta& carta1, const Carta& carta2, const Carta
     status = StatusJogador::Inicia;
 }
 
+void Jogador::RecebeCartas(const Carta& carta1, bool carta1Jogada, const Carta& carta2, bool carta2Jogada, const Carta& carta3, bool carta3Jogada) {
+	mao[0] = std::make_unique<Carta>(carta1);
+	mao[1] = std::make_unique<Carta>(carta2);
+	mao[2] = std::make_unique<Carta>(carta3);
+
+	CartaUsada[0] = carta1Jogada;
+	CartaUsada[1] = carta2Jogada;
+	CartaUsada[2] = carta3Jogada;
+
+	status = StatusJogador::RecebeuCartas;
+}
 
 void Jogador::OrdenaCartas()
 {

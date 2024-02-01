@@ -37,22 +37,16 @@ public:
     bool EhUmBot() const { return Bot; }
 
     void RecebeCartas(const Carta& carta1, const Carta& carta2, const Carta& carta3);
+    void RecebeCartas(const Carta& carta1, bool carta1Jogada, const Carta& carta2, bool carta2Jogada, const Carta& carta3, bool carta3Jogada);
     void OrdenaCartas();
 
-    const std::vector<Carta*> GetCartasNaoJogadas() {
-        std::vector<Carta*> cartasNaoJogadas;
+    const std::vector<std::tuple<Carta*, bool>> GetCartasDoJogador() {
+        std::vector<std::tuple<Carta*, bool>> cartasDoJogador;
 
-        for (int i = 0; i < 3; i++) {
-            if (CartaUsada[i]) {
-                continue;
-            }
-            else {
-                cartasNaoJogadas.push_back(mao[i].get());
-            }
+        for (int i = 0; i < 3; i++)
+            cartasDoJogador.push_back(std::make_tuple(mao[i].get(), CartaUsada[i]));
 
-        }
-
-        return cartasNaoJogadas;
+        return cartasDoJogador;
     }
 
     const Carta* PrimeiraCartaNaMao() const 
