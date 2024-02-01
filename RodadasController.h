@@ -28,7 +28,7 @@ public:
 	RodadasController(Placar *placar, bool jogoDeDuplas);
 	~RodadasController();
 
-	void RecriarRodada(Rodada* rodada, int numRodada);
+	void RecriarRodada(Rodada* rodada, int indiceDaRodada);
 
 	int QualRodadaEsta() { return NumeroDaRodada; }
 	void ProximaRodada() { if (NumeroDaRodada < 3) NumeroDaRodada++; }

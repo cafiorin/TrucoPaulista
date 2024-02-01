@@ -48,9 +48,9 @@ public:
 	TipoDePartida ObtemTipoDePartida() { return m_TipoDePartida; }
 	void Create2Jogadores(bool duasInstancias);
 	void InicializarPartida(TipoDePartida tipoDePartida);
-
+	void RecomecarPartida(TipoDePartida tipoDePartida);
 	bool InicializarRodada();
-
+	void RecomecarRodada();
 	void DistribuiCartas();
 
 	void DistribuiCartaProJogador(Jogador* jogador);

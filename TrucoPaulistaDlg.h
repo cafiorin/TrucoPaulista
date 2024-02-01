@@ -60,6 +60,7 @@ public:
 	DadosInstanciaCliente* m_Cliente;
 
 	void InicializaRodada();
+	void RecomecarRodada();
 	void AtualizaPlacar();
 	void AtualizaPlacarDePartidas();
 	void JogadorClicouNaCarta(Jogador* jogador, int posicaoDaCarta);

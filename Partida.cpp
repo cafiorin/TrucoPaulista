@@ -89,6 +89,24 @@ void Partida::InicializarPartida(TipoDePartida tipoDePartida)
 	Rodadas->SetDuplas(Dupla1);
 }
 
+void Partida::RecomecarPartida(TipoDePartida tipoDePartida) {
+	m_TipoDePartida = tipoDePartida;
+	QuantosJogadores = 4;
+	DuasInstancias = false;
+
+	switch (tipoDePartida)
+	{
+	case TipoDePartida::DoisJogadores:
+		QuantosJogadores = 2;
+		break;
+	}
+
+	EventosDaPartida->onInicioDaPartida();
+	QuemComecaRodada = Dupla1[0];
+	Rodadas->SetPlacar(placar);
+	Rodadas->SetDuplas(Dupla1);
+}
+
 void Partida::GanhouPartida()
 {
 }
@@ -121,6 +139,30 @@ bool Partida::InicializarRodada()
 	EventosDaPartida->onInicioDaRodada(Rodadas->QualRodadaEsta());
 
 	return (QuemComecaRodada->EhUmBot());
+}
+
+void Partida::RecomecarRodada() {
+	if (placar->EhMaoDe11())
+	{
+		Dupla1[0]->NaoPodeMaisPedirTruco();
+		Dupla1[1]->NaoPodeMaisPedirTruco();
+		Dupla2[0]->NaoPodeMaisPedirTruco();
+		Dupla2[1]->NaoPodeMaisPedirTruco();
+	}
+	else
+	{
+		Dupla1[0]->JaPodePedirTruco();
+		Dupla1[1]->JaPodePedirTruco();
+		Dupla2[0]->JaPodePedirTruco();
+		Dupla2[1]->JaPodePedirTruco();
+	}
+
+	Dupla1[0]->RecomecarRodada(Rodadas);
+	Dupla1[1]->RecomecarRodada(Rodadas);
+	Dupla2[0]->RecomecarRodada(Rodadas);
+	Dupla2[1]->RecomecarRodada(Rodadas);
+
+	EventosDaPartida->onInicioDaRodada(Rodadas->QualRodadaEsta());
 }
 
 void Partida::DistribuiCartas()

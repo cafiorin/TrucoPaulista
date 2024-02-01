@@ -112,6 +112,11 @@ void Jogador::InicializaRodada(RodadasController* mesaDaRodada)
 	QualidadeDasCartasNaRodada = AnalisarMaoDeCartas();
 }
 
+void Jogador::RecomecarRodada(RodadasController* mesaDaRodada) {
+	MesaDaRodada = mesaDaRodada;
+	QualidadeDasCartasNaRodada = AnalisarMaoDeCartas();
+}
+
 ValorDasCartasNaMao Jogador::AnalisarMaoDeCartas()
 {
 	int Otimas = 0;

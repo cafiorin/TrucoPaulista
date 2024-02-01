@@ -13,9 +13,9 @@ void DadosInstanciaCliente::Inicializa()
 	InicializaRodada();
 }
 
-void DadosInstanciaCliente::InicializaRodada()
+void DadosInstanciaCliente::InicializaRodada(int numRodada)
 {
-	m_RodadaAtual = 1;
+	m_RodadaAtual = numRodada;
 }
 
 void DadosInstanciaCliente::ProximaRodada()

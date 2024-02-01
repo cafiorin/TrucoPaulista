@@ -4,6 +4,8 @@
 #include "Placar.h"
 #include "Baralho.h"
 #include "Partida.h"
+#include "Bot.h"
+#include "BotJogaSozinho.h"
 #include "json\include\json.h"
 
 class PersistenciaController
@@ -32,10 +34,11 @@ private:
 	int NumeroJogadores;
 	bool MultiplasInstancias;
 
+	void InicializarPersistencia(Partida* jogo);
+	
+	// Write
 	std::string MontarJSON();
 	void PersistirJSON(std::string &json);
-
-	// Write
 	Json::Value GetCarta(Carta* carta);
 	Json::Value GetRodada();
 	Json::Value GetTimes();

@@ -83,9 +83,9 @@ BOOL CTrucoPaulistaDlg::OnInitDialog()
 	SetIcon(hIcon, TRUE);
 	SetIcon(hIcon, FALSE);
 
-
 	m_MesaView = new MesaView(this);
 	m_Cliente = new DadosInstanciaCliente();
+
 	partida = new Partida(this);
 	m_PlacarView = new PlacarView(this,partida);
 	JogadorView::ControiJogadoresView(this, m_Cliente, partida);
@@ -552,6 +552,35 @@ void CTrucoPaulistaDlg::InicializaRodada()
 	Invalidate();
 }
 
+void CTrucoPaulistaDlg::RecomecarRodada()
+{
+	m_Cliente->InicializaRodada(partida->GetRodada()->QualRodadaEsta());
+	m_Cliente->SetaPodePedirTruco(true);
+	m_PlacarView->InicializaRodada();
+	
+	Carta* v = partida->ObtemVira();
+
+	m_MesaView->InicializaRodada(v->idResource);
+
+	AtualizaPlacar();
+
+	JogadorView::AtualizaStatusDosJogadores(this, StatusJogador::Inicia);
+
+	if (m_Instance == 1)
+	{
+		JogadorView::AtualizaStatusDosJogadores(this, StatusJogador::RecebeuCartas);
+		Jogador* jogadorDaVez = partida->QuemJoga();
+		AtualizaDeQuemEhAVezDeJogar(jogadorDaVez);
+
+		CString quantovale = partida->ObterMensagemDeQuantoVale();
+		GetDlgItem(IDC_TRUCAR)->SetWindowTextW(quantovale);
+		GetDlgItem(IDC_TRUCAR2)->SetWindowTextW(quantovale);
+		AtualizaTento();
+	}
+
+	Invalidate();
+}
+
 void CTrucoPaulistaDlg::OnBnClickedTrucar()
 {
 	Jogador* jogador = partida->ObtemJogadorHumano1();
@@ -830,6 +859,7 @@ BEGIN_MESSAGE_MAP(CTrucoPaulistaDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_TRUCAR2, &CTrucoPaulistaDlg::OnBnClickedTrucar2)
 	ON_BN_CLICKED(IDC_CORRER2, &CTrucoPaulistaDlg::OnBnClickedCorrer2)
 	ON_BN_CLICKED(IDC_SALVAR, &CTrucoPaulistaDlg::OnBnClickedSalvar)
+	ON_BN_CLICKED(IDC_RECARREGAR, &CTrucoPaulistaDlg::OnBnClickedRecarregar)
 	ON_BN_CLICKED(IDC_RB4PLAYERS_REMOTE, &CTrucoPaulistaDlg::OnBnClickedRb4playersRemote)
 	ON_BN_CLICKED(IDC_RB4PLAYERS, &CTrucoPaulistaDlg::OnBnClickedRb4players)
 	ON_BN_CLICKED(IDC_RB2PLAYERS, &CTrucoPaulistaDlg::OnBnClickedRb2players)
@@ -1026,12 +1056,34 @@ void CTrucoPaulistaDlg::OnBnClickedRecarregar()
 {
 	GetDlgItem(IDC_RECARREGAR)->ShowWindow(SW_HIDE);
 
+	delete partida;
+	delete m_PlacarView;
+
 	persistencia = new PersistenciaController(nullptr);
 
 	Partida* ultimaPartida = persistencia->RecriarPartida();
 	ultimaPartida->AtualizarEventosDaPartida(this);
+	partida = ultimaPartida;
+	m_PlacarView = new PlacarView(this, partida);
 
-	//TODO: criar segunda instância e passar valores para ela
+	CButton* pRadioButton2Players = reinterpret_cast<CButton*>(GetDlgItem(IDC_RB2PLAYERS));
+	CButton* pRadioButton4Players = reinterpret_cast<CButton*>(GetDlgItem(IDC_RB4PLAYERS));
+	
+	if (partida->ObtemNumeroDeJogadores() == 2) {
+		pRadioButton2Players->SetCheck(BST_CHECKED);
+		pRadioButton4Players->SetCheck(BST_UNCHECKED);
+	}
+	else {
+		pRadioButton2Players->SetCheck(BST_UNCHECKED);
+		pRadioButton4Players->SetCheck(BST_CHECKED);
+	}
+
+	TwoInstances = false;
+	TipoDePartida tipoDePartida = ObtemTipoDePartida();
+	partida->RecomecarPartida(tipoDePartida);
+	JogadorView::ControiJogadoresView(this, m_Cliente, partida);
+	partida->RecomecarRodada();
+	RecomecarRodada();
 }
 
 void CTrucoPaulistaDlg::OnBnClickedSalvar()

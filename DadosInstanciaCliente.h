@@ -9,7 +9,7 @@ private:
 public:
 	DadosInstanciaCliente();
 	void Inicializa();
-	void InicializaRodada();
+	void InicializaRodada(int numRodada = 1);
 	void ProximaRodada();
 	void SetaPodePedirTruco(bool podePedir) { m_JogadorPodePedirTruco = podePedir; }
 

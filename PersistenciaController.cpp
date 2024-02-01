@@ -6,23 +6,8 @@
 
 PersistenciaController::PersistenciaController(Partida* jogo) 
 {
-	if (jogo != nullptr) {
-		PlacarDaPartida = jogo->GetPlacar();
-		
-		Dupla1[0] = jogo->ObtemJogadorHumano1();
-		Dupla1[1] = jogo->ObtemJogadorHumano2();
-
-		Dupla2[0] = jogo->ObtemJogadorBot1();
-		Dupla2[1] = jogo->ObtemJogadorBot2();
-
-		Rodadas = jogo->GetRodada();
-		Vira = jogo->ObtemVira();
-
-		JogadorAtual = jogo->QuemJoga();
-
-		NumeroJogadores = jogo->PegarNumeroJogadores();
-		MultiplasInstancias = jogo->MultiInstancia();
-	}
+	if (jogo != nullptr)
+		InicializarPersistencia(jogo);
 }
 
 PersistenciaController::~PersistenciaController() 
@@ -73,6 +58,24 @@ Partida* PersistenciaController::RecriarPartida() {
 	}
 
 	throw std::exception("Não existe nenhuma partida salva.");
+}
+
+void PersistenciaController::InicializarPersistencia(Partida* jogo) {
+	PlacarDaPartida = jogo->GetPlacar();
+
+	Dupla1[0] = jogo->ObtemJogadorHumano1();
+	Dupla1[1] = jogo->ObtemJogadorHumano2();
+
+	Dupla2[0] = jogo->ObtemJogadorBot1();
+	Dupla2[1] = jogo->ObtemJogadorBot2();
+
+	Rodadas = jogo->GetRodada();
+	Vira = jogo->ObtemVira();
+
+	JogadorAtual = jogo->QuemJoga();
+
+	NumeroJogadores = jogo->PegarNumeroJogadores();
+	MultiplasInstancias = jogo->MultiInstancia();
 }
 
 #pragma endregion
@@ -239,7 +242,10 @@ Partida* PersistenciaController::MontarPartida(std::string json) {
 	std::istringstream jsonStream(json);
 	Json::parseFromStream(reader, jsonStream, &jsonObject, nullptr);
 
-	return CriarPartida(jsonObject);
+	Partida* jogo = CriarPartida(jsonObject);
+	InicializarPersistencia(jogo);
+
+	return jogo;
 }
 
 Partida* PersistenciaController::CriarPartida(Json::Value json) {
@@ -250,6 +256,7 @@ Partida* PersistenciaController::CriarPartida(Json::Value json) {
 
 	int numDupla = 1;
 
+	int numeroDeJogadores = json["configuracoes"]["numeroJogadores"].asInt();
 	bool multiInstance = json["configuracoes"]["multiInstance"].asBool();
 
 	Placar* placar = new Placar();
@@ -280,7 +287,19 @@ Partida* PersistenciaController::CriarPartida(Json::Value json) {
 
 			std::string nomeJogador = bot ? nomeBot + std::to_string(numDupla) : nomeHumano + std::to_string(numDupla);
 			
-			Jogador* player = new Jogador(idJogador, nomeJogador, numDupla, bot, !bot && (nomeJogador == "Humano1" || !multiInstance));
+			Jogador* player;
+
+			if (bot) {
+				if (numeroDeJogadores == 2) {
+					player = new BotJogaSozinho(idJogador, nomeJogador, numDupla);
+				}
+				else {
+					player = new Bot(idJogador, nomeJogador, numDupla);
+				}
+			}
+			else {
+				player = new Jogador(idJogador, nomeJogador, numDupla, false, nomeJogador == "Humano1" || !multiInstance);
+			}
 
 			Carta* cartasJogador[3] = { nullptr, nullptr, nullptr };
 			int idCarta = 0;
@@ -309,9 +328,6 @@ Partida* PersistenciaController::CriarPartida(Json::Value json) {
 	Carta* vira = CriarCarta(json["cartaVirada"]);
 	RodadasController* rodada = CriarRodadaController(json["rodadaAtual"], jogadores, placar, vira);
 
-	int numeroDeJogadores = json["configuracoes"]["numeroJogadores"].asInt();
-	
-
 	return new Partida(placar, dupla1, dupla2, rodada, vira, numeroDeJogadores, multiInstance);
 }
 
@@ -325,16 +341,16 @@ Carta* PersistenciaController::CriarCarta(Json::Value cartaVirada) {
 }
 
 RodadasController* PersistenciaController::CriarRodadaController(Json::Value rodadaAtual, std::vector<Jogador*> jogadores, Placar* placar, Carta* vira) {
-	int numRodada = rodadaAtual["numeroDaRodada"].asInt();
+	int indiceDaRodada = rodadaAtual["numeroDaRodada"].asInt();
 	int valorDaRodada = rodadaAtual["valorDaRodada"].asInt();
 	int quantasVezesTrucou = rodadaAtual["quantasVezesTrucou"].asInt();
 	
-	RodadasController* rodadaController = new RodadasController(placar, vira, true, valorDaRodada, quantasVezesTrucou, numRodada);
+	RodadasController* rodadaController = new RodadasController(placar, vira, true, valorDaRodada, quantasVezesTrucou, indiceDaRodada);
 	
-	Rodada* rodada = new Rodada(numRodada, rodadaController);
+	Rodada* rodada = new Rodada(indiceDaRodada, rodadaController);
 	int numCartas = 0;
 	for (const auto& cartaDaMesa : rodadaAtual["cartasDaMesa"]) {
-		CartaDaRodada *cartaDaRodada = new CartaDaRodada(numRodada);
+		CartaDaRodada *cartaDaRodada = new CartaDaRodada(indiceDaRodada);
 
 		bool cartaCoberta = cartaDaMesa["cartaCoberta"].asBool();
 		cartaDaRodada->CartaCoberta = cartaCoberta;
@@ -357,7 +373,7 @@ RodadasController* PersistenciaController::CriarRodadaController(Json::Value rod
 	}
 	rodada->CartasAdicionadas = numCartas;
 
-	rodadaController->RecriarRodada(rodada, numRodada);
+	rodadaController->RecriarRodada(rodada, indiceDaRodada);
 
 	return rodadaController;
 }

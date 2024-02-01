@@ -75,6 +75,7 @@ public:
     }
 
    virtual void InicializaRodada(RodadasController* mesaDaRodada);
+   virtual void RecomecarRodada(RodadasController* mesaDaRodada);
    virtual bool AceitarTruco();
    virtual bool PedeTruco();
    virtual const Carta* FazerUmaJogada()
