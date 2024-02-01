@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "PartidaMessagesController.h"
 #include "TrucoPaulistaDlg.h"
+#include "PlacarView.h"
 
 PartidaMessagesController::PartidaMessagesController(CTrucoPaulistaDlg* trucoPaulistaView, bool server)
 {
@@ -10,6 +11,8 @@ PartidaMessagesController::PartidaMessagesController(CTrucoPaulistaDlg* trucoPau
 
 void PartidaMessagesController::OnReceiveMessage(MSG* pMsg)
 {
+	OutputDebugString(_T("PartidaMessagesController::OnReceiveMessage()\n"));
+
 	switch (pMsg->message)
 	{
 	case WM_MESSAGE_ATUALIZA_PLACAR:
@@ -42,7 +45,7 @@ void PartidaMessagesController::OnReceiveMessage(MSG* pMsg)
 	break;
 	case WM_MESSAGE_ENVIA_INICIO_PARTIDA:
 	{
-		TrucoPaulistaView->CleanCheckBox();
+		TrucoPaulistaView->m_PlacarView->LimpaOutput();
 	}
 	break;
 
@@ -83,7 +86,8 @@ void PartidaMessagesController::OnReceiveMessage(MSG* pMsg)
 	break;
 	case WM_MESSAGE_FIM_PARTIDA:
 	{
-
+		int jogador = LOWORD(pMsg->lParam);
+		TrucoPaulistaView->ShowQuemGanhouARodada(jogador);
 	}
 	break;
 

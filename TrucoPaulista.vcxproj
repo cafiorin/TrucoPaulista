@@ -219,11 +219,11 @@
     <ClInclude Include="json_tool.h" />
     <ClInclude Include="MesaView.h" />
     <ClInclude Include="Partida.h" />
-    <ClInclude Include="PartidaController.h" />
     <ClInclude Include="PartidaMessagesController.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="PersistenciaController.h" />
     <ClInclude Include="Placar.h" />
+    <ClInclude Include="PlacarView.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="Rodada.h" />
     <ClInclude Include="RodadasController.h" />
@@ -249,7 +249,6 @@
     <ClCompile Include="json_writer.cpp" />
     <ClCompile Include="MesaView.cpp" />
     <ClCompile Include="Partida.cpp" />
-    <ClCompile Include="PartidaController.cpp" />
     <ClCompile Include="PartidaMessagesController.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -259,6 +258,7 @@
     </ClCompile>
     <ClCompile Include="PersistenciaController.cpp" />
     <ClCompile Include="Placar.cpp" />
+    <ClCompile Include="PlacarView.cpp" />
     <ClCompile Include="Rodada.cpp" />
     <ClCompile Include="RodadasController.cpp" />
     <ClCompile Include="TrucoPaulista.cpp" />
@@ -326,6 +326,9 @@
     <Image Include="..\..\..\Users\TestDevice\Downloads\10-30-Playing-Cards-master\10-30-Playing-Cards\res\Pokers\dk.bmp" />
     <Image Include="..\..\..\Users\TestDevice\Downloads\10-30-Playing-Cards-master\10-30-Playing-Cards\res\Pokers\dl.bmp" />
     <Image Include="..\..\..\Users\TestDevice\Downloads\10-30-Playing-Cards-master\10-30-Playing-Cards\res\Pokers\dm.bmp" />
+    <Image Include="..\..\..\Users\TestDevice\Downloads\cards_5569 (1).ico" />
+    <Image Include="..\..\..\Users\TestDevice\Downloads\cards_5569 (2).ico" />
+    <Image Include="..\..\..\Users\TestDevice\Downloads\cards_5569.ico" />
     <Image Include="..\..\..\Users\TestDevice\OneDrive\Pictures\mesa.bmp" />
     <Image Include="res\Cartas\aa.bmp" />
     <Image Include="res\Cartas\ab.bmp" />
@@ -384,6 +387,9 @@
     <Image Include="res\Cartas\vazia_90.bmp" />
     <Image Include="res\Cartas\verso.bmp" />
     <Image Include="res\Cartas\verso_90.bmp" />
+    <Image Include="res\Icones\cards_5569 (1).ico" />
+    <Image Include="res\Icones\cards_5569 (2).ico" />
+    <Image Include="res\Icones\cards_5569.ico" />
     <Image Include="res\TrucoPaulista.ico" />
   </ItemGroup>
   <ItemGroup>

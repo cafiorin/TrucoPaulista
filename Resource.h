@@ -66,6 +66,9 @@
 #define IDB_BITMAP_VAZIA_90             237
 #define IDB_BITMAP_VERSO_90             238
 #define IDB_BITMAP_MESA                 239
+#define IDI_ICON1                       240
+#define IDI_ICON2                       241
+#define IDI_ICON3                       242
 #define IDC_PIC1                        1000
 #define IDC_PIC2                        1001
 #define IDC_PIC3                        1002
@@ -77,8 +80,8 @@
 #define IDC_PIC9                        1008
 #define IDC_PIC10                       1009
 #define IDC_PIC11                       1010
-#define IDC_RADIO7                      1011
-#define IDC_RADIO8                      1012
+#define IDC_RB2PLAYERS                  1011
+#define IDC_RB4PLAYERS                  1012
 #define IDC_PIC8                        1013
 #define IDC_PIC_PARC1                   1013
 #define IDC_PIC12                       1014
@@ -88,15 +91,15 @@
 #define IDC_PIC14                       1016
 #define IDC_PIC15                       1017
 #define IDC_RADIO2                      1018
-#define IDC_RADIO9                      1018
-#define IDC_BUTTON1                     1019
+#define IDC_RB4PLAYERS_REMOTE           1018
+#define IDC_BTN_START                   1019
 #define IDC_PIC_CARTA_H2_R1             1020
 #define IDC_RADIO3                      1021
 #define IDC_RADIO4                      1022
 #define IDC_RADIO5                      1023
 #define IDC_RADIO6                      1024
 #define ID_SYNC                         1025
-#define IDC_EDIT1                       1026
+#define IDC_EDIT_TEXT_OUTPUT            1026
 #define IDC_PIC_CARTA_H1_R1             1027
 #define IDC_PIC_CARTA_BOT2_R1           1028
 #define IDC_PIC_CARTA_BOT1_R1           1029
@@ -132,7 +135,7 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        240
+#define _APS_NEXT_RESOURCE_VALUE        243
 #define _APS_NEXT_COMMAND_VALUE         32771
 #define _APS_NEXT_CONTROL_VALUE         1056
 #define _APS_NEXT_SYMED_VALUE           101

@@ -7,7 +7,7 @@ Partida::Partida(IEventosDaPartida* eventosPartida)
 	EventosDaPartida = eventosPartida;
 	placar = new Placar();
 
-	Dupla1[0] = new Jogador(1, "Humano1", 1, false, true);
+	Dupla1[0] = new Jogador(1, "Humano1", 1, false, false);
 	Dupla2[0] = new BotJogaSozinho(2, "Bot1", 2);
 	Dupla1[1] = new Jogador(3, "Humano2", 1, false, false);
 	Dupla2[1] = new BotJogaSozinho(4, "Bot2", 2);
@@ -16,6 +16,7 @@ Partida::Partida(IEventosDaPartida* eventosPartida)
 	Vira = nullptr;
 	UltimoJogadorAJogar = nullptr;
 	Rodadas = nullptr;
+	m_TipoDePartida = TipoDePartida::Cliente;
 }
 
 Partida::~Partida()
@@ -38,19 +39,31 @@ void Partida::AtualizarEventosDaPartida(IEventosDaPartida* eventosPartida) {
 
 void Partida::Create2Jogadores(bool duasInstancias)
 {
-	Dupla1[0] = new Jogador(1, "Humano1", 1, false, true);
-	Dupla1[1] = new Jogador(3, "Humano2", 1, false, !duasInstancias);
+	Dupla1[0] = new Jogador(1, "Humano1", 1, false, m_TipoDePartida != TipoDePartida::Cliente);
+	Dupla1[1] = new Jogador(3, "Humano2", 1, false, m_TipoDePartida == TipoDePartida::Cliente || m_TipoDePartida == TipoDePartida::QuatroJogadores);
 	Dupla2[0] = new Bot(2, "Bot1Duplas", 2);
 	Dupla2[1] = new Bot(4, "Bot2Duplas", 2);
 }
 
-void Partida::InicializarPartida(int quantosJogadores, bool duasInstancias)
+void Partida::InicializarPartida(TipoDePartida tipoDePartida)
 {
-	QuantosJogadores = quantosJogadores;
-	DuasInstancias = duasInstancias;
+	m_TipoDePartida = tipoDePartida;
+	QuantosJogadores = 4;
+	DuasInstancias = false;
+
+	switch (tipoDePartida)
+	{
+	case TipoDePartida::DoisJogadores:
+		QuantosJogadores = 2;
+		break;
+
+	case TipoDePartida::QuatroJogadores_umremoto:
+		DuasInstancias = true;
+		break;
+	}
 
 	delete Rodadas;
-	Rodadas = new RodadasController(placar, quantosJogadores == 4);
+	Rodadas = new RodadasController(placar, QuantosJogadores == 4);
 
 	delete Dupla1[0];
 	delete Dupla1[1];
@@ -66,7 +79,7 @@ void Partida::InicializarPartida(int quantosJogadores, bool duasInstancias)
 	}
 	else
 	{
-		Create2Jogadores(duasInstancias);
+		Create2Jogadores(DuasInstancias);
 	}
 
 	placar->Inicializar();
@@ -74,8 +87,6 @@ void Partida::InicializarPartida(int quantosJogadores, bool duasInstancias)
 	QuemComecaRodada = Dupla1[0];
 	Rodadas->SetPlacar(placar);
 	Rodadas->SetDuplas(Dupla1);
-
-	InicializarRodada();
 }
 
 void Partida::GanhouPartida()
@@ -170,8 +181,6 @@ void Partida::DuplaNaoPodePedirTruco(Jogador* jogador)
 	jogador->NaoPodeMaisPedirTruco();
 	Jogador* dupla = GetDuplaDoJogador(jogador);
 	dupla->NaoPodeMaisPedirTruco();
-
-	
 }
 
 void Partida::DuplaOponenteTruco(Jogador* jogador, bool podeTrucar)
@@ -189,7 +198,6 @@ void Partida::DuplaOponenteTruco(Jogador* jogador, bool podeTrucar)
 		oponente->NaoPodeMaisPedirTruco();
 		dupla->NaoPodeMaisPedirTruco();
 	}
-
 }
 
 
@@ -258,16 +266,16 @@ void Partida::ProximoPasso(Jogador* jogador, AcaoRealizada acao)
 		else
 		{
 			//Solicita Truco ao jogador
-			EventosDaPartida->onPedeTruco();
+			EventosDaPartida->onPedeTruco(proximoJogador);
 		}
 	}
 	break;
 
 	case AcaoRealizada::Correu:
 	{
-		Jogador* proximoJogador = GetProximoJogador();
-		QuemComecaRodada = proximoJogador;
-		AcabouRodada(proximoJogador);
+		Jogador* jogador = GetJogadorAnterior();
+		QuemComecaRodada = jogador;
+		AcabouRodada(jogador);
 	}
 	break;
 
@@ -328,7 +336,7 @@ Jogador* Partida::GetJogadorAnterior()
 	}
 	else
 	{
-		idProxJogador = idProxJogador - 1 < 1 ? 1 : idProxJogador - 1;
+		idProxJogador = idProxJogador - 1 < 1 ? 4 : idProxJogador - 1;
 	}
 
 	return GetJogadorByID(idProxJogador);
@@ -432,8 +440,6 @@ void Partida::AcabouRodada(Jogador* ganhou)
 	}
 
 	EventosDaPartida->onAcabouARodada(ganhou);
-
-
 }
 
 

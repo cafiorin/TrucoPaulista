@@ -16,7 +16,7 @@ private:
 	Jogador* QuemComecaRodada;
 	Jogador* UltimoJogadorAJogar;
 
-	int QuantosJogadores = 2;
+	int QuantosJogadores = 4;
 	bool DuasInstancias;
 	Placar* placar;
 
@@ -27,6 +27,7 @@ private:
 	Baralho* BaralhoMesa;
 	Carta* Vira;
 	IEventosDaPartida* EventosDaPartida;
+	TipoDePartida m_TipoDePartida;
 
 public:
 	Partida(Placar* placar, Jogador* dupla1[2], Jogador* dupla2[2], RodadasController* rodadas, Carta* vira, int numJogadores, bool multiInstancia) : 
@@ -44,8 +45,9 @@ public:
 	
 	void AtualizarEventosDaPartida(IEventosDaPartida* eventosPartida);
 
+	TipoDePartida ObtemTipoDePartida() { return m_TipoDePartida; }
 	void Create2Jogadores(bool duasInstancias);
-	void InicializarPartida(int quantosJogadores, bool duasInstancias);
+	void InicializarPartida(TipoDePartida tipoDePartida);
 
 	bool InicializarRodada();
 

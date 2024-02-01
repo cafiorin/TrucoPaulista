@@ -9,9 +9,15 @@ class Jogador;
 class Carta;
 class PartidaMessagesController;
 class PersistenciaController;
+class JogadorView;
+class MesaView;
+class DadosInstanciaCliente;
+class PlacarView;
+
 
 #include "IEventosDaPartida.h"  
 #include "CartaCoberta.h"
+#include "Enums.h"
 
 // CTrucoPaulistaDlg dialog
 class CTrucoPaulistaDlg : public CDialogEx, public IEventosDaPartida
@@ -21,14 +27,15 @@ public:
 	CTrucoPaulistaDlg(CWnd* pParent = nullptr);	// standard constructor
 	virtual ~CTrucoPaulistaDlg();
 	void SetBitmapOnStaticControl(CStatic& staticControl, CBitmap& bitmap);
-	void SetBitmapCartasAvesso();
 	void InitFontToText(int idText);
-
-	void CleanOutput();
+	TipoDePartida ObtemTipoDePartida();
+	JogadorView* GetJogadorViewByID(int numeroJogador);
 	void AddOutput(const CString& novaLinha);
 	void AtualizaTento();
+	void JogadorCobriuACarta(int idControl);
+	void AtualizaDeQuemEhAVezDeJogar(Jogador* jogador);
+	void ShowQuemGanhouARodada(int jogador);
 
-	void SetBitmapMesa();
 	void InicializaTelaInicial();
 	void InicializaPartida();
 	void InicializarPartidaCliente();
@@ -44,18 +51,23 @@ public:
 	bool TwoInstances;
 	PersistenciaController* persistencia;
 	CFont m_Font;
+	JogadorView* m_JogadorHumano1View;
+	JogadorView* m_JogadorHumano2View;
+	JogadorView* m_JogadorBot1View;
+	JogadorView* m_JogadorBot2View;
+	MesaView* m_MesaView;
+	PlacarView* m_PlacarView;
+	DadosInstanciaCliente* m_Cliente;
 
 	void InicializaRodada();
-	void CleanCheckBox();
 	void AtualizaPlacar();
 	void AtualizaPlacarDePartidas();
+	void JogadorClicouNaCarta(Jogador* jogador, int posicaoDaCarta);
+	void JogadorParceiroClicouNaCarta(Jogador* jogador, int posicaoDaCarta);
 
-	void SetCurrectBitmapFromBot(Jogador* bot, const Carta* carta);
-	void SetCurrectBitmapFromHumano(Jogador* bot, const Carta* carta);
+
 	void MouseLeftClick(int idControl);
 	int ObtemNumeroDaRodada();
-	int m_NumeroDaRodadaCliente;
-	bool m_PodeTrucarCliente;
 
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
 
@@ -67,12 +79,11 @@ public:
 	virtual void solicitaJogadorJogar(Jogador* jogador);
 	virtual void onBotJogouACarta(int NumeroDaRodada, Jogador* jogadorAjogar, const Carta* cartaJogada, bool cartaCoberta);
 	virtual void onAcabouARodada(Jogador* JogadorQueGanhou);
-	virtual void onPedeTruco();
+	virtual void onPedeTruco(Jogador* jogador);
 	virtual void onAceitouTruco(Jogador* jogador);
 	virtual void onCartaJogada(int NumeroDaRodada, Jogador* jogadorAjogar, const Carta* cartaJogada, bool cartaCoberta);
 
 	//Cliente
-	void AtualizaPlacar(int PontosDaDupla1, int PontosDaDupla2);
 	void AtualizaCartasCliente(int c1, int c2, int c3, int c4);
 	void AtualizaClientePodeTrucar(bool trucar);
 	void SolicitaAcaoJogadorCliente();
@@ -130,7 +141,7 @@ public:
 	CStatic m_PicCartaParc3;
 	CStatic m_PicBaralho;
 	CStatic m_PicVira;
-	afx_msg void OnBnClickedButton1();
+	afx_msg void OnBnClickedStart();
 	afx_msg void OnStnClickedPic3();
 	afx_msg void OnStnClickedPic2();
 	afx_msg void OnStnClickedPic1();
@@ -153,4 +164,7 @@ public:
 	afx_msg void OnStnClickedPicParc1();
 	afx_msg void OnBnClickedTrucar2();
 	afx_msg void OnBnClickedCorrer2();
+	afx_msg void OnBnClickedRb4playersRemote();
+	afx_msg void OnBnClickedRb4players();
+	afx_msg void OnBnClickedRb2players();
 };

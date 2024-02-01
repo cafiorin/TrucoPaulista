@@ -123,13 +123,22 @@
     <ClInclude Include="json_tool.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="PartidaController.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="PartidaMessagesController.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="CartaCoberta.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DadosInstanciaCliente.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="JogadorView.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MesaView.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PlacarView.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -182,9 +191,6 @@
     <ClCompile Include="AboutDlg.cpp">
       <Filter>Source Files\View</Filter>
     </ClCompile>
-    <ClCompile Include="PartidaController.cpp">
-      <Filter>Source Files\Controller</Filter>
-    </ClCompile>
     <ClCompile Include="PartidaMessagesController.cpp">
       <Filter>Source Files\Controller</Filter>
     </ClCompile>
@@ -202,6 +208,18 @@
     </ClCompile>
     <ClCompile Include="CartaCoberta.cpp">
       <Filter>Source Files\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="DadosInstanciaCliente.cpp">
+      <Filter>Source Files\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="JogadorView.cpp">
+      <Filter>Source Files\View</Filter>
+    </ClCompile>
+    <ClCompile Include="MesaView.cpp">
+      <Filter>Source Files\View</Filter>
+    </ClCompile>
+    <ClCompile Include="PlacarView.cpp">
+      <Filter>Source Files\View</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -553,6 +571,24 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="res\Cartas\mesa.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\..\..\Users\TestDevice\Downloads\cards_5569 (1).ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\..\..\Users\TestDevice\Downloads\cards_5569 (2).ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\..\..\Users\TestDevice\Downloads\cards_5569.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Icones\cards_5569 (2).ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Icones\cards_5569 (1).ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Icones\cards_5569.ico">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>
