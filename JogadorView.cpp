@@ -147,7 +147,7 @@ void JogadorView::AtualizaStatusDoJogador(StatusJogador status)
 
 	case StatusJogador::SuaVez:
 	{
-		if (!m_Jogador->EhUmBot())
+		if (!m_Jogador->EhUmBot() && !(m_Jogador->ObtemNumeroJogador() == 3 && m_Partida->ObtemTipoDePartida() == TipoDePartida::QuatroJogadores_umremoto))
 		{
 			m_TextSuaVez->ShowWindow(SW_SHOW);
 
@@ -194,8 +194,6 @@ void JogadorView::AtualizaStatusDoJogador(StatusJogador status)
 		}
 	}
 	break;
-
-
 	}
 }
 
@@ -215,4 +213,41 @@ void JogadorView::AtualizaStatusDoJogador(StatusJogador status)
 		{
 			m_Carta3View->ShowWindow(SW_HIDE);
 		}
+	}
+
+	void JogadorView::EscondeCartaJogada(int rodada)
+	{
+		switch (rodada)
+		{
+		case 1:
+			m_Carta1View->ShowWindow(SW_HIDE);
+			break;
+
+		case 2:
+			m_Carta2View->ShowWindow(SW_HIDE);
+			break;
+
+		case 3:
+			m_Carta3View->ShowWindow(SW_HIDE);
+			break;
+		}
+	}
+
+	void JogadorView::AtualizaCartasCliente(int c1, int c2, int c3)
+	{
+		CartasBitmap cartaBitmap1(c1);
+		CartasBitmap cartaBitmap2(c2);
+		CartasBitmap cartaBitmap3(c3);
+
+		m_pDialog->SetBitmapOnStaticControl(*m_Carta1View, *cartaBitmap1.Getbitmap());
+		m_pDialog->SetBitmapOnStaticControl(*m_Carta2View, *cartaBitmap2.Getbitmap());
+		m_pDialog->SetBitmapOnStaticControl(*m_Carta3View, *cartaBitmap3.Getbitmap());
+		
+		m_Carta1View->ModifyStyle(0, SS_NOTIFY);
+		m_Carta2View->ModifyStyle(0, SS_NOTIFY);
+		m_Carta3View->ModifyStyle(0, SS_NOTIFY);
+
+		m_Carta1View->ShowWindow(SW_SHOW);
+		m_Carta2View->ShowWindow(SW_SHOW);
+		m_Carta3View->ShowWindow(SW_SHOW);
 	}

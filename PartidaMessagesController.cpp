@@ -86,7 +86,8 @@ void PartidaMessagesController::OnReceiveMessage(MSG* pMsg)
 	break;
 	case WM_MESSAGE_FIM_PARTIDA:
 	{
-
+		int jogador = LOWORD(pMsg->lParam);
+		TrucoPaulistaView->ShowQuemGanhouARodada(jogador);
 	}
 	break;
 

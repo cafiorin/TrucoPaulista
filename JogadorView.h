@@ -28,11 +28,11 @@ public:
 
 	void AtualizaStatusDoJogador(StatusJogador status);
 	void JogouACarta(const Carta* carta, bool cartaCoberta=false);
+	void EscondeCartaJogada(int rodada);
+	void AtualizaCartasCliente(int c1, int c2, int c3);
 
-	
 	static void ControiJogadoresView(CTrucoPaulistaDlg* pDialog, DadosInstanciaCliente* cliente, Partida* partida);
 	static void AtualizaStatusDosJogadores(CTrucoPaulistaDlg* pDialog, StatusJogador status);
 	static void AtualizaStatusDoJogadorEscolhido(CTrucoPaulistaDlg* pDialog, StatusJogador status, Jogador* jogadorParaAtualizar);
-
 };
 

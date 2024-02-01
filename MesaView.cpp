@@ -123,3 +123,11 @@ void MesaView::JogadorJogouACartaCliente(int rodada, int numeroJogador, int cart
 
 }
 
+void MesaView::AtualizaCartaViraCliente(int idVira)
+{
+	CartasBitmap cartaBitmap4(idVira);
+	m_pDialog->SetBitmapOnStaticControl(*m_PicVira, *cartaBitmap4.Getbitmap());
+	m_PicVira->ShowWindow(SW_SHOW);
+
+}
+

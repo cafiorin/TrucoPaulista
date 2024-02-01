@@ -4,8 +4,7 @@ enum TipoDePartida { Cliente, DoisJogadores, QuatroJogadores, QuatroJogadores_um
 
 enum Naipes { Espadas, Copas, Ouro, Paus };
 
-enum StatusJogador { Inicia, EsperandoCartas, RecebeuCartas, SuaVez, NaoEhSuaVez, Truca, AtualizaTento
-};
+enum StatusJogador { Inicia, EsperandoCartas, RecebeuCartas, SuaVez, NaoEhSuaVez, Truca, AtualizaTento};
 
 enum AcaoRealizada { Jogou, Trucou, Correu, Aceitou }; 
 

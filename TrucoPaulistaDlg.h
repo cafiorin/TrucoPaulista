@@ -29,11 +29,12 @@ public:
 	void SetBitmapOnStaticControl(CStatic& staticControl, CBitmap& bitmap);
 	void InitFontToText(int idText);
 	TipoDePartida ObtemTipoDePartida();
-
+	JogadorView* GetJogadorViewByID(int numeroJogador);
 	void AddOutput(const CString& novaLinha);
 	void AtualizaTento();
 	void JogadorCobriuACarta(int idControl);
 	void AtualizaDeQuemEhAVezDeJogar(Jogador* jogador);
+	void ShowQuemGanhouARodada(int jogador);
 
 	void InicializaTelaInicial();
 	void InicializaPartida();

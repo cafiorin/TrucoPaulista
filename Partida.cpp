@@ -176,8 +176,6 @@ void Partida::DuplaNaoPodePedirTruco(Jogador* jogador)
 	jogador->NaoPodeMaisPedirTruco();
 	Jogador* dupla = GetDuplaDoJogador(jogador);
 	dupla->NaoPodeMaisPedirTruco();
-
-	
 }
 
 void Partida::DuplaOponenteTruco(Jogador* jogador, bool podeTrucar)
@@ -195,7 +193,6 @@ void Partida::DuplaOponenteTruco(Jogador* jogador, bool podeTrucar)
 		oponente->NaoPodeMaisPedirTruco();
 		dupla->NaoPodeMaisPedirTruco();
 	}
-
 }
 
 
