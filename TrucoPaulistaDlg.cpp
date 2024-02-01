@@ -752,15 +752,6 @@ void CTrucoPaulistaDlg::AtualizaClientePodeTrucar(bool trucar)
 	m_Cliente->SetaPodePedirTruco(trucar);
 }
 
-void CTrucoPaulistaDlg::OnBnClickedSalvar()
-{
-	if (persistencia != nullptr) { // Somente primeira instância irá salvar?
-		bool temJogoSalvo = persistencia->TemJogoSalvo();
-
-		persistencia->AtualizarArquivo();
-	}
-}
-
 BOOL CTrucoPaulistaDlg::PreTranslateMessage(MSG* pMsg)
 {
 	// Msg trocada entre instancias
@@ -1014,7 +1005,21 @@ TipoDePartida CTrucoPaulistaDlg::ObtemTipoDePartida()
 }
 
 JogadorView* CTrucoPaulistaDlg::GetJogadorViewByID(int numeroJogador)
-void CTrucoPaulistaDlg::OnBnClickedRecarregar() {
+{
+	JogadorView* jogadoresView[4] = { m_JogadorHumano1View , m_JogadorHumano2View,m_JogadorBot1View,m_JogadorBot2View };
+
+	for (int i = 0; i < 4; i++)
+	{
+		JogadorView* jogadorView = jogadoresView[i];
+		if (jogadorView->m_Jogador->ObtemNumeroJogador() == numeroJogador)
+			return jogadorView;
+	}
+
+	return nullptr;
+}
+
+void CTrucoPaulistaDlg::OnBnClickedRecarregar() 
+{
 	GetDlgItem(IDC_RECARREGAR)->ShowWindow(SW_HIDE);
 
 	persistencia = new PersistenciaController(nullptr);
