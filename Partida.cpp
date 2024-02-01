@@ -35,7 +35,7 @@ Partida::~Partida()
 void Partida::Create2Jogadores(bool duasInstancias)
 {
 	Dupla1[0] = new Jogador(1, "Humano1", 1, false, m_TipoDePartida != TipoDePartida::Cliente);
-	Dupla1[1] = new Jogador(3, "Humano2", 1, false, m_TipoDePartida == TipoDePartida::Cliente);
+	Dupla1[1] = new Jogador(3, "Humano2", 1, false, m_TipoDePartida == TipoDePartida::Cliente || m_TipoDePartida == TipoDePartida::QuatroJogadores);
 	Dupla2[0] = new Bot(2, "Bot1Duplas", 2);
 	Dupla2[1] = new Bot(4, "Bot2Duplas", 2);
 }
