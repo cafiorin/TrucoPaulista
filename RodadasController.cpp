@@ -19,10 +19,9 @@ RodadasController::RodadasController(Placar *placar, bool jogoDeDupla)
 	Vira = nullptr;
 
 	placar_ = placar;
-	Dupla1[0] = nullptr;
-	Dupla1[0] = nullptr;
+	//Dupla1[0] = nullptr;
+	//Dupla1[0] = nullptr;
 }
-
 
 RodadasController::~RodadasController()
 {
@@ -46,6 +45,10 @@ void RodadasController::InicializarRodada(Carta *vira)
 	Rodadas[0] = new Rodada(1, this);
 	Rodadas[1] = new Rodada(2, this);
 	Rodadas[2] = new Rodada(3, this);
+}
+
+void RodadasController::RecriarRodada(Rodada* rodada, int numRodada) {
+	Rodadas[numRodada] = rodada;
 }
 
 Jogador* RodadasController::JaTemosUmVencedor()

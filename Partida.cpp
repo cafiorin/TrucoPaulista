@@ -32,6 +32,11 @@ Partida::~Partida()
 	delete Vira;
 	delete placar;
 }
+
+void Partida::AtualizarEventosDaPartida(IEventosDaPartida* eventosPartida) {
+	EventosDaPartida = eventosPartida;
+}
+
 void Partida::Create2Jogadores(bool duasInstancias)
 {
 	Dupla1[0] = new Jogador(1, "Humano1", 1, false, m_TipoDePartida != TipoDePartida::Cliente);

@@ -90,7 +90,6 @@ BOOL CTrucoPaulistaDlg::OnInitDialog()
 	m_PlacarView = new PlacarView(this,partida);
 	JogadorView::ControiJogadoresView(this, m_Cliente, partida);
 	partidaMessagesController = new PartidaMessagesController(this, m_Instance == 1);
-	persistencia = new PersistenciaController(partida);
 	cartaCoberta = new CartaCoberta();
 
 	InicializaTelaInicial();
@@ -159,6 +158,7 @@ void CTrucoPaulistaDlg::OnBnClickedSync()
 void CTrucoPaulistaDlg::OnBnClickedButton1()
 {
 	InicializaPartida();
+	persistencia = new PersistenciaController(partida);
 }
 
 void CTrucoPaulistaDlg::JogadorClicouNaCarta(Jogador *jogador, int posicaoDaCarta)
@@ -1014,15 +1014,20 @@ TipoDePartida CTrucoPaulistaDlg::ObtemTipoDePartida()
 }
 
 JogadorView* CTrucoPaulistaDlg::GetJogadorViewByID(int numeroJogador)
+void CTrucoPaulistaDlg::OnBnClickedRecarregar() {
+	GetDlgItem(IDC_RECARREGAR)->ShowWindow(SW_HIDE);
+
+	persistencia = new PersistenciaController(nullptr);
+
+	Partida* ultimaPartida = persistencia->RecriarPartida();
+	ultimaPartida->AtualizarEventosDaPartida(this);
+}
+
+void CTrucoPaulistaDlg::OnBnClickedSalvar()
 {
-	JogadorView* jogadoresView[4] = { m_JogadorHumano1View , m_JogadorHumano2View,m_JogadorBot1View,m_JogadorBot2View };
-	
-	for (int i = 0; i < 4; i++)
-	{
-		JogadorView* jogadorView = jogadoresView[i];
-		if (jogadorView->m_Jogador->ObtemNumeroJogador() == numeroJogador)
-			return jogadorView;
+	if (persistencia != nullptr) {
+		bool temJogoSalvo = persistencia->TemJogoSalvo();
+
+		persistencia->AtualizarArquivo();
 	}
-	
-	return nullptr;
 }
