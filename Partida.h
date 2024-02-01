@@ -30,15 +30,6 @@ private:
 	TipoDePartida m_TipoDePartida;
 
 public:
-	Partida(Placar* placar, Jogador* dupla1[2], Jogador* dupla2[2], RodadasController* rodadas, Carta* vira, int numJogadores, bool multiInstancia) : 
-		placar(placar), Rodadas(rodadas), Vira(vira), QuantosJogadores(numJogadores), DuasInstancias(multiInstancia)
-	{
-		Dupla1[0] = dupla1[0];
-		Dupla1[1] = dupla1[1];
-
-		Dupla2[0] = dupla2[0];
-		Dupla2[1] = dupla2[1];
-	}
 
 	Partida(IEventosDaPartida* eventosPartida);
 	~Partida();
@@ -116,14 +107,6 @@ public:
 	int ObterValorDaRodada()
 	{
 		return Rodadas->QuantoEstaValendoARodada();
-	}
-
-	int PegarNumeroJogadores() const {
-		return QuantosJogadores;
-	}
-
-	bool MultiInstancia() const {
-		return DuasInstancias;
 	}
 };
 
