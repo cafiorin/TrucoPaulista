@@ -155,10 +155,11 @@ void CTrucoPaulistaDlg::OnBnClickedSync()
 }
 
 
-void CTrucoPaulistaDlg::OnBnClickedButton1()
+void CTrucoPaulistaDlg::OnBnClickedStart()
 {
 	InicializaPartida();
 	persistencia = new PersistenciaController(partida);
+	GetDlgItem(IDC_RECARREGAR)->ShowWindow(SW_HIDE);
 }
 
 void CTrucoPaulistaDlg::JogadorClicouNaCarta(Jogador *jogador, int posicaoDaCarta)
@@ -817,7 +818,7 @@ BEGIN_MESSAGE_MAP(CTrucoPaulistaDlg, CDialogEx)
 	ON_WM_QUERYDRAGICON()
 	ON_BN_CLICKED(IDM_ABOUTBOX, &CTrucoPaulistaDlg::OnBnClickedAbout)
 	ON_BN_CLICKED(ID_SYNC, &CTrucoPaulistaDlg::OnBnClickedSync)
-	ON_BN_CLICKED(IDC_BTN_START, &CTrucoPaulistaDlg::OnBnClickedButton1)
+	ON_BN_CLICKED(IDC_BTN_START, &CTrucoPaulistaDlg::OnBnClickedStart)
 	ON_STN_CLICKED(IDC_PIC3, &CTrucoPaulistaDlg::OnStnClickedPic3)
 	ON_STN_CLICKED(IDC_PIC2, &CTrucoPaulistaDlg::OnStnClickedPic2)
 	ON_STN_CLICKED(IDC_PIC1, &CTrucoPaulistaDlg::OnStnClickedPic1)
@@ -829,6 +830,9 @@ BEGIN_MESSAGE_MAP(CTrucoPaulistaDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_TRUCAR2, &CTrucoPaulistaDlg::OnBnClickedTrucar2)
 	ON_BN_CLICKED(IDC_CORRER2, &CTrucoPaulistaDlg::OnBnClickedCorrer2)
 	ON_BN_CLICKED(IDC_SALVAR, &CTrucoPaulistaDlg::OnBnClickedSalvar)
+	ON_BN_CLICKED(IDC_RB4PLAYERS_REMOTE, &CTrucoPaulistaDlg::OnBnClickedRb4playersRemote)
+	ON_BN_CLICKED(IDC_RB4PLAYERS, &CTrucoPaulistaDlg::OnBnClickedRb4players)
+	ON_BN_CLICKED(IDC_RB2PLAYERS, &CTrucoPaulistaDlg::OnBnClickedRb2players)
 END_MESSAGE_MAP()
 
 
@@ -1035,4 +1039,28 @@ void CTrucoPaulistaDlg::OnBnClickedSalvar()
 
 		persistencia->AtualizarArquivo();
 	}
+}
+
+
+void CTrucoPaulistaDlg::OnBnClickedRb4playersRemote()
+{
+	GetDlgItem(IDC_RECARREGAR)->ShowWindow(SW_HIDE);
+	GetDlgItem(IDC_SALVAR)->ShowWindow(SW_HIDE);
+	GetDlgItem(ID_SYNC)->ShowWindow(SW_SHOW);
+}
+
+
+void CTrucoPaulistaDlg::OnBnClickedRb4players()
+{
+	GetDlgItem(IDC_RECARREGAR)->ShowWindow(SW_SHOW);
+	GetDlgItem(IDC_SALVAR)->ShowWindow(SW_SHOW);
+	GetDlgItem(ID_SYNC)->ShowWindow(SW_HIDE);
+}
+
+
+void CTrucoPaulistaDlg::OnBnClickedRb2players()
+{
+	GetDlgItem(IDC_RECARREGAR)->ShowWindow(SW_SHOW);
+	GetDlgItem(IDC_SALVAR)->ShowWindow(SW_SHOW);
+	GetDlgItem(ID_SYNC)->ShowWindow(SW_HIDE);
 }

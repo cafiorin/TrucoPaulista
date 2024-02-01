@@ -141,7 +141,7 @@ public:
 	CStatic m_PicCartaParc3;
 	CStatic m_PicBaralho;
 	CStatic m_PicVira;
-	afx_msg void OnBnClickedButton1();
+	afx_msg void OnBnClickedStart();
 	afx_msg void OnStnClickedPic3();
 	afx_msg void OnStnClickedPic2();
 	afx_msg void OnStnClickedPic1();
@@ -164,4 +164,7 @@ public:
 	afx_msg void OnStnClickedPicParc1();
 	afx_msg void OnBnClickedTrucar2();
 	afx_msg void OnBnClickedCorrer2();
+	afx_msg void OnBnClickedRb4playersRemote();
+	afx_msg void OnBnClickedRb4players();
+	afx_msg void OnBnClickedRb2players();
 };
