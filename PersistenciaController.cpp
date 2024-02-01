@@ -243,7 +243,7 @@ Partida* PersistenciaController::MontarPartida(std::string json) {
 	Json::parseFromStream(reader, jsonStream, &jsonObject, nullptr);
 
 	Partida* jogo = CriarPartida(jsonObject);
-	InicializarPersistencia(jogo);
+	//InicializarPersistencia(jogo);
 
 	return jogo;
 }

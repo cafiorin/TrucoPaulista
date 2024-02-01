@@ -40,7 +40,6 @@ CTrucoPaulistaDlg::CTrucoPaulistaDlg(CWnd* pParent) : CDialogEx(IDD_TRUCOPAULIST
 	m_JogadorBot2View = nullptr;
 	partida = nullptr;
 	partidaMessagesController = nullptr;
-	persistencia = nullptr;
 	cartaCoberta = nullptr;
 	m_MesaView = nullptr;
 	m_Cliente = nullptr;
@@ -51,7 +50,6 @@ CTrucoPaulistaDlg::~CTrucoPaulistaDlg()
 {
 	delete partida;
 	delete partidaMessagesController;
-	delete persistencia;
 	delete cartaCoberta;
 
 	delete m_JogadorHumano1View;
@@ -158,7 +156,6 @@ void CTrucoPaulistaDlg::OnBnClickedSync()
 void CTrucoPaulistaDlg::OnBnClickedStart()
 {
 	InicializaPartida();
-	persistencia = new PersistenciaController(partida);
 	GetDlgItem(IDC_RECARREGAR)->ShowWindow(SW_HIDE);
 }
 
@@ -1059,7 +1056,7 @@ void CTrucoPaulistaDlg::OnBnClickedRecarregar()
 	delete partida;
 	delete m_PlacarView;
 
-	persistencia = new PersistenciaController(nullptr);
+	PersistenciaController* persistencia = new PersistenciaController(nullptr);
 
 	Partida* ultimaPartida = persistencia->RecriarPartida();
 	ultimaPartida->AtualizarEventosDaPartida(this);
@@ -1084,15 +1081,17 @@ void CTrucoPaulistaDlg::OnBnClickedRecarregar()
 	JogadorView::ControiJogadoresView(this, m_Cliente, partida);
 	partida->RecomecarRodada();
 	RecomecarRodada();
+
+	delete persistencia;
 }
 
 void CTrucoPaulistaDlg::OnBnClickedSalvar()
 {
-	if (persistencia != nullptr) {
-		bool temJogoSalvo = persistencia->TemJogoSalvo();
+	PersistenciaController* persistencia = new PersistenciaController(partida);
+	persistencia->AtualizarArquivo();
+	delete persistencia;
 
-		persistencia->AtualizarArquivo();
-	}
+	//bool temJogoSalvo = persistencia->TemJogoSalvo();
 }
 
 

@@ -49,7 +49,6 @@ public:
 	bool DoisJogadores;
 	Jogador* JogadorSolicitado;
 	bool TwoInstances;
-	PersistenciaController* persistencia;
 	CFont m_Font;
 	JogadorView* m_JogadorHumano1View;
 	JogadorView* m_JogadorHumano2View;
