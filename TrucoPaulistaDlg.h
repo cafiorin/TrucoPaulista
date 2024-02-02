@@ -64,7 +64,8 @@ public:
 	void AtualizaPlacarDePartidas();
 	void JogadorClicouNaCarta(Jogador* jogador, int posicaoDaCarta);
 	void JogadorParceiroClicouNaCarta(Jogador* jogador, int posicaoDaCarta);
-
+	void JogarCartasNaMesa();
+	void AtualizarCartaJogadaNaMesa(JogadorView* jogador, std::vector<std::tuple<Carta*, bool>> cartas);
 
 	void MouseLeftClick(int idControl);
 	int ObtemNumeroDaRodada();

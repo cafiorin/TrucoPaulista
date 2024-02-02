@@ -30,7 +30,7 @@ private:
 	TipoDePartida m_TipoDePartida;
 
 public:
-	Partida(Placar* placar, Jogador* dupla1[2], Jogador* dupla2[2], RodadasController* rodadas, Carta* vira, int numJogadores, bool multiInstancia) : 
+	Partida(Placar* placar, Jogador* dupla1[2], Jogador* dupla2[2], RodadasController* rodadas, Carta* vira, int numJogadores, bool multiInstancia, int numUltJogador) : 
 		placar(placar), Rodadas(rodadas), Vira(vira), QuantosJogadores(numJogadores), DuasInstancias(multiInstancia)
 	{
 		Dupla1[0] = dupla1[0];
@@ -38,6 +38,8 @@ public:
 
 		Dupla2[0] = dupla2[0];
 		Dupla2[1] = dupla2[1];
+
+		UltimoJogadorAJogar = GetJogadorByID(numUltJogador);
 	}
 
 	Partida(IEventosDaPartida* eventosPartida);

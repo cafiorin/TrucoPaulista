@@ -102,7 +102,7 @@ void Partida::RecomecarPartida(TipoDePartida tipoDePartida) {
 	}
 
 	EventosDaPartida->onInicioDaPartida();
-	QuemComecaRodada = Dupla1[0];
+	QuemComecaRodada = GetProximoJogador();
 	Rodadas->SetPlacar(placar);
 	Rodadas->SetDuplas(Dupla1);
 }
@@ -383,7 +383,6 @@ Jogador* Partida::GetJogadorAnterior()
 
 	return GetJogadorByID(idProxJogador);
 }
-
 
 Jogador* Partida::GetProximoJogador()
 {

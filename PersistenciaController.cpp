@@ -72,7 +72,7 @@ void PersistenciaController::InicializarPersistencia(Partida* jogo) {
 	Rodadas = jogo->GetRodada();
 	Vira = jogo->ObtemVira();
 
-	JogadorAtual = jogo->QuemJoga();
+	JogadorAtual = jogo->GetJogadorAtual();
 
 	NumeroJogadores = jogo->PegarNumeroJogadores();
 	MultiplasInstancias = jogo->MultiInstancia();
@@ -243,7 +243,6 @@ Partida* PersistenciaController::MontarPartida(std::string json) {
 	Json::parseFromStream(reader, jsonStream, &jsonObject, nullptr);
 
 	Partida* jogo = CriarPartida(jsonObject);
-	//InicializarPersistencia(jogo);
 
 	return jogo;
 }
@@ -255,6 +254,7 @@ Partida* PersistenciaController::CriarPartida(Json::Value json) {
 	std::vector<Jogador*> jogadores;
 
 	int numDupla = 1;
+	int numUltimoJogador = 1;
 
 	int numeroDeJogadores = json["configuracoes"]["numeroJogadores"].asInt();
 	bool multiInstance = json["configuracoes"]["multiInstance"].asBool();
@@ -284,6 +284,9 @@ Partida* PersistenciaController::CriarPartida(Json::Value json) {
 			bool bot = jogador["bot"].asBool();
 			int idJogador = jogador["id"].asInt();
 			bool vezDeJogar = jogador["vezDeJogar"].asBool();
+
+			if (vezDeJogar)
+				numUltimoJogador = idJogador;
 
 			std::string nomeJogador = bot ? nomeBot + std::to_string(numDupla) : nomeHumano + std::to_string(numDupla);
 			
@@ -328,7 +331,7 @@ Partida* PersistenciaController::CriarPartida(Json::Value json) {
 	Carta* vira = CriarCarta(json["cartaVirada"]);
 	RodadasController* rodada = CriarRodadaController(json["rodadaAtual"], jogadores, placar, vira);
 
-	return new Partida(placar, dupla1, dupla2, rodada, vira, numeroDeJogadores, multiInstance);
+	return new Partida(placar, dupla1, dupla2, rodada, vira, numeroDeJogadores, multiInstance, numUltimoJogador);
 }
 
 Carta* PersistenciaController::CriarCarta(Json::Value cartaVirada) {

@@ -1083,6 +1083,8 @@ void CTrucoPaulistaDlg::OnBnClickedRecarregar()
 		JogadorView::ControiJogadoresView(this, m_Cliente, partida);
 		partida->RecomecarRodada();
 		RecomecarRodada();
+
+		JogarCartasNaMesa();
 	}
 	else
 	{
@@ -1107,7 +1109,6 @@ void CTrucoPaulistaDlg::AtualizarCartaJogadaNaMesa(JogadorView* jogador, std::ve
 
 		if (cartaJogada)
 			jogador->JogouACarta(carta);
-		//partida->JogadorJogouACarta(jogador, carta, false);
 	}
 }
 
@@ -1152,10 +1153,11 @@ void CTrucoPaulistaDlg::OnBnClickedRb2players()
 
 void CTrucoPaulistaDlg::OnClose()
 {
-	//TODO: Validar aqui Renee
-
-	PersistenciaController persistencia = PersistenciaController(partida);
-	persistencia.AtualizarArquivo();
+	int resultado = AfxMessageBox(_T("Deseja salvar partida?"), MB_YESNO | MB_ICONQUESTION);
+	if (resultado == IDYES) {
+		PersistenciaController persistencia = PersistenciaController(partida);
+		persistencia.AtualizarArquivo();
+	}
 
 	CDialogEx::OnClose();
 }
