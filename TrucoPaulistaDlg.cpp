@@ -842,6 +842,7 @@ BEGIN_MESSAGE_MAP(CTrucoPaulistaDlg, CDialogEx)
 	ON_WM_CTLCOLOR()
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
+	ON_WM_CLOSE()
 	ON_BN_CLICKED(IDM_ABOUTBOX, &CTrucoPaulistaDlg::OnBnClickedAbout)
 	ON_BN_CLICKED(ID_SYNC, &CTrucoPaulistaDlg::OnBnClickedSync)
 	ON_BN_CLICKED(IDC_BTN_START, &CTrucoPaulistaDlg::OnBnClickedStart)
@@ -1126,4 +1127,14 @@ void CTrucoPaulistaDlg::OnBnClickedRb2players()
 	GetDlgItem(IDC_RECARREGAR)->ShowWindow(SW_SHOW);
 	GetDlgItem(IDC_SALVAR)->ShowWindow(SW_SHOW);
 	GetDlgItem(ID_SYNC)->ShowWindow(SW_HIDE);
+}
+
+void CTrucoPaulistaDlg::OnClose()
+{
+	//TODO: Validar aqui Renee
+
+	PersistenciaController persistencia = PersistenciaController(partida);
+	persistencia.AtualizarArquivo();
+
+	CDialogEx::OnClose();
 }
