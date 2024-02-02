@@ -1051,47 +1051,57 @@ JogadorView* CTrucoPaulistaDlg::GetJogadorViewByID(int numeroJogador)
 
 void CTrucoPaulistaDlg::OnBnClickedRecarregar() 
 {
-	GetDlgItem(IDC_RECARREGAR)->ShowWindow(SW_HIDE);
+	PersistenciaController persistencia = PersistenciaController(nullptr);
+	if (persistencia.TemJogoSalvo())
+	{
+		GetDlgItem(IDC_RECARREGAR)->ShowWindow(SW_HIDE);
 
-	delete partida;
-	delete m_PlacarView;
+		delete partida;
+		delete m_PlacarView;
 
-	PersistenciaController* persistencia = new PersistenciaController(nullptr);
+		Partida* ultimaPartida = persistencia.RecriarPartida();
+		ultimaPartida->AtualizarEventosDaPartida(this);
+		partida = ultimaPartida;
+		m_PlacarView = new PlacarView(this, partida);
 
-	Partida* ultimaPartida = persistencia->RecriarPartida();
-	ultimaPartida->AtualizarEventosDaPartida(this);
-	partida = ultimaPartida;
-	m_PlacarView = new PlacarView(this, partida);
+		CButton* pRadioButton2Players = reinterpret_cast<CButton*>(GetDlgItem(IDC_RB2PLAYERS));
+		CButton* pRadioButton4Players = reinterpret_cast<CButton*>(GetDlgItem(IDC_RB4PLAYERS));
 
-	CButton* pRadioButton2Players = reinterpret_cast<CButton*>(GetDlgItem(IDC_RB2PLAYERS));
-	CButton* pRadioButton4Players = reinterpret_cast<CButton*>(GetDlgItem(IDC_RB4PLAYERS));
-	
-	if (partida->ObtemNumeroDeJogadores() == 2) {
-		pRadioButton2Players->SetCheck(BST_CHECKED);
-		pRadioButton4Players->SetCheck(BST_UNCHECKED);
+		if (partida->ObtemNumeroDeJogadores() == 2) {
+			pRadioButton2Players->SetCheck(BST_CHECKED);
+			pRadioButton4Players->SetCheck(BST_UNCHECKED);
+		}
+		else {
+			pRadioButton2Players->SetCheck(BST_UNCHECKED);
+			pRadioButton4Players->SetCheck(BST_CHECKED);
+		}
+
+		TwoInstances = false;
+		TipoDePartida tipoDePartida = ObtemTipoDePartida();
+		partida->RecomecarPartida(tipoDePartida);
+		JogadorView::ControiJogadoresView(this, m_Cliente, partida);
+		partida->RecomecarRodada();
+		RecomecarRodada();
 	}
-	else {
-		pRadioButton2Players->SetCheck(BST_UNCHECKED);
-		pRadioButton4Players->SetCheck(BST_CHECKED);
+	else
+	{
+		AfxMessageBox(_T("Não existe jogo salvo ainda!"), MB_ICONINFORMATION | MB_OK);
 	}
-
-	TwoInstances = false;
-	TipoDePartida tipoDePartida = ObtemTipoDePartida();
-	partida->RecomecarPartida(tipoDePartida);
-	JogadorView::ControiJogadoresView(this, m_Cliente, partida);
-	partida->RecomecarRodada();
-	RecomecarRodada();
-
-	delete persistencia;
 }
 
 void CTrucoPaulistaDlg::OnBnClickedSalvar()
 {
-	PersistenciaController* persistencia = new PersistenciaController(partida);
-	persistencia->AtualizarArquivo();
-	delete persistencia;
+	int resultado = AfxMessageBox(_T("Tem certeza que quer salvar ? (Vai sobreescrever o antigo)"), MB_YESNO | MB_ICONQUESTION);
+	if (resultado == IDYES)
+	{
+		PersistenciaController persistencia = PersistenciaController(partida);
+		persistencia.AtualizarArquivo();
 
-	//bool temJogoSalvo = persistencia->TemJogoSalvo();
+		if (persistencia.TemJogoSalvo())
+			AfxMessageBox(_T("Jogo Salvo"), MB_ICONINFORMATION | MB_OK);
+		else
+			AfxMessageBox(_T("Erro : Jogo Não Salvo!"), MB_ICONERROR | MB_OK);
+	}
 }
 
 
