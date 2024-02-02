@@ -1090,6 +1090,27 @@ void CTrucoPaulistaDlg::OnBnClickedRecarregar()
 	}
 }
 
+void CTrucoPaulistaDlg::JogarCartasNaMesa() {
+
+	AtualizarCartaJogadaNaMesa(m_JogadorHumano1View, partida->ObtemJogadorHumano1()->GetCartasDoJogador());
+	AtualizarCartaJogadaNaMesa(m_JogadorHumano2View, partida->ObtemJogadorHumano2()->GetCartasDoJogador());
+	AtualizarCartaJogadaNaMesa(m_JogadorBot1View, partida->ObtemJogadorBot1()->GetCartasDoJogador());
+	AtualizarCartaJogadaNaMesa(m_JogadorBot2View, partida->ObtemJogadorBot2()->GetCartasDoJogador());
+}
+
+void CTrucoPaulistaDlg::AtualizarCartaJogadaNaMesa(JogadorView* jogador, std::vector<std::tuple<Carta*, bool>> cartas) {
+	for (const auto& tupla : cartas) {
+		bool cartaJogada;
+		Carta* carta;
+
+		std::tie(carta, cartaJogada) = tupla;
+
+		if (cartaJogada)
+			jogador->JogouACarta(carta);
+		//partida->JogadorJogouACarta(jogador, carta, false);
+	}
+}
+
 void CTrucoPaulistaDlg::OnBnClickedSalvar()
 {
 	int resultado = AfxMessageBox(_T("Tem certeza que quer salvar ? (Vai sobreescrever o antigo)"), MB_YESNO | MB_ICONQUESTION);
