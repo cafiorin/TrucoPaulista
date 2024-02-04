@@ -85,7 +85,7 @@ BOOL CTrucoPaulistaDlg::OnInitDialog()
 	m_Cliente = new DadosInstanciaCliente();
 
 	partida = new Partida(this);
-	m_PlacarView = new PlacarView(this,partida);
+	m_PlacarView = new PlacarView(this, partida);
 	JogadorView::ControiJogadoresView(this, m_Cliente, partida);
 	partidaMessagesController = new PartidaMessagesController(this, m_Instance == 1);
 	cartaCoberta = new CartaCoberta();
@@ -123,7 +123,7 @@ void CTrucoPaulistaDlg::InicializaPartida()
 {
 	TwoInstances = false;
 	TipoDePartida tipoDePartida = ObtemTipoDePartida();
-
+	PartidaInicializada = true;
 	if (tipoDePartida == TipoDePartida::QuatroJogadores_umremoto)
 	{
 		CreateNewInstance();
@@ -159,14 +159,14 @@ void CTrucoPaulistaDlg::OnBnClickedStart()
 	GetDlgItem(IDC_RECARREGAR)->ShowWindow(SW_HIDE);
 }
 
-void CTrucoPaulistaDlg::JogadorClicouNaCarta(Jogador *jogador, int posicaoDaCarta)
+void CTrucoPaulistaDlg::JogadorClicouNaCarta(Jogador* jogador, int posicaoDaCarta)
 {
 	if (JogadorSolicitado != jogador)
 		return;
 
 	if (m_Instance == 1 || partida->ObtemNumeroDeJogadores() == 2)
 	{
-		const Carta* carta = jogador->getjogadabot(posicaoDaCarta-1);
+		const Carta* carta = jogador->getjogadabot(posicaoDaCarta - 1);
 		m_JogadorHumano1View->JogouACarta(carta);
 		partida->JogadorJogouACarta(jogador, carta, false);
 	}
@@ -416,7 +416,7 @@ void CTrucoPaulistaDlg::onBotJogouACarta(int NumeroDaRodada, Jogador* jogadorAjo
 
 	JogadorView::AtualizaStatusDoJogadorEscolhido(this, StatusJogador::NaoEhSuaVez, partida->ObtemJogadorHumano1());
 
-	if(jogadorAjogar == partida->ObtemJogadorBot1())
+	if (jogadorAjogar == partida->ObtemJogadorBot1())
 		m_JogadorBot1View->JogouACarta(cartaJogada, cartaCoberta);
 	else
 		m_JogadorBot2View->JogouACarta(cartaJogada, cartaCoberta);
@@ -535,7 +535,6 @@ void CTrucoPaulistaDlg::InicializaRodada()
 	if (TwoInstances)
 	{
 		partidaMessagesController->EnviaInicializaRodada();
-
 		Sleep(1000);//Espera instancia aparecer
 
 		Jogador* jogador2 = partida->ObtemJogadorHumano2();
@@ -543,6 +542,7 @@ void CTrucoPaulistaDlg::InicializaRodada()
 		int c2 = jogador2->SegundaCartaNaMao()->idResource;
 		int c3 = jogador2->TerceiraCartaNaMao()->idResource;
 		int c4 = partida->ObtemVira()->idResource;
+
 		partidaMessagesController->EnviaCartasParaJogador(c1, c2, c3, c4);
 	}
 
@@ -554,7 +554,7 @@ void CTrucoPaulistaDlg::RecomecarRodada()
 	m_Cliente->InicializaRodada(partida->GetRodada()->QualRodadaEsta());
 	m_Cliente->SetaPodePedirTruco(true);
 	m_PlacarView->InicializaRodada();
-	
+
 	Carta* v = partida->ObtemVira();
 
 	m_MesaView->InicializaRodada(v->idResource);
@@ -731,7 +731,7 @@ void CTrucoPaulistaDlg::SetCurrectBitmapCliente(int rodada, int numeroJogador, i
 	m_MesaView->JogadorJogouACartaCliente(rodada, numeroJogador, carta);
 
 	JogadorView* jogadorView = GetJogadorViewByID(numeroJogador);
-	if(jogadorView)
+	if (jogadorView)
 		jogadorView->EscondeCartaJogada(rodada);
 
 	JogadorView::AtualizaStatusDoJogadorEscolhido(this, StatusJogador::NaoEhSuaVez, partida->ObtemJogadorHumano2());
@@ -770,6 +770,7 @@ void CTrucoPaulistaDlg::AtualizaCartasCliente(int c1, int c2, int c3, int c4)
 		m_JogadorHumano2View->AtualizaCartasCliente(c1, c2, c3);
 		m_MesaView->AtualizaCartaViraCliente(c4);
 		m_PlacarView->LimpaOutput();
+		GetDlgItem(IDC_RECARREGAR)->ShowWindow(SW_HIDE);
 		Invalidate();
 	}
 }
@@ -1050,7 +1051,7 @@ JogadorView* CTrucoPaulistaDlg::GetJogadorViewByID(int numeroJogador)
 	return nullptr;
 }
 
-void CTrucoPaulistaDlg::OnBnClickedRecarregar() 
+void CTrucoPaulistaDlg::OnBnClickedRecarregar()
 {
 	PersistenciaController persistencia = PersistenciaController(nullptr);
 	if (persistencia.TemJogoSalvo())
@@ -1153,11 +1154,13 @@ void CTrucoPaulistaDlg::OnBnClickedRb2players()
 
 void CTrucoPaulistaDlg::OnClose()
 {
+	if (PartidaInicializada)
+	{
 	int resultado = AfxMessageBox(_T("Deseja salvar partida?"), MB_YESNO | MB_ICONQUESTION);
 	if (resultado == IDYES) {
 		PersistenciaController persistencia = PersistenciaController(partida);
 		persistencia.AtualizarArquivo();
 	}
-
+	}
 	CDialogEx::OnClose();
 }

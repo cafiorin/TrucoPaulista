@@ -49,6 +49,7 @@ public:
 	bool DoisJogadores;
 	Jogador* JogadorSolicitado;
 	bool TwoInstances;
+	bool PartidaInicializada;
 	CFont m_Font;
 	JogadorView* m_JogadorHumano1View;
 	JogadorView* m_JogadorHumano2View;
