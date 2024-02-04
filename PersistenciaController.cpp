@@ -108,7 +108,7 @@ Json::Value PersistenciaController::GetCarta(Carta* carta) {
 Json::Value PersistenciaController::GetRodada() {
 	Json::Value rodada;
 
-	rodada["numeroDaRodada"] = Rodadas->IndiceDaRodadaAtual();
+	rodada["numeroDaRodada"] = Rodadas->QualRodadaEsta();
 	rodada["quantasVezesTrucou"] = Rodadas->QuantosVezesTrucou();
 
 	Json::Value cartasDaMesa;
@@ -160,7 +160,7 @@ Json::Value PersistenciaController::GetJogadores(Jogador* dupla[2]) {
 
 		jogador["id"] = dupla[i]->ObtemNumeroJogador();
 		jogador["bot"] = dupla[i]->EhUmBot();
-		bool estaNaVezDeJogar = JogadorAtual->ObtemNumeroJogador() == dupla[i]->ObtemNumeroJogador();
+		bool estaNaVezDeJogar = JogadorAtual != nullptr && JogadorAtual->ObtemNumeroJogador() == dupla[i]->ObtemNumeroJogador();
 		jogador["vezDeJogar"] = estaNaVezDeJogar;
 
 		Carta* cartasDoJogador[3];
@@ -344,16 +344,16 @@ Carta* PersistenciaController::CriarCarta(Json::Value cartaVirada) {
 }
 
 RodadasController* PersistenciaController::CriarRodadaController(Json::Value rodadaAtual, std::vector<Jogador*> jogadores, Placar* placar, Carta* vira) {
-	int indiceDaRodada = rodadaAtual["numeroDaRodada"].asInt();
+	int numeroDaRodada = rodadaAtual["numeroDaRodada"].asInt();
 	int valorDaRodada = rodadaAtual["valorDaRodada"].asInt();
 	int quantasVezesTrucou = rodadaAtual["quantasVezesTrucou"].asInt();
 	
-	RodadasController* rodadaController = new RodadasController(placar, vira, true, valorDaRodada, quantasVezesTrucou, indiceDaRodada);
+	RodadasController* rodadaController = new RodadasController(placar, vira, true, valorDaRodada, quantasVezesTrucou, numeroDaRodada);
 	
-	Rodada* rodada = new Rodada(indiceDaRodada, rodadaController);
+	Rodada* rodada = new Rodada(numeroDaRodada, rodadaController);
 	int numCartas = 0;
 	for (const auto& cartaDaMesa : rodadaAtual["cartasDaMesa"]) {
-		CartaDaRodada *cartaDaRodada = new CartaDaRodada(indiceDaRodada);
+		CartaDaRodada *cartaDaRodada = new CartaDaRodada(numeroDaRodada);
 
 		bool cartaCoberta = cartaDaMesa["cartaCoberta"].asBool();
 		cartaDaRodada->CartaCoberta = cartaCoberta;
@@ -376,7 +376,7 @@ RodadasController* PersistenciaController::CriarRodadaController(Json::Value rod
 	}
 	rodada->CartasAdicionadas = numCartas;
 
-	rodadaController->RecriarRodada(rodada, indiceDaRodada);
+	rodadaController->RecriarRodada(rodada, numeroDaRodada - 1);
 
 	return rodadaController;
 }
