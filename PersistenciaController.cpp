@@ -105,41 +105,56 @@ Json::Value PersistenciaController::GetCarta(Carta* carta) {
 	return cartaViradaObject;
 }
 
-Json::Value PersistenciaController::GetRodada() {
-	Json::Value rodada;
+Json::Value PersistenciaController::GetHistoricoRodadas() {
+	Json::Value historicoPartida;
+	Json::Value historicoRodada;
 
-	rodada["numeroDaRodada"] = Rodadas->QualRodadaEsta();
-	rodada["quantasVezesTrucou"] = Rodadas->QuantosVezesTrucou();
+	historicoPartida["quantasVezesTrucou"] = Rodadas->QuantosVezesTrucou();
+	historicoPartida["numeroDaRodadaAtual"] = Rodadas->QualRodadaEsta();
+	int valorDaPartida = Rodadas->QuantoEstaValendoARodada();
+	historicoPartida["valorDaRodada"] = valorDaPartida;
+	if (valorDaPartida > 1) // Se valor da partida for maior que 1 alguém pediu truco
+		historicoPartida["idJogadorPediuTruco"] = JogadorAtual->ObtemNumeroJogador();
 
-	Json::Value cartasDaMesa;
-
-	for (int i = 0; i < 4; i++)
+	for (int idxRodada = 0; idxRodada < 3; idxRodada++)
 	{
-		if (Rodadas->PegarRodadaAtual()->cartas[i] == nullptr) {
-			break;
+		Json::Value rodada;
+
+		Rodada* hRodada = Rodadas->PegarRodada(idxRodada);
+		if (hRodada == nullptr)
+			continue;
+
+		rodada["numeroDaRodada"] = idxRodada + 1;
+		
+		Json::Value cartasNaMesaDaRodada;
+
+		for (int i = 0; i < 4; i++)
+		{
+			if (hRodada->cartas[i] == nullptr) {
+				break;
+			}
+
+			Json::Value carta;
+			carta["cartaCoberta"] = hRodada->cartas[i]->CartaCoberta;
+			carta["idJogador"] = hRodada->cartas[i]->JogadorDaCarta->ObtemNumeroJogador();
+
+			Json::Value cartaJogada;
+			cartaJogada["id"] = hRodada->cartas[i]->CartaJogadaNaRodada->id;
+			cartaJogada["valor"] = hRodada->cartas[i]->CartaJogadaNaRodada->valor;
+			cartaJogada["nome"] = hRodada->cartas[i]->CartaJogadaNaRodada->nome;
+			cartaJogada["naipe"] = hRodada->cartas[i]->CartaJogadaNaRodada->naipe;
+			carta["cartaJogada"] = cartaJogada;
+			cartasNaMesaDaRodada.append(carta);
 		}
 
-		Json::Value carta;
-		carta["cartaCoberta"] = Rodadas->PegarRodadaAtual()->cartas[i]->CartaCoberta;
-		carta["idJogador"] = Rodadas->PegarRodadaAtual()->cartas[i]->JogadorDaCarta->ObtemNumeroJogador();
-
-		Json::Value cartaJogada;
-		cartaJogada["id"] = Rodadas->PegarRodadaAtual()->cartas[i]->CartaJogadaNaRodada->id;
-		cartaJogada["valor"] = Rodadas->PegarRodadaAtual()->cartas[i]->CartaJogadaNaRodada->valor;
-		cartaJogada["nome"] = Rodadas->PegarRodadaAtual()->cartas[i]->CartaJogadaNaRodada->nome;
-		cartaJogada["naipe"] = Rodadas->PegarRodadaAtual()->cartas[i]->CartaJogadaNaRodada->naipe;
-		carta["cartaJogada"] = cartaJogada;
-		cartasDaMesa.append(carta);
+		rodada["cartasNaMesaDaRodada"] = cartasNaMesaDaRodada;
+		
+		historicoRodada.append(rodada);
 	}
 
-	rodada["cartasDaMesa"] = cartasDaMesa;
-	int valorDaPartida = Rodadas->QuantoEstaValendoARodada();
-	rodada["valorDaRodada"] = valorDaPartida;
+	historicoPartida["rodadas"] = historicoRodada;
 
-	if (valorDaPartida > 1) // Se valor da partida for maior que 1 alguém pediu truco
-		rodada["idJogadorPediuTruco"] = JogadorAtual->ObtemNumeroJogador();
-	
-	return rodada;
+	return historicoPartida;
 }
 
 Json::Value PersistenciaController::GetMao(Carta* mao[3]) {
@@ -221,7 +236,7 @@ std::string PersistenciaController::MontarJSON() {
 	Json::Value json;
 
 	json["cartaVirada"] = GetCarta(Vira);
-	json["rodadaAtual"] = GetRodada();
+	json["historicoRodadas"] = GetHistoricoRodadas();
 	json["times"] = GetTimes();
 	json["configuracoes"] = GetConfiguracoes();
 
@@ -329,7 +344,7 @@ Partida* PersistenciaController::CriarPartida(Json::Value json) {
 	}
 
 	Carta* vira = CriarCarta(json["cartaVirada"]);
-	RodadasController* rodada = CriarRodadaController(json["rodadaAtual"], jogadores, placar, vira);
+	RodadasController* rodada = CriarRodadaController(json["historicoRodadas"], jogadores, placar, vira);
 
 	return new Partida(placar, dupla1, dupla2, rodada, vira, numeroDeJogadores, multiInstance, numUltimoJogador);
 }
@@ -343,40 +358,49 @@ Carta* PersistenciaController::CriarCarta(Json::Value cartaVirada) {
 	return new Carta(id, valor, nome, naipe);
 }
 
-RodadasController* PersistenciaController::CriarRodadaController(Json::Value rodadaAtual, std::vector<Jogador*> jogadores, Placar* placar, Carta* vira) {
-	int numeroDaRodada = rodadaAtual["numeroDaRodada"].asInt();
-	int valorDaRodada = rodadaAtual["valorDaRodada"].asInt();
-	int quantasVezesTrucou = rodadaAtual["quantasVezesTrucou"].asInt();
+RodadasController* PersistenciaController::CriarRodadaController(Json::Value historicoRodadas, std::vector<Jogador*> jogadores, Placar* placar, Carta* vira) {
+	int quantasVezesTrucou = historicoRodadas["quantasVezesTrucou"].asInt();
+	int valorDaRodada = historicoRodadas["valorDaRodada"].asInt();
+	int numeroDaRodada = historicoRodadas["numeroDaRodadaAtual"].asInt();
 	
 	RodadasController* rodadaController = new RodadasController(placar, vira, true, valorDaRodada, quantasVezesTrucou, numeroDaRodada);
 	
-	Rodada* rodada = new Rodada(numeroDaRodada, rodadaController);
-	int numCartas = 0;
-	for (const auto& cartaDaMesa : rodadaAtual["cartasDaMesa"]) {
-		CartaDaRodada *cartaDaRodada = new CartaDaRodada(numeroDaRodada);
+	Rodada* rodadas[3];
+	int idRodada = 0;
+	for (const auto& historicoDaRodada : historicoRodadas["rodadas"]) {
+		Rodada* rodada = new Rodada(idRodada + 1, rodadaController);
 
-		bool cartaCoberta = cartaDaMesa["cartaCoberta"].asBool();
-		cartaDaRodada->CartaCoberta = cartaCoberta;
+		int idxCarta = 0;
+		for (const auto& cartaDaMesa : historicoDaRodada["cartasNaMesaDaRodada"]) {
+			CartaDaRodada* cartaDaRodada = new CartaDaRodada(idRodada + 1);
 
-		Carta *cartaJogada = CriarCarta(cartaDaMesa["cartaJogada"]);
-		cartaDaRodada->CartaJogadaNaRodada = cartaJogada;
+			bool cartaCoberta = cartaDaMesa["cartaCoberta"].asBool();
+			cartaDaRodada->CartaCoberta = cartaCoberta;
 
-		int idJogador = cartaDaMesa["idJogador"].asInt();
+			Carta* cartaJogada = CriarCarta(cartaDaMesa["cartaJogada"]);
+			cartaDaRodada->CartaJogadaNaRodada = cartaJogada;
 
-		for (Jogador* jogador : jogadores) {
-			if (jogador->ObtemNumeroJogador() == idJogador) {
-				cartaDaRodada->JogadorDaCarta = jogador;
-				break;
+			int idJogador = cartaDaMesa["idJogador"].asInt();
+
+			for (Jogador* jogador : jogadores) {
+				if (jogador->ObtemNumeroJogador() == idJogador) {
+					cartaDaRodada->JogadorDaCarta = jogador;
+					break;
+				}
 			}
+
+			rodada->cartas[idxCarta] = cartaDaRodada;
+			
+			idxCarta++;
 		}
 
-		rodada->cartas[numCartas] = cartaDaRodada;
+		rodada->CartasAdicionadas = idxCarta;
 
-		numCartas++;
+		rodadas[idRodada] = rodada;
+		idRodada++;
 	}
-	rodada->CartasAdicionadas = numCartas;
 
-	rodadaController->RecriarRodada(rodada, numeroDaRodada - 1);
+	rodadaController->RecriarRodada(rodadas, numeroDaRodada);
 
 	return rodadaController;
 }

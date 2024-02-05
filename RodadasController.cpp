@@ -47,20 +47,20 @@ void RodadasController::InicializarRodada(Carta *vira)
 	Rodadas[2] = new Rodada(3, this);
 }
 
-void RodadasController::RecriarRodada(Rodada* rodada, int indiceRodada) {
+void RodadasController::RecriarRodada(Rodada* rodada[3], int numeroRodadaAtual) {
 	delete Rodadas[0];
 	delete Rodadas[1];
 	delete Rodadas[2];
 
 	for (int i = 0; i < 3; i++)
 	{
-		if(i == indiceRodada)
-			Rodadas[indiceRodada] = rodada;
+		if (rodada[i] != nullptr)
+			Rodadas[i] = rodada[i];
 		else
 			Rodadas[i] = new Rodada(i + 1, this);
 	}
 
-	NumeroDaRodada = indiceRodada + 1;
+	NumeroDaRodada = numeroRodadaAtual;
 }
 
 Jogador* RodadasController::JaTemosUmVencedor()

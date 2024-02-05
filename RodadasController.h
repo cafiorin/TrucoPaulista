@@ -28,7 +28,7 @@ public:
 	RodadasController(Placar *placar, bool jogoDeDuplas);
 	~RodadasController();
 
-	void RecriarRodada(Rodada* rodada, int indiceDaRodada);
+	void RecriarRodada(Rodada* rodada[3], int numeroRodadaAtual);
 
 	int QualRodadaEsta() { return NumeroDaRodada; }
 	void ProximaRodada() { if (NumeroDaRodada < 3) NumeroDaRodada++; }
@@ -37,6 +37,7 @@ public:
 
 	int IndiceDaRodadaAtual() { return NumeroDaRodada - 1; }
 	Rodada* PegarRodadaAtual() { return Rodadas[IndiceDaRodadaAtual()]; }
+	Rodada* PegarRodada(int indiceRodada) { return Rodadas[indiceRodada]; }
 	bool RodadaEstaCompleta();
 	bool RodadaEstaComecando();
 	Jogador* QuemGanhouARodadaAtual();

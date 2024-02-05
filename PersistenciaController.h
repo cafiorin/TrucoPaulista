@@ -40,7 +40,7 @@ private:
 	std::string MontarJSON();
 	void PersistirJSON(std::string &json);
 	Json::Value GetCarta(Carta* carta);
-	Json::Value GetRodada();
+	Json::Value GetHistoricoRodadas();
 	Json::Value GetTimes();
 	Json::Value GetJogadores(Jogador* dupla[2]);
 	Json::Value GetTime(Jogador* dupla[2], int pontosDoTime, int partidasVencidas);
