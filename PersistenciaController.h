@@ -50,6 +50,6 @@ private:
 	//Read
 	Partida* MontarPartida(std::string json);
 	Carta* CriarCarta(Json::Value cartaVirada);
-	RodadasController* CriarRodadaController(Json::Value rodadaAtual, std::vector<Jogador*> jogadores, Placar* placar, Carta* vira);
+	RodadasController* CriarRodadaController(Json::Value rodadaAtual, std::vector<Jogador*> jogadores, Placar* placar, Carta* vira, int numeroDeJogadores);
 	Partida* CriarPartida(Json::Value json);
 };

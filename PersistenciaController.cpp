@@ -316,7 +316,10 @@ Partida* PersistenciaController::CriarPartida(Json::Value json) {
 				}
 			}
 			else {
-				player = new Jogador(idJogador, nomeJogador, numDupla, false, nomeJogador == "Humano1" || !multiInstance);
+
+				bool mostrarCarta = (numeroDeJogadores == 2 && idJogador == 1) || (numeroDeJogadores == 4 && nomeJogador == "Humano1");
+
+				player = new Jogador(idJogador, nomeJogador, numDupla, false, mostrarCarta);
 			}
 
 			Carta* cartasJogador[3] = { nullptr, nullptr, nullptr };
@@ -344,7 +347,7 @@ Partida* PersistenciaController::CriarPartida(Json::Value json) {
 	}
 
 	Carta* vira = CriarCarta(json["cartaVirada"]);
-	RodadasController* rodada = CriarRodadaController(json["historicoRodadas"], jogadores, placar, vira);
+	RodadasController* rodada = CriarRodadaController(json["historicoRodadas"], jogadores, placar, vira, numeroDeJogadores);
 
 	return new Partida(placar, dupla1, dupla2, rodada, vira, numeroDeJogadores, multiInstance, numUltimoJogador);
 }
@@ -358,12 +361,12 @@ Carta* PersistenciaController::CriarCarta(Json::Value cartaVirada) {
 	return new Carta(id, valor, nome, naipe);
 }
 
-RodadasController* PersistenciaController::CriarRodadaController(Json::Value historicoRodadas, std::vector<Jogador*> jogadores, Placar* placar, Carta* vira) {
+RodadasController* PersistenciaController::CriarRodadaController(Json::Value historicoRodadas, std::vector<Jogador*> jogadores, Placar* placar, Carta* vira, int numeroDeJogadores) {
 	int quantasVezesTrucou = historicoRodadas["quantasVezesTrucou"].asInt();
 	int valorDaRodada = historicoRodadas["valorDaRodada"].asInt();
 	int numeroDaRodada = historicoRodadas["numeroDaRodadaAtual"].asInt();
 	
-	RodadasController* rodadaController = new RodadasController(placar, vira, true, valorDaRodada, quantasVezesTrucou, numeroDaRodada);
+	RodadasController* rodadaController = new RodadasController(placar, vira, numeroDeJogadores == 4, valorDaRodada, quantasVezesTrucou, numeroDaRodada);
 	
 	Rodada* rodadas[3];
 	int idRodada = 0;
