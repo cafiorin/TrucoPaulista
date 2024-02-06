@@ -1095,10 +1095,38 @@ void CTrucoPaulistaDlg::OnBnClickedRecarregar()
 
 void CTrucoPaulistaDlg::JogarCartasNaMesa() {
 
-	AtualizarCartaJogadaNaMesa(m_JogadorHumano1View, partida->ObtemJogadorHumano1()->GetCartasDoJogador());
-	AtualizarCartaJogadaNaMesa(m_JogadorHumano2View, partida->ObtemJogadorHumano2()->GetCartasDoJogador());
-	AtualizarCartaJogadaNaMesa(m_JogadorBot1View, partida->ObtemJogadorBot1()->GetCartasDoJogador());
-	AtualizarCartaJogadaNaMesa(m_JogadorBot2View, partida->ObtemJogadorBot2()->GetCartasDoJogador());
+	for (int indiceRodada = 0; indiceRodada < partida->GetRodada()->QualRodadaEsta(); indiceRodada++)
+	{
+		Rodada* rodada = partida->GetRodada()->PegarRodada(indiceRodada);
+
+		for (int i = 0; i < 4; i++)
+		{
+			CartaDaRodada* cartasDaRodada = rodada->cartas[i];
+
+			if(cartasDaRodada != nullptr)
+				JogarCartasHistorico(cartasDaRodada->JogadorDaCarta->ObtemNumeroJogador(), cartasDaRodada->CartaJogadaNaRodada, indiceRodada + 1);
+		}
+	}
+}
+
+void CTrucoPaulistaDlg::JogarCartasHistorico(int idJogador, const Carta* cartaJogada, int numeroDaRodada) {
+	switch (idJogador)
+	{
+	case 1:
+		m_JogadorHumano1View->JogarCartaNovamente(cartaJogada, false, numeroDaRodada);
+		break;
+	case 2:
+		m_JogadorBot1View->JogarCartaNovamente(cartaJogada, false, numeroDaRodada);
+		break;
+	case 3:
+		m_JogadorHumano2View->JogarCartaNovamente(cartaJogada, false, numeroDaRodada);
+		break;
+	case 4:
+		m_JogadorBot2View->JogarCartaNovamente(cartaJogada, false, numeroDaRodada);
+		break;
+	default:
+		break;
+	}
 }
 
 void CTrucoPaulistaDlg::AtualizarCartaJogadaNaMesa(JogadorView* jogador, std::vector<std::tuple<Carta*, bool>> cartas) {

@@ -28,6 +28,7 @@ public:
 
 	void AtualizaStatusDoJogador(StatusJogador status);
 	void JogouACarta(const Carta* carta, bool cartaCoberta=false);
+	void JogarCartaNovamente(const Carta* carta, bool cartaCoberta, int rodadaDaCarta);
 	void EscondeCartaJogada(int rodada);
 	void AtualizaCartasCliente(int c1, int c2, int c3);
 

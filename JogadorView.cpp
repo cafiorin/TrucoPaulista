@@ -59,7 +59,7 @@ void JogadorView::AtualizaStatusDoJogadorEscolhido(CTrucoPaulistaDlg* pDialog, S
 }
 
 
-JogadorView::JogadorView(CTrucoPaulistaDlg* pDialog, int idCarta1, int idCarta2, int idCarta3, int idSuaVez, int idTruco, int idCorrer, Jogador* jogador, DadosInstanciaCliente *cliente, Partida* partida)
+JogadorView::JogadorView(CTrucoPaulistaDlg* pDialog, int idCarta1, int idCarta2, int idCarta3, int idSuaVez, int idTruco, int idCorrer, Jogador* jogador, DadosInstanciaCliente* cliente, Partida* partida)
 {
 	m_Carta1View = dynamic_cast<CStatic*>(pDialog->GetDlgItem(idCarta1));
 	m_Carta2View = dynamic_cast<CStatic*>(pDialog->GetDlgItem(idCarta2));
@@ -197,57 +197,74 @@ void JogadorView::AtualizaStatusDoJogador(StatusJogador status)
 	}
 }
 
-	void JogadorView::JogouACarta(const Carta * carta, bool cartaCoberta)
+void JogadorView::JogarCartaNovamente(const Carta* carta, bool cartaCoberta, int rodadaDaCarta) {
+	m_pDialog->m_MesaView->JogadorJogouACarta(m_Jogador, carta, cartaCoberta, rodadaDaCarta, m_Partida->ObtemNumeroDeJogadores());
+
+	if (m_Jogador->PrimeiraCartaNaMao()->idResource == carta->idResource)
 	{
-		m_pDialog->m_MesaView->JogadorJogouACarta(m_Jogador, carta, cartaCoberta, m_pDialog->ObtemNumeroDaRodada(), m_Partida->ObtemNumeroDeJogadores());
-
-		if (m_Jogador->PrimeiraCartaNaMao()->idResource == carta->idResource)
-		{
-			m_Carta1View->ShowWindow(SW_HIDE);
-		}
-		else if (m_Jogador->SegundaCartaNaMao()->idResource == carta->idResource)
-		{
-			m_Carta2View->ShowWindow(SW_HIDE);
-		}
-		else if (m_Jogador->TerceiraCartaNaMao()->idResource == carta->idResource)
-		{
-			m_Carta3View->ShowWindow(SW_HIDE);
-		}
+		m_Carta1View->ShowWindow(SW_HIDE);
 	}
-
-	void JogadorView::EscondeCartaJogada(int rodada)
+	else if (m_Jogador->SegundaCartaNaMao()->idResource == carta->idResource)
 	{
-		switch (rodada)
-		{
-		case 1:
-			m_Carta1View->ShowWindow(SW_HIDE);
-			break;
-
-		case 2:
-			m_Carta2View->ShowWindow(SW_HIDE);
-			break;
-
-		case 3:
-			m_Carta3View->ShowWindow(SW_HIDE);
-			break;
-		}
+		m_Carta2View->ShowWindow(SW_HIDE);
 	}
-
-	void JogadorView::AtualizaCartasCliente(int c1, int c2, int c3)
+	else if (m_Jogador->TerceiraCartaNaMao()->idResource == carta->idResource)
 	{
-		CartasBitmap cartaBitmap1(c1);
-		CartasBitmap cartaBitmap2(c2);
-		CartasBitmap cartaBitmap3(c3);
-
-		m_pDialog->SetBitmapOnStaticControl(*m_Carta1View, *cartaBitmap1.Getbitmap());
-		m_pDialog->SetBitmapOnStaticControl(*m_Carta2View, *cartaBitmap2.Getbitmap());
-		m_pDialog->SetBitmapOnStaticControl(*m_Carta3View, *cartaBitmap3.Getbitmap());
-		
-		m_Carta1View->ModifyStyle(0, SS_NOTIFY);
-		m_Carta2View->ModifyStyle(0, SS_NOTIFY);
-		m_Carta3View->ModifyStyle(0, SS_NOTIFY);
-
-		m_Carta1View->ShowWindow(SW_SHOW);
-		m_Carta2View->ShowWindow(SW_SHOW);
-		m_Carta3View->ShowWindow(SW_SHOW);
+		m_Carta3View->ShowWindow(SW_HIDE);
 	}
+}
+
+void JogadorView::JogouACarta(const Carta* carta, bool cartaCoberta)
+{
+	m_pDialog->m_MesaView->JogadorJogouACarta(m_Jogador, carta, cartaCoberta, m_pDialog->ObtemNumeroDaRodada(), m_Partida->ObtemNumeroDeJogadores());
+
+	if (m_Jogador->PrimeiraCartaNaMao()->idResource == carta->idResource)
+	{
+		m_Carta1View->ShowWindow(SW_HIDE);
+	}
+	else if (m_Jogador->SegundaCartaNaMao()->idResource == carta->idResource)
+	{
+		m_Carta2View->ShowWindow(SW_HIDE);
+	}
+	else if (m_Jogador->TerceiraCartaNaMao()->idResource == carta->idResource)
+	{
+		m_Carta3View->ShowWindow(SW_HIDE);
+	}
+}
+
+void JogadorView::EscondeCartaJogada(int rodada)
+{
+	switch (rodada)
+	{
+	case 1:
+		m_Carta1View->ShowWindow(SW_HIDE);
+		break;
+
+	case 2:
+		m_Carta2View->ShowWindow(SW_HIDE);
+		break;
+
+	case 3:
+		m_Carta3View->ShowWindow(SW_HIDE);
+		break;
+	}
+}
+
+void JogadorView::AtualizaCartasCliente(int c1, int c2, int c3)
+{
+	CartasBitmap cartaBitmap1(c1);
+	CartasBitmap cartaBitmap2(c2);
+	CartasBitmap cartaBitmap3(c3);
+
+	m_pDialog->SetBitmapOnStaticControl(*m_Carta1View, *cartaBitmap1.Getbitmap());
+	m_pDialog->SetBitmapOnStaticControl(*m_Carta2View, *cartaBitmap2.Getbitmap());
+	m_pDialog->SetBitmapOnStaticControl(*m_Carta3View, *cartaBitmap3.Getbitmap());
+
+	m_Carta1View->ModifyStyle(0, SS_NOTIFY);
+	m_Carta2View->ModifyStyle(0, SS_NOTIFY);
+	m_Carta3View->ModifyStyle(0, SS_NOTIFY);
+
+	m_Carta1View->ShowWindow(SW_SHOW);
+	m_Carta2View->ShowWindow(SW_SHOW);
+	m_Carta3View->ShowWindow(SW_SHOW);
+}
