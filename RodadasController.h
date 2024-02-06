@@ -41,6 +41,7 @@ public:
 	bool RodadaEstaCompleta();
 	bool RodadaEstaComecando();
 	Jogador* QuemGanhouARodadaAtual();
+	Jogador* QuemGanhouUltimaRodada();
 	Jogador* JaTemosUmVencedor();
 
 	CString ObterMensagemDeQuantoVale()

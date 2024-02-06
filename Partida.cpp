@@ -103,10 +103,15 @@ void Partida::RecomecarPartida(TipoDePartida tipoDePartida) {
 
 	EventosDaPartida->onInicioDaPartida();
 
-	if (Rodadas->QualRodadaEsta() == 1 && Rodadas->PegarRodadaAtual()->CartasAdicionadas == 0)
+	if (Rodadas->QualRodadaEsta() == 1 && Rodadas->PegarRodadaAtual()->CartasAdicionadas == 0) {
 		QuemComecaRodada = Dupla1[0];
-	else
-		QuemComecaRodada = GetProximoJogador();
+	}
+	else {
+		if (Rodadas->PegarRodadaAtual()->CartasAdicionadas == 0)
+			QuemComecaRodada = Rodadas->QuemGanhouUltimaRodada();
+		else
+			QuemComecaRodada = GetProximoJogador();
+	}
 
 	Rodadas->SetPlacar(placar);
 	Rodadas->SetDuplas(Dupla1);

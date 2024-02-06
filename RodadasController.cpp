@@ -121,6 +121,11 @@ Jogador* RodadasController::QuemGanhouARodadaAtual()
 	return Rodadas[IndiceDaRodadaAtual()]->QuemGanhou(); 
 }
 
+Jogador* RodadasController::QuemGanhouUltimaRodada()
+{
+	return Rodadas[IndiceDaRodadaAtual() - 1]->QuemGanhou();
+}
+
 void RodadasController::CartaJogada(const Carta* carta, Jogador* jogador, bool cartaCoberta)
 {
 	Rodadas[IndiceDaRodadaAtual()]->CartaJogada(*carta, *jogador, cartaCoberta);
