@@ -1129,18 +1129,6 @@ void CTrucoPaulistaDlg::JogarCartasHistorico(int idJogador, const Carta* cartaJo
 	}
 }
 
-void CTrucoPaulistaDlg::AtualizarCartaJogadaNaMesa(JogadorView* jogador, std::vector<std::tuple<Carta*, bool>> cartas) {
-	for (const auto& tupla : cartas) {
-		bool cartaJogada;
-		Carta* carta;
-
-		std::tie(carta, cartaJogada) = tupla;
-
-		if (cartaJogada)
-			jogador->JogouACarta(carta);
-	}
-}
-
 void CTrucoPaulistaDlg::OnBnClickedSalvar()
 {
 	int resultado = AfxMessageBox(_T("Tem certeza que quer salvar ? (Vai sobreescrever o antigo)"), MB_YESNO | MB_ICONQUESTION);
