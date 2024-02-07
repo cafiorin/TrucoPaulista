@@ -22,3 +22,10 @@ https://github.com/cafiorin/TrucoPaulista/blob/master/Documentos/DiagramaDeClass
 
 Diagrama de sequencia do jogo (fluxo principal):
 https://github.com/cafiorin/TrucoPaulista/blob/master/Documentos/Sequence%20diagram%20(1)%20(1).pdf
+
+
+
+Como compilar:
+---------------
+Projeto windows x64 com MFC
+use o Visual Studio 2022 abra o TrucoPaulista.sln
