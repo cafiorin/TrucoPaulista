@@ -13,6 +13,7 @@ private:
 public:
     Baralho();
     void Embaralhar();
+    void EmbaralharMetade(int inicio, int fim);
     Carta PegarCartaDoTopo();
     void ConstruirBaralhoTrucoPaulista();
 };

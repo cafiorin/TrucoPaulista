@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Partida.h"
 #include "BotJogaSozinho.h"
+#include <thread>
 
 Partida::Partida(IEventosDaPartida* eventosPartida)
 {
@@ -181,14 +182,18 @@ void Partida::DistribuiCartas()
 	BaralhoMesa = new Baralho();
 	BaralhoMesa->Embaralhar();
 
-	DistribuiCartaProJogador(Dupla1[0]);
-	DistribuiCartaProJogador(Dupla1[1]);
-	DistribuiCartaProJogador(Dupla2[0]);
-	DistribuiCartaProJogador(Dupla2[1]);
+	std::thread t1(&Partida::DistribuiCartaProJogador, this, Dupla1[0]);
+	std::thread t2(&Partida::DistribuiCartaProJogador, this, Dupla1[1]);
+	std::thread t3(&Partida::DistribuiCartaProJogador, this, Dupla2[0]);
+	std::thread t4(&Partida::DistribuiCartaProJogador, this, Dupla2[1]);
+
+	t1.join();
+	t2.join();
+	t3.join();
+	t4.join();
 
 	delete Vira;
 	Vira = new Carta(&BaralhoMesa->PegarCartaDoTopo());
-
 }
 
 void Partida::DistribuiCartaProJogador(Jogador* jogador)

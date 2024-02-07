@@ -3,6 +3,7 @@
 #include <random>
 
 #include "Baralho.h"
+#include <thread>
 
 
 Baralho::Baralho()
@@ -14,9 +15,18 @@ Baralho::Baralho()
 
 void Baralho::Embaralhar()
 {
+    std::thread t1(&Baralho::EmbaralharMetade, this, 0, cartas->size() / 2);
+    std::thread t2(&Baralho::EmbaralharMetade, this, cartas->size() / 2, cartas->size());
+
+    t1.join();
+    t2.join();
+}
+
+void Baralho::EmbaralharMetade(int inicio, int fim)
+{
     std::random_device rd;
     std::default_random_engine rng(rd());
-    std::shuffle(cartas->begin(), cartas->end(), rng);
+    std::shuffle(cartas->begin() + inicio, cartas->begin() + fim, rng);
 }
 
 Carta Baralho::PegarCartaDoTopo()
