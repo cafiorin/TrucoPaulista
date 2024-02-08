@@ -222,6 +222,7 @@
     <ClInclude Include="PartidaMessagesController.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="PersistenciaController.h" />
+    <ClInclude Include="PersistenciaException.h" />
     <ClInclude Include="Placar.h" />
     <ClInclude Include="PlacarView.h" />
     <ClInclude Include="Resource.h" />

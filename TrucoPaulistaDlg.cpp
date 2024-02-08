@@ -19,6 +19,8 @@
 #include "DadosInstanciaCliente.h"
 #include "PlacarView.h"
 
+#include "PersistenciaException.h"
+
 #include <atlimage.h>
 #include <windows.h>
 
@@ -1054,42 +1056,49 @@ JogadorView* CTrucoPaulistaDlg::GetJogadorViewByID(int numeroJogador)
 void CTrucoPaulistaDlg::OnBnClickedRecarregar()
 {
 	PersistenciaController persistencia = PersistenciaController(nullptr);
-	if (persistencia.TemJogoSalvo())
+
+	try
 	{
-		GetDlgItem(IDC_RECARREGAR)->ShowWindow(SW_HIDE);
+		if (persistencia.TemJogoSalvo())
+		{
+			GetDlgItem(IDC_RECARREGAR)->ShowWindow(SW_HIDE);
 
-		delete partida;
-		delete m_PlacarView;
+			delete partida;
+			delete m_PlacarView;
 
-		Partida* ultimaPartida = persistencia.RecriarPartida();
-		ultimaPartida->AtualizarEventosDaPartida(this);
-		partida = ultimaPartida;
-		m_PlacarView = new PlacarView(this, partida);
+			Partida* ultimaPartida = persistencia.RecriarPartida();
 
-		CButton* pRadioButton2Players = reinterpret_cast<CButton*>(GetDlgItem(IDC_RB2PLAYERS));
-		CButton* pRadioButton4Players = reinterpret_cast<CButton*>(GetDlgItem(IDC_RB4PLAYERS));
+			ultimaPartida->AtualizarEventosDaPartida(this);
+			partida = ultimaPartida;
+			m_PlacarView = new PlacarView(this, partida);
 
-		if (partida->ObtemNumeroDeJogadores() == 2) {
-			pRadioButton2Players->SetCheck(BST_CHECKED);
-			pRadioButton4Players->SetCheck(BST_UNCHECKED);
+			CButton* pRadioButton2Players = reinterpret_cast<CButton*>(GetDlgItem(IDC_RB2PLAYERS));
+			CButton* pRadioButton4Players = reinterpret_cast<CButton*>(GetDlgItem(IDC_RB4PLAYERS));
+
+			if (partida->ObtemNumeroDeJogadores() == 2) {
+				pRadioButton2Players->SetCheck(BST_CHECKED);
+				pRadioButton4Players->SetCheck(BST_UNCHECKED);
+			}
+			else {
+				pRadioButton2Players->SetCheck(BST_UNCHECKED);
+				pRadioButton4Players->SetCheck(BST_CHECKED);
+			}
+
+			TwoInstances = false;
+			TipoDePartida tipoDePartida = ObtemTipoDePartida();
+			partida->RecomecarPartida(tipoDePartida);
+			JogadorView::ControiJogadoresView(this, m_Cliente, partida);
+			partida->RecomecarRodada();
+			RecomecarRodada();
+
+			JogarCartasNaMesa();
 		}
-		else {
-			pRadioButton2Players->SetCheck(BST_UNCHECKED);
-			pRadioButton4Players->SetCheck(BST_CHECKED);
-		}
-
-		TwoInstances = false;
-		TipoDePartida tipoDePartida = ObtemTipoDePartida();
-		partida->RecomecarPartida(tipoDePartida);
-		JogadorView::ControiJogadoresView(this, m_Cliente, partida);
-		partida->RecomecarRodada();
-		RecomecarRodada();
-
-		JogarCartasNaMesa();
 	}
-	else
+	catch (const PersistenciaException& e)
 	{
-		AfxMessageBox(_T("Não existe jogo salvo ainda!"), MB_ICONINFORMATION | MB_OK);
+		CString mensagemException(e.what());
+		AfxMessageBox(mensagemException, MB_ICONINFORMATION | MB_OK);
+		GetDlgItem(IDC_RECARREGAR)->ShowWindow(SW_HIDE);
 	}
 }
 
@@ -1103,7 +1112,7 @@ void CTrucoPaulistaDlg::JogarCartasNaMesa() {
 		{
 			CartaDaRodada* cartasDaRodada = rodada->cartas[i];
 
-			if(cartasDaRodada != nullptr)
+			if (cartasDaRodada != nullptr)
 				JogarCartasHistorico(cartasDaRodada->JogadorDaCarta->ObtemNumeroJogador(), cartasDaRodada->CartaJogadaNaRodada, indiceRodada + 1);
 		}
 	}
@@ -1172,11 +1181,11 @@ void CTrucoPaulistaDlg::OnClose()
 {
 	if (PartidaInicializada)
 	{
-	int resultado = AfxMessageBox(_T("Deseja salvar partida?"), MB_YESNO | MB_ICONQUESTION);
-	if (resultado == IDYES) {
-		PersistenciaController persistencia = PersistenciaController(partida);
-		persistencia.AtualizarArquivo();
-	}
+		int resultado = AfxMessageBox(_T("Deseja salvar partida?"), MB_YESNO | MB_ICONQUESTION);
+		if (resultado == IDYES) {
+			PersistenciaController persistencia = PersistenciaController(partida);
+			persistencia.AtualizarArquivo();
+		}
 	}
 	CDialogEx::OnClose();
 }

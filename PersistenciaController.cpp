@@ -19,7 +19,7 @@ bool PersistenciaController::TemJogoSalvo()
 	std::ifstream arquivoTruco(nomeArquivo);
 
 	if (!arquivoTruco)
-		return false;
+		throw PersistenciaException();
 
 	if (arquivoTruco.is_open() && arquivoTruco.peek() != std::ifstream::traits_type::eof())
 	{
@@ -44,6 +44,7 @@ void PersistenciaController::RemoverArquivo()
 }
 
 Partida* PersistenciaController::RecriarPartida() {
+
 	if (TemJogoSalvo())
 	{
 		std::ifstream arquivo(nomeArquivo);
@@ -56,8 +57,6 @@ Partida* PersistenciaController::RecriarPartida() {
 
 		return partida;
 	}
-
-	throw std::exception("Não existe nenhuma partida salva.");
 }
 
 void PersistenciaController::InicializarPersistencia(Partida* jogo) {

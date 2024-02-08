@@ -6,6 +6,7 @@
 #include "Partida.h"
 #include "Bot.h"
 #include "BotJogaSozinho.h"
+#include "PersistenciaException.h"
 #include "json\include\json.h"
 
 class PersistenciaController
