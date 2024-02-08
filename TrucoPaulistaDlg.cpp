@@ -344,7 +344,7 @@ void CTrucoPaulistaDlg::onFimDaRodada(int numeroRodada, Jogador* JogadorQueGanho
 		CButton* pCheckBox = (CButton*)GetDlgItem(baseCheckBox);
 		if (pCheckBox != nullptr)
 			pCheckBox->SetCheck(BST_CHECKED);
-
+		
 		pCheckBox = (CButton*)GetDlgItem(baseCheckBox + 1);
 		if (pCheckBox != nullptr)
 			pCheckBox->SetCheck(BST_CHECKED);
@@ -1108,6 +1108,12 @@ void CTrucoPaulistaDlg::JogarCartasNaMesa() {
 	{
 		Rodada* rodada = partida->GetRodada()->PegarRodada(indiceRodada);
 
+		if ((partida->ObtemNumeroDeJogadores() == 2 && rodada->CartasAdicionadas == 2) ||
+			(partida->ObtemNumeroDeJogadores() == 4 && rodada->CartasAdicionadas == 4)) {
+
+			MarcarRodadas(rodada->QuemGanhou(), rodada->NumeroDaRodada);
+		}
+		
 		for (int i = 0; i < 4; i++)
 		{
 			CartaDaRodada* cartasDaRodada = rodada->cartas[i];
@@ -1115,6 +1121,27 @@ void CTrucoPaulistaDlg::JogarCartasNaMesa() {
 			if (cartasDaRodada != nullptr)
 				JogarCartasHistorico(cartasDaRodada->JogadorDaCarta->ObtemNumeroJogador(), cartasDaRodada->CartaJogadaNaRodada, indiceRodada + 1);
 		}
+	}
+}
+
+void CTrucoPaulistaDlg::MarcarRodadas(Jogador* vencedor, int numRodada) {
+	if (vencedor == nullptr) { //ambos ganharam
+		int baseCheckBox = IDC_CHECK1 + ((numRodada - 1) * 2);
+		CButton* pCheckBox = (CButton*)GetDlgItem(baseCheckBox);
+		if (pCheckBox != nullptr)
+			pCheckBox->SetCheck(BST_CHECKED);
+
+		pCheckBox = (CButton*)GetDlgItem(baseCheckBox + 1);
+		if (pCheckBox != nullptr)
+			pCheckBox->SetCheck(BST_CHECKED);
+	}
+	else {
+		int baseCheckBox = IDC_CHECK1 + ((numRodada - 1) * 2);
+		baseCheckBox = vencedor->EhUmBot() ? baseCheckBox + 1 : baseCheckBox;
+
+		CButton* pCheckBox = (CButton*)GetDlgItem(baseCheckBox);
+		if (pCheckBox != nullptr)
+			pCheckBox->SetCheck(BST_CHECKED);
 	}
 }
 

@@ -67,6 +67,7 @@ public:
 	void JogadorParceiroClicouNaCarta(Jogador* jogador, int posicaoDaCarta);
 	void JogarCartasNaMesa();
 	void JogarCartasHistorico(int idJogador, const Carta* cartaJogada, int numeroDaRodad);
+	void MarcarRodadas(Jogador* vencedor, int numRodada);
 
 	void MouseLeftClick(int idControl);
 	int ObtemNumeroDaRodada();

@@ -125,6 +125,17 @@ Json::Value PersistenciaController::GetHistoricoRodadas() {
 
 		rodada["numeroDaRodada"] = idxRodada + 1;
 		
+		if ((NumeroJogadores == 2 && hRodada->CartasAdicionadas == 2) || (NumeroJogadores == 4 && hRodada->CartasAdicionadas == 4)) {
+			Jogador* vencedorDaRodada = hRodada->QuemGanhou();
+
+			rodada["humanoVenceuRodada"] = vencedorDaRodada == nullptr || !vencedorDaRodada->EhUmBot();
+			rodada["botVenceuRodada"] = vencedorDaRodada == nullptr || vencedorDaRodada->EhUmBot();;
+		}
+		else { // Rodada não finalizada
+			rodada["humanoVenceuRodada"] = false;
+			rodada["botVenceuRodada"] = false;
+		}
+
 		Json::Value cartasNaMesaDaRodada;
 
 		for (int i = 0; i < 4; i++)
