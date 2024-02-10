@@ -28,6 +28,8 @@ https://github.com/cafiorin/TrucoPaulista/blob/master/Documentos/DiagramaDeClass
 
 Diagrama de sequencia do jogo (versão png):
 https://github.com/cafiorin/TrucoPaulista/blob/master/Documentos/DiagramaDeClasses.drawio.png
+
+
 Como compilar:
 ---------------
 Projeto windows x64 com MFC
